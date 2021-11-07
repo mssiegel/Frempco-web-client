@@ -1,3 +1,4 @@
+import { Link, Typography } from '@mui/material';
 import Head from 'next/head';
 import Image from 'next/image';
 import styles from '../styles/Home.module.css';
@@ -12,9 +13,15 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href='https://nextjs.org'>Next.js!</a>
-        </h1>
+        <Typography variant='h1'>
+          Welcome to{' '}
+          <Link
+            sx={{ color: (theme) => theme.palette.success.main }}
+            href='https://nextjs.org'
+          >
+            Next.js!
+          </Link>
+        </Typography>
 
         <p className={styles.description}>
           Get started by editing{' '}
