@@ -16,9 +16,7 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@theme": ["src/theme/index"],
       "@theme/*": ["src/theme/*"],
-      "@config": ["src/config/index"],
       "@config/*": ["src/config/*"]
     }
   },
