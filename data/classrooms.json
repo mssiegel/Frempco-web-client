@@ -1,0 +1,30 @@
+[
+  {
+    "classroomName": "apple",
+    "password": 111
+  },
+  {
+    "classroomName": "orange",
+    "password": 222
+  },
+  {
+    "classroomName": "lemon",
+    "password": 333
+  },
+  {
+    "classroomName": "tomato",
+    "password": 444
+  },
+  {
+    "classroomName": "pineapple",
+    "password": 555
+  },
+  {
+    "classroomName": "watermelon",
+    "password": 666
+  },
+  {
+    "classroomName": "mango",
+    "password": 777
+  }
+]
