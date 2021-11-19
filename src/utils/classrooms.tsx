@@ -1,11 +1,9 @@
-import classrooms from 'data/classrooms.json'
+import classrooms from 'data/classrooms.json';
 
 export function getAllClassroomNames() {
-  return classrooms.map(({classroomName: name}) => (
-    {
-      params: {
-        name
-      }
-    }
-  ));
+  return classrooms.map(({ classroomName: name }) => ({
+    params: {
+      name,
+    },
+  }));
 }
