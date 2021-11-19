@@ -1,7 +1,8 @@
-import { Link, Typography } from '@mui/material';
+import { Typography } from '@mui/material';
 import Head from 'next/head';
 
-import Layout from 'components/Layout'
+import Link from '@utilComponents/Link'
+import Layout from '@components/Layout'
 import classrooms from 'data/classrooms.json'
 
 export default function Home() {

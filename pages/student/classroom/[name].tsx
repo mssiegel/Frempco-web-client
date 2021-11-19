@@ -1,8 +1,8 @@
 import Head from 'next/head'
 import { Typography } from '@mui/material';
 
-import { getAllClassroomNames } from 'utils/classrooms';
-import Layout from 'components/Layout';
+import { getAllClassroomNames } from '@utils/classrooms';
+import Layout from '@components/Layout';
 
 export async function getStaticPaths() {
   const paths = getAllClassroomNames()
