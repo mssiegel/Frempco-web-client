@@ -1,8 +1,10 @@
 import Head from 'next/head';
 import { Typography } from '@mui/material';
+import { useContext } from 'react';
 
 import { getAllClassroomNames } from '@utils/classrooms';
 import Layout from '@components/Layout';
+import { SocketContext } from '@contexts/SocketContext';
 
 export async function getStaticPaths() {
   const paths = getAllClassroomNames();
@@ -16,12 +18,15 @@ export async function getStaticPaths() {
 export async function getStaticProps({ params }) {
   return {
     props: {
-      name: params.name,
+      classroomName: params.classroomName,
     },
   };
 }
 
-export default function MyComponent({ name }) {
+export default function StudentClassroom({ classroomName }) {
+  const socket = useContext(SocketContext);
+  socket.emit('test event');
+
   return (
     <Layout>
       <Head>
@@ -34,7 +39,8 @@ export default function MyComponent({ name }) {
           variant='h3'
           sx={{ color: (theme) => theme.palette.common.white }}
         >
-          Hello student! Welcome to your classroom named {name}!
+          Hello student! Welcome to your classroom named {classroomName}! Your
+          socket ID is {socket?.id ?? 'NO SOCKET FOUND'}
         </Typography>
       </main>
     </Layout>
