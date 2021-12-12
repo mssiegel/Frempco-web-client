@@ -5,8 +5,8 @@ interface ProviderProps {
   children: React.ReactNode;
 }
 
-const SOCKET_URL = process.env.NEXT_PUBLIC_SOCKET_URL;
-const socket = io(SOCKET_URL);
+const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+const socket = io(SERVER_URL);
 
 const SocketContext = createContext(socket);
 
