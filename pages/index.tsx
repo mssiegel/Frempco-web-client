@@ -9,6 +9,7 @@ import { useRouter } from 'next/router';
 import Link from '@utilComponents/Link';
 import Layout from '@components/Layout';
 import classrooms from 'data/classrooms.json';
+import { getClassroom } from '@utils/classrooms';
 
 export default function Home() {
   const router = useRouter();
@@ -46,10 +47,6 @@ export default function Home() {
 
     // Visit teachers page
     router.push(`/teacher/classroom/${classroom}`);
-  }
-
-  function getClassroom(classroom) {
-    return classrooms.find(({ classroomName }) => classroomName === classroom);
   }
 
   return (

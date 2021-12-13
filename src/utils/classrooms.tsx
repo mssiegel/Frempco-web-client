@@ -7,3 +7,7 @@ export function getAllClassroomNames() {
     },
   }));
 }
+
+export function getClassroom(classroom: string) {
+  return classrooms.find(({ classroomName }) => classroomName === classroom);
+}
