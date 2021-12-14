@@ -11,3 +11,5 @@ export function getAllClassroomNames() {
 export function getClassroom(classroom: string) {
   return classrooms.find(({ classroomName }) => classroomName === classroom);
 }
+
+export const sampleClassroomName = classrooms[0].classroomName;

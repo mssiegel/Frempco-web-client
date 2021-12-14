@@ -8,14 +8,11 @@ import { useRouter } from 'next/router';
 
 import Link from '@utilComponents/Link';
 import Layout from '@components/Layout';
-import classrooms from 'data/classrooms.json';
-import { getClassroom } from '@utils/classrooms';
+import { getClassroom, sampleClassroomName } from '@utils/classrooms';
 
 export default function Home() {
   const router = useRouter();
   const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
-
-  const sampleClassroomName = classrooms[0].classroomName;
 
   async function visitStudentsPage() {
     const classroom = window.prompt('What classroom are you visiting?');
