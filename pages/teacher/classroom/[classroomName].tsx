@@ -1,9 +1,10 @@
 import Head from 'next/head';
-import { Typography } from '@mui/material';
 import { useContext, useState } from 'react';
-import { Button } from '@mui/material';
-import PowerIcon from '@mui/icons-material/Power';
-import PowerOffIcon from '@mui/icons-material/PowerOff';
+import { Button, Typography } from '@mui/material';
+import {
+  Power as PowerIcon,
+  PowerOff as PowerOffIcon,
+} from '@mui/icons-material';
 
 import { getAllClassroomNames } from '@utils/classrooms';
 import Layout from '@components/Layout';
