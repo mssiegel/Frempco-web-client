@@ -1,6 +1,8 @@
 import { Box, Button, Typography } from '@mui/material';
-import SchoolIcon from '@mui/icons-material/School';
-import LightbulbIcon from '@mui/icons-material/Lightbulb';
+import {
+  School as SchoolIcon,
+  Lightbulb as LightbulbIcon,
+} from '@mui/icons-material';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 

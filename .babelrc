@@ -1,0 +1,24 @@
+{
+  "presets": ["next/babel"],
+  "plugins": [
+    // "babel-plugin-import" minimizes development bundles for Material UI projects. See: https://mui.com/guides/minimizing-bundle-size/
+    [
+      "babel-plugin-import",
+      {
+        "libraryName": "@mui/material",
+        "libraryDirectory": "",
+        "camel2DashComponentName": false
+      },
+      "core"
+    ],
+    [
+      "babel-plugin-import",
+      {
+        "libraryName": "@mui/icons-material",
+        "libraryDirectory": "",
+        "camel2DashComponentName": false
+      },
+      "icons"
+    ]
+  ]
+}
