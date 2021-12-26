@@ -1,7 +1,16 @@
 import Head from 'next/head';
-import { useContext, useState } from 'react';
-import { Button, Typography } from '@mui/material';
+import { useContext, useEffect, useState } from 'react';
 import {
+  Box,
+  Button,
+  Divider,
+  List,
+  ListItemText,
+  ListSubheader,
+  Typography,
+} from '@mui/material';
+import {
+  Chat as ChatIcon,
   Power as PowerIcon,
   PowerOff as PowerOffIcon,
 } from '@mui/icons-material';
@@ -28,24 +37,47 @@ export async function getStaticProps({ params }) {
 }
 
 export default function TeacherDashboard({ classroomName }) {
-  const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
   const socket = useContext(SocketContext);
+
   const [isActiveClassroom, setIsActiveClassroom] = useState(false);
+  const [students, setStudents] = useState([
+    'Test Student',
+    'Test Student2',
+    'Test Student3',
+    'Test Student4',
+    'Test Student5',
+    'Test Student6',
+  ]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('new student joined', (student) => {
+        // Note: this component's useEffect cannot listen to socket events when unmounted.
+        // For development coding the students must be active on a different browser tab than the teacher.
+        setStudents((students) => [...students, student]);
+      });
+    }
+
+    return () => {
+      if (socket) {
+        socket.off('new student joined');
+      }
+    };
+  });
 
   async function activateClassroom() {
-    const postResponse = await fetch(`${apiUrl}/classrooms/${classroomName}`, {
-      method: 'POST',
-    });
-    const { isActive } = await postResponse.json();
-    setIsActiveClassroom(isActive);
+    socket.emit('activate classroom', { classroomName });
+    setIsActiveClassroom(true);
   }
 
   async function deactivateClassroom() {
-    const postResponse = await fetch(`${apiUrl}/classrooms/${classroomName}`, {
-      method: 'DELETE',
-    });
-    const { isActive } = await postResponse.json();
-    setIsActiveClassroom(isActive);
+    const confirmation = window.prompt(
+      'Type YES to confirm you want to deactivate the classroom.',
+    );
+    if (confirmation?.toUpperCase() === 'YES') {
+      socket.emit('deactivate classroom', { classroomName });
+      setIsActiveClassroom(false);
+    }
   }
 
   return (
@@ -65,8 +97,9 @@ export default function TeacherDashboard({ classroomName }) {
         {isActiveClassroom ? (
           <Button
             variant='contained'
-            size='large'
+            size='small'
             color='warning'
+            sx={{ my: 3 }}
             startIcon={<PowerOffIcon />}
             onClick={deactivateClassroom}
           >
@@ -76,12 +109,40 @@ export default function TeacherDashboard({ classroomName }) {
           <Button
             variant='contained'
             size='large'
+            sx={{ my: 3 }}
             startIcon={<PowerIcon />}
             onClick={activateClassroom}
           >
             Activate classroom
           </Button>
         )}
+
+        <List
+          sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+          subheader={
+            <ListSubheader component='div'>
+              Total active students: {students.length}
+            </ListSubheader>
+          }
+        >
+          {students.map((student, i) => (
+            <div key={i}>
+              {i % 2 === 0 && <Divider />}
+              <ListItemText inset primary={student} />
+            </div>
+          ))}
+          <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+            <Button
+              variant='contained'
+              size='large'
+              color='success'
+              sx={{ mt: 2 }}
+              startIcon={<ChatIcon />}
+            >
+              Pair up students
+            </Button>
+          </Box>
+        </List>
       </main>
     </Layout>
   );

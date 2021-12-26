@@ -25,7 +25,6 @@ export async function getStaticProps({ params }) {
 
 export default function StudentClassroom({ classroomName }) {
   const socket = useContext(SocketContext);
-  socket.emit('test event');
 
   return (
     <Layout>
