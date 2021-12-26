@@ -4,15 +4,18 @@ import {
   Lightbulb as LightbulbIcon,
 } from '@mui/icons-material';
 import Head from 'next/head';
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
 
 import Link from '@utilComponents/Link';
 import Layout from '@components/Layout';
 import { getClassroom, sampleClassroomName } from '@utils/classrooms';
+import { SocketContext } from '@contexts/SocketContext';
 
 export default function Home() {
   const router = useRouter();
   const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
+  const socket = useContext(SocketContext);
 
   async function visitStudentsPage() {
     const classroom = window.prompt('What classroom are you visiting?');
@@ -26,11 +29,11 @@ export default function Home() {
         `Classroom not activated: ${classroom}\n Please wait for your teacher to activate your classroom and try again.`,
       );
 
-    const studentName = window.prompt('Classroom found! What is your name?');
-    // TODO: send socket request to notify the teacher
-
-    // Visit students page
-    router.push(`/student/classroom/${classroom}`);
+    const student = window.prompt('Classroom found! What is your name?');
+    if (student?.trim()) {
+      socket.emit('notify teacher of new student', { classroom, student });
+      router.push(`/student/classroom/${classroom}`);
+    }
   }
 
   function visitTeachersPage() {
