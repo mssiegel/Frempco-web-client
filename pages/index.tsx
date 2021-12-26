@@ -7,8 +7,8 @@ import Head from 'next/head';
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
 
-import Link from '@utilComponents/Link';
-import Layout from '@components/Layout';
+import Link from '@components/shared/Link';
+import Layout from '@components/shared/Layout';
 import { getClassroom, sampleClassroomName } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
 

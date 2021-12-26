@@ -1,5 +1,5 @@
 import { Box, Typography } from '@mui/material';
-import Link from '@utilComponents/Link';
+import Link from '@components/shared/Link';
 
 interface LayoutProps {
   children: React.ReactNode;

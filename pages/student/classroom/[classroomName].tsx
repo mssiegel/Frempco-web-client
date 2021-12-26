@@ -3,7 +3,7 @@ import { Typography } from '@mui/material';
 import { useContext } from 'react';
 
 import { getAllClassroomNames } from '@utils/classrooms';
-import Layout from '@components/Layout';
+import Layout from '@components/shared/Layout';
 import { SocketContext } from '@contexts/SocketContext';
 
 export async function getStaticPaths() {
