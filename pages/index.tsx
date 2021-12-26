@@ -31,7 +31,7 @@ export default function Home() {
 
     const student = window.prompt('Classroom found! What is your name?');
     if (student?.trim()) {
-      socket.emit('notify teacher of new student', { classroom, student });
+      socket.emit('new student entered', { classroom, student });
       router.push(`/student/classroom/${classroom}`);
     }
   }

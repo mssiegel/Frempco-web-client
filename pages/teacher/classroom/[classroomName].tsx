@@ -41,12 +41,8 @@ export default function TeacherDashboard({ classroomName }) {
 
   const [isActiveClassroom, setIsActiveClassroom] = useState(false);
   const [students, setStudents] = useState([
-    'Test Student',
-    'Test Student2',
-    'Test Student3',
-    'Test Student4',
-    'Test Student5',
-    'Test Student6',
+    { name: 'Test Student1', socketId: 'jh349y2c238asf8' },
+    { name: 'Test Student2', socketId: 'sdf787sd2fa859s' },
   ]);
 
   useEffect(() => {
@@ -126,9 +122,9 @@ export default function TeacherDashboard({ classroomName }) {
           }
         >
           {students.map((student, i) => (
-            <div key={i}>
+            <div key={student.socketId}>
               {i % 2 === 0 && <Divider />}
-              <ListItemText inset primary={student} />
+              <ListItemText inset primary={student.name} />
             </div>
           ))}
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
