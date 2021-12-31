@@ -32,6 +32,7 @@ export default function Home() {
     const student = window.prompt('Classroom found! What is your name?');
     if (student?.trim()) {
       socket.emit('new student entered', { classroom, student });
+      // TODO: GET STUDENTS NAME TO SHOW ON STUDENT PAGE
       router.push(`/student/classroom/${classroom}`);
     }
   }
