@@ -1,10 +1,11 @@
 import Head from 'next/head';
-import { Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 
 import { getAllClassroomNames } from '@utils/classrooms';
 import Layout from '@components/shared/Layout';
 import { SocketContext } from '@contexts/SocketContext';
+import Chatbox from '@components/pages/StudentsPage/Chatbox';
 
 export async function getStaticPaths() {
   const paths = getAllClassroomNames();
@@ -23,18 +24,36 @@ export async function getStaticProps({ params }) {
   };
 }
 
+function currentTime() {
+  return new Date().toLocaleString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+  });
+}
+
 export default function StudentClassroom({ classroomName }) {
   const socket = useContext(SocketContext);
-  // TODO: GET A CHAT STARTED HERE ON STUDENT PAGE
 
-  const [chatInSession, setChatInSession] = useState(false);
-  const [chat, setChat] = useState({ you: '', peer: '', conversation: [] });
+  const [chatInSession, setChatInSession] = useState(true); //false);
+  const [chat, setChat] = useState({
+    you: '',
+    peer: '',
+    conversation: [
+      ['you', 'vampire', 'i need blood'],
+      ['peer', 'wizard', 'i will cast a spell to make some'],
+    ],
+    startTime: '',
+  });
   const [realChat, setRealChat] = useState<string[]>([]);
 
   useEffect(() => {
     if (socket) {
       socket.on('chat start', ({ peersName }) => {
-        setChat((chat) => ({ ...chat, peer: peersName }));
+        setChat((chat) => ({
+          ...chat,
+          peer: peersName,
+          startTime: currentTime(),
+        }));
         setChatInSession(true);
       });
     }
@@ -58,13 +77,9 @@ export default function StudentClassroom({ classroomName }) {
           Hello student! Welcome to your classroom named {classroomName}! Your
           socket ID is {socket?.id ?? 'NO SOCKET FOUND'}
         </Typography>
-        {chatInSession && (
-          <div>
-            <Typography variant='h3' sx={{ color: 'white' }}>
-              Chat started with {chat.peer || 'unknown peer'}
-            </Typography>
-          </div>
-        )}
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          {chatInSession && <Chatbox chat={chat} />}
+        </Box>
       </main>
     </Layout>
   );
