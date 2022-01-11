@@ -1,10 +1,13 @@
 /** @jsxImportSource @emotion/react */
 
 import { Box, Typography } from '@mui/material';
+import Filter from 'bad-words';
 
 import conversationCSS from './Conversation.css';
 
 export default function Conversation({ chat }) {
+  const filter = new Filter();
+
   return (
     <Box>
       <Box css={conversationCSS.introText}>
@@ -23,7 +26,7 @@ export default function Conversation({ chat }) {
         return (
           <Typography key={i}>
             <span css={fontCSS}>{character}: </span>
-            <span>{message}</span>
+            <span>{filter.clean(message)}</span>
           </Typography>
         );
       })}
