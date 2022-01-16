@@ -2,13 +2,30 @@
 
 import { Box, Fab } from '@mui/material';
 import { Send as SendIcon } from '@mui/icons-material';
+import { useState } from 'react';
 
 import sendMessagesCSS from './SendMessages.css';
 
-export default function SendMessages({ chat, setChat }) {
+export default function SendMessages({
+  chat,
+  setChat,
+  scrollDown,
+  messageInput,
+}) {
+  const [message, setMessage] = useState('');
+
   function sendMessage(e) {
     e.preventDefault();
     console.log('sendMessages form submitted!!');
+    if (chat.you && message) {
+      setChat({
+        ...chat,
+        conversation: [...chat.conversation, ['you', chat.you, message]],
+      });
+      setMessage('');
+      scrollDown();
+    }
+    messageInput.current.focus();
   }
 
   return (
@@ -24,9 +41,11 @@ export default function SendMessages({ chat, setChat }) {
 
         <input
           css={sendMessagesCSS.message}
-          defaultValue='you can??'
+          value={message}
           placeholder='Say something'
           maxLength={75}
+          onChange={(e) => setMessage(e.target.value)}
+          ref={messageInput}
         />
 
         <Fab
