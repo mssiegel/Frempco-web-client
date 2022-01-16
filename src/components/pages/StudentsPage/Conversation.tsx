@@ -12,7 +12,9 @@ export default function Conversation({ chat }) {
     <Box>
       <Box css={conversationCSS.introText}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <span>Hi!</span>
+          <span>
+            Hi <span css={conversationCSS.you}>{chat.you || 'you'}</span>
+          </span>
           <span>{chat.startTime || '3:05pm'}</span>
         </Box>
         <span>You matched with </span>

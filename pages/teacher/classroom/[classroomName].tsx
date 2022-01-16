@@ -15,13 +15,14 @@ import {
   PowerOff as PowerOffIcon,
 } from '@mui/icons-material';
 
-import { getAllClassroomNames } from '@utils/classrooms';
+import { getAllClassroomNames, getRandom } from '@utils/classrooms';
 import Layout from '@components/shared/Layout';
 import { SocketContext } from '@contexts/SocketContext';
 
 interface Student {
-  name: string;
   socketId: string;
+  realName: string;
+  character?: string;
 }
 
 type StudentPair = [Student, Student];
@@ -42,6 +43,15 @@ export async function getStaticProps({ params }) {
     },
   };
 }
+
+const characters = [
+  'Wealthy merchant',
+  'Pirate captain',
+  'Tiny warlord',
+  'Dance teacher',
+  'Forgetful surgeon',
+  'Party planner',
+];
 
 export default function TeacherDashboard({ classroomName }) {
   const socket = useContext(SocketContext);
@@ -85,11 +95,18 @@ export default function TeacherDashboard({ classroomName }) {
   function pairStudents() {
     if (unpairedStudents.length < 2)
       return window.alert('Pairing requires at least 2 students.');
+    // pair up the students
     const studentPairs = [];
     unpairedStudents.forEach((student, i) => {
       if (i % 2 !== 0) studentPairs.push([unpairedStudents[i - 1], student]);
     });
-
+    // assign character names
+    for (const [student1, student2] of studentPairs) {
+      student1.character = getRandom(characters);
+      do {
+        student2.character = getRandom(characters);
+      } while (student2.character === student1.character);
+    }
     setPairedStudents(studentPairs);
     socket.emit('pair students', { studentPairs });
 
@@ -149,9 +166,9 @@ export default function TeacherDashboard({ classroomName }) {
           }
         >
           {unpairedStudents.map((student, i) => (
-            <div key={student.name + student.socketId}>
+            <div key={student.realName + student.socketId}>
               {i % 2 === 0 && <Divider />}
-              <ListItemText inset primary={student.name} />
+              <ListItemText inset primary={student.realName} />
             </div>
           ))}
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
@@ -186,7 +203,7 @@ export default function TeacherDashboard({ classroomName }) {
               <Divider />
               <ListItemText
                 inset
-                primary={student1.name + ' & ' + student2.name}
+                primary={student1.realName + ' & ' + student2.realName}
               />
               <ListItemText
                 inset

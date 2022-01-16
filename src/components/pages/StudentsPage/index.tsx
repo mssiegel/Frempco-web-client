@@ -32,10 +32,11 @@ export default function StudentsPage({ classroomName }: StudentsPageProps) {
 
   useEffect(() => {
     if (socket) {
-      socket.on('chat start', ({ peersName }) => {
+      socket.on('chat start', ({ yourCharacter, peersCharacter }) => {
         setChat((chat) => ({
           ...chat,
-          peer: peersName,
+          you: yourCharacter,
+          peer: peersCharacter,
           startTime: currentTime(),
         }));
         setChatInSession(true);
