@@ -5,7 +5,7 @@ import { Send as SendIcon } from '@mui/icons-material';
 
 import sendMessagesCSS from './SendMessages.css';
 
-export default function SendMessages({}) {
+export default function SendMessages({ chat, setChat }) {
   function sendMessage(e) {
     e.preventDefault();
     console.log('sendMessages form submitted!!');
@@ -16,16 +16,19 @@ export default function SendMessages({}) {
       <form onSubmit={sendMessage}>
         <input
           css={sendMessagesCSS.characterName}
-          defaultValue='vampire'
+          value={chat.you}
           placeholder='Your character'
           maxLength={30}
+          onChange={(e) => setChat({ ...chat, you: e.target.value })}
         />
+
         <input
           css={sendMessagesCSS.message}
           defaultValue='you can??'
           placeholder='Say something'
           maxLength={75}
         />
+
         <Fab
           size='small'
           type='submit'

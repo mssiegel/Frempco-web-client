@@ -13,12 +13,12 @@ export default function Conversation({ chat }) {
       <Box css={conversationCSS.introText}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <span>
-            Hi <span css={conversationCSS.you}>{chat.you || 'you'}</span>
+            Hi <span css={conversationCSS.you}>{chat.initialChar}</span>
           </span>
           <span>{chat.startTime || '3:05pm'}</span>
         </Box>
         <span>You matched with </span>
-        <span css={conversationCSS.peer}>{chat.peer || 'unknown peer'}</span>
+        <span css={conversationCSS.peer}>{chat.peer}</span>
       </Box>
       {chat.conversation.map(([person, character, message], i) => {
         let fontCSS = {};
