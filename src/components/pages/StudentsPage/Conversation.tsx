@@ -7,7 +7,15 @@ import Filter from 'bad-words';
 import conversationCSS from './Conversation.css';
 
 export default function Conversation({ socket, chat, setChat, scrollDown }) {
-  const filter = new Filter();
+  function filterWords(words) {
+    const filter = new Filter();
+    try {
+      return filter.clean(words);
+      // the filter throws an error if the string only has non-letter characters
+    } catch (e) {
+      return words;
+    }
+  }
 
   useEffect(() => {
     if (socket) {
@@ -46,8 +54,8 @@ export default function Conversation({ socket, chat, setChat, scrollDown }) {
 
         return (
           <Typography key={i}>
-            <span css={fontCSS}>{filter.clean(character)}: </span>
-            <span>{filter.clean(message)}</span>
+            <span css={fontCSS}>{filterWords(character)}: </span>
+            <span>{filterWords(message)}</span>
           </Typography>
         );
       })}
