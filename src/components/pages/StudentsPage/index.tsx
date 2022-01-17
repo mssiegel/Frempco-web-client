@@ -1,12 +1,9 @@
 import { Box, Typography } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 
+import { ClassroomProps } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
 import Chatbox from './Chatbox';
-
-interface StudentsPageProps {
-  classroomName: string;
-}
 
 function currentTime() {
   return new Date().toLocaleString('en-US', {
@@ -15,7 +12,7 @@ function currentTime() {
   });
 }
 
-export default function StudentsPage({ classroomName }: StudentsPageProps) {
+export default function StudentsPage({ classroomName }: ClassroomProps) {
   const socket = useContext(SocketContext);
 
   const [chatInSession, setChatInSession] = useState(false);
@@ -24,12 +21,11 @@ export default function StudentsPage({ classroomName }: StudentsPageProps) {
     peer: '',
     initialChar: '',
     conversation: [
-      ['you', 'vampire', 'i need blood'],
-      ['peer', 'wizard', 'i will cast a spell to make some'],
+      // ['you', 'vampire', 'i need blood'],
+      // ['peer', 'wizard', 'i will cast a spell to make some'],
     ],
     startTime: '',
   });
-  const [realChat, setRealChat] = useState<string[]>([]);
 
   useEffect(() => {
     if (socket) {

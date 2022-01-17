@@ -1,12 +1,8 @@
 import Head from 'next/head';
 
-import { getAllClassroomNames } from '@utils/classrooms';
+import { getAllClassroomNames, ClassroomProps } from '@utils/classrooms';
 import Layout from '@components/shared/Layout';
 import StudentsPage from '@components/pages/StudentsPage';
-
-interface StudentClassroomProps {
-  classroomName: string;
-}
 
 export async function getStaticPaths() {
   const paths = getAllClassroomNames();
@@ -25,9 +21,7 @@ export async function getStaticProps({ params }) {
   };
 }
 
-export default function StudentClassroom({
-  classroomName,
-}: StudentClassroomProps) {
+export default function StudentClassroom({ classroomName }: ClassroomProps) {
   return (
     <Layout>
       <Head>

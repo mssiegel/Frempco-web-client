@@ -23,3 +23,7 @@ export function swap<T>(arr: Array<T>, i1: number, i2: number) {
 }
 
 export const sampleClassroomName = classrooms[0].classroomName;
+
+export interface ClassroomProps {
+  classroomName: string;
+}
