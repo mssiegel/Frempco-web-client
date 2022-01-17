@@ -10,15 +10,12 @@ import {
   ListSubheader,
   Typography,
 } from '@mui/material';
-import {
-  Chat as ChatIcon,
-  Power as PowerIcon,
-  PowerOff as PowerOffIcon,
-} from '@mui/icons-material';
+import { Chat as ChatIcon } from '@mui/icons-material';
 
 import { ClassroomProps, getRandom, swap } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
 import unpairedStudentsCSS from './UnpairedStudents.css';
+import ActivateButton from './ActivateButton';
 
 interface Student {
   socketId: string;
@@ -40,7 +37,6 @@ const CHARACTERS = [
 export default function TeachersPage({ classroomName }: ClassroomProps) {
   const socket = useContext(SocketContext);
 
-  const [isActiveClassroom, setIsActiveClassroom] = useState(false);
   const [unpairedStudents, setUnpairedStudents] = useState<Student[]>([]);
   const [pairedStudents, setPairedStudents] = useState<StudentPair[]>([]);
 
@@ -60,21 +56,6 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
       }
     };
   });
-
-  function activateClassroom() {
-    socket.emit('activate classroom', { classroomName });
-    setIsActiveClassroom(true);
-  }
-
-  function deactivateClassroom() {
-    const confirmation = window.prompt(
-      'Type YES to confirm you want to deactivate the classroom.',
-    );
-    if (confirmation?.toUpperCase() === 'YES') {
-      socket.emit('deactivate classroom', { classroomName });
-      setIsActiveClassroom(false);
-    }
-  }
 
   function pairStudents() {
     if (unpairedStudents.length < 2)
@@ -121,28 +102,8 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
       <Typography variant='h4' sx={{ color: 'white' }}>
         Your socket ID is {socket?.id ?? 'NO SOCKET FOUND'}
       </Typography>
-      {isActiveClassroom ? (
-        <Button
-          variant='contained'
-          size='small'
-          color='warning'
-          sx={{ my: 3 }}
-          startIcon={<PowerOffIcon />}
-          onClick={deactivateClassroom}
-        >
-          Deactivate classroom
-        </Button>
-      ) : (
-        <Button
-          variant='contained'
-          size='large'
-          sx={{ my: 3 }}
-          startIcon={<PowerIcon />}
-          onClick={activateClassroom}
-        >
-          Activate classroom
-        </Button>
-      )}
+
+      <ActivateButton socket={socket} classroomName={classroomName} />
 
       <List
         sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
