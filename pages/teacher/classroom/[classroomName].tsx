@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+
 import Head from 'next/head';
 import { useContext, useEffect, useState } from 'react';
 import {
@@ -15,9 +17,10 @@ import {
   PowerOff as PowerOffIcon,
 } from '@mui/icons-material';
 
-import { getAllClassroomNames, getRandom } from '@utils/classrooms';
+import { getAllClassroomNames, getRandom, swap } from '@utils/classrooms';
 import Layout from '@components/shared/Layout';
 import { SocketContext } from '@contexts/SocketContext';
+import unpairedStudentsCSS from './UnpairedStudents.css';
 
 interface Student {
   socketId: string;
@@ -107,7 +110,7 @@ export default function TeacherDashboard({ classroomName }) {
         student2.character = getRandom(characters);
       } while (student2.character === student1.character);
     }
-    setPairedStudents((pairedStudents) => [...pairedStudents, ...studentPairs]);
+    setPairedStudents((paired) => [...paired, ...studentPairs]);
     socket.emit('pair students', { studentPairs });
 
     // reset unpaired students
@@ -118,6 +121,15 @@ export default function TeacherDashboard({ classroomName }) {
 
   function displayChat() {
     console.log('display chat clicked');
+  }
+
+  function swapUnpairedStudent(studentI) {
+    // moves a student down in the list of unpaired students
+    const unpaired = [...unpairedStudents];
+    const endI = studentI + 1 === unpairedStudents.length;
+    swap(unpaired, studentI, endI ? 0 : studentI + 1);
+
+    setUnpairedStudents(unpaired);
   }
 
   return (
@@ -168,7 +180,15 @@ export default function TeacherDashboard({ classroomName }) {
           {unpairedStudents.map((student, i) => (
             <div key={student.realName + student.socketId}>
               {i % 2 === 0 && <Divider />}
-              <ListItemText inset primary={student.realName} />
+              <ListItemText
+                inset
+                primary={student.realName}
+                css={
+                  unpairedStudents.length > 1 &&
+                  unpairedStudentsCSS.unpairedStudent
+                }
+                onClick={() => swapUnpairedStudent(i)}
+              />
             </div>
           ))}
           <Box sx={{ display: 'flex', justifyContent: 'center' }}>
