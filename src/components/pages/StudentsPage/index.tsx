@@ -18,7 +18,7 @@ function currentTime() {
 export default function StudentsPage({ classroomName }: StudentsPageProps) {
   const socket = useContext(SocketContext);
 
-  const [chatInSession, setChatInSession] = useState(true); //false);
+  const [chatInSession, setChatInSession] = useState(false);
   const [chat, setChat] = useState({
     you: '',
     peer: '',
@@ -58,9 +58,11 @@ export default function StudentsPage({ classroomName }: StudentsPageProps) {
         Hello student! Welcome to your classroom named {classroomName}! Your
         socket ID is {socket?.id ?? 'NO SOCKET FOUND'}
       </Typography>
-      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        {chatInSession && <Chatbox chat={chat} setChat={setChat} />}
-      </Box>
+      {chatInSession && (
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Chatbox socket={socket} chat={chat} setChat={setChat} />
+        </Box>
+      )}
     </main>
   );
 }

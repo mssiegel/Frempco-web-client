@@ -7,6 +7,7 @@ import { useState } from 'react';
 import sendMessagesCSS from './SendMessages.css';
 
 export default function SendMessages({
+  socket,
   chat,
   setChat,
   scrollDown,
@@ -18,12 +19,18 @@ export default function SendMessages({
     e.preventDefault();
     console.log('sendMessages form submitted!!');
     if (chat.you && message) {
-      setChat({
+      setChat((chat) => ({
         ...chat,
         conversation: [...chat.conversation, ['you', chat.you, message]],
-      });
+      }));
       setMessage('');
       scrollDown();
+      if (socket) {
+        socket.emit('chat message', {
+          character: chat.you,
+          message,
+        });
+      }
     }
     messageInput.current.focus();
   }
@@ -46,6 +53,7 @@ export default function SendMessages({
           maxLength={75}
           onChange={(e) => setMessage(e.target.value)}
           ref={messageInput}
+          autoFocus
         />
 
         <Fab

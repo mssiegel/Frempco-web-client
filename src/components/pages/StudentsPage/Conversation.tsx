@@ -1,12 +1,31 @@
 /** @jsxImportSource @emotion/react */
 
 import { Box, Typography } from '@mui/material';
+import { useEffect } from 'react';
 import Filter from 'bad-words';
 
 import conversationCSS from './Conversation.css';
 
-export default function Conversation({ chat }) {
+export default function Conversation({ socket, chat, setChat, scrollDown }) {
   const filter = new Filter();
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('chat message', ({ character, message }) => {
+        setChat((chat) => ({
+          ...chat,
+          conversation: [...chat.conversation, ['peer', character, message]],
+        }));
+        scrollDown();
+      });
+    }
+
+    return () => {
+      if (socket) {
+        socket.off('chat message');
+      }
+    };
+  }, []);
 
   return (
     <Box>
