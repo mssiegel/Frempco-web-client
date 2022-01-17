@@ -46,7 +46,7 @@ export default function Conversation({ socket, chat, setChat, scrollDown }) {
 
         return (
           <Typography key={i}>
-            <span css={fontCSS}>{character}: </span>
+            <span css={fontCSS}>{filter.clean(character)}: </span>
             <span>{filter.clean(message)}</span>
           </Typography>
         );
