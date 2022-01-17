@@ -95,7 +95,7 @@ export default function TeacherDashboard({ classroomName }) {
   function pairStudents() {
     if (unpairedStudents.length < 2)
       return window.alert('Pairing requires at least 2 students.');
-    // pair up the students
+    // pair up any unpaired students
     const studentPairs = [];
     unpairedStudents.forEach((student, i) => {
       if (i % 2 !== 0) studentPairs.push([unpairedStudents[i - 1], student]);
@@ -107,7 +107,7 @@ export default function TeacherDashboard({ classroomName }) {
         student2.character = getRandom(characters);
       } while (student2.character === student1.character);
     }
-    setPairedStudents(studentPairs);
+    setPairedStudents((pairedStudents) => [...pairedStudents, ...studentPairs]);
     socket.emit('pair students', { studentPairs });
 
     // reset unpaired students
