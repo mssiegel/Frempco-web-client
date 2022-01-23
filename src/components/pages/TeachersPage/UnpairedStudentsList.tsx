@@ -37,9 +37,7 @@ export default function UnpairedStudentsList({ socket, setPairedStudents }) {
     }
 
     return () => {
-      if (socket) {
-        socket.off('new student joined');
-      }
+      if (socket) socket.off('new student joined');
     };
   });
 

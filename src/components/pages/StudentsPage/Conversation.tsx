@@ -29,9 +29,7 @@ export default function Conversation({ socket, chat, setChat, scrollDown }) {
     }
 
     return () => {
-      if (socket) {
-        socket.off('chat message');
-      }
+      if (socket) socket.off('chat message');
     };
   }, []);
 
