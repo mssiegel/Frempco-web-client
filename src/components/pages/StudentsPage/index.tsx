@@ -14,6 +14,7 @@ function currentTime() {
 
 export default function StudentsPage({ classroomName }: ClassroomProps) {
   const socket = useContext(SocketContext);
+  console.log('socketId:', socket?.id ?? 'No socket found');
 
   const [chatInSession, setChatInSession] = useState(false);
   const [chat, setChat] = useState({
@@ -50,9 +51,8 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
 
   return (
     <main>
-      <Typography variant='h3' sx={{ color: 'white', mb: 4 }}>
-        Hello student! Welcome to your classroom named {classroomName}! Your
-        socket ID is {socket?.id ?? 'NO SOCKET FOUND'}
+      <Typography variant='h4' sx={{ color: 'white', mb: 4 }}>
+        Hello student! Welcome to your classroom: {classroomName}
       </Typography>
       {chatInSession && (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>

@@ -18,6 +18,7 @@ type StudentPair = [Student, Student];
 
 export default function TeachersPage({ classroomName }: ClassroomProps) {
   const socket = useContext(SocketContext);
+  console.log('socketId:', socket?.id ?? 'No socket found');
 
   const [pairedStudents, setPairedStudents] = useState<StudentPair[]>([]);
 
@@ -29,9 +30,6 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     <main>
       <Typography variant='h4' sx={{ color: 'white' }}>
         Hello teacher! Welcome to your classroom: {classroomName}
-      </Typography>
-      <Typography variant='h4' sx={{ color: 'white' }}>
-        Your socket ID is {socket?.id ?? 'NO SOCKET FOUND'}
       </Typography>
 
       <ActivateButton socket={socket} classroomName={classroomName} />
