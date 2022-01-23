@@ -2,6 +2,7 @@ import { useContext, useState } from 'react';
 import {
   Button,
   Divider,
+  Grid,
   List,
   ListItemText,
   ListSubheader,
@@ -35,10 +36,20 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
 
       <ActivateButton socket={socket} classroomName={classroomName} />
 
-      <UnpairedStudentsList
-        socket={socket}
-        setPairedStudents={setPairedStudents}
-      />
+      <Grid container spacing={2}>
+        <Grid item xs={12} md={5}>
+          <UnpairedStudentsList
+            socket={socket}
+            setPairedStudents={setPairedStudents}
+          />
+        </Grid>
+
+        <Grid item xs={12} md={7}>
+          <Typography variant='h4'>
+            Displayed student chatbox will go here!
+          </Typography>
+        </Grid>
+      </Grid>
 
       <List
         sx={{
