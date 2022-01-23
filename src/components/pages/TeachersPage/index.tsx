@@ -1,4 +1,4 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import {
   Button,
   Divider,
@@ -16,11 +16,36 @@ import ActivateButton from './ActivateButton';
 
 type StudentPair = [Student, Student];
 
+interface StudentChat {
+  chatId: string;
+  studentPair: StudentPair;
+}
+
 export default function TeachersPage({ classroomName }: ClassroomProps) {
   const socket = useContext(SocketContext);
   console.log('socketId:', socket?.id ?? 'No socket found');
 
-  const [pairedStudents, setPairedStudents] = useState<StudentPair[]>([]);
+  const [studentChats, setStudentChats] = useState<StudentChat[]>([
+    // {
+    //   chatId: 'as343da11sf#as31afdsf',
+    //   studentPair: [
+    //     { socketId: 'as343da11sf', realName: 'Sam' },
+    //     { socketId: 'as31afdsf', realName: 'Rachel' },
+    //   ],
+    // },
+  ]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('chat started - two students', ({ chatId, studentPair }) => {
+        setStudentChats((chats) => [...chats, { chatId, studentPair }]);
+      });
+    }
+
+    return () => {
+      if (socket) socket.off('chat started - two students');
+    };
+  });
 
   function displayChat() {
     console.log('display chat clicked');
@@ -36,10 +61,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
 
       <Grid container spacing={2}>
         <Grid item xs={12} md={5}>
-          <UnpairedStudentsList
-            socket={socket}
-            setPairedStudents={setPairedStudents}
-          />
+          <UnpairedStudentsList socket={socket} />
         </Grid>
 
         <Grid item xs={12} md={7}>
@@ -58,12 +80,12 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
         }}
         subheader={
           <ListSubheader component='div'>
-            Total paired students: {pairedStudents.length * 2}
+            Total paired students: {studentChats.length * 2}
           </ListSubheader>
         }
       >
-        {pairedStudents.map(([student1, student2]) => (
-          <div key={student1.socketId + student2.socketId}>
+        {studentChats.map(({ chatId, studentPair: [student1, student2] }) => (
+          <div key={chatId}>
             <Divider />
             <ListItemText
               inset

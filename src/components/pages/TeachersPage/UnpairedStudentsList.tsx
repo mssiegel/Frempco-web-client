@@ -23,7 +23,7 @@ const CHARACTERS = [
   'Party planner',
 ];
 
-export default function UnpairedStudentsList({ socket, setPairedStudents }) {
+export default function UnpairedStudentsList({ socket }) {
   const [unpairedStudents, setUnpairedStudents] = useState<Student[]>([]);
 
   useEffect(() => {
@@ -56,7 +56,6 @@ export default function UnpairedStudentsList({ socket, setPairedStudents }) {
         student2.character = getRandom(CHARACTERS);
       } while (student2.character === student1.character);
     }
-    setPairedStudents((paired) => [...paired, ...studentPairs]);
     socket.emit('pair students', { studentPairs });
 
     // reset unpaired students
