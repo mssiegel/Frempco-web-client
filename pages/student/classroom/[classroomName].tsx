@@ -21,11 +21,11 @@ export async function getStaticProps({ params }) {
   };
 }
 
-export default function StudentClassroom({ classroomName }: ClassroomProps) {
+export default function StudentPage({ classroomName }: ClassroomProps) {
   return (
     <Layout>
       <Head>
-        <title>Frempco - Student classroom</title>
+        <title>Frempco - Student page</title>
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
