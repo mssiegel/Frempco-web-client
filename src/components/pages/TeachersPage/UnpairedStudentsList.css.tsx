@@ -1,12 +1,12 @@
 import { css } from '@emotion/react';
 
-const unpairedStudent = css`
+const studentName = css`
   :hover {
     background: #eee;
     cursor: pointer;
   }
 `;
 
-const unpairedStudentsCSS = { unpairedStudent };
+const unpairedStudentsCSS = { studentName };
 
 export default unpairedStudentsCSS;

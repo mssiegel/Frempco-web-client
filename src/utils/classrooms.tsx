@@ -27,3 +27,9 @@ export const sampleClassroomName = classrooms[0].classroomName;
 export interface ClassroomProps {
   classroomName: string;
 }
+
+export interface Student {
+  socketId: string;
+  realName: string;
+  character?: string;
+}
