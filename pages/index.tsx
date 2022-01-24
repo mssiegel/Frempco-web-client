@@ -93,20 +93,23 @@ export default function Home() {
             Teachers page
           </Button>
 
-          <Typography variant='h5' sx={{ m: 5, mt: 10, color: 'gray' }}>
-            Below link shortcuts are for development purposes only and will be
-            deleted prior to making this website live and ready for teachers
-          </Typography>
-          <Typography variant='h5' sx={{ m: 5 }}>
-            <Link href={`/teacher/classroom/${sampleClassroomName}`}>
-              Visit Teachers admin page
-            </Link>
-          </Typography>
-          <Typography variant='h5' sx={{ m: 5 }}>
-            <Link href={`/student/classroom/${sampleClassroomName}`}>
-              Visit Students classroom page
-            </Link>
-          </Typography>
+          {process.env.NEXT_PUBLIC_NODE_ENV === 'development' && (
+            <>
+              <Typography variant='h5' sx={{ m: 3, mt: 10, color: 'gray' }}>
+                These link shortcuts only appear in the development environment:
+              </Typography>
+              <Typography variant='h5' sx={{ m: 3 }}>
+                <Link href={`/teacher/classroom/${sampleClassroomName}`}>
+                  Visit Teachers admin page
+                </Link>
+              </Typography>
+              <Typography variant='h5' sx={{ m: 3 }}>
+                <Link href={`/student/classroom/${sampleClassroomName}`}>
+                  Visit Students classroom page
+                </Link>
+              </Typography>
+            </>
+          )}
         </Box>
       </main>
     </Layout>
