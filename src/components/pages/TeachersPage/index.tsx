@@ -25,12 +25,13 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
   const socket = useContext(SocketContext);
   console.log('socketId:', socket?.id ?? 'No socket found');
 
+  const [displayedChat, setDisplayedChat] = useState('');
   const [studentChats, setStudentChats] = useState<StudentChat[]>([
     // {
     //   chatId: 'as343da11sf#as31afdsf',
     //   studentPair: [
-    //     { socketId: 'as343da11sf', realName: 'Sam' },
-    //     { socketId: 'as31afdsf', realName: 'Rachel' },
+    //     { socketId: 'as343da11sf', realName: 'Sam', character: 'pirate' },
+    //     { socketId: 'as31afdsf', realName: 'Rachel', character: 'dentist' },
     //   ],
     // },
   ]);
@@ -47,8 +48,23 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     };
   });
 
-  function displayChat() {
+  function showDisplayedChat() {
     console.log('display chat clicked');
+    const chat = studentChats.find((chat) => chat.chatId === displayedChat);
+    if (!chat) return null;
+
+    const [student1, student2] = chat.studentPair;
+
+    // TODO NEXT: Turn this into a real chatbox!!
+    return (
+      <div>
+        <p style={{ color: 'white' }}>
+          Student 1: {student1.realName} ({student1.character})
+          <br />
+          Student 2: {student2.realName} ({student2.character})
+        </p>
+      </div>
+    );
   }
 
   return (
@@ -67,6 +83,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
         <Grid item xs={12} md={7}>
           <Typography variant='h4'>
             Displayed student chatbox will go here!
+            {showDisplayedChat()}
           </Typography>
         </Grid>
       </Grid>
@@ -94,7 +111,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
             <ListItemText
               inset
               primary={
-                <Button size='small' onClick={displayChat}>
+                <Button size='small' onClick={() => setDisplayedChat(chatId)}>
                   Display chat
                 </Button>
               }
