@@ -1,16 +1,9 @@
 import { Box, Typography } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 
-import { ClassroomProps } from '@utils/classrooms';
+import { ClassroomProps, currentTime } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
 import Chatbox from './Chatbox';
-
-function currentTime() {
-  return new Date().toLocaleString('en-US', {
-    hour: 'numeric',
-    minute: 'numeric',
-  });
-}
 
 export default function StudentsPage({ classroomName }: ClassroomProps) {
   const socket = useContext(SocketContext);
@@ -31,13 +24,13 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
   useEffect(() => {
     if (socket) {
       socket.on('chat start', ({ yourCharacter, peersCharacter }) => {
-        setChat((chat) => ({
-          ...chat,
+        setChat({
           you: yourCharacter,
           peer: peersCharacter,
           initialChar: yourCharacter,
+          conversation: [],
           startTime: currentTime(),
-        }));
+        });
         setChatInSession(true);
       });
     }

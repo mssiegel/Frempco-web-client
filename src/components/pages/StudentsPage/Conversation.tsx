@@ -2,21 +2,11 @@
 
 import { Box, Typography } from '@mui/material';
 import { useEffect } from 'react';
-import Filter from 'bad-words';
 
 import conversationCSS from './Conversation.css';
+import { filterWords } from '@utils/classrooms';
 
 export default function Conversation({ socket, chat, setChat, scrollDown }) {
-  function filterWords(words) {
-    const filter = new Filter();
-    try {
-      return filter.clean(words);
-      // the filter throws an error if the string only has non-letter characters
-    } catch (e) {
-      return words;
-    }
-  }
-
   useEffect(() => {
     if (socket) {
       socket.on('chat message', ({ character, message }) => {
@@ -40,7 +30,7 @@ export default function Conversation({ socket, chat, setChat, scrollDown }) {
           <span>
             Hi <span css={conversationCSS.you}>{chat.initialChar}</span>
           </span>
-          <span>{chat.startTime || '3:05pm'}</span>
+          <span>{chat.startTime}</span>
         </Box>
         <span>You matched with </span>
         <span css={conversationCSS.peer}>{chat.peer}</span>
