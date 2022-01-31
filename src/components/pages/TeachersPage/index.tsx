@@ -9,16 +9,21 @@ import {
   Typography,
 } from '@mui/material';
 
-import { ClassroomProps, Student } from '@utils/classrooms';
+import { ClassroomProps, Student, currentTime } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
+import Chatbox from './Chatbox';
 import UnpairedStudentsList from './UnpairedStudentsList';
 import ActivateButton from './ActivateButton';
 
 type StudentPair = [Student, Student];
 
+type ChatMessage = ['student1' | 'student2', string, string];
+
 interface StudentChat {
   chatId: string;
   studentPair: StudentPair;
+  conversation: ChatMessage[];
+  startTime: string;
 }
 
 export default function TeachersPage({ classroomName }: ClassroomProps) {
@@ -33,13 +38,21 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     //     { socketId: 'as343da11sf', realName: 'Sam', character: 'pirate' },
     //     { socketId: 'as31afdsf', realName: 'Rachel', character: 'dentist' },
     //   ],
+    //   conversation: [
+    //     ['student1', 'vampire', 'i need blood'],
+    //     ['student2', 'wizard', 'i will cast a spell to make some'],
+    //   ],
+    //   startTime: '',
     // },
   ]);
 
   useEffect(() => {
     if (socket) {
       socket.on('chat started - two students', ({ chatId, studentPair }) => {
-        setStudentChats((chats) => [...chats, { chatId, studentPair }]);
+        setStudentChats((chats) => [
+          ...chats,
+          { chatId, studentPair, conversation: [], startTime: currentTime() },
+        ]);
       });
     }
 
@@ -49,22 +62,10 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
   });
 
   function showDisplayedChat() {
-    console.log('display chat clicked');
     const chat = studentChats.find((chat) => chat.chatId === displayedChat);
     if (!chat) return null;
 
-    const [student1, student2] = chat.studentPair;
-
-    // TODO NEXT: Turn this into a real chatbox!!
-    return (
-      <div>
-        <p style={{ color: 'white' }}>
-          Student 1: {student1.realName} ({student1.character})
-          <br />
-          Student 2: {student2.realName} ({student2.character})
-        </p>
-      </div>
-    );
+    return <Chatbox chat={chat} />;
   }
 
   return (
@@ -81,10 +82,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
         </Grid>
 
         <Grid item xs={12} md={7}>
-          <Typography variant='h4'>
-            Displayed student chatbox will go here!
-            {showDisplayedChat()}
-          </Typography>
+          {showDisplayedChat()}
         </Grid>
       </Grid>
 

@@ -1,3 +1,5 @@
+import Filter from 'bad-words';
+
 import classrooms from 'data/classrooms.json';
 
 export function getAllClassroomNames() {
@@ -20,6 +22,23 @@ export function swap<T>(arr: Array<T>, i1: number, i2: number) {
   const temp = arr[i2];
   arr[i2] = arr[i1];
   arr[i1] = temp;
+}
+
+export function currentTime() {
+  return new Date().toLocaleString('en-US', {
+    hour: 'numeric',
+    minute: 'numeric',
+  });
+}
+
+export function filterWords(words) {
+  const filter = new Filter();
+  try {
+    return filter.clean(words);
+    // the filter throws an error if the string only has non-letter characters
+  } catch (e) {
+    return words;
+  }
 }
 
 export const sampleClassroomName = classrooms[0].classroomName;
