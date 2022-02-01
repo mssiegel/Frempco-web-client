@@ -1,18 +1,11 @@
 import { useContext, useEffect, useState } from 'react';
-import {
-  Button,
-  Divider,
-  Grid,
-  List,
-  ListItemText,
-  ListSubheader,
-  Typography,
-} from '@mui/material';
+import { Grid, Typography } from '@mui/material';
 
 import { ClassroomProps, Student, currentTime } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
 import Chatbox from './Chatbox';
 import UnpairedStudentsList from './UnpairedStudentsList';
+import PairedStudentsList from './PairedStudentsList';
 import ActivateButton from './ActivateButton';
 
 type StudentPair = [Student, Student];
@@ -104,38 +97,10 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
         </Grid>
       </Grid>
 
-      <List
-        sx={{
-          width: '100%',
-          maxWidth: 360,
-          mt: 5,
-          bgcolor: 'background.paper',
-        }}
-        subheader={
-          <ListSubheader component='div'>
-            Total paired students: {studentChats.length * 2}
-          </ListSubheader>
-        }
-      >
-        {studentChats.map(({ chatId, studentPair: [student1, student2] }) => (
-          <div key={chatId}>
-            <Divider />
-            <ListItemText
-              inset
-              primary={student1.realName + ' & ' + student2.realName}
-            />
-            <ListItemText
-              inset
-              primary={
-                <Button size='small' onClick={() => setDisplayedChat(chatId)}>
-                  Display chat
-                </Button>
-              }
-            />
-          </div>
-        ))}
-      </List>
-      <br />
+      <PairedStudentsList
+        studentChats={studentChats}
+        setDisplayedChat={setDisplayedChat}
+      />
     </main>
   );
 }
