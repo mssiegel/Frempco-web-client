@@ -7,7 +7,7 @@ import Chatbox from './Chatbox';
 
 export default function StudentsPage({ classroomName }: ClassroomProps) {
   const socket = useContext(SocketContext);
-  console.log('socketId:', socket?.id ?? 'No socket found');
+  console.log('Student socketId:', socket?.id ?? 'No socket found');
 
   const [chatInSession, setChatInSession] = useState(false);
   const [chat, setChat] = useState({
