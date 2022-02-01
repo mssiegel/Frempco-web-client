@@ -28,7 +28,7 @@ interface StudentChat {
 
 export default function TeachersPage({ classroomName }: ClassroomProps) {
   const socket = useContext(SocketContext);
-  console.log('socketId:', socket?.id ?? 'No socket found');
+  console.log('Teacher socketId:', socket?.id ?? 'No socket found');
 
   const [displayedChat, setDisplayedChat] = useState('');
   const [studentChats, setStudentChats] = useState<StudentChat[]>([
@@ -54,10 +54,28 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           { chatId, studentPair, conversation: [], startTime: currentTime() },
         ]);
       });
+
+      socket.on(
+        'student chat message',
+        ({ character, message, socketId, chatId }) => {
+          const chats = [...studentChats];
+          const chat = chats.find((chat) => chat.chatId === chatId);
+          const student =
+            chat.studentPair[0].socketId === socketId ? 'student1' : 'student2';
+          chat.conversation = [
+            ...chat.conversation,
+            [student, character, message],
+          ];
+          setStudentChats(chats);
+        },
+      );
     }
 
     return () => {
-      if (socket) socket.off('chat started - two students');
+      if (socket) {
+        socket.off('chat started - two students');
+        socket.off('student chat message');
+      }
     };
   });
 
