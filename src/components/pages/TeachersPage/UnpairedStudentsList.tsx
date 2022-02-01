@@ -74,41 +74,37 @@ export default function UnpairedStudentsList({ socket }) {
   }
 
   return (
-    <main>
-      <List
-        sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
-        subheader={
-          <ListSubheader component='div'>
-            Total unpaired students: {unpairedStudents.length}
-          </ListSubheader>
-        }
-      >
-        {unpairedStudents.map((student, i) => (
-          <div key={student.realName + student.socketId}>
-            {i % 2 === 0 && <Divider />}
-            <ListItemText
-              inset
-              primary={student.realName}
-              css={
-                unpairedStudents.length > 1 && unpairedStudentsCSS.studentName
-              }
-              onClick={() => swapUnpairedStudent(i)}
-            />
-          </div>
-        ))}
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Button
-            variant='contained'
-            size='large'
-            color='success'
-            sx={{ mt: 2 }}
-            startIcon={<ChatIcon />}
-            onClick={pairStudents}
-          >
-            Pair up students
-          </Button>
-        </Box>
-      </List>
-    </main>
+    <List
+      sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+      subheader={
+        <ListSubheader>
+          Total unpaired students: {unpairedStudents.length}
+        </ListSubheader>
+      }
+    >
+      {unpairedStudents.map((student, i) => (
+        <div key={student.realName + student.socketId}>
+          {i % 2 === 0 && <Divider />}
+          <ListItemText
+            inset
+            primary={student.realName}
+            css={unpairedStudents.length > 1 && unpairedStudentsCSS.studentName}
+            onClick={() => swapUnpairedStudent(i)}
+          />
+        </div>
+      ))}
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Button
+          variant='contained'
+          size='large'
+          color='success'
+          sx={{ mt: 2 }}
+          startIcon={<ChatIcon />}
+          onClick={pairStudents}
+        >
+          Pair up students
+        </Button>
+      </Box>
+    </List>
   );
 }
