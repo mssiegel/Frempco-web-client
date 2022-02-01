@@ -108,7 +108,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
         sx={{
           width: '100%',
           maxWidth: 360,
-          my: 5,
+          mt: 5,
           bgcolor: 'background.paper',
         }}
         subheader={
@@ -135,6 +135,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           </div>
         ))}
       </List>
+      <br />
     </main>
   );
 }
