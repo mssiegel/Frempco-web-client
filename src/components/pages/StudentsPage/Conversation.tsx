@@ -23,6 +23,10 @@ export default function Conversation({ socket, chat, setChat, scrollDown }) {
     };
   }, []);
 
+  useEffect(() => {
+    scrollDown();
+  }, [chat.conversation, peerIsTyping]);
+
   return (
     <Box>
       <Box css={conversationCSS.introText}>

@@ -35,6 +35,10 @@ export default function SendMessages({
     messageInput.current.focus();
   }
 
+  useEffect(() => {
+    scrollDown();
+  }, [chat.conversation]);
+
   return (
     <Box>
       <form onSubmit={sendMessage}>
