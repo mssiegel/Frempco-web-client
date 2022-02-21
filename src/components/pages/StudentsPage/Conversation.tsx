@@ -31,7 +31,7 @@ export default function Conversation({
 
   useEffect(() => {
     scrollDown();
-  }, [chat.conversation, peerIsTyping]);
+  }, [chat.conversation]);
 
   return (
     <Box>
