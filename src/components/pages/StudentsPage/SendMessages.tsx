@@ -2,7 +2,7 @@
 
 import { Box, Fab } from '@mui/material';
 import { Send as SendIcon } from '@mui/icons-material';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import sendMessagesCSS from './SendMessages.css';
 
