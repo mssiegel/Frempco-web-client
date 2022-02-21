@@ -26,7 +26,14 @@ export default function SendMessages({ socket, chat, setChat, scrollDown }) {
         });
       }
     }
+  }
 
+  function sendUserIsTyping(e) {
+    setMessage(e.target.value);
+    socket.emit('student typing', {
+      character: chat.you,
+      message,
+    });
   }
 
   useEffect(() => {
@@ -49,7 +56,7 @@ export default function SendMessages({ socket, chat, setChat, scrollDown }) {
           value={message}
           placeholder='Say something'
           maxLength={75}
-          onChange={(e) => setMessage(e.target.value)}
+          onChange={sendUserIsTyping}
           autoFocus
         />
 
