@@ -6,13 +6,7 @@ import { useState, useEffect } from 'react';
 
 import sendMessagesCSS from './SendMessages.css';
 
-export default function SendMessages({
-  socket,
-  chat,
-  setChat,
-  scrollDown,
-  messageInput,
-}) {
+export default function SendMessages({ socket, chat, setChat, scrollDown }) {
   const [message, setMessage] = useState('');
 
   function sendMessage(e) {
@@ -24,7 +18,7 @@ export default function SendMessages({
         conversation: [...chat.conversation, ['you', chat.you, message]],
       }));
       setMessage('');
-      scrollDown();
+
       if (socket) {
         socket.emit('chat message', {
           character: chat.you,
@@ -32,7 +26,7 @@ export default function SendMessages({
         });
       }
     }
-    messageInput.current.focus();
+
   }
 
   useEffect(() => {
@@ -56,7 +50,6 @@ export default function SendMessages({
           placeholder='Say something'
           maxLength={75}
           onChange={(e) => setMessage(e.target.value)}
-          ref={messageInput}
           autoFocus
         />
 
