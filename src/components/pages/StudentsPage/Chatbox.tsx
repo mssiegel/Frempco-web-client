@@ -8,11 +8,11 @@ import Conversation from './Conversation';
 import SendMessages from './SendMessages';
 
 export default function Chatbox({ socket, chat, setChat }) {
-  const messageInput = useRef(null);
+  const lastMessage = useRef(null);
 
   function scrollDown() {
-    if (messageInput.current)
-      messageInput.current.scrollIntoView({ behavior: 'smooth' });
+    if (lastMessage.current)
+      lastMessage.current.scrollIntoView({ behavior: 'smooth' });
   }
 
   return (
@@ -23,6 +23,7 @@ export default function Chatbox({ socket, chat, setChat }) {
           chat={chat}
           setChat={setChat}
           scrollDown={scrollDown}
+          lastMessage={lastMessage}
         />
       </Box>
       <Box css={chatboxCSS.chatboxBottom}>
@@ -31,7 +32,6 @@ export default function Chatbox({ socket, chat, setChat }) {
           chat={chat}
           setChat={setChat}
           scrollDown={scrollDown}
-          messageInput={messageInput}
         />
       </Box>
     </Box>

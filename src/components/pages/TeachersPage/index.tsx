@@ -90,17 +90,16 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
       <Grid container spacing={2}>
         <Grid item xs={12} md={5}>
           <UnpairedStudentsList socket={socket} />
+          <PairedStudentsList
+            studentChats={studentChats}
+            setDisplayedChat={setDisplayedChat}
+          />
         </Grid>
 
         <Grid item xs={12} md={7}>
           {showDisplayedChat()}
         </Grid>
       </Grid>
-
-      <PairedStudentsList
-        studentChats={studentChats}
-        setDisplayedChat={setDisplayedChat}
-      />
     </main>
   );
 }

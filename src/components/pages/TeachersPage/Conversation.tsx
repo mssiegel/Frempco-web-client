@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */
+import { useRef, useEffect } from 'react';
 
 import { Box, Typography } from '@mui/material';
 
@@ -7,6 +8,12 @@ import { filterWords } from '@utils/classrooms';
 
 export default function Conversation({ chat }) {
   const [student1, student2] = chat.studentPair;
+  const lastMessage = useRef(null);
+
+  useEffect(() => {
+    if (lastMessage.current)
+      lastMessage.current.scrollIntoView({ behavior: 'smooth' });
+  }, [chat.conversation]);
 
   return (
     <Box>
@@ -35,6 +42,8 @@ export default function Conversation({ chat }) {
           </Typography>
         );
       })}
+
+      <span ref={lastMessage} />
     </Box>
   );
 }
