@@ -34,10 +34,41 @@ export default function UnpairedStudentsList({ socket }) {
         // For development coding the students must be active on a different browser tab than the teacher.
         setUnpairedStudents((unpaired) => [...unpaired, student]);
       });
+
+      socket.on('chat ended - two students', (chatEnded) => {
+        const student1 = chatEnded.student1;
+        const student2 = chatEnded.student2;
+        setUnpairedStudents((unpaired) => [...unpaired, student1, student2]);
+      });
+
+      socket.on('student left', (student) => {
+        setUnpairedStudents((unpaired) => {
+          const studentIndex = unpaired.findIndex(
+            (s) => s.socketId === student.socketId,
+          );
+          if (studentIndex === -1) {
+            console.error(
+              'Student Not Found!',
+              unpaired,
+              student,
+              studentIndex,
+            );
+            return unpaired;
+          }
+          console.log(unpaired, studentIndex);
+          const newSet = [...unpaired];
+          newSet.splice(studentIndex, 1);
+          return newSet;
+        });
+      });
     }
 
     return () => {
-      if (socket) socket.off('new student joined');
+      if (socket) {
+        socket.off('new student joined');
+        socket.off('chat ended - two students');
+        socket.off('student left');
+      }
     };
   });
 
