@@ -6,7 +6,13 @@ import { useEffect } from 'react';
 import conversationCSS from './Conversation.css';
 import { filterWords } from '@utils/classrooms';
 
-export default function Conversation({ socket, chat, setChat, scrollDown }) {
+export default function Conversation({
+  socket,
+  chat,
+  setChat,
+  scrollDown,
+  lastMessage,
+}) {
   useEffect(() => {
     if (socket) {
       socket.on('chat message', ({ character, message }) => {
