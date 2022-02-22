@@ -42,6 +42,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
   useEffect(() => {
     if (socket) {
       socket.on('chat started - two students', ({ chatId, studentPair }) => {
+        if (studentChats.length === 0) setDisplayedChat(chatId);
         setStudentChats((chats) => [
           ...chats,
           { chatId, studentPair, conversation: [], startTime: currentTime() },
