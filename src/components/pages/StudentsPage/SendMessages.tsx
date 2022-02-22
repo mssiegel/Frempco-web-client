@@ -34,6 +34,7 @@ export default function SendMessages({ socket, chat, setChat, scrollDown }) {
         }, 3000);
         setPeerIsTyping(true);
         setPeerName(character);
+      });
     }
 
     return () => {
@@ -81,7 +82,7 @@ export default function SendMessages({ socket, chat, setChat, scrollDown }) {
         &nbsp;
         {peerIsTyping && <span>{filterWords(peerName)} is typing... </span>}
       </Typography>
-      
+
       {!peerHasLeft && (
         <form onSubmit={sendMessage}>
           <input
@@ -91,7 +92,7 @@ export default function SendMessages({ socket, chat, setChat, scrollDown }) {
             maxLength={30}
             onChange={(e) => setChat({ ...chat, you: e.target.value })}
           />
-          
+
           <input
             css={sendMessagesCSS.message}
             value={message}
