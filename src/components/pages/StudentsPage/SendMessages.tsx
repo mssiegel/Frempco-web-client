@@ -7,7 +7,7 @@ import { filterWords } from '@utils/classrooms';
 import sendMessagesCSS from './SendMessages.css';
 
 let peerTypingTimer = null;
-export default function SendMessages({ socket, chat, setChat, scrollDown }) {
+export default function SendMessages({ socket, chat, setChat }) {
   const [message, setMessage] = useState('');
   const [peerIsTyping, setPeerIsTyping] = useState(false);
   const [peerName, setPeerName] = useState('');
@@ -59,10 +59,6 @@ export default function SendMessages({ socket, chat, setChat, scrollDown }) {
       message,
     });
   }
-
-  useEffect(() => {
-    scrollDown();
-  }, [chat.conversation]);
 
   return (
     <Box>

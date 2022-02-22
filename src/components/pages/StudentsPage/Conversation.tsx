@@ -1,18 +1,14 @@
 /** @jsxImportSource @emotion/react */
 
 import { Box, Typography } from '@mui/material';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import conversationCSS from './Conversation.css';
 import { filterWords } from '@utils/classrooms';
+import { scrollDown } from '@utils/classrooms';
 
-export default function Conversation({
-  socket,
-  chat,
-  setChat,
-  scrollDown,
-  lastMessage,
-}) {
+export default function Conversation({ socket, chat, setChat }) {
+  const lastMessage = useRef(null);
   useEffect(() => {
     if (socket) {
       socket.on('chat message', ({ character, message }) => {
@@ -29,7 +25,7 @@ export default function Conversation({
   }, []);
 
   useEffect(() => {
-    scrollDown();
+    scrollDown(lastMessage);
   }, [chat.conversation]);
 
   return (
