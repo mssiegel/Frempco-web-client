@@ -16,10 +16,15 @@ const peer = css`
   color: red;
 `;
 
+const msg = css`
+  word-break: break-word;
+`;
+
 const conversationCSS = {
   introText,
   peer,
   you,
+  msg,
 };
 
 export default conversationCSS;

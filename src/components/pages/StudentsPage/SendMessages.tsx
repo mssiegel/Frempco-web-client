@@ -1,13 +1,37 @@
 /** @jsxImportSource @emotion/react */
 
-import { Box, Fab } from '@mui/material';
+import { Box, Fab, Typography } from '@mui/material';
 import { Send as SendIcon } from '@mui/icons-material';
 import { useState, useEffect } from 'react';
-
+import { filterWords } from '@utils/classrooms';
 import sendMessagesCSS from './SendMessages.css';
 
+let peerTypingTimer = null;
 export default function SendMessages({ socket, chat, setChat, scrollDown }) {
   const [message, setMessage] = useState('');
+  const [peerIsTyping, setPeerIsTyping] = useState(false);
+  const [peerName, setPeerName] = useState('');
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('chat message', () => {
+        setPeerIsTyping(false);
+      });
+
+      socket.on('peer is typing', ({ character, message }) => {
+        clearTimeout(peerTypingTimer);
+        peerTypingTimer = setTimeout(() => {
+          setPeerIsTyping(false);
+        }, 3000);
+        setPeerIsTyping(true);
+        setPeerName(character);
+      });
+    }
+
+    return () => {
+      if (socket) socket.off('peer is typing');
+    };
+  });
 
   function sendMessage(e) {
     e.preventDefault();
@@ -42,6 +66,11 @@ export default function SendMessages({ socket, chat, setChat, scrollDown }) {
 
   return (
     <Box>
+      <Typography css={sendMessagesCSS.peerIsTyping}>
+        &nbsp;
+        {peerIsTyping && <span>{filterWords(peerName)} is typing... </span>}
+      </Typography>
+
       <form onSubmit={sendMessage}>
         <input
           css={sendMessagesCSS.characterName}

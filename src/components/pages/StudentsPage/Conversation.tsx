@@ -1,12 +1,11 @@
 /** @jsxImportSource @emotion/react */
 
 import { Box, Typography } from '@mui/material';
-import { useEffect, useState, useRef } from 'react';
+import { useEffect } from 'react';
 
 import conversationCSS from './Conversation.css';
 import { filterWords } from '@utils/classrooms';
 
-let peerTypingTimer = null;
 export default function Conversation({
   socket,
   chat,
@@ -14,26 +13,13 @@ export default function Conversation({
   scrollDown,
   lastMessage,
 }) {
-  const [peerIsTyping, setPeerIsTyping] = useState(false);
-  const [peerName, setPeerName] = useState('');
-
   useEffect(() => {
     if (socket) {
       socket.on('chat message', ({ character, message }) => {
-        setPeerIsTyping(false);
         setChat((chat) => ({
           ...chat,
           conversation: [...chat.conversation, ['peer', character, message]],
         }));
-      });
-
-      socket.on('peer is typing', ({ character, message }) => {
-        clearTimeout(peerTypingTimer);
-        peerTypingTimer = setTimeout(() => {
-          setPeerIsTyping(false);
-        }, 3000);
-        setPeerIsTyping(true);
-        setPeerName(character);
       });
     }
 
@@ -44,7 +30,7 @@ export default function Conversation({
 
   useEffect(() => {
     scrollDown();
-  }, [chat.conversation, peerIsTyping]);
+  }, [chat.conversation]);
 
   return (
     <Box>
@@ -65,49 +51,12 @@ export default function Conversation({
         return (
           <Typography key={i}>
             <span css={fontCSS}>{filterWords(character)}: </span>
-            <span>{filterWords(message)}</span>
+            <span css={conversationCSS.msg}>{filterWords(message)}</span>
           </Typography>
         );
       })}
-      {peerIsTyping && (
-        <Typography>
-          <span css={conversationCSS.peer}>{filterWords(peerName)}: </span>
-          <span>
-            <TypingDots />
-          </span>
-        </Typography>
-      )}
+
       <span ref={lastMessage} />
     </Box>
   );
-}
-
-const TypingDots = (props) => {
-  const [msg, setMsg] = useState('.');
-  useInterval(() => {
-    if (msg.length === 3) return setMsg('');
-    setMsg(msg + '.');
-  }, 500);
-
-  return <span>Is Typing {msg}</span>;
-};
-
-function useInterval(callback, delay) {
-  const savedCallback = useRef<() => any>();
-
-  // Remember the latest callback.
-  useEffect(() => {
-    savedCallback.current = callback;
-  }, [callback]);
-
-  // Set up the interval.
-  useEffect(() => {
-    function tick() {
-      if (typeof savedCallback.current === 'function') savedCallback.current();
-    }
-    if (delay !== null) {
-      let id = setInterval(tick, delay);
-      return () => clearInterval(id);
-    }
-  }, [delay]);
 }
