@@ -40,6 +40,15 @@ const peerLeft = css`
   opacity: 0.7;
 `;
 
-const sendMessagesCSS = { characterName, message, peerLeft };
+const peerIsTyping = css`
+  padding: 5px 10px;
+  margin-bottom: 0;
+  text-align: left;
+  font-size: 16px;
+  color: #aaa;
+  font-style: italic;
+`;
+
+const sendMessagesCSS = { characterName, message, peerIsTyping, peerLeft };
 
 export default sendMessagesCSS;
