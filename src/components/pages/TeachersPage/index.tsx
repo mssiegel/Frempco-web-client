@@ -24,7 +24,6 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
   console.log('Teacher socketId:', socket?.id ?? 'No socket found');
 
   const [displayedChat, setDisplayedChat] = useState('');
-  const [firstChatDisplayed, setFirstChatDisplayed] = useState(false);
   const [studentChats, setStudentChats] = useState<StudentChat[]>([
     // {
     //   chatId: 'as343da11sf#as31afdsf',
@@ -43,14 +42,11 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
   useEffect(() => {
     if (socket) {
       socket.on('chat started - two students', ({ chatId, studentPair }) => {
+        if (studentChats.length === 0) setDisplayedChat(chatId);
         setStudentChats((chats) => [
           ...chats,
           { chatId, studentPair, conversation: [], startTime: currentTime() },
         ]);
-        if (!firstChatDisplayed) {
-          setFirstChatDisplayed(true);
-          setDisplayedChat(chatId);
-        }
       });
 
       socket.on(
