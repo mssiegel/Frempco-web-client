@@ -8,31 +8,13 @@ import Conversation from './Conversation';
 import SendMessages from './SendMessages';
 
 export default function Chatbox({ socket, chat, setChat }) {
-  const messageInput = useRef(null);
-
-  function scrollDown() {
-    if (messageInput.current)
-      messageInput.current.scrollIntoView({ behavior: 'smooth' });
-  }
-
   return (
     <Box css={chatboxCSS.chatboxContainer}>
       <Box css={chatboxCSS.chatboxTop}>
-        <Conversation
-          socket={socket}
-          chat={chat}
-          setChat={setChat}
-          scrollDown={scrollDown}
-        />
+        <Conversation socket={socket} chat={chat} setChat={setChat} />
       </Box>
       <Box css={chatboxCSS.chatboxBottom}>
-        <SendMessages
-          socket={socket}
-          chat={chat}
-          setChat={setChat}
-          scrollDown={scrollDown}
-          messageInput={messageInput}
-        />
+        <SendMessages socket={socket} chat={chat} setChat={setChat} />
       </Box>
     </Box>
   );

@@ -41,6 +41,11 @@ export function filterWords(words) {
   }
 }
 
+export function scrollDown(lastMessage) {
+  if (lastMessage.current)
+    lastMessage.current.scrollIntoView({ behavior: 'smooth' });
+}
+
 export const sampleClassroomName = classrooms[0].classroomName;
 
 export interface ClassroomProps {

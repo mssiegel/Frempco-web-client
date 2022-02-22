@@ -10,6 +10,8 @@ const chatboxTop = css`
   border-radius: 10px 10px 10px 10px;
   min-height: 260px;
   padding: 10px;
+  max-height: 260px;
+  overflow-y: overlay;
 `;
 
 const chatboxCSS = {

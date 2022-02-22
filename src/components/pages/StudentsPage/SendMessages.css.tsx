@@ -31,6 +31,15 @@ const message = css`
   }
 `;
 
-const sendMessagesCSS = { characterName, message };
+const peerIsTyping = css`
+  padding: 5px 10px;
+  margin-bottom: 0;
+  text-align: left;
+  font-size: 16px;
+  color: #aaa;
+  font-style: italic;
+`;
+
+const sendMessagesCSS = { characterName, message, peerIsTyping };
 
 export default sendMessagesCSS;

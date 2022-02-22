@@ -1,12 +1,18 @@
 /** @jsxImportSource @emotion/react */
+import { useRef, useEffect } from 'react';
 
 import { Box, Typography } from '@mui/material';
 
 import conversationCSS from './Conversation.css';
-import { filterWords } from '@utils/classrooms';
+import { filterWords, scrollDown } from '@utils/classrooms';
 
 export default function Conversation({ chat }) {
   const [student1, student2] = chat.studentPair;
+  const lastMessage = useRef(null);
+
+  useEffect(() => {
+    scrollDown(lastMessage);
+  }, [chat.conversation]);
 
   return (
     <Box>
@@ -31,10 +37,12 @@ export default function Conversation({ chat }) {
         return (
           <Typography key={i}>
             <span css={fontCSS}>{filterWords(character)}: </span>
-            <span>{filterWords(message)}</span>
+            <span css={conversationCSS.msg}>{filterWords(message)}</span>
           </Typography>
         );
       })}
+
+      <span ref={lastMessage} />
     </Box>
   );
 }

@@ -1,19 +1,37 @@
 /** @jsxImportSource @emotion/react */
 
-import { Box, Fab } from '@mui/material';
+import { Box, Fab, Typography } from '@mui/material';
 import { Send as SendIcon } from '@mui/icons-material';
-import { useState } from 'react';
-
+import { useState, useEffect } from 'react';
+import { filterWords } from '@utils/classrooms';
 import sendMessagesCSS from './SendMessages.css';
 
-export default function SendMessages({
-  socket,
-  chat,
-  setChat,
-  scrollDown,
-  messageInput,
-}) {
+let peerTypingTimer = null;
+export default function SendMessages({ socket, chat, setChat }) {
   const [message, setMessage] = useState('');
+  const [peerIsTyping, setPeerIsTyping] = useState(false);
+  const [peerName, setPeerName] = useState('');
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('chat message', () => {
+        setPeerIsTyping(false);
+      });
+
+      socket.on('peer is typing', ({ character, message }) => {
+        clearTimeout(peerTypingTimer);
+        peerTypingTimer = setTimeout(() => {
+          setPeerIsTyping(false);
+        }, 3000);
+        setPeerIsTyping(true);
+        setPeerName(character);
+      });
+    }
+
+    return () => {
+      if (socket) socket.off('peer is typing');
+    };
+  });
 
   function sendMessage(e) {
     e.preventDefault();
@@ -24,7 +42,7 @@ export default function SendMessages({
         conversation: [...chat.conversation, ['you', chat.you, message]],
       }));
       setMessage('');
-      scrollDown();
+
       if (socket) {
         socket.emit('chat message', {
           character: chat.you,
@@ -32,11 +50,23 @@ export default function SendMessages({
         });
       }
     }
-    messageInput.current.focus();
+  }
+
+  function sendUserIsTyping(e) {
+    setMessage(e.target.value);
+    socket.emit('student typing', {
+      character: chat.you,
+      message,
+    });
   }
 
   return (
     <Box>
+      <Typography css={sendMessagesCSS.peerIsTyping}>
+        &nbsp;
+        {peerIsTyping && <span>{filterWords(peerName)} is typing... </span>}
+      </Typography>
+
       <form onSubmit={sendMessage}>
         <input
           css={sendMessagesCSS.characterName}
@@ -51,8 +81,7 @@ export default function SendMessages({
           value={message}
           placeholder='Say something'
           maxLength={75}
-          onChange={(e) => setMessage(e.target.value)}
-          ref={messageInput}
+          onChange={sendUserIsTyping}
           autoFocus
         />
 

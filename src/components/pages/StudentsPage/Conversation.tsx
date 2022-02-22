@@ -1,12 +1,14 @@
 /** @jsxImportSource @emotion/react */
 
 import { Box, Typography } from '@mui/material';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
 import conversationCSS from './Conversation.css';
 import { filterWords } from '@utils/classrooms';
+import { scrollDown } from '@utils/classrooms';
 
-export default function Conversation({ socket, chat, setChat, scrollDown }) {
+export default function Conversation({ socket, chat, setChat }) {
+  const lastMessage = useRef(null);
   useEffect(() => {
     if (socket) {
       socket.on('chat message', ({ character, message }) => {
@@ -14,7 +16,6 @@ export default function Conversation({ socket, chat, setChat, scrollDown }) {
           ...chat,
           conversation: [...chat.conversation, ['peer', character, message]],
         }));
-        scrollDown();
       });
     }
 
@@ -22,6 +23,10 @@ export default function Conversation({ socket, chat, setChat, scrollDown }) {
       if (socket) socket.off('chat message');
     };
   }, []);
+
+  useEffect(() => {
+    scrollDown(lastMessage);
+  }, [chat.conversation]);
 
   return (
     <Box>
@@ -39,14 +44,15 @@ export default function Conversation({ socket, chat, setChat, scrollDown }) {
         let fontCSS = {};
         if (person === 'peer') fontCSS = conversationCSS.peer;
         else if (person === 'you') fontCSS = conversationCSS.you;
-
         return (
           <Typography key={i}>
             <span css={fontCSS}>{filterWords(character)}: </span>
-            <span>{filterWords(message)}</span>
+            <span css={conversationCSS.msg}>{filterWords(message)}</span>
           </Typography>
         );
       })}
+
+      <span ref={lastMessage} />
     </Box>
   );
 }
