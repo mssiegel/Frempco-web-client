@@ -38,7 +38,7 @@ export default function Conversation({ chat }) {
         return (
           <Typography key={i}>
             <span css={fontCSS}>{filterWords(character)}: </span>
-            <span>{filterWords(message)}</span>
+            <span css={conversationCSS.msg}>{filterWords(message)}</span>
           </Typography>
         );
       })}

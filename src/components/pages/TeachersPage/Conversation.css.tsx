@@ -16,10 +16,15 @@ const student2 = css`
   color: red;
 `;
 
+const msg = css`
+  word-break: break-word;
+`;
+
 const conversationCSS = {
   introText,
   student1,
   student2,
+  msg,
 };
 
 export default conversationCSS;

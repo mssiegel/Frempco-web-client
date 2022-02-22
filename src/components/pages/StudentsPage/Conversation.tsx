@@ -20,7 +20,6 @@ export default function Conversation({
           ...chat,
           conversation: [...chat.conversation, ['peer', character, message]],
         }));
-        scrollDown();
       });
     }
 
@@ -49,14 +48,15 @@ export default function Conversation({
         let fontCSS = {};
         if (person === 'peer') fontCSS = conversationCSS.peer;
         else if (person === 'you') fontCSS = conversationCSS.you;
-
         return (
           <Typography key={i}>
             <span css={fontCSS}>{filterWords(character)}: </span>
-            <span>{filterWords(message)}</span>
+            <span css={conversationCSS.msg}>{filterWords(message)}</span>
           </Typography>
         );
       })}
+
+      <span ref={lastMessage} />
     </Box>
   );
 }
