@@ -31,6 +31,15 @@ const message = css`
   }
 `;
 
-const sendMessagesCSS = { characterName, message };
+const peerLeft = css`
+  border-top: 1px dashed grey;
+  padding-top: 10px;
+  font-size: 32px;
+  color: #87002a;
+  font-style: italic;
+  opacity: 0.7;
+`;
+
+const sendMessagesCSS = { characterName, message, peerLeft };
 
 export default sendMessagesCSS;
