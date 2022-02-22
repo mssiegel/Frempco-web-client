@@ -149,22 +149,10 @@ export default function Home() {
           handleClose={handleCloseStudentModal}
         >
           <Typography>Hello Students!</Typography>
-          <TextField
-            fullWidth
-            margin='normal'
-            id='outlined-basic'
-            label='Classroom'
-            variant='outlined'
-            inputRef={classStudentInput}
-          />
-          <TextField
-            fullWidth
-            margin='normal'
-            id='outlined-basic'
-            label='Your Name'
-            variant='outlined'
-            inputRef={studentNameInput}
-          />
+
+          {genTextField('Classroom', classStudentInput)}
+          {genTextField('Your Name', studentNameInput)}
+
           <Button variant='contained' size='large' onClick={visitStudentsPage}>
             Join Room
           </Button>
@@ -175,23 +163,10 @@ export default function Home() {
           handleClose={handleCloseTeacherModal}
         >
           <Typography>Hello Teachers!</Typography>
-          <TextField
-            fullWidth
-            margin='normal'
-            id='outlined-basic'
-            label='Classroom'
-            variant='outlined'
-            inputRef={classTeacherInput}
-          />
-          <TextField
-            fullWidth
-            margin='normal'
-            id='outlined-basic'
-            label='Password'
-            type='password'
-            variant='outlined'
-            inputRef={passTeacherInput}
-          />
+
+          {genTextField('Classroom', classTeacherInput)}
+          {genTextField('Password', passTeacherInput, 'password')}
+
           <Button variant='contained' size='large' onClick={visitTeachersPage}>
             Join Room
           </Button>
@@ -218,3 +193,18 @@ export default function Home() {
     </Layout>
   );
 }
+
+const genTextField = (label, ref, type = 'input') => {
+  return (
+    <>
+      <TextField
+        fullWidth
+        margin='normal'
+        label={label}
+        variant='outlined'
+        type={type}
+        inputRef={ref}
+      />
+    </>
+  );
+};
