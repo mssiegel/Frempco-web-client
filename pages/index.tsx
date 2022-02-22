@@ -1,10 +1,10 @@
-import { Box, Button, Grid, Typography } from '@mui/material';
+import { Box, Button, Grid, Typography, TextField } from '@mui/material';
 import {
   School as SchoolIcon,
   Lightbulb as LightbulbIcon,
 } from '@mui/icons-material';
 import Head from 'next/head';
-import { useContext } from 'react';
+import { useContext, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
 
 import Link from '@components/shared/Link';
@@ -12,6 +12,7 @@ import Layout from '@components/shared/Layout';
 import { getClassroom, sampleClassroomName } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
 import Chatbox from '@components/pages/TeachersPage/Chatbox';
+import BasicModal from '@components/shared/Modal';
 
 const exampleChat = {
   chatId: 'as343da11sf#as31afdsf',
@@ -48,20 +49,26 @@ export default function Home() {
   const router = useRouter();
   const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
   const socket = useContext(SocketContext);
+  const [openStudentModal, setOpenStudentModal] = useState(false);
+  const [openTeacherModal, setOpenTeacherModal] = useState(false);
+  const handleCloseStudentModal = () => setOpenStudentModal(false);
+  const handleCloseTeacherModal = () => setOpenTeacherModal(false);
+  const classStudentInput = useRef<HTMLInputElement>(null);
+  const studentNameInput = useRef<HTMLInputElement>(null);
+  const classTeacherInput = useRef<HTMLInputElement>(null);
+  const passTeacherInput = useRef<HTMLInputElement>(null);
 
   async function visitStudentsPage() {
-    const classroom = window.prompt('What classroom are you visiting?');
+    const classroom = classStudentInput.current.value;
     const classroomObj = getClassroom(classroom);
     if (!classroomObj) return window.alert(`Invalid classroom: ${classroom}`);
-
     const getResponse = await fetch(`${apiUrl}/classrooms/${classroom}`);
     const { isActive } = await getResponse.json();
     if (!isActive)
       return window.alert(
         `Classroom not activated: ${classroom}\n Please wait for your teacher to activate your classroom and try again.`,
       );
-
-    const student = window.prompt('Classroom found! What is your name?');
+    const student = studentNameInput.current.value;
     if (student?.trim()) {
       socket.emit('new student entered', { classroom, student });
       // TODO: GET STUDENTS NAME TO SHOW ON STUDENT PAGE
@@ -70,11 +77,11 @@ export default function Home() {
   }
 
   function visitTeachersPage() {
-    const classroom = window.prompt('What classroom are you visiting?');
+    const classroom = classTeacherInput.current.value;
     const classroomObj = getClassroom(classroom);
     if (!classroomObj) return window.alert(`Invalid classroom: ${classroom}`);
 
-    const password = window.prompt(`What is the password for ${classroom}?`);
+    const password = passTeacherInput.current.value;
     if (String(classroomObj.password) !== password)
       return window.alert(`IncorrectPassword: ${password}`);
 
@@ -111,7 +118,7 @@ export default function Home() {
                 variant='contained'
                 size='large'
                 startIcon={<LightbulbIcon />}
-                onClick={visitStudentsPage}
+                onClick={() => setOpenStudentModal(true)}
               >
                 Students page
               </Button>
@@ -123,7 +130,7 @@ export default function Home() {
                 variant='contained'
                 size='large'
                 startIcon={<SchoolIcon />}
-                onClick={visitTeachersPage}
+                onClick={() => setOpenTeacherModal(true)}
               >
                 Teachers page
               </Button>
@@ -136,6 +143,34 @@ export default function Home() {
             </Box>
           </Grid>
         </Grid>
+
+        <BasicModal
+          open={openStudentModal}
+          handleClose={handleCloseStudentModal}
+        >
+          <Typography>Hello Students!</Typography>
+
+          {genTextField('Classroom', classStudentInput)}
+          {genTextField('Your Name', studentNameInput)}
+
+          <Button variant='contained' size='large' onClick={visitStudentsPage}>
+            Join Room
+          </Button>
+        </BasicModal>
+
+        <BasicModal
+          open={openTeacherModal}
+          handleClose={handleCloseTeacherModal}
+        >
+          <Typography>Hello Teachers!</Typography>
+
+          {genTextField('Classroom', classTeacherInput)}
+          {genTextField('Password', passTeacherInput, 'password')}
+
+          <Button variant='contained' size='large' onClick={visitTeachersPage}>
+            Join Room
+          </Button>
+        </BasicModal>
 
         {process.env.NEXT_PUBLIC_NODE_ENV === 'development' && (
           <>
@@ -158,3 +193,18 @@ export default function Home() {
     </Layout>
   );
 }
+
+const genTextField = (label, ref, type = 'input') => {
+  return (
+    <>
+      <TextField
+        fullWidth
+        margin='normal'
+        label={label}
+        variant='outlined'
+        type={type}
+        inputRef={ref}
+      />
+    </>
+  );
+};

@@ -49,11 +49,31 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
         ]);
       });
 
+      socket.on('chat ended - two students', (chatEnded) => {
+        const chatId = chatEnded.chatId;
+        const chatIndex = studentChats.findIndex(
+          (chat) => chat.chatId === chatEnded.chatId,
+        );
+        const chats = [...studentChats];
+        chats.splice(chatIndex, 1);
+        setStudentChats(chats);
+
+        // This code can be turned back on after merging all PRs
+        // I made some mistakes with my branching strategy
+        // that left this bit hanging from PR# 44
+        // This code just resets the firstChatDisplayed flag
+        // if there are no chats left
+        // if (firstChatDisplayed && chats.length === 0) {
+        //   setFirstChatDisplayed(false);
+        // }
+      });
+
       socket.on(
         'student chat message',
         ({ character, message, socketId, chatId }) => {
           const chats = [...studentChats];
           const chat = chats.find((chat) => chat.chatId === chatId);
+          if (!chat) return;
           const student =
             chat.studentPair[0].socketId === socketId ? 'student1' : 'student2';
           chat.conversation = [
@@ -68,6 +88,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     return () => {
       if (socket) {
         socket.off('chat started - two students');
+        socket.off('chat ended - two students');
         socket.off('student chat message');
       }
     };
