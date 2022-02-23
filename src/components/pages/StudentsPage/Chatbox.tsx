@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
 import { Box } from '@mui/material';
-import { useRef } from 'react';
 
 import chatboxCSS from './Chatbox.css';
 import Conversation from './Conversation';

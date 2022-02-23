@@ -42,7 +42,6 @@ const peerLeft = css`
 
 const peerIsTyping = css`
   padding: 5px 10px;
-  margin-bottom: 0;
   text-align: left;
   font-size: 16px;
   color: #aaa;

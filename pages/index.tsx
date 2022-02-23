@@ -1,4 +1,4 @@
-import { Box, Button, Grid, Typography, TextField } from '@mui/material';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import {
   School as SchoolIcon,
   Lightbulb as LightbulbIcon,
@@ -12,7 +12,7 @@ import Layout from '@components/shared/Layout';
 import { getClassroom, sampleClassroomName } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
 import Chatbox from '@components/pages/TeachersPage/Chatbox';
-import BasicModal from '@components/shared/Modal';
+import BasicModal, { genTextField } from '@components/shared/Modal';
 
 const exampleChat = {
   chatId: 'as343da11sf#as31afdsf',
@@ -148,13 +148,20 @@ export default function Home() {
           open={openStudentModal}
           handleClose={handleCloseStudentModal}
         >
-          <Typography>Hello Students!</Typography>
+          <Typography variant='h5'>Hello student</Typography>
 
-          {genTextField('Classroom', classStudentInput)}
-          {genTextField('Your Name', studentNameInput)}
+          {genTextField({
+            label: 'Classroom',
+            ref: classStudentInput,
+            autoFocus: true,
+          })}
+          {genTextField({
+            label: 'Your Name',
+            ref: studentNameInput,
+          })}
 
           <Button variant='contained' size='large' onClick={visitStudentsPage}>
-            Join Room
+            Visit Student&apos;s Room
           </Button>
         </BasicModal>
 
@@ -162,13 +169,21 @@ export default function Home() {
           open={openTeacherModal}
           handleClose={handleCloseTeacherModal}
         >
-          <Typography>Hello Teachers!</Typography>
+          <Typography variant='h5'>Hello teacher</Typography>
 
-          {genTextField('Classroom', classTeacherInput)}
-          {genTextField('Password', passTeacherInput, 'password')}
+          {genTextField({
+            label: 'Classroom',
+            ref: classTeacherInput,
+            autoFocus: true,
+          })}
+          {genTextField({
+            label: 'Password',
+            ref: passTeacherInput,
+            type: 'password',
+          })}
 
           <Button variant='contained' size='large' onClick={visitTeachersPage}>
-            Join Room
+            Visit Teacher&apos;s Room
           </Button>
         </BasicModal>
 
@@ -193,18 +208,3 @@ export default function Home() {
     </Layout>
   );
 }
-
-const genTextField = (label, ref, type = 'input') => {
-  return (
-    <>
-      <TextField
-        fullWidth
-        margin='normal'
-        label={label}
-        variant='outlined'
-        type={type}
-        inputRef={ref}
-      />
-    </>
-  );
-};

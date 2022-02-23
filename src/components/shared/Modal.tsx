@@ -1,6 +1,6 @@
 import * as React from 'react';
 import Box from '@mui/material/Box';
-import Modal from '@mui/material/Modal';
+import { Modal, TextField } from '@mui/material';
 
 const style = {
   position: 'absolute' as 'absolute',
@@ -29,3 +29,25 @@ export default function BasicModal(props) {
     </div>
   );
 }
+
+export const genTextField = ({
+  label,
+  ref,
+  autoFocus = false,
+  type = 'input',
+}) => {
+  return (
+    <>
+      <TextField
+        fullWidth
+        margin='normal'
+        label={label}
+        variant='outlined'
+        type={type}
+        autoComplete='off'
+        inputRef={ref}
+        autoFocus={autoFocus}
+      />
+    </>
+  );
+};
