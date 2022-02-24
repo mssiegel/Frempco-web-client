@@ -31,7 +31,7 @@ export function currentTime() {
   });
 }
 
-export function filterWords(words) {
+export function filterWords(words: string) {
   const filter = new Filter();
   try {
     return filter.clean(words);
@@ -41,9 +41,9 @@ export function filterWords(words) {
   }
 }
 
-export function scrollDown(lastMessage) {
-  if (lastMessage.current)
-    lastMessage.current.scrollIntoView({ behavior: 'smooth' });
+export function scrollDown(refObject) {
+  if (refObject.current)
+    refObject.current.scrollIntoView({ behavior: 'smooth' });
 }
 
 export const sampleClassroomName = classrooms[0].classroomName;

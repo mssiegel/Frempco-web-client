@@ -27,11 +27,9 @@ export default function SendMessages({ socket, chat, setChat }) {
         setPeerIsTyping(false);
       });
 
-      socket.on('peer is typing', ({ character, message }) => {
+      socket.on('peer is typing', ({ character }) => {
         clearTimeout(peerTypingTimer);
-        peerTypingTimer = setTimeout(() => {
-          setPeerIsTyping(false);
-        }, 3000);
+        peerTypingTimer = setTimeout(() => setPeerIsTyping(false), 3000);
         setPeerIsTyping(true);
         setPeerName(character);
       });
@@ -66,17 +64,14 @@ export default function SendMessages({ socket, chat, setChat }) {
 
   function sendUserIsTyping(e) {
     setMessage(e.target.value);
-    socket.emit('student typing', {
-      character: chat.you,
-      message,
-    });
+    socket.emit('student typing', { character: chat.you });
   }
 
   return (
     <Box>
       <Typography css={sendMessagesCSS.peerIsTyping}>
         &nbsp;
-        {peerIsTyping && <span>{filterWords(peerName)} is typing... </span>}
+        {peerIsTyping && `${filterWords(peerName)} is typing...`}
       </Typography>
 
       {!peerHasLeft && (
