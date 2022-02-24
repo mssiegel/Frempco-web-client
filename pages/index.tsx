@@ -12,7 +12,8 @@ import Layout from '@components/shared/Layout';
 import { getClassroom, sampleClassroomName } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
 import Chatbox from '@components/pages/TeachersPage/Chatbox';
-import BasicModal, { genTextField } from '@components/shared/Modal';
+import BasicModal from '@components/shared/Modal';
+import ModalTextField from '@components/shared/ModalTextField';
 
 const exampleChat = {
   chatId: 'as343da11sf#as31afdsf',
@@ -150,15 +151,12 @@ export default function Home() {
         >
           <Typography variant='h5'>Hello student</Typography>
 
-          {genTextField({
-            label: 'Classroom',
-            ref: classStudentInput,
-            autoFocus: true,
-          })}
-          {genTextField({
-            label: 'Your Name',
-            ref: studentNameInput,
-          })}
+          <ModalTextField
+            label='Classroom'
+            refObject={classStudentInput}
+            autoFocus={true}
+          />
+          <ModalTextField label='Your Name' refObject={studentNameInput} />
 
           <Button variant='contained' size='large' onClick={visitStudentsPage}>
             Visit Student&apos;s Room
@@ -171,16 +169,16 @@ export default function Home() {
         >
           <Typography variant='h5'>Hello teacher</Typography>
 
-          {genTextField({
-            label: 'Classroom',
-            ref: classTeacherInput,
-            autoFocus: true,
-          })}
-          {genTextField({
-            label: 'Password',
-            ref: passTeacherInput,
-            type: 'password',
-          })}
+          <ModalTextField
+            label='Classroom'
+            refObject={classTeacherInput}
+            autoFocus={true}
+          />
+          <ModalTextField
+            label='Password'
+            refObject={passTeacherInput}
+            type='password'
+          />
 
           <Button variant='contained' size='large' onClick={visitTeachersPage}>
             Visit Teacher&apos;s Room
