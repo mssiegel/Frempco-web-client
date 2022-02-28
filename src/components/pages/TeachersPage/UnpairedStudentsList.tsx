@@ -35,31 +35,14 @@ export default function UnpairedStudentsList({ socket }) {
         setUnpairedStudents((unpaired) => [...unpaired, student]);
       });
 
-      socket.on('chat ended - two students', (chatEnded) => {
-        const student1 = chatEnded.student1;
-        const student2 = chatEnded.student2;
-        setUnpairedStudents((unpaired) => [...unpaired, student1, student2]);
+      socket.on('chat ended - two students', ({ student2 }) => {
+        setUnpairedStudents((unpaired) => [...unpaired, student2]);
       });
 
-      socket.on('student left', (student) => {
-        setUnpairedStudents((unpaired) => {
-          const studentIndex = unpaired.findIndex(
-            (s) => s.socketId === student.socketId,
-          );
-          if (studentIndex === -1) {
-            console.error(
-              'Student Not Found!',
-              unpaired,
-              student,
-              studentIndex,
-            );
-            return unpaired;
-          }
-          console.log(unpaired, studentIndex);
-          const newSet = [...unpaired];
-          newSet.splice(studentIndex, 1);
-          return newSet;
-        });
+      socket.on('unpaired student left', ({ socketId }) => {
+        setUnpairedStudents((students) =>
+          students.filter((student) => student.socketId !== socketId),
+        );
       });
     }
 

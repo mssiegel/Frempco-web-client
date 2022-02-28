@@ -15,7 +15,7 @@ export default function SendMessages({ socket, chat, setChat }) {
 
   useEffect(() => {
     if (socket) {
-      socket.on('peer has left chat', () => {
+      socket.on('peer left chat', () => {
         setPeerHasLeft(true);
       });
 
@@ -37,7 +37,7 @@ export default function SendMessages({ socket, chat, setChat }) {
 
     return () => {
       if (socket) {
-        socket.off('peer has left chat');
+        socket.off('peer left chat');
         socket.off('peer is typing');
       }
     };
