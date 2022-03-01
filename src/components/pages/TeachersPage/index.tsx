@@ -7,6 +7,7 @@ import Chatbox from './Chatbox';
 import UnpairedStudentsList from './UnpairedStudentsList';
 import PairedStudentsList from './PairedStudentsList';
 import ActivateButton from './ActivateButton';
+import { useRouter } from 'next/router';
 
 type StudentPair = [Student, Student];
 
@@ -20,6 +21,8 @@ interface StudentChat {
 }
 
 export default function TeachersPage({ classroomName }: ClassroomProps) {
+  const router = useRouter();
+
   const socket = useContext(SocketContext);
   console.log('Teacher socketId:', socket?.id ?? 'No socket found');
 
@@ -40,6 +43,11 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
   ]);
 
   useEffect(() => {
+    const handleRouteChange = (url, { shallow }) => {
+      socket.emit('user disconnected');
+    };
+    router.events.on('routeChangeStart', handleRouteChange);
+
     if (socket) {
       socket.on('chat started - two students', ({ chatId, studentPair }) => {
         if (studentChats.length === 0) setDisplayedChat(chatId);
@@ -78,6 +86,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
         socket.off('chat started - two students');
         socket.off('chat ended - two students');
         socket.off('student chat message');
+        router.events.off('routeChangeStart', handleRouteChange);
       }
     };
   });
