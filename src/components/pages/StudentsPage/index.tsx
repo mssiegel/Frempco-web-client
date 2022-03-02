@@ -12,7 +12,6 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
   console.log('Student socketId:', socket?.id ?? 'No socket found');
 
   const [chatInSession, setChatInSession] = useState(false);
-  const [teacherLeft, setTeacherLeft] = useState(false);
   const [chat, setChat] = useState({
     you: '',
     peer: '',
@@ -43,11 +42,6 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
         });
         setChatInSession(true);
       });
-
-      socket.on('teacher left', () => {
-        setChatInSession(false);
-        setTeacherLeft(true);
-      });
     }
 
     return () => {
@@ -67,15 +61,6 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Chatbox socket={socket} chat={chat} setChat={setChat} />
         </Box>
-      )}
-      {teacherLeft && (
-        <Typography variant='h6' sx={{ color: 'white', mb: 4 }}>
-          The Teacher Has Left. Return{' '}
-          <Link href='/'>
-            <a>Home</a>
-          </Link>{' '}
-          to start over.
-        </Typography>
       )}
     </main>
   );
