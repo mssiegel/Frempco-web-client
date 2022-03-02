@@ -11,6 +11,7 @@ import Link from '@components/shared/Link';
 import Layout from '@components/shared/Layout';
 import { getClassroom, sampleClassroomName } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
+import { UserContext } from '@contexts/UserContext';
 import Chatbox from '@components/pages/TeachersPage/Chatbox';
 import BasicModal from '@components/shared/Modal';
 import ModalTextField from '@components/shared/ModalTextField';
@@ -50,6 +51,7 @@ export default function Home() {
   const router = useRouter();
   const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
   const socket = useContext(SocketContext);
+  const { setUserInfo } = useContext(UserContext);
   const [openStudentModal, setOpenStudentModal] = useState(false);
   const [openTeacherModal, setOpenTeacherModal] = useState(false);
   const handleCloseStudentModal = () => setOpenStudentModal(false);
@@ -72,6 +74,7 @@ export default function Home() {
     const student = studentNameInput.current.value;
     if (student?.trim()) {
       socket.emit('new student entered', { classroom, student });
+      setUserInfo({ studentName: student });
       // TODO: GET STUDENTS NAME TO SHOW ON STUDENT PAGE
       router.push(`/student/classroom/${classroom}`);
     }
