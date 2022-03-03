@@ -11,7 +11,7 @@ import {
   Typography,
   TextField,
 } from '@mui/material';
-import { Chat as ChatIcon } from '@mui/icons-material';
+import { Chat as ChatIcon, PersonOutline } from '@mui/icons-material';
 
 import { getRandom, swap, Student } from '@utils/classrooms';
 import unpairedStudentsCSS from './UnpairedStudentsList.css';
@@ -34,11 +34,11 @@ export default function UnpairedStudentsList({ socket }) {
   const charListRef = useRef<HTMLTextAreaElement>();
 
   const setCharList = () => {
-    if (!charListRef.current) return;
     const characters = charListRef.current.value.trim().split('\n');
-    const noEmptyCharacters = characters.filter((ch) => ch.trim() !== '');
-    console.log(noEmptyCharacters);
-    setCharacters(noEmptyCharacters);
+    const trimmedCharacters = characters
+      .map((ch) => ch.trim())
+      .filter((ch) => ch);
+    setCharacters(trimmedCharacters);
     setOpenCharacterModal(false);
   };
 
@@ -84,7 +84,10 @@ export default function UnpairedStudentsList({ socket }) {
       student1.character = getRandom(characters) || student1.realName;
       do {
         student2.character = getRandom(characters) || student2.realName;
-      } while (student2.character === student1.character);
+      } while (
+        student2.character === student1.character &&
+        characters.length > 1
+      );
     }
     socket.emit('pair students', { studentPairs });
 
@@ -110,7 +113,6 @@ export default function UnpairedStudentsList({ socket }) {
         handleClose={handleCloseCharacterModal}
       >
         <TextField
-          id='outlined-multiline-static'
           label='Character List'
           multiline
           fullWidth
@@ -164,7 +166,7 @@ export default function UnpairedStudentsList({ socket }) {
             size='large'
             color='success'
             sx={{ mt: 2 }}
-            startIcon={<ChatIcon />}
+            startIcon={<PersonOutline />}
             onClick={() => setOpenCharacterModal(true)}
           >
             Set Character List

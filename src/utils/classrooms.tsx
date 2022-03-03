@@ -15,7 +15,6 @@ export function getClassroom(classroom: string) {
 }
 
 export function getRandom<T>(arr: Array<T>): T {
-  if (arr.length === 0) return null;
   return arr[Math.floor(Math.random() * arr.length)];
 }
 
