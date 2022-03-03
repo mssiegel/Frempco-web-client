@@ -10,8 +10,8 @@ import Link from 'next/link';
 
 export default function StudentsPage({ classroomName }: ClassroomProps) {
   const socket = useContext(SocketContext);
-  const { userInfo } = useContext(UserContext);
-  const { name } = userInfo;
+  const { user } = useContext(UserContext);
+  const { name } = user;
   console.log('Student socketId:', socket?.id ?? 'No socket found');
 
   const [chatInSession, setChatInSession] = useState(false);

@@ -51,7 +51,7 @@ export default function Home() {
   const router = useRouter();
   const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
   const socket = useContext(SocketContext);
-  const { setUserInfo } = useContext(UserContext);
+  const { setUser } = useContext(UserContext);
   const [openStudentModal, setOpenStudentModal] = useState(false);
   const [openTeacherModal, setOpenTeacherModal] = useState(false);
   const handleCloseStudentModal = () => setOpenStudentModal(false);
@@ -74,7 +74,7 @@ export default function Home() {
     const student = studentNameInput.current.value;
     if (student?.trim()) {
       socket.emit('new student entered', { classroom, student });
-      setUserInfo({ name: student });
+      setUser({ name: student });
       router.push(`/student/classroom/${classroom}`);
     }
   }

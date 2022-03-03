@@ -5,21 +5,21 @@ interface ProviderProps {
 }
 
 type UserCtxType = {
-  userInfo: { name: string };
-  setUserInfo: Dispatch<SetStateAction<{ name: string }>>;
+  user: { name: string };
+  setUser: Dispatch<SetStateAction<{ name: string }>>;
 };
 
 const UserContext = createContext<UserCtxType>({
-  userInfo: { name: '' },
-  setUserInfo: () => {},
+  user: { name: '' },
+  setUser: () => {},
 });
 
 function UserProvider({ children }: ProviderProps) {
-  const [userInfo, setUserInfo] = useState({
+  const [user, setUser] = useState({
     name: '',
   });
 
-  const userState = { userInfo, setUserInfo };
+  const userState = { user, setUser };
 
   return (
     <UserContext.Provider value={userState}>{children}</UserContext.Provider>
