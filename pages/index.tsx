@@ -74,8 +74,7 @@ export default function Home() {
     const student = studentNameInput.current.value;
     if (student?.trim()) {
       socket.emit('new student entered', { classroom, student });
-      setUserInfo({ studentName: student });
-      // TODO: GET STUDENTS NAME TO SHOW ON STUDENT PAGE
+      setUserInfo({ name: student });
       router.push(`/student/classroom/${classroom}`);
     }
   }
