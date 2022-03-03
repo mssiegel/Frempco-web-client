@@ -18,7 +18,7 @@ export default function ActivateButton({ socket, classroomName }) {
       'Type YES to confirm you want to deactivate the classroom.',
     );
     if (confirmation?.toUpperCase() === 'YES') {
-      socket.emit('deactivate classroom', { classroomName });
+      socket.emit('deactivate classroom');
       setIsActiveClassroom(false);
     }
   }
