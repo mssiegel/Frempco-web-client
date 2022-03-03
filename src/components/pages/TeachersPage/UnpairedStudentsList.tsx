@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import {
   Box,
   Button,
@@ -8,11 +8,14 @@ import {
   List,
   ListItemText,
   ListSubheader,
+  Typography,
+  TextField,
 } from '@mui/material';
 import { Chat as ChatIcon } from '@mui/icons-material';
 
 import { getRandom, swap, Student } from '@utils/classrooms';
 import unpairedStudentsCSS from './UnpairedStudentsList.css';
+import BasicModal from '@components/shared/Modal';
 
 const CHARACTERS = [
   'Perfectionist dentist',
@@ -25,6 +28,19 @@ const CHARACTERS = [
 
 export default function UnpairedStudentsList({ socket }) {
   const [unpairedStudents, setUnpairedStudents] = useState<Student[]>([]);
+  const [characters, setCharacters] = useState(CHARACTERS);
+  const [openCharacterModal, setOpenCharacterModal] = useState(false);
+  const handleCloseCharacterModal = () => setOpenCharacterModal(false);
+  const charListRef = useRef<HTMLTextAreaElement>();
+
+  const setCharList = () => {
+    if (!charListRef.current) return;
+    const characters = charListRef.current.value.trim().split('\n');
+    const noEmptyCharacters = characters.filter((ch) => ch.trim() !== '');
+    console.log(noEmptyCharacters);
+    setCharacters(noEmptyCharacters);
+    setOpenCharacterModal(false);
+  };
 
   useEffect(() => {
     if (socket) {
@@ -65,9 +81,9 @@ export default function UnpairedStudentsList({ socket }) {
     });
     // assign character names
     for (const [student1, student2] of studentPairs) {
-      student1.character = getRandom(CHARACTERS);
+      student1.character = getRandom(characters) || student1.realName;
       do {
-        student2.character = getRandom(CHARACTERS);
+        student2.character = getRandom(characters) || student2.realName;
       } while (student2.character === student1.character);
     }
     socket.emit('pair students', { studentPairs });
@@ -88,37 +104,73 @@ export default function UnpairedStudentsList({ socket }) {
   }
 
   return (
-    <List
-      sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
-      subheader={
-        <ListSubheader>
-          Total unpaired students: {unpairedStudents.length}
-        </ListSubheader>
-      }
-    >
-      {unpairedStudents.map((student, i) => (
-        <div key={student.realName + student.socketId}>
-          {i % 2 === 0 && <Divider />}
-          <ListItemText
-            inset
-            primary={student.realName}
-            css={unpairedStudents.length > 1 && unpairedStudentsCSS.studentName}
-            onClick={() => swapUnpairedStudent(i)}
-          />
-        </div>
-      ))}
-      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        <Button
-          variant='contained'
-          size='large'
-          color='success'
-          sx={{ mt: 2 }}
-          startIcon={<ChatIcon />}
-          onClick={pairStudents}
-        >
-          Pair up students
-        </Button>
-      </Box>
-    </List>
+    <>
+      <BasicModal
+        open={openCharacterModal}
+        handleClose={handleCloseCharacterModal}
+      >
+        <TextField
+          id='outlined-multiline-static'
+          label='Character List'
+          multiline
+          fullWidth
+          rows={8}
+          defaultValue={`${characters.join('\n').trim()} `}
+          inputRef={charListRef}
+        />
+
+        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
+          <Button variant='contained' size='large' onClick={setCharList}>
+            Save
+          </Button>
+        </Box>
+      </BasicModal>
+      <List
+        sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
+        subheader={
+          <ListSubheader>
+            Total unpaired students: {unpairedStudents.length}
+          </ListSubheader>
+        }
+      >
+        {unpairedStudents.map((student, i) => (
+          <div key={student.realName + student.socketId}>
+            {i % 2 === 0 && <Divider />}
+            <ListItemText
+              inset
+              primary={student.realName}
+              css={
+                unpairedStudents.length > 1 && unpairedStudentsCSS.studentName
+              }
+              onClick={() => swapUnpairedStudent(i)}
+            />
+          </div>
+        ))}
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Button
+            variant='contained'
+            size='large'
+            color='success'
+            sx={{ mt: 2 }}
+            startIcon={<ChatIcon />}
+            onClick={pairStudents}
+          >
+            Pair up students
+          </Button>
+        </Box>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Button
+            variant='contained'
+            size='large'
+            color='success'
+            sx={{ mt: 2 }}
+            startIcon={<ChatIcon />}
+            onClick={() => setOpenCharacterModal(true)}
+          >
+            Set Character List
+          </Button>
+        </Box>
+      </List>
+    </>
   );
 }
