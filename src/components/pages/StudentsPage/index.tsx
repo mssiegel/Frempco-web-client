@@ -15,6 +15,7 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
   console.log('Student socketId:', socket?.id ?? 'No socket found');
 
   const [chatInSession, setChatInSession] = useState(false);
+  const [removedFromClass, setRemovedFromClass] = useState(false);
   const [chat, setChat] = useState({
     you: '',
     peer: '',
@@ -45,11 +46,17 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
         });
         setChatInSession(true);
       });
+
+      socket.on('remove student from classroom', () => {
+        setRemovedFromClass(true);
+        setChatInSession(false);
+      });
     }
 
     return () => {
       if (socket) {
         socket.off('chat start');
+        socket.off('remove student from classroom');
         router.events.off('routeChangeStart', handleRouteChange);
       }
     };
@@ -58,7 +65,12 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
   return (
     <main>
       <Typography variant='h4' sx={{ color: 'white', mb: 4 }}>
-        Hello {name}! Welcome to your classroom: {classroomName}
+        {!removedFromClass && (
+          <>
+            Hello {name}! Welcome to your classroom: {classroomName}
+          </>
+        )}
+        {removedFromClass && <>You have been removed from the classroom.</>}
       </Typography>
       {chatInSession && (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>

@@ -49,12 +49,15 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     router.events.on('routeChangeStart', handleRouteChange);
 
     if (socket) {
+      let _chats = [];
       socket.on('chat started - two students', ({ chatId, studentPair }) => {
         if (studentChats.length === 0) setDisplayedChat(chatId);
-        setStudentChats((chats) => [
-          ...chats,
+        console.log('chat started', chatId, studentPair);
+        _chats = [
+          ..._chats,
           { chatId, studentPair, conversation: [], startTime: currentTime() },
-        ]);
+        ];
+        setStudentChats(_chats);
       });
 
       socket.on('chat ended - two students', ({ chatId }) => {
@@ -66,8 +69,9 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
       socket.on(
         'student chat message',
         ({ character, message, socketId, chatId }) => {
-          const chats = [...studentChats];
+          const chats = [..._chats];
           const chat = chats.find((chat) => chat.chatId === chatId);
+          console.log('chat msg', chatId, chat, chats, studentChats);
           if (!chat) return;
 
           const student =
@@ -89,7 +93,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
         router.events.off('routeChangeStart', handleRouteChange);
       }
     };
-  });
+  }, []);
 
   function showDisplayedChat() {
     const chat = studentChats.find((chat) => chat.chatId === displayedChat);
