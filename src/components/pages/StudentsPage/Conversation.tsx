@@ -22,7 +22,7 @@ export default function Conversation({ socket, chat, setChat }) {
     return () => {
       if (socket) socket.off('chat message');
     };
-  }, []);
+  }, [setChat, socket]);
 
   useEffect(() => {
     scrollDown(lastMessage);

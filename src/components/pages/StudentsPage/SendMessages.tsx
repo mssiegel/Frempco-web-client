@@ -38,10 +38,12 @@ export default function SendMessages({ socket, chat, setChat }) {
     return () => {
       if (socket) {
         socket.off('peer left chat');
+        socket.off('chat start');
+        socket.off('chat message');
         socket.off('peer is typing');
       }
     };
-  });
+  }, [socket]);
 
   function sendMessage(e) {
     e.preventDefault();

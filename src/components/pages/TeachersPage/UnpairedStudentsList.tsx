@@ -8,7 +8,6 @@ import {
   List,
   ListItemText,
   ListSubheader,
-  Typography,
   TextField,
 } from '@mui/material';
 import { Chat as ChatIcon, PersonOutline } from '@mui/icons-material';
@@ -66,10 +65,10 @@ export default function UnpairedStudentsList({ socket }) {
       if (socket) {
         socket.off('new student joined');
         socket.off('chat ended - two students');
-        socket.off('student left');
+        socket.off('unpaired student left');
       }
     };
-  });
+  }, [socket]);
 
   function pairStudents() {
     if (unpairedStudents.length < 2)

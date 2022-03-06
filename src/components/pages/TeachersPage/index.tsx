@@ -89,7 +89,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
         router.events.off('routeChangeStart', handleRouteChange);
       }
     };
-  });
+  }, [router.events, socket, studentChats]);
 
   function showDisplayedChat() {
     const chat = studentChats.find((chat) => chat.chatId === displayedChat);
