@@ -26,6 +26,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
   const socket = useContext(SocketContext);
   console.log('Teacher socketId:', socket?.id ?? 'No socket found');
 
+  const [unpairedStudents, setUnpairedStudents] = useState<Student[]>([]);
   const [displayedChat, setDisplayedChat] = useState('');
   const [studentChats, setStudentChats] = useState<StudentChat[]>([
     // {
@@ -57,10 +58,14 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
         ]);
       });
 
-      socket.on('chat ended - two students', ({ chatId }) => {
+      socket.on('chat ended - two students', ({ chatId, student2 }) => {
+        // remove the chat
         setStudentChats((chats) =>
           chats.filter((chat) => chat.chatId !== chatId),
         );
+
+        // add the student who remains back into unpaired student list
+        setUnpairedStudents((unpaired) => [...unpaired, student2]);
       });
 
       socket.on(
@@ -108,7 +113,11 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
 
       <Grid container spacing={2}>
         <Grid item xs={12} md={5}>
-          <UnpairedStudentsList socket={socket} />
+          <UnpairedStudentsList
+            socket={socket}
+            unpairedStudents={unpairedStudents}
+            setUnpairedStudents={setUnpairedStudents}
+          />
           <PairedStudentsList
             studentChats={studentChats}
             setDisplayedChat={setDisplayedChat}

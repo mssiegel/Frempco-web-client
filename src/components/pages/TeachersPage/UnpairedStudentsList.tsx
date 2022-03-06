@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 import { Chat as ChatIcon, PersonOutline } from '@mui/icons-material';
 
-import { getRandom, swap, Student } from '@utils/classrooms';
+import { getRandom, swap } from '@utils/classrooms';
 import unpairedStudentsCSS from './UnpairedStudentsList.css';
 import BasicModal from '@components/shared/Modal';
 
@@ -25,8 +25,11 @@ const CHARACTERS = [
   'Party planner',
 ];
 
-export default function UnpairedStudentsList({ socket }) {
-  const [unpairedStudents, setUnpairedStudents] = useState<Student[]>([]);
+export default function UnpairedStudentsList({
+  socket,
+  unpairedStudents,
+  setUnpairedStudents,
+}) {
   const [characters, setCharacters] = useState(CHARACTERS);
   const [openCharacterModal, setOpenCharacterModal] = useState(false);
   const handleCloseCharacterModal = () => setOpenCharacterModal(false);
@@ -50,10 +53,6 @@ export default function UnpairedStudentsList({ socket }) {
         setUnpairedStudents((unpaired) => [...unpaired, student]);
       });
 
-      socket.on('chat ended - two students', ({ student2 }) => {
-        setUnpairedStudents((unpaired) => [...unpaired, student2]);
-      });
-
       socket.on('unpaired student left', ({ socketId }) => {
         setUnpairedStudents((students) =>
           students.filter((student) => student.socketId !== socketId),
@@ -64,11 +63,10 @@ export default function UnpairedStudentsList({ socket }) {
     return () => {
       if (socket) {
         socket.off('new student joined');
-        socket.off('chat ended - two students');
         socket.off('unpaired student left');
       }
     };
-  }, [socket]);
+  }, [setUnpairedStudents, socket]);
 
   function pairStudents() {
     if (unpairedStudents.length < 2)
