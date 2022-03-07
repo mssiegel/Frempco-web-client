@@ -6,12 +6,12 @@ import { Box, Typography } from '@mui/material';
 import conversationCSS from './Conversation.css';
 import { filterWords, scrollDown } from '@utils/classrooms';
 
-export default function Conversation({ chat }) {
+export default function Conversation({ chat, parentRef }) {
   const [student1, student2] = chat.studentPair;
   const lastMessage = useRef(null);
 
   useEffect(() => {
-    scrollDown(lastMessage);
+    scrollDown(lastMessage, parentRef);
   }, [chat.conversation]);
 
   return (

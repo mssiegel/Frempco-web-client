@@ -105,7 +105,7 @@ export default function Home() {
 
       <main>
         <Typography
-          variant='h1'
+          variant='h3'
           sx={{ color: (theme) => theme.palette.common.white }}
         >
           Welcome to Frempco!

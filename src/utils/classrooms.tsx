@@ -41,7 +41,14 @@ export function filterWords(words: string) {
   }
 }
 
-export function scrollDown(refObject) {
+export function scrollDown(refObject, parentRef?) {
+  if (parentRef && parentRef.current) {
+    parentRef.current.scrollTo({
+      top: refObject.current.offsetTop,
+      behavior: 'smooth',
+    });
+    return;
+  }
   if (refObject.current)
     refObject.current.scrollIntoView({ behavior: 'smooth' });
 }
