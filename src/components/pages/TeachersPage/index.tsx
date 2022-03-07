@@ -78,17 +78,25 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
         ({ character, message, socketId, chatId }) => {
           setStudentChats((studentChats) => {
             const chats = [...studentChats];
-            const chat = chats.find((chat) => chat.chatId === chatId);
-            if (!chat) return;
+            const chatIndex = chats.findIndex((chat) => chat.chatId === chatId);
+            if (chatIndex === -1) return studentChats;
+
+            const chat = chats[chatIndex];
 
             const student =
               chat.studentPair[0].socketId === socketId
                 ? 'student1'
                 : 'student2';
-            chat.conversation = [
-              ...chat.conversation,
-              [student, character, message],
-            ];
+
+            const newMessage: ChatMessage = [student, character, message];
+
+            const updatedChat = {
+              ...chat,
+              conversation: [...chat.conversation, newMessage],
+            };
+
+            chats[chatIndex] = updatedChat;
+
             return chats;
           });
         },
