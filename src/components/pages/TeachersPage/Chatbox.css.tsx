@@ -12,7 +12,6 @@ const chatboxTop = css`
   padding: 10px;
   max-height: 260px;
   overflow-y: overlay;
-  position: relative;
 `;
 
 const chatboxCSS = {
