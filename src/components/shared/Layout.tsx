@@ -16,18 +16,18 @@ export default function Layout({ children }: LayoutProps) {
 
 function Navbar() {
   return (
-    <Typography variant='h4' sx={{ ml: 10, pt: 1, pb: 2 }}>
-      {process.env.NEXT_PUBLIC_NODE_ENV === 'development' && (
-        <>
-          <Typography variant='h5' sx={{ color: 'gray' }}>
-            This link shortcut only appears in the development environment:
-            {/* For an explanation: see https://github.com/mssiegel/frempco-client/issues/53 */}
-          </Typography>
+    process.env.NEXT_PUBLIC_NODE_ENV === 'development' && (
+      <>
+        <Typography variant='h5' sx={{ color: 'gray' }}>
+          This link shortcut only appears in the development environment:
+          {/* For an explanation: see https://github.com/mssiegel/frempco-client/issues/53 */}
+        </Typography>
+        <Typography variant='h4' sx={{ ml: 10, pt: 1, pb: 2 }}>
           <Link href='/' underline='hover' color='white'>
             Home
           </Link>
-        </>
-      )}
-    </Typography>
+        </Typography>
+      </>
+    )
   );
 }
