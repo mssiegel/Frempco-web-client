@@ -44,11 +44,6 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
   ]);
 
   useEffect(() => {
-    const handleRouteChange = (url, { shallow }) => {
-      socket.emit('user disconnected');
-    };
-    router.events.on('routeChangeStart', handleRouteChange);
-
     if (socket) {
       socket.on('chat started - two students', ({ chatId, studentPair }) => {
         if (studentChats.length === 0) setDisplayedChat(chatId);
@@ -57,7 +52,17 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           { chatId, studentPair, conversation: [], startTime: currentTime() },
         ]);
       });
+    }
 
+    return () => {
+      if (socket) {
+        socket.off('chat started - two students');
+      }
+    };
+  }, [socket, studentChats.length]);
+
+  useEffect(() => {
+    if (socket) {
       socket.on('chat ended - two students', ({ chatId, student2 }) => {
         // remove the chat
         setStudentChats((chats) =>
@@ -71,30 +76,36 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
       socket.on(
         'student chat message',
         ({ character, message, socketId, chatId }) => {
-          const chats = [...studentChats];
-          const chat = chats.find((chat) => chat.chatId === chatId);
-          if (!chat) return;
+          setStudentChats((studentChats) => {
+            const chats = [...studentChats];
+            const chat = chats.find((chat) => chat.chatId === chatId);
+            if (!chat) return;
 
-          const student =
-            chat.studentPair[0].socketId === socketId ? 'student1' : 'student2';
-          chat.conversation = [
-            ...chat.conversation,
-            [student, character, message],
-          ];
-          setStudentChats(chats);
+            const student =
+              chat.studentPair[0].socketId === socketId
+                ? 'student1'
+                : 'student2';
+            chat.conversation = [
+              ...chat.conversation,
+              [student, character, message],
+            ];
+            return chats;
+          });
         },
       );
     }
 
-    return () => {
-      if (socket) {
-        socket.off('chat started - two students');
-        socket.off('chat ended - two students');
-        socket.off('student chat message');
-        router.events.off('routeChangeStart', handleRouteChange);
-      }
+    const handleRouteChange = (url, { shallow }) => {
+      socket.emit('user disconnected');
     };
-  }, [router.events, socket, studentChats]);
+    router.events.on('routeChangeStart', handleRouteChange);
+
+    return () => {
+      socket.off('chat ended - two students');
+      socket.off('student chat message');
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, [router.events, socket]);
 
   function showDisplayedChat() {
     const chat = studentChats.find((chat) => chat.chatId === displayedChat);
