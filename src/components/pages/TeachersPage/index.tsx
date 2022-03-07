@@ -26,6 +26,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
   const socket = useContext(SocketContext);
   console.log('Teacher socketId:', socket?.id ?? 'No socket found');
 
+  const [unpairedStudents, setUnpairedStudents] = useState<Student[]>([]);
   const [displayedChat, setDisplayedChat] = useState('');
   const [studentChats, setStudentChats] = useState<StudentChat[]>([
     // {
@@ -43,11 +44,6 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
   ]);
 
   useEffect(() => {
-    const handleRouteChange = (url, { shallow }) => {
-      socket.emit('user disconnected');
-    };
-    router.events.on('routeChangeStart', handleRouteChange);
-
     if (socket) {
       socket.on('chat started - two students', ({ chatId, studentPair }) => {
         if (studentChats.length === 0) setDisplayedChat(chatId);
@@ -56,40 +52,68 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           { chatId, studentPair, conversation: [], startTime: currentTime() },
         ]);
       });
-
-      socket.on('chat ended - two students', ({ chatId }) => {
-        setStudentChats((chats) =>
-          chats.filter((chat) => chat.chatId !== chatId),
-        );
-      });
-
-      socket.on(
-        'student chat message',
-        ({ character, message, socketId, chatId }) => {
-          const chats = [...studentChats];
-          const chat = chats.find((chat) => chat.chatId === chatId);
-          if (!chat) return;
-
-          const student =
-            chat.studentPair[0].socketId === socketId ? 'student1' : 'student2';
-          chat.conversation = [
-            ...chat.conversation,
-            [student, character, message],
-          ];
-          setStudentChats(chats);
-        },
-      );
     }
 
     return () => {
       if (socket) {
         socket.off('chat started - two students');
-        socket.off('chat ended - two students');
-        socket.off('student chat message');
-        router.events.off('routeChangeStart', handleRouteChange);
       }
     };
-  });
+  }, [socket, studentChats.length]);
+
+  useEffect(() => {
+    if (socket) {
+      socket.on('chat ended - two students', ({ chatId, student2 }) => {
+        // remove the chat
+        setStudentChats((chats) =>
+          chats.filter((chat) => chat.chatId !== chatId),
+        );
+
+        // add the student who remains back into unpaired student list
+        setUnpairedStudents((unpaired) => [...unpaired, student2]);
+      });
+
+      socket.on(
+        'student chat message',
+        ({ character, message, socketId, chatId }) => {
+          setStudentChats((studentChats) => {
+            const chats = [...studentChats];
+            const chatIndex = chats.findIndex((chat) => chat.chatId === chatId);
+            if (chatIndex === -1) return studentChats;
+
+            const chat = chats[chatIndex];
+
+            const student =
+              chat.studentPair[0].socketId === socketId
+                ? 'student1'
+                : 'student2';
+
+            const newMessage: ChatMessage = [student, character, message];
+
+            const updatedChat = {
+              ...chat,
+              conversation: [...chat.conversation, newMessage],
+            };
+
+            chats[chatIndex] = updatedChat;
+
+            return chats;
+          });
+        },
+      );
+    }
+
+    const handleRouteChange = (url, { shallow }) => {
+      socket.emit('user disconnected');
+    };
+    router.events.on('routeChangeStart', handleRouteChange);
+
+    return () => {
+      socket.off('chat ended - two students');
+      socket.off('student chat message');
+      router.events.off('routeChangeStart', handleRouteChange);
+    };
+  }, [router.events, socket]);
 
   function showDisplayedChat() {
     const chat = studentChats.find((chat) => chat.chatId === displayedChat);
@@ -108,7 +132,11 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
 
       <Grid container spacing={2}>
         <Grid item xs={12} md={5}>
-          <UnpairedStudentsList socket={socket} />
+          <UnpairedStudentsList
+            socket={socket}
+            unpairedStudents={unpairedStudents}
+            setUnpairedStudents={setUnpairedStudents}
+          />
           <PairedStudentsList
             studentChats={studentChats}
             setDisplayedChat={setDisplayedChat}
