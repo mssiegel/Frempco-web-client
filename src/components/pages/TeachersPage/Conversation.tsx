@@ -11,8 +11,8 @@ export default function Conversation({ chat }) {
   const lastMessage = useRef(null);
 
   useEffect(() => {
-    scrollDown(lastMessage);
-  }, [chat.conversation]);
+    if (chat.chatId !== 'homepage sample chat') scrollDown(lastMessage);
+  }, [chat.chatId, chat.conversation]);
 
   return (
     <Box>

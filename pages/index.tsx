@@ -18,7 +18,7 @@ import BasicModal from '@components/shared/Modal';
 import ModalTextField from '@components/shared/ModalTextField';
 
 const exampleChat = {
-  chatId: 'as343da11sf#as31afdsf',
+  chatId: 'homepage sample chat',
   studentPair: [
     {
       socketId: '343d11sf',
@@ -111,7 +111,7 @@ export default function Home() {
 
       <main>
         <Typography
-          variant='h1'
+          variant='h3'
           sx={{ color: (theme) => theme.palette.common.white }}
         >
           Welcome to Frempco!
