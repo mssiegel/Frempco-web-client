@@ -12,7 +12,7 @@ export default function Conversation({ chat, parentRef }) {
 
   useEffect(() => {
     scrollDown(lastMessage, parentRef);
-  }, [chat.conversation]);
+  }, [chat.conversation, parentRef]);
 
   return (
     <Box>
