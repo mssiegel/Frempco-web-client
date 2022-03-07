@@ -4,8 +4,9 @@ import {
   Lightbulb as LightbulbIcon,
 } from '@mui/icons-material';
 import Head from 'next/head';
-import { useContext, useState, useRef } from 'react';
+import { useContext, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/router';
+import { throttle } from 'lodash-es';
 
 import Link from '@components/shared/Link';
 import Layout from '@components/shared/Layout';
@@ -62,7 +63,7 @@ export default function Home() {
   const passTeacherInput = useRef<HTMLInputElement>(null);
 
   async function visitStudentsPage() {
-    const classroom = classStudentInput.current.value;
+    const classroom = classStudentInput.current.value?.trim();
     const classroomObj = getClassroom(classroom);
     if (!classroomObj) return window.alert(`Invalid classroom: ${classroom}`);
     const getResponse = await fetch(`${apiUrl}/classrooms/${classroom}`);
@@ -71,16 +72,21 @@ export default function Home() {
       return window.alert(
         `Classroom not activated: ${classroom}\n Please wait for your teacher to activate your classroom and try again.`,
       );
-    const student = studentNameInput.current.value;
-    if (student?.trim()) {
+    const student = studentNameInput.current.value?.trim();
+    if (student) {
       socket.emit('new student entered', { classroom, student });
       setUser({ name: student });
       router.push(`/student/classroom/${classroom}`);
     }
   }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  const throttledVisitStudentsPage = useCallback(
+    throttle(() => visitStudentsPage(), 2000),
+    [],
+  );
 
   function visitTeachersPage() {
-    const classroom = classTeacherInput.current.value;
+    const classroom = classTeacherInput.current.value?.trim();
     const classroomObj = getClassroom(classroom);
     if (!classroomObj) return window.alert(`Invalid classroom: ${classroom}`);
 
@@ -160,7 +166,11 @@ export default function Home() {
           />
           <ModalTextField label='Your Name' refObject={studentNameInput} />
 
-          <Button variant='contained' size='large' onClick={visitStudentsPage}>
+          <Button
+            variant='contained'
+            size='large'
+            onClick={throttledVisitStudentsPage}
+          >
             Visit Student&apos;s Room
           </Button>
         </BasicModal>
