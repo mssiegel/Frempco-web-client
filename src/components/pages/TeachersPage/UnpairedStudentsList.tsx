@@ -6,14 +6,13 @@ import {
   Button,
   Divider,
   List,
-  ListItemText,
   ListSubheader,
   TextField,
 } from '@mui/material';
 import { Chat as ChatIcon, PersonOutline } from '@mui/icons-material';
 
 import { getRandom, swap } from '@utils/classrooms';
-import unpairedStudentsCSS from './UnpairedStudentsList.css';
+import UnpairedStudentItem from './UnpairedStudentItem';
 import BasicModal from '@components/shared/Modal';
 
 const CHARACTERS = [
@@ -103,6 +102,17 @@ export default function UnpairedStudentsList({
     setUnpairedStudents(unpaired);
   }
 
+  function removeStudent(student) {
+    const removeConfirmed = confirm(
+      `Are you sure you want to remove ${student.realName} ?`,
+    );
+    if (removeConfirmed)
+      setUnpairedStudents((students) =>
+        students.filter((s) => s.socketId !== student.socketId),
+      );
+    socket.emit('remove student from classroom', student);
+  }
+
   return (
     <>
       <BasicModal
@@ -135,13 +145,14 @@ export default function UnpairedStudentsList({
         {unpairedStudents.map((student, i) => (
           <div key={student.realName + student.socketId}>
             {i % 2 === 0 && <Divider />}
-            <ListItemText
-              inset
-              primary={student.realName}
-              css={
-                unpairedStudents.length > 1 && unpairedStudentsCSS.studentName
-              }
-              onClick={() => swapUnpairedStudent(i)}
+            <UnpairedStudentItem
+              params={{
+                i,
+                student,
+                removeStudent,
+                unpairedStudents,
+                swapUnpairedStudent,
+              }}
             />
           </div>
         ))}
