@@ -140,6 +140,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           <PairedStudentsList
             studentChats={studentChats}
             setDisplayedChat={setDisplayedChat}
+            displayedChat={displayedChat}
           />
         </Grid>
 
