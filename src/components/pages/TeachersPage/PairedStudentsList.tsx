@@ -55,12 +55,14 @@ export default function PairedStudentsList({
                   inset
                   primary={
                     <Box sx={{ minHeight: 40 }}>
-                      <Button
-                        size='small'
-                        onClick={() => setDisplayedChat(chatId)}
-                      >
-                        Display chat
-                      </Button>
+                      {!selected && (
+                        <Button
+                          size='small'
+                          onClick={() => setDisplayedChat(chatId)}
+                        >
+                          Display chat
+                        </Button>
+                      )}
 
                       <Button
                         sx={{ marginRight: 6, float: 'right' }}
