@@ -43,6 +43,14 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     // },
   ]);
 
+  const unpair = (chatId, student1, student2) => {
+    const unpairConfirmed = confirm(
+      `Are you sure you want to unpair ${student1.realName} & ${student2.realName} ?`,
+    );
+    unpairConfirmed &&
+      socket.emit('unpair student chat', { chatId, student1, student2 });
+  };
+
   useEffect(() => {
     if (socket) {
       socket.on('chat started - two students', ({ chatId, studentPair }) => {
@@ -52,11 +60,19 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           { chatId, studentPair, conversation: [], startTime: currentTime() },
         ]);
       });
+
+      socket.on('student chat unpaired', ({ chatId, student1, student2 }) => {
+        setStudentChats((chats) =>
+          chats.filter((chat) => chat.chatId !== chatId),
+        );
+        setUnpairedStudents((unpaired) => [...unpaired, student1, student2]);
+      });
     }
 
     return () => {
       if (socket) {
         socket.off('chat started - two students');
+        socket.off('student chat unpaired');
       }
     };
   }, [socket, studentChats.length]);
@@ -140,6 +156,8 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           <PairedStudentsList
             studentChats={studentChats}
             setDisplayedChat={setDisplayedChat}
+            displayedChat={displayedChat}
+            unpair={unpair}
           />
         </Grid>
 
