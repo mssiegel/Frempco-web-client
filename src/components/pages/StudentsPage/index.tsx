@@ -65,12 +65,13 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
   return (
     <main>
       <Typography variant='h4' sx={{ color: 'white', mb: 4 }}>
-        {!removedFromClass && (
+        {removedFromClass ? (
+          <>Your teacher has removed you from the classroom</>
+        ) : (
           <>
             Hello {name}! Welcome to your classroom: {classroomName}
           </>
         )}
-        {removedFromClass && <>You have been removed from the classroom.</>}
       </Typography>
       {chatInSession && (
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
