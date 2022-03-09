@@ -15,7 +15,7 @@ export default function PairedStudentsList({
   studentChats,
   setDisplayedChat,
   displayedChat,
-  unPair,
+  unpair,
 }) {
   return (
     <Box sx={{ py: 3 }}>
@@ -54,7 +54,7 @@ export default function PairedStudentsList({
                 <ListItemText
                   inset
                   primary={
-                    <Box sx={{ paddingBottom: 1 }}>
+                    <Box sx={{ minHeight: 40 }}>
                       <Button
                         size='small'
                         onClick={() => setDisplayedChat(chatId)}
@@ -63,10 +63,11 @@ export default function PairedStudentsList({
                       </Button>
 
                       <Button
+                        sx={{ marginRight: 6, float: 'right' }}
                         size='small'
                         color='warning'
                         variant='contained'
-                        onClick={() => unPair(chatId, student1, student2)}
+                        onClick={() => unpair(chatId, student1, student2)}
                       >
                         Unpair
                       </Button>

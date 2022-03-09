@@ -43,7 +43,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     // },
   ]);
 
-  const unPair = (chatId, student1, student2) => {
+  const unpair = (chatId, student1, student2) => {
     const unpairConfirmed = confirm(
       `Are you sure you want to unpair ${student1.realName} & ${student2.realName} ?`,
     );
@@ -157,7 +157,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
             studentChats={studentChats}
             setDisplayedChat={setDisplayedChat}
             displayedChat={displayedChat}
-            unPair={unPair}
+            unpair={unpair}
           />
         </Grid>
 
