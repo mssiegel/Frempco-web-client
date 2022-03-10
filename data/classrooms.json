@@ -1,5 +1,9 @@
 [
   {
+    "classroomName": "test",
+    "password": 111
+  },
+  {
     "classroomName": "apple",
     "password": 111
   },
