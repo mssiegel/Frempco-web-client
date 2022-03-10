@@ -79,6 +79,26 @@ export default function Home() {
       router.push(`/student/classroom/${classroom}`);
     }
   }
+
+  // for dev link shortcut
+  async function testVisitStudentsPage() {
+    const classroom = sampleClassroomName; // using test classroom
+    const classroomObj = getClassroom(classroom);
+    if (!classroomObj) return window.alert(`Invalid classroom: ${classroom}`);
+    const getResponse = await fetch(`${apiUrl}/classrooms/${classroom}`);
+    const { isActive } = await getResponse.json();
+    if (!isActive)
+      return window.alert(
+        `Classroom not activated: ${classroom}\n Please wait for your teacher to activate your classroom and try again.`,
+      );
+    const student = `TestUser${Math.trunc(Math.random() * 1000).toString()}`; // generate random student name
+    if (student) {
+      socket.emit('new student entered', { classroom, student });
+      setUser({ name: student });
+      router.push(`/student/classroom/${classroom}`);
+    }
+  }
+
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const throttledVisitStudentsPage = useCallback(
     throttle(() => visitStudentsPage(), 2000),
@@ -208,7 +228,7 @@ export default function Home() {
               </Link>
             </Typography>
             <Typography variant='h5' sx={{ m: 3 }}>
-              <Link href={`/student/classroom/${sampleClassroomName}`}>
+              <Link href='#' onClick={testVisitStudentsPage}>
                 Visit Students classroom page
               </Link>
             </Typography>
