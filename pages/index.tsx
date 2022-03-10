@@ -64,25 +64,19 @@ export default function Home() {
 
   async function visitStudentsPage() {
     const classroom = classStudentInput.current.value?.trim();
-    const classroomObj = getClassroom(classroom);
-    if (!classroomObj) return window.alert(`Invalid classroom: ${classroom}`);
-    const getResponse = await fetch(`${apiUrl}/classrooms/${classroom}`);
-    const { isActive } = await getResponse.json();
-    if (!isActive)
-      return window.alert(
-        `Classroom not activated: ${classroom}\n Please wait for your teacher to activate your classroom and try again.`,
-      );
     const student = studentNameInput.current.value?.trim();
-    if (student) {
-      socket.emit('new student entered', { classroom, student });
-      setUser({ name: student });
-      router.push(`/student/classroom/${classroom}`);
-    }
+    await visitStudentsPageHelper(classroom, student);
   }
 
   // for dev link shortcut
   async function testVisitStudentsPage() {
-    const classroom = sampleClassroomName; // using test classroom
+    // grabs test classroom name
+    const classroom = sampleClassroomName;
+    const student = `Student ${Math.trunc(Math.random() * 10000).toString()}`;
+    await visitStudentsPageHelper(classroom, student);
+  }
+
+  async function visitStudentsPageHelper(classroom: string, student: string) {
     const classroomObj = getClassroom(classroom);
     if (!classroomObj) return window.alert(`Invalid classroom: ${classroom}`);
     const getResponse = await fetch(`${apiUrl}/classrooms/${classroom}`);
@@ -91,7 +85,6 @@ export default function Home() {
       return window.alert(
         `Classroom not activated: ${classroom}\n Please wait for your teacher to activate your classroom and try again.`,
       );
-    const student = `Student ${Math.trunc(Math.random() * 10000).toString()}`; // generate random student name
     if (student) {
       socket.emit('new student entered', { classroom, student });
       setUser({ name: student });
