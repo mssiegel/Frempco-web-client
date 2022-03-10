@@ -91,7 +91,7 @@ export default function Home() {
       return window.alert(
         `Classroom not activated: ${classroom}\n Please wait for your teacher to activate your classroom and try again.`,
       );
-    const student = `TestUser${Math.trunc(Math.random() * 1000).toString()}`; // generate random student name
+    const student = `Student ${Math.trunc(Math.random() * 10000).toString()}`; // generate random student name
     if (student) {
       socket.emit('new student entered', { classroom, student });
       setUser({ name: student });
