@@ -102,17 +102,6 @@ export default function UnpairedStudentsList({
     setUnpairedStudents(unpaired);
   }
 
-  function removeStudent(student) {
-    const removeConfirmed = confirm(
-      `Are you sure you want to remove ${student.realName} ?`,
-    );
-    if (removeConfirmed)
-      setUnpairedStudents((students) =>
-        students.filter((s) => s.socketId !== student.socketId),
-      );
-    socket.emit('remove student from classroom', student);
-  }
-
   return (
     <>
       <BasicModal
@@ -146,13 +135,12 @@ export default function UnpairedStudentsList({
           <div key={student.realName + student.socketId}>
             {i % 2 === 0 && <Divider />}
             <UnpairedStudentItem
-              params={{
-                i,
-                student,
-                removeStudent,
-                unpairedStudents,
-                swapUnpairedStudent,
-              }}
+              i={i}
+              student={student}
+              socket={socket}
+              unpairedStudents={unpairedStudents}
+              setUnpairedStudents={setUnpairedStudents}
+              swapUnpairedStudent={swapUnpairedStudent}
             />
           </div>
         ))}
