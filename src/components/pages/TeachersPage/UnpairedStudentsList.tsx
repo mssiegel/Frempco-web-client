@@ -6,14 +6,13 @@ import {
   Button,
   Divider,
   List,
-  ListItemText,
   ListSubheader,
   TextField,
 } from '@mui/material';
 import { Chat as ChatIcon, PersonOutline } from '@mui/icons-material';
 
 import { getRandom, swap } from '@utils/classrooms';
-import unpairedStudentsCSS from './UnpairedStudentsList.css';
+import UnpairedStudentItem from './UnpairedStudentItem';
 import BasicModal from '@components/shared/Modal';
 
 const CHARACTERS = [
@@ -135,13 +134,13 @@ export default function UnpairedStudentsList({
         {unpairedStudents.map((student, i) => (
           <div key={student.realName + student.socketId}>
             {i % 2 === 0 && <Divider />}
-            <ListItemText
-              inset
-              primary={student.realName}
-              css={
-                unpairedStudents.length > 1 && unpairedStudentsCSS.studentName
-              }
-              onClick={() => swapUnpairedStudent(i)}
+            <UnpairedStudentItem
+              i={i}
+              student={student}
+              socket={socket}
+              unpairedStudents={unpairedStudents}
+              setUnpairedStudents={setUnpairedStudents}
+              swapUnpairedStudent={swapUnpairedStudent}
             />
           </div>
         ))}
