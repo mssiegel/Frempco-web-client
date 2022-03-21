@@ -29,7 +29,7 @@ export default function Conversation({ socket, chat, setChat }) {
   }, [chat.conversation]);
 
   return (
-    <Box>
+    <Box id='conversation'>
       <Box css={conversationCSS.introText}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <span>
