@@ -8,11 +8,11 @@ export default function CopyButton({ elementId }) {
     const temp = document.createElement('div');
     temp.setAttribute('contentEditable', 'true');
     temp.innerHTML = document.getElementById(elementId).innerHTML;
+    document.body.appendChild(temp);
     temp.setAttribute(
       'onfocus',
       "document.execCommand('selectAll',false,null)",
     );
-    document.body.appendChild(temp);
     temp.focus();
     document.execCommand('copy');
     document.body.removeChild(temp);
