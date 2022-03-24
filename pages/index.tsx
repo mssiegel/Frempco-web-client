@@ -63,7 +63,7 @@ export default function Home() {
   const passTeacherInput = useRef<HTMLInputElement>(null);
 
   async function visitStudentsPage() {
-    const classroom = classStudentInput.current.value?.trim();
+    const classroom = classStudentInput.current.value?.trim().toLowerCase();
     const student = studentNameInput.current.value?.trim();
     await visitStudentsPageHelper(classroom, student);
   }
@@ -99,7 +99,7 @@ export default function Home() {
   );
 
   function visitTeachersPage() {
-    const classroom = classTeacherInput.current.value?.trim();
+    const classroom = classTeacherInput.current.value?.trim().toLowerCase();
     const classroomObj = getClassroom(classroom);
     if (!classroomObj) return window.alert(`Invalid classroom: ${classroom}`);
 
