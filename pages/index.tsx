@@ -1,6 +1,6 @@
 import Head from 'next/head';
 import Layout from '@components/shared/Layout';
-import HomePage from '../src/components/pages/HomePage';
+import HomePage from '../src/components/pages/HomePage/index';
 
 export default function Home() {
   return (
