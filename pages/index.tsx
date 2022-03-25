@@ -1,4 +1,5 @@
 import Head from 'next/head';
+
 import Layout from '@components/shared/Layout';
 import HomePage from '@components/pages/HomePage/index';
 
