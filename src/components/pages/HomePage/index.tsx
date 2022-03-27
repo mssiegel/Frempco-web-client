@@ -7,13 +7,13 @@ import { useContext, useState, useRef, useCallback } from 'react';
 import { useRouter } from 'next/router';
 import { throttle } from 'lodash-es';
 
-import Link from '@components/shared/Link';
-import { getClassroom, sampleClassroomName } from '@utils/classrooms';
+import { getClassroom } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
 import { UserContext } from '@contexts/UserContext';
 import Chatbox from '@components/pages/TeachersPage/Chatbox';
 import BasicModal from '@components/shared/Modal';
 import ModalTextField from '@components/shared/ModalTextField';
+import DevLinkShortcuts from './DevLinkShortcuts';
 
 const exampleChat = {
   chatId: 'homepage sample chat',
@@ -66,14 +66,6 @@ export default function HomePage() {
     await visitStudentsPageHelper(classroom, student);
   }
 
-  // for dev link shortcut
-  async function testVisitStudentsPage() {
-    // grabs test classroom name
-    const classroom = sampleClassroomName;
-    const student = `Student ${Math.trunc(Math.random() * 10000).toString()}`;
-    await visitStudentsPageHelper(classroom, student);
-  }
-
   async function visitStudentsPageHelper(classroom: string, student: string) {
     const classroomObj = getClassroom(classroom);
     if (!classroomObj) return window.alert(`Invalid classroom: ${classroom}`);
@@ -121,7 +113,7 @@ export default function HomePage() {
         <Grid item xs={12} md={4}>
           <Box sx={{ m: 5 }}>
             <Typography variant='h3' sx={{ color: 'white', mb: 1 }}>
-              For Students:
+              Students:
             </Typography>
             <Button
               variant='contained'
@@ -133,7 +125,7 @@ export default function HomePage() {
             </Button>
 
             <Typography variant='h3' sx={{ color: 'white', mb: 1, mt: 8 }}>
-              For Teachers:
+              Teachers:
             </Typography>
             <Button
               variant='contained'
@@ -192,21 +184,7 @@ export default function HomePage() {
       </BasicModal>
 
       {process.env.NEXT_PUBLIC_NODE_ENV === 'development' && (
-        <>
-          <Typography variant='h5' sx={{ m: 3, mt: 10, color: 'gray' }}>
-            These link shortcuts only appear in the development environment:
-          </Typography>
-          <Typography variant='h5' sx={{ m: 3 }}>
-            <Link href={`/teacher/classroom/${sampleClassroomName}`}>
-              Visit Teachers admin page
-            </Link>
-          </Typography>
-          <Typography variant='h5' sx={{ m: 3 }}>
-            <Link href='#' onClick={testVisitStudentsPage}>
-              Visit Students classroom page
-            </Link>
-          </Typography>
-        </>
+        <DevLinkShortcuts visitStudentsPageHelper={visitStudentsPageHelper} />
       )}
     </main>
   );

@@ -46,7 +46,7 @@ export function scrollDown(refObject) {
     refObject.current.scrollIntoView({ behavior: 'smooth' });
 }
 
-export const sampleClassroomName = classrooms[0].classroomName;
+export const testClassroomName = classrooms[0].classroomName;
 
 export interface ClassroomProps {
   classroomName: string;
