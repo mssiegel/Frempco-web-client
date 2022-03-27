@@ -27,15 +27,10 @@ export default function UnpairedStudentItem({
   }
 
   function removeStudent(student) {
-    const removeConfirmed = confirm(
+    const confirmation = confirm(
       `Are you sure you want to remove ${student.realName}?`,
     );
-    if (removeConfirmed) {
-      socket.emit('remove student from classroom', student);
-      setUnpairedStudents((students) =>
-        students.filter((s) => s.socketId !== student.socketId),
-      );
-    }
+    if (confirmation) socket.emit('remove student from classroom', student);
   }
 
   return (
