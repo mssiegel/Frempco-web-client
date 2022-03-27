@@ -1,17 +1,10 @@
 /** @jsxImportSource @emotion/react */
 
 import { useEffect, useRef, useState } from 'react';
-import {
-  Box,
-  Button,
-  Divider,
-  List,
-  ListSubheader,
-  TextField,
-} from '@mui/material';
+import { Box, Button, Divider, TextField } from '@mui/material';
 import { Chat as ChatIcon, PersonOutline } from '@mui/icons-material';
 
-import { getRandom, swap } from '@utils/classrooms';
+import { getRandom } from '@utils/classrooms';
 import UnpairedStudentItem from './UnpairedStudentItem';
 import BasicModal from '@components/shared/Modal';
 
@@ -93,15 +86,6 @@ export default function UnpairedStudentsList({
     setUnpairedStudents(isUnpairedEven ? [] : [lastStudent]);
   }
 
-  function swapUnpairedStudent(studentI) {
-    // moves a student down in the list of unpaired students
-    const unpaired = [...unpairedStudents];
-    const endI = studentI + 1 === unpairedStudents.length;
-    swap(unpaired, studentI, endI ? 0 : studentI + 1);
-
-    setUnpairedStudents(unpaired);
-  }
-
   return (
     <>
       <BasicModal
@@ -123,26 +107,27 @@ export default function UnpairedStudentsList({
           </Button>
         </Box>
       </BasicModal>
-      <List
-        sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}
-        subheader={
-          <ListSubheader>
-            Total unpaired students: {unpairedStudents.length}
-          </ListSubheader>
-        }
+
+      <Box
+        sx={{
+          maxWidth: '400px',
+          bgcolor: 'white',
+          border: '1px solid black',
+          p: '5px',
+          pb: '15px',
+        }}
       >
+        Total unpaired students: <strong>{unpairedStudents.length}</strong>
         {unpairedStudents.map((student, i) => (
-          <div key={student.realName + student.socketId}>
+          <Box key={student.realName + student.socketId}>
             {i % 2 === 0 && <Divider />}
             <UnpairedStudentItem
               i={i}
               student={student}
               socket={socket}
-              unpairedStudents={unpairedStudents}
               setUnpairedStudents={setUnpairedStudents}
-              swapUnpairedStudent={swapUnpairedStudent}
             />
-          </div>
+          </Box>
         ))}
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Button
@@ -168,7 +153,7 @@ export default function UnpairedStudentsList({
             Set Character List
           </Button>
         </Box>
-      </List>
+      </Box>
     </>
   );
 }
