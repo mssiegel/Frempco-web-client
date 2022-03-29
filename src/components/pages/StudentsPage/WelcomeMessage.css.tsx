@@ -1,18 +1,18 @@
 import { css } from '@emotion/react';
 
-const unpairedMessageContainer = css`
+const welcomeMessageContainer = css`
   background: #f8e5e0;
   color: red;
   width: 98%;
   max-width: 800px;
-  border: 1px solid white;
   border-radius: 10px;
-  padding: 70px 0;
+  padding-top: 70px;
+  padding-bottom: 70px;
   text-align: center;
 `;
 
-const unpairedMessageCSS = {
-  unpairedMessageContainer,
+const welcomeMessageCSS = {
+  welcomeMessageContainer,
 };
 
-export default unpairedMessageCSS;
+export default welcomeMessageCSS;

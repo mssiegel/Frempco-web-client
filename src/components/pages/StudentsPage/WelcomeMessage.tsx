@@ -1,25 +1,26 @@
 /** @jsxImportSource @emotion/react */
 
-import { Box, Typography, Link } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
-import unpairedMessageCSS from './WelcomeMessage.css';
+import Link from '@components/shared/Link';
+import welcomeMessageCSS from './WelcomeMessage.css';
 
-export default function WelcomeMessage({ classroom, removed }) {
+export default function WelcomeMessage({ classroomName, removedFromClass }) {
   return (
-    <Box css={unpairedMessageCSS.unpairedMessageContainer}>
-      {removed ? (
+    <Box css={welcomeMessageCSS.welcomeMessageContainer}>
+      {removedFromClass ? (
         <>
           <Typography variant='h4' sx={{ mb: 4 }}>
-            Your teacher has removed you from the classroom.
+            Your teacher removed you from the classroom.
           </Typography>
           <Typography variant='h4'>
-            Please return to the Frempco <Link href='/'>homepage</Link>
+            Please return to the <Link href='/'>homepage</Link>
           </Typography>
         </>
       ) : (
         <>
           <Typography variant='h4' sx={{ mb: 4 }}>
-            Welcome to your classroom: {classroom}
+            Welcome to your classroom: {classroomName}
           </Typography>
           <Typography variant='h4'>Your teacher will pair you soon.</Typography>
         </>

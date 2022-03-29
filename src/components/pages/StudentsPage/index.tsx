@@ -73,8 +73,8 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
           <Chatbox socket={socket} chat={chat} setChat={setChat} />
         ) : (
           <WelcomeMessage
-            classroom={classroomName}
-            removed={removedFromClass}
+            classroomName={classroomName}
+            removedFromClass={removedFromClass}
           />
         )}
       </Box>
