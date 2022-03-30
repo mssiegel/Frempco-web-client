@@ -7,6 +7,7 @@ import { UserContext } from '@contexts/UserContext';
 import Chatbox from './Chatbox';
 import { useRouter } from 'next/router';
 import Link from 'next/link';
+import WelcomeMessage from './WelcomeMessage';
 
 export default function StudentsPage({ classroomName }: ClassroomProps) {
   const socket = useContext(SocketContext);
@@ -65,15 +66,18 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
   return (
     <main>
       <Typography variant='h4' sx={{ color: 'white', mb: 4 }}>
-        {removedFromClass
-          ? 'Your teacher has removed you from the classroom'
-          : `Hello ${name}! Welcome to your classroom: ${classroomName}`}
+        {`Hello ${name}!`}
       </Typography>
-      {chatInSession && (
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        {chatInSession ? (
           <Chatbox socket={socket} chat={chat} setChat={setChat} />
-        </Box>
-      )}
+        ) : (
+          <WelcomeMessage
+            classroomName={classroomName}
+            removedFromClass={removedFromClass}
+          />
+        )}
+      </Box>
     </main>
   );
 }
