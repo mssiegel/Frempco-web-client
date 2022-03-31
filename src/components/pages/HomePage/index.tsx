@@ -84,7 +84,10 @@ export default function HomePage() {
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const throttledVisitStudentsPage = useCallback(
-    throttle(() => visitStudentsPage(), 2000),
+    throttle(() => visitStudentsPage(), 2000, {
+      leading: true,
+      trailing: false,
+    }),
     [],
   );
 
