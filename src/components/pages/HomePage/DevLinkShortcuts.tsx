@@ -9,7 +9,6 @@ import Link from '@components/shared/Link';
 
 export default function DevLinkShortcuts({ visitStudentsPageHelper }) {
   async function testVisitStudentsPage() {
-    console.log('clicked');
     const classroom = testClassroomName;
     const student = `Student ${Math.trunc(Math.random() * 10000).toString()}`;
     await visitStudentsPageHelper(classroom, student);
