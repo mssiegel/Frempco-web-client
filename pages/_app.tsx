@@ -11,6 +11,7 @@ import { createEmotionCache } from '@config/emotion';
 import { SocketProvider } from 'src/contexts/SocketContext';
 import { UserProvider } from 'src/contexts/UserContext';
 import { useRouter } from 'next/router';
+import CheckAuthentication from 'src/routes/CheckAuthentication';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -21,41 +22,25 @@ interface MyAppProps extends AppProps {
 
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-
-  const denyList = [
-    '/teacher/classroom/[classroomName]',
-    '/student/classroom/[classroomName]',
-  ];
   const router = useRouter();
-  const [userIsAuthorized, setUserIsAuth] = React.useState(false);
-  /* Prevents Unauthorized Page Access to Teacher or Student Pages by checking what page the app starts on in the browser. If the app starts on a page in the denyList then the user is forced back to the homepage. This way all navigation to protected pages must happen from the homepage. */
-  React.useEffect(() => {
-    if (denyList.includes(router.pathname)) {
-      window.location.assign('/');
-    } else {
-      setUserIsAuth(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
-  if (userIsAuthorized)
-    return (
-      <CacheProvider value={emotionCache}>
-        <Head>
-          <title>Create Next App</title>
-          <meta name='viewport' content='initial-scale=1, width=device-width' />
-        </Head>
-        <ThemeProvider theme={theme}>
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <SocketProvider>
-            <UserProvider>
+  return (
+    <CacheProvider value={emotionCache}>
+      <Head>
+        <title>Create Next App</title>
+        <meta name='viewport' content='initial-scale=1, width=device-width' />
+      </Head>
+      <ThemeProvider theme={theme}>
+        {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+        <CssBaseline />
+        <SocketProvider>
+          <UserProvider>
+            <CheckAuthentication router={router}>
               <Component {...pageProps} />
-            </UserProvider>
-          </SocketProvider>
-        </ThemeProvider>
-      </CacheProvider>
-    );
-
-  return <></>;
+            </CheckAuthentication>
+          </UserProvider>
+        </SocketProvider>
+      </ThemeProvider>
+    </CacheProvider>
+  );
 }
