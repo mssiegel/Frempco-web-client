@@ -1,7 +1,6 @@
 import { css } from '@emotion/react';
 
 const chatboxContainer = css`
-  width: 98%;
   max-width: 500px;
 `;
 
