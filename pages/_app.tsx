@@ -10,7 +10,6 @@ import theme from '@theme/muiTheme';
 import { createEmotionCache } from '@config/emotion';
 import { SocketProvider } from 'src/contexts/SocketContext';
 import { UserProvider } from 'src/contexts/UserContext';
-import { useRouter } from 'next/router';
 import CheckAuthentication from 'src/routes/CheckAuthentication';
 
 // Client-side cache, shared for the whole session of the user in the browser.
@@ -22,7 +21,6 @@ interface MyAppProps extends AppProps {
 
 export default function MyApp(props: MyAppProps) {
   const { Component, emotionCache = clientSideEmotionCache, pageProps } = props;
-  const router = useRouter();
 
   return (
     <CacheProvider value={emotionCache}>
@@ -35,7 +33,7 @@ export default function MyApp(props: MyAppProps) {
         <CssBaseline />
         <SocketProvider>
           <UserProvider>
-            <CheckAuthentication router={router}>
+            <CheckAuthentication>
               <Component {...pageProps} />
             </CheckAuthentication>
           </UserProvider>
