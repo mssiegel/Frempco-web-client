@@ -8,7 +8,7 @@ This code was copied & pasted directly from the Material UI example at:
 https://mui.com/guides/routing/#next-js
 */
 
-import * as React from 'react';
+import { forwardRef } from 'react';
 import clsx from 'clsx';
 import { useRouter } from 'next/router';
 import NextLink, { LinkProps as NextLinkProps } from 'next/link';
@@ -26,37 +26,36 @@ interface NextLinkComposedProps
   href?: NextLinkProps['href'];
 }
 
-const NextLinkComposed = React.forwardRef<
-  HTMLAnchorElement,
-  NextLinkComposedProps
->(function NextLinkComposed(props, ref) {
-  const {
-    to,
-    linkAs,
-    href,
-    replace,
-    scroll,
-    shallow,
-    prefetch,
-    locale,
-    ...other
-  } = props;
+const NextLinkComposed = forwardRef<HTMLAnchorElement, NextLinkComposedProps>(
+  function NextLinkComposed(props, ref) {
+    const {
+      to,
+      linkAs,
+      href,
+      replace,
+      scroll,
+      shallow,
+      prefetch,
+      locale,
+      ...other
+    } = props;
 
-  return (
-    <NextLink
-      href={to}
-      prefetch={prefetch}
-      as={linkAs}
-      replace={replace}
-      scroll={scroll}
-      shallow={shallow}
-      passHref
-      locale={locale}
-    >
-      <Anchor ref={ref} {...other} />
-    </NextLink>
-  );
-});
+    return (
+      <NextLink
+        href={to}
+        prefetch={prefetch}
+        as={linkAs}
+        replace={replace}
+        scroll={scroll}
+        shallow={shallow}
+        passHref
+        locale={locale}
+      >
+        <Anchor ref={ref} {...other} />
+      </NextLink>
+    );
+  },
+);
 
 export type LinkProps = {
   activeClassName?: string;
@@ -68,7 +67,7 @@ export type LinkProps = {
 
 // A styled version of the Next.js Link component:
 // https://nextjs.org/docs/#with-link
-const Link = React.forwardRef<HTMLAnchorElement, LinkProps>(function Link(
+const Link = forwardRef<HTMLAnchorElement, LinkProps>(function Link(
   props,
   ref,
 ) {
