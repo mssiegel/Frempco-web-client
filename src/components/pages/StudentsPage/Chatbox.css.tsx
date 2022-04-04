@@ -1,8 +1,10 @@
 import { css } from '@emotion/react';
 
 const chatboxContainer = css`
-  width: 98%;
   max-width: 500px;
+  /* widens the student chatbox to more easily type messages on mobile */
+  margin-left: -13px;
+  margin-right: -13px;
 `;
 
 const chatboxTop = css`
