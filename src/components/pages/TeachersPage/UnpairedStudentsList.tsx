@@ -178,7 +178,6 @@ export default function UnpairedStudentsList({
                   <Button
                     variant='contained'
                     size='small'
-                    color='success'
                     sx={{ top: '25%' }}
                     onClick={() => pairStudents(i * 2)}
                   >
