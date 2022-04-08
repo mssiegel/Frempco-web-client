@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { Box, Button, Divider, TextField, Grid } from '@mui/material';
 import { Chat as ChatIcon, PersonOutline } from '@mui/icons-material';
+import { chunk } from 'lodash-es';
 
 import { getRandom } from '@utils/classrooms';
 import UnpairedStudentItem from './UnpairedStudentItem';
@@ -132,62 +133,45 @@ export default function UnpairedStudentsList({
         }}
       >
         Total unpaired students: <strong>{unpairedStudents.length}</strong>
-        {unpairedStudents
-          .reduce(function (studentPairs, currentValue, currentIndex, array) {
-            if (currentIndex % 2 === 0)
-              studentPairs.push(array.slice(currentIndex, currentIndex + 2));
-            return studentPairs;
-          }, [])
-          .map((pair, i) => (
-            <Grid
-              container
-              key={i}
-              sx={{
-                background: `${i % 2 === 0 ? '#f8e5e0' : ''}`,
-              }}
-            >
-              <Grid item xs={9}>
-                <Box>
-                  <UnpairedStudentItem
-                    i={i * 2}
-                    student={pair[0]}
-                    socket={socket}
-                    setUnpairedStudents={setUnpairedStudents}
-                  />
-                </Box>
-                <Box>
-                  {pair[1] !== undefined && (
-                    <UnpairedStudentItem
-                      i={i * 2 + 1}
-                      student={pair[1]}
-                      socket={socket}
-                      setUnpairedStudents={setUnpairedStudents}
-                    />
-                  )}
-                </Box>
-              </Grid>
-
-              <Grid
-                item
-                xs={3}
-                sx={{
-                  textAlign: 'center',
-                }}
-              >
-                {pair[1] !== undefined && (
-                  <Button
-                    variant='contained'
-                    size='small'
-                    sx={{ top: '25%' }}
-                    onClick={() => pairStudents(i * 2)}
-                  >
-                    Pair up
-                  </Button>
-                )}
-              </Grid>
-              <Divider />
+        {chunk(unpairedStudents, 2).map(([student1, student2], i) => (
+          <Grid
+            container
+            key={i}
+            sx={{
+              background: `${i % 2 === 0 ? '#f8e5e0' : ''}`,
+            }}
+          >
+            <Grid item xs={9}>
+              <UnpairedStudentItem
+                i={i * 2}
+                student={student1}
+                socket={socket}
+                setUnpairedStudents={setUnpairedStudents}
+              />
+              {student2 && (
+                <UnpairedStudentItem
+                  i={i * 2 + 1}
+                  student={student2}
+                  socket={socket}
+                  setUnpairedStudents={setUnpairedStudents}
+                />
+              )}
             </Grid>
-          ))}
+
+            {student2 && (
+              <Grid item xs={3} sx={{ textAlign: 'center' }}>
+                <Button
+                  variant='contained'
+                  size='small'
+                  sx={{ top: '25%' }}
+                  onClick={() => pairStudents(i * 2)}
+                >
+                  Pair up
+                </Button>
+              </Grid>
+            )}
+          </Grid>
+        ))}
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Button
             variant='contained'
