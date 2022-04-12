@@ -1,8 +1,9 @@
 /** @jsxImportSource @emotion/react */
 
 import { useEffect, useRef, useState } from 'react';
-import { Box, Button, Divider, TextField } from '@mui/material';
+import { Box, Button, Divider, TextField, Grid } from '@mui/material';
 import { Chat as ChatIcon, PersonOutline } from '@mui/icons-material';
+import { chunk } from 'lodash-es';
 
 import { getRandom } from '@utils/classrooms';
 import UnpairedStudentItem from './UnpairedStudentItem';
@@ -60,14 +61,21 @@ export default function UnpairedStudentsList({
     };
   }, [setUnpairedStudents, socket]);
 
-  function pairStudents() {
+  function pairStudents(studentIndex?: number) {
     if (unpairedStudents.length < 2)
       return window.alert('Pairing requires at least 2 students.');
-    // pair up any unpaired students
+    // pair up two students at studentIndex, or pair up all students if none given
     const studentPairs = [];
-    unpairedStudents.forEach((student, i) => {
-      if (i % 2 !== 0) studentPairs.push([unpairedStudents[i - 1], student]);
-    });
+    if (studentIndex !== undefined) {
+      studentPairs.push([
+        unpairedStudents[studentIndex],
+        unpairedStudents[studentIndex + 1],
+      ]);
+    } else {
+      unpairedStudents.forEach((student, i) => {
+        if (i % 2 !== 0) studentPairs.push([unpairedStudents[i - 1], student]);
+      });
+    }
     // assign character names
     for (const [student1, student2] of studentPairs) {
       student1.character = getRandom(characters) || student1.realName;
@@ -80,10 +88,17 @@ export default function UnpairedStudentsList({
     }
     socket.emit('pair students', { studentPairs });
 
-    // reset unpaired students
-    const isUnpairedEven = unpairedStudents.length % 2 === 0;
-    const lastStudent = unpairedStudents[unpairedStudents.length - 1];
-    setUnpairedStudents(isUnpairedEven ? [] : [lastStudent]);
+    // remove the two unpaired students
+    if (studentIndex !== undefined) {
+      const newUnpairedStudents = [...unpairedStudents];
+      newUnpairedStudents.splice(studentIndex, 2);
+      setUnpairedStudents(newUnpairedStudents);
+    } else {
+      // or reset all unpaired students
+      const isUnpairedEven = unpairedStudents.length % 2 === 0;
+      const lastStudent = unpairedStudents[unpairedStudents.length - 1];
+      setUnpairedStudents(isUnpairedEven ? [] : [lastStudent]);
+    }
   }
 
   return (
@@ -118,16 +133,44 @@ export default function UnpairedStudentsList({
         }}
       >
         Total unpaired students: <strong>{unpairedStudents.length}</strong>
-        {unpairedStudents.map((student, i) => (
-          <Box key={student.realName + student.socketId}>
-            {i % 2 === 0 && <Divider />}
-            <UnpairedStudentItem
-              i={i}
-              student={student}
-              socket={socket}
-              setUnpairedStudents={setUnpairedStudents}
-            />
-          </Box>
+        {chunk(unpairedStudents, 2).map(([student1, student2], i) => (
+          <Grid
+            container
+            key={i}
+            sx={{
+              background: `${i % 2 === 0 ? '#f8e5e0' : ''}`,
+            }}
+          >
+            <Grid item xs={9}>
+              <UnpairedStudentItem
+                i={i * 2}
+                student={student1}
+                socket={socket}
+                setUnpairedStudents={setUnpairedStudents}
+              />
+              {student2 && (
+                <UnpairedStudentItem
+                  i={i * 2 + 1}
+                  student={student2}
+                  socket={socket}
+                  setUnpairedStudents={setUnpairedStudents}
+                />
+              )}
+            </Grid>
+
+            {student2 && (
+              <Grid item xs={3} sx={{ textAlign: 'center' }}>
+                <Button
+                  variant='contained'
+                  size='small'
+                  sx={{ top: '25%' }}
+                  onClick={() => pairStudents(i * 2)}
+                >
+                  Pair up
+                </Button>
+              </Grid>
+            )}
+          </Grid>
         ))}
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Button
@@ -136,9 +179,9 @@ export default function UnpairedStudentsList({
             color='success'
             sx={{ mt: 2 }}
             startIcon={<ChatIcon />}
-            onClick={pairStudents}
+            onClick={() => pairStudents()}
           >
-            Pair up students
+            Pair up all students
           </Button>
         </Box>
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
