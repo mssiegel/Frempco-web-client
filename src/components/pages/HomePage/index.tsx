@@ -156,7 +156,11 @@ export default function HomePage() {
           refObject={classStudentInput}
           autoFocus={true}
         />
-        <ModalTextField label='Your Name' refObject={studentNameInput} />
+        <ModalTextField
+          label='Your Name'
+          refObject={studentNameInput}
+          maxLength={25}
+        />
 
         <Button
           variant='contained'
