@@ -159,7 +159,7 @@ export default function HomePage() {
         <ModalTextField
           label='Your Name'
           refObject={studentNameInput}
-          maxLength={25}
+          maxLength={20}
         />
 
         <Button
