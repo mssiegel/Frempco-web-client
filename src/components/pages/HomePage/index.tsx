@@ -77,7 +77,7 @@ export default function HomePage() {
       );
     if (student) {
       socket.emit('new student entered', { classroom, student });
-      setUser({ name: student });
+      setUser({ isLoggedIn: true, name: student });
       router.push(`/student/classroom/${classroom}`);
     }
   }
@@ -100,9 +100,14 @@ export default function HomePage() {
     if (String(classroomObj.password) !== password)
       return window.alert(`IncorrectPassword: ${password}`);
 
-    // Visit teachers page
+    visitTeachersPageHelper(classroom);
+  }
+
+  function visitTeachersPageHelper(classroom: string) {
+    setUser({ isLoggedIn: true });
     router.push(`/teacher/classroom/${classroom}`);
   }
+
   return (
     <main>
       <Typography
@@ -191,7 +196,10 @@ export default function HomePage() {
       </BasicModal>
 
       {process.env.NEXT_PUBLIC_NODE_ENV === 'development' && (
-        <DevLinkShortcuts visitStudentsPageHelper={visitStudentsPageHelper} />
+        <DevLinkShortcuts
+          visitTeachersPageHelper={visitTeachersPageHelper}
+          visitStudentsPageHelper={visitStudentsPageHelper}
+        />
       )}
     </main>
   );
