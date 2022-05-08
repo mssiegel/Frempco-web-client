@@ -13,12 +13,12 @@ export default function CheckAuthentication({ children }) {
     '/student/classroom/[classroomName]',
   ];
 
-  const isPathProtected = protectedRoutes.includes(router.pathname);
+  const isProtectedPath = protectedRoutes.includes(router.pathname);
 
   const { user } = useContext(UserContext);
   const { isLoggedIn } = user;
 
-  if (isBrowser() && isPathProtected && !isLoggedIn) router.push('/');
+  if (isBrowser() && isProtectedPath && !isLoggedIn) router.push('/');
 
   return children;
 }
