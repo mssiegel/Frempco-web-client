@@ -5,6 +5,7 @@ export default function ModalTextField({
   refObject,
   autoFocus = false,
   type = 'input',
+  maxLength = 100,
 }) {
   return (
     <TextField
@@ -16,6 +17,7 @@ export default function ModalTextField({
       autoComplete='off'
       inputRef={refObject}
       autoFocus={autoFocus}
+      inputProps={{ maxLength }}
     />
   );
 }
