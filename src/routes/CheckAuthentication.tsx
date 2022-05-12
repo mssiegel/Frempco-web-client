@@ -1,24 +1,24 @@
-import { useState, useEffect } from 'react';
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
 
+import { UserContext } from '@contexts/UserContext';
+
+// check if you are on the client (browser) or server
+const isBrowser = () => typeof window !== 'undefined';
+
 export default function CheckAuthentication({ children }) {
-  const [userIsAuthorized, setUserIsAuth] = useState(false);
-  const denyList = [
+  const router = useRouter();
+  const protectedRoutes = [
     '/teacher/classroom/[classroomName]',
     '/student/classroom/[classroomName]',
   ];
-  const router = useRouter();
 
-  /* Prevents Unauthorized Page Access to Teacher or Student Pages by checking what page the app starts on in the browser. If the app starts on a page in the denyList then the user is forced back to the homepage. This way all navigation to protected pages must happen from the homepage. */
-  useEffect(() => {
-    if (denyList.includes(router.pathname)) {
-      window.location.assign('/');
-    } else {
-      setUserIsAuth(true);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  const isProtectedPath = protectedRoutes.includes(router.pathname);
 
-  if (userIsAuthorized) return children;
-  else return <></>;
+  const { user } = useContext(UserContext);
+  const { isLoggedIn } = user;
+
+  if (isBrowser() && isProtectedPath && !isLoggedIn) router.push('/');
+
+  return children;
 }

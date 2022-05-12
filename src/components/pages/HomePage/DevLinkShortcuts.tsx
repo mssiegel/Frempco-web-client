@@ -7,7 +7,10 @@ import { throttle } from 'lodash-es';
 import { testClassroomName } from '@utils/classrooms';
 import Link from '@components/shared/Link';
 
-export default function DevLinkShortcuts({ visitStudentsPageHelper }) {
+export default function DevLinkShortcuts({
+  visitTeachersPageHelper,
+  visitStudentsPageHelper,
+}) {
   async function testVisitStudentsPage() {
     const classroom = testClassroomName;
     const student = `Student ${Math.trunc(Math.random() * 10000).toString()}`;
@@ -29,7 +32,10 @@ export default function DevLinkShortcuts({ visitStudentsPageHelper }) {
         These link shortcuts only appear in the development environment:
       </Typography>
       <Typography variant='h5' sx={{ m: 3 }}>
-        <Link href={`/teacher/classroom/${testClassroomName}`}>
+        <Link
+          href='#'
+          onClick={() => visitTeachersPageHelper(testClassroomName)}
+        >
           Visit Teachers admin page
         </Link>
       </Typography>
