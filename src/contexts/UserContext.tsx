@@ -5,17 +5,18 @@ interface ProviderProps {
 }
 
 type UserCtxType = {
-  user: { name: string };
-  setUser: Dispatch<SetStateAction<{ name: string }>>;
+  user: { isLoggedIn: boolean; name: string };
+  setUser: Dispatch<SetStateAction<{ isLoggedIn?: boolean; name?: string }>>;
 };
 
 const UserContext = createContext<UserCtxType>({
-  user: { name: '' },
+  user: { isLoggedIn: false, name: '' },
   setUser: () => {},
 });
 
 function UserProvider({ children }: ProviderProps) {
   const [user, setUser] = useState({
+    isLoggedIn: false,
     name: '',
   });
 
