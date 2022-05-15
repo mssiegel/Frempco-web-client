@@ -17,15 +17,13 @@ export default function PairedStudentListItem({
         return (
           <div key={chatId}>
             <Divider />
-            <div>
-              <span css={selected && conversationCSS.student1}>
-                {student1.realName}
-              </span>
-              <span> &amp; </span>
-              <span css={selected && conversationCSS.student2}>
-                {student2.realName}
-              </span>
-            </div>
+            <span css={selected && conversationCSS.student1}>
+              {student1.realName}
+            </span>
+            <span> &amp; </span>
+            <span css={selected && conversationCSS.student2}>
+              {student2.realName}
+            </span>
 
             <Box sx={{ minHeight: 40 }}>
               {!selected && (

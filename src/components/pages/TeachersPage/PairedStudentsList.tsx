@@ -14,13 +14,10 @@ export default function PairedStudentsList({
         bgcolor: 'white',
         border: '1px solid black',
         p: '5px',
-        pb: '15px',
         my: 3,
       }}
     >
-      <span>
-        Total paired students: <strong>{studentChats.length * 2}</strong>
-      </span>
+      Total paired students: <strong>{studentChats.length * 2}</strong>
       <PairedStudentListItem
         studentChats={studentChats}
         setDisplayedChat={setDisplayedChat}
