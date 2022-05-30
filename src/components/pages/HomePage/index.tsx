@@ -1,11 +1,7 @@
 import { Box, Button, Grid, Typography } from '@mui/material';
-import {
-  School as SchoolIcon,
-  Lightbulb as LightbulbIcon,
-} from '@mui/icons-material';
-import { useContext, useState, useRef, useCallback } from 'react';
+import { School as SchoolIcon } from '@mui/icons-material';
+import { useContext, useState, useRef } from 'react';
 import { useRouter } from 'next/router';
-import { throttle } from 'lodash-es';
 
 import { getClassroom } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
@@ -13,6 +9,7 @@ import { UserContext } from '@contexts/UserContext';
 import Chatbox from '@components/pages/TeachersPage/Chatbox';
 import BasicModal from '@components/shared/Modal';
 import ModalTextField from '@components/shared/ModalTextField';
+import StudentsButton from './StudentsButton';
 import DevLinkShortcuts from './DevLinkShortcuts';
 
 const exampleChat = {
@@ -51,20 +48,10 @@ export default function HomePage() {
   const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
   const socket = useContext(SocketContext);
   const { setUser } = useContext(UserContext);
-  const [openStudentModal, setOpenStudentModal] = useState(false);
   const [openTeacherModal, setOpenTeacherModal] = useState(false);
-  const handleCloseStudentModal = () => setOpenStudentModal(false);
   const handleCloseTeacherModal = () => setOpenTeacherModal(false);
-  const classStudentInput = useRef<HTMLInputElement>(null);
-  const studentNameInput = useRef<HTMLInputElement>(null);
   const classTeacherInput = useRef<HTMLInputElement>(null);
   const passTeacherInput = useRef<HTMLInputElement>(null);
-
-  async function visitStudentsPage() {
-    const classroom = classStudentInput.current.value.trim().toLowerCase();
-    const student = studentNameInput.current.value.trim();
-    await visitStudentsPageHelper(classroom, student);
-  }
 
   async function visitStudentsPageHelper(classroom: string, student: string) {
     const classroomObj = getClassroom(classroom);
@@ -81,15 +68,6 @@ export default function HomePage() {
       router.push(`/student/classroom/${classroom}`);
     }
   }
-
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const throttledVisitStudentsPage = useCallback(
-    throttle(() => visitStudentsPage(), 2000, {
-      leading: true,
-      trailing: false,
-    }),
-    [],
-  );
 
   function visitTeachersPage() {
     const classroom = classTeacherInput.current.value.trim().toLowerCase();
@@ -123,14 +101,7 @@ export default function HomePage() {
             <Typography variant='h3' sx={{ color: 'white', mb: 1 }}>
               Students:
             </Typography>
-            <Button
-              variant='contained'
-              size='large'
-              startIcon={<LightbulbIcon />}
-              onClick={() => setOpenStudentModal(true)}
-            >
-              Students page
-            </Button>
+            <StudentsButton visitStudentsPageHelper={visitStudentsPageHelper} />
 
             <Typography variant='h3' sx={{ color: 'white', mb: 1, mt: 8 }}>
               Teachers:
@@ -152,29 +123,6 @@ export default function HomePage() {
           </Box>
         </Grid>
       </Grid>
-
-      <BasicModal open={openStudentModal} handleClose={handleCloseStudentModal}>
-        <Typography variant='h5'>Hello student</Typography>
-
-        <ModalTextField
-          label='Classroom'
-          refObject={classStudentInput}
-          autoFocus={true}
-        />
-        <ModalTextField
-          label='Your Name'
-          refObject={studentNameInput}
-          maxLength={20}
-        />
-
-        <Button
-          variant='contained'
-          size='large'
-          onClick={throttledVisitStudentsPage}
-        >
-          Visit Student&apos;s Room
-        </Button>
-      </BasicModal>
 
       <BasicModal open={openTeacherModal} handleClose={handleCloseTeacherModal}>
         <Typography variant='h5'>Hello teacher</Typography>
