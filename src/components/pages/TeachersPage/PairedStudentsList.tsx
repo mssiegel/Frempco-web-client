@@ -5,7 +5,6 @@ export default function PairedStudentsList({
   studentChats,
   setDisplayedChat,
   displayedChat,
-  unpair,
 }) {
   return (
     <Box
@@ -22,7 +21,6 @@ export default function PairedStudentsList({
         studentChats={studentChats}
         setDisplayedChat={setDisplayedChat}
         displayedChat={displayedChat}
-        unpair={unpair}
       />
     </Box>
   );
