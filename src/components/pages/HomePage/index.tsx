@@ -5,41 +5,10 @@ import { useRouter } from 'next/router';
 import { getClassroom } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
 import { UserContext } from '@contexts/UserContext';
-import Chatbox from '@components/pages/TeachersPage/Chatbox';
 import StudentsButton from './StudentsButton';
 import TeachersButton from './TeachersButton';
+import ExampleChat from './ExampleChat';
 import DevLinkShortcuts from './DevLinkShortcuts';
-
-const exampleChat = {
-  chatId: 'homepage sample chat',
-  studentPair: [
-    {
-      socketId: '343d11sf',
-      realName: 'Sam Carlome',
-      character: 'Perfectionist Dentist',
-    },
-    {
-      socketId: 'as31afsf',
-      realName: 'Jessica Placard',
-      character: 'Party Planner',
-    },
-  ],
-  conversation: [
-    [
-      'student1',
-      'Perfectionist Dentist',
-      "I'm finally graduating dental school!!!",
-    ],
-    ['student2', 'Party Planner', 'This calls for a party!!!!!'],
-    ['student1', 'Perfectionist Dentist', 'YESSS!!'],
-    ['student1', 'Perfectionist Dentist', 'I am so excited!'],
-    ['student2', 'Party Planner', 'I can bring party food'],
-    ['student2', 'Party Planner', 'pretzels and chocolate cake'],
-    ['student1', 'Perfectionist Dentist', 'NO!!'],
-    ['student1', 'Perfectionist Dentist', "those aren't healthy"],
-  ],
-  startTime: '',
-};
 
 export default function HomePage() {
   const router = useRouter();
@@ -94,7 +63,7 @@ export default function HomePage() {
 
         <Grid item xs={12} md={8}>
           <Box sx={{ my: 5 }}>
-            <Chatbox chat={exampleChat} />
+            <ExampleChat />
           </Box>
         </Grid>
       </Grid>
