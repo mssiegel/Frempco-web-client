@@ -1,13 +1,13 @@
 /** @jsxImportSource @emotion/react */
 
-import { useEffect, useRef, useState } from 'react';
-import { Box, Button, Divider, TextField, Grid } from '@mui/material';
-import { Chat as ChatIcon, PersonOutline } from '@mui/icons-material';
+import { useEffect, useState } from 'react';
+import { Box, Button, Grid } from '@mui/material';
+import { Chat as ChatIcon } from '@mui/icons-material';
 import { chunk } from 'lodash-es';
 
 import { getRandom } from '@utils/classrooms';
 import UnpairedStudentItem from './UnpairedStudentItem';
-import BasicModal from '@components/shared/Modal';
+import SetCharacterList from './SetCharacterList';
 
 const CHARACTERS = [
   'Perfectionist dentist',
@@ -24,18 +24,6 @@ export default function UnpairedStudentsList({
   setUnpairedStudents,
 }) {
   const [characters, setCharacters] = useState(CHARACTERS);
-  const [openCharacterModal, setOpenCharacterModal] = useState(false);
-  const handleCloseCharacterModal = () => setOpenCharacterModal(false);
-  const charListRef = useRef<HTMLTextAreaElement>();
-
-  const setCharList = () => {
-    const characters = charListRef.current.value.trim().split('\n');
-    const trimmedCharacters = characters
-      .map((ch) => ch.trim())
-      .filter((ch) => ch);
-    setCharacters(trimmedCharacters);
-    setOpenCharacterModal(false);
-  };
 
   useEffect(() => {
     if (socket) {
@@ -103,26 +91,6 @@ export default function UnpairedStudentsList({
 
   return (
     <>
-      <BasicModal
-        open={openCharacterModal}
-        handleClose={handleCloseCharacterModal}
-      >
-        <TextField
-          label='Character List'
-          multiline
-          fullWidth
-          rows={8}
-          defaultValue={`${characters.join('\n').trim()} `}
-          inputRef={charListRef}
-        />
-
-        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
-          <Button variant='contained' size='large' onClick={setCharList}>
-            Save
-          </Button>
-        </Box>
-      </BasicModal>
-
       <Box
         sx={{
           maxWidth: '400px',
@@ -184,17 +152,11 @@ export default function UnpairedStudentsList({
             Pair up all students
           </Button>
         </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-          <Button
-            variant='contained'
-            size='large'
-            color='success'
-            sx={{ mt: 2 }}
-            startIcon={<PersonOutline />}
-            onClick={() => setOpenCharacterModal(true)}
-          >
-            Set Character List
-          </Button>
+        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+          <SetCharacterList
+            characters={characters}
+            setCharacters={setCharacters}
+          />
         </Box>
       </Box>
     </>
