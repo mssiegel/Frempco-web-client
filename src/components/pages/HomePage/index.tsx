@@ -1,15 +1,13 @@
-import { Box, Button, Grid, Typography } from '@mui/material';
-import { School as SchoolIcon } from '@mui/icons-material';
-import { useContext, useState, useRef } from 'react';
+import { Box, Grid, Typography } from '@mui/material';
+import { useContext } from 'react';
 import { useRouter } from 'next/router';
 
 import { getClassroom } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
 import { UserContext } from '@contexts/UserContext';
 import Chatbox from '@components/pages/TeachersPage/Chatbox';
-import BasicModal from '@components/shared/Modal';
-import ModalTextField from '@components/shared/ModalTextField';
 import StudentsButton from './StudentsButton';
+import TeachersButton from './TeachersButton';
 import DevLinkShortcuts from './DevLinkShortcuts';
 
 const exampleChat = {
@@ -48,12 +46,8 @@ export default function HomePage() {
   const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
   const socket = useContext(SocketContext);
   const { setUser } = useContext(UserContext);
-  const [openTeacherModal, setOpenTeacherModal] = useState(false);
-  const handleCloseTeacherModal = () => setOpenTeacherModal(false);
-  const classTeacherInput = useRef<HTMLInputElement>(null);
-  const passTeacherInput = useRef<HTMLInputElement>(null);
 
-  async function visitStudentsPageHelper(classroom: string, student: string) {
+  async function visitStudentsPage(classroom: string, student: string) {
     const classroomObj = getClassroom(classroom);
     if (!classroomObj) return window.alert(`Invalid classroom: ${classroom}`);
     const getResponse = await fetch(`${apiUrl}/classrooms/${classroom}`);
@@ -69,19 +63,7 @@ export default function HomePage() {
     }
   }
 
-  function visitTeachersPage() {
-    const classroom = classTeacherInput.current.value.trim().toLowerCase();
-    const classroomObj = getClassroom(classroom);
-    if (!classroomObj) return window.alert(`Invalid classroom: ${classroom}`);
-
-    const password = passTeacherInput.current.value;
-    if (String(classroomObj.password) !== password)
-      return window.alert(`IncorrectPassword: ${password}`);
-
-    visitTeachersPageHelper(classroom);
-  }
-
-  function visitTeachersPageHelper(classroom: string) {
+  function visitTeachersPage(classroom: string) {
     setUser({ isLoggedIn: true });
     router.push(`/teacher/classroom/${classroom}`);
   }
@@ -101,19 +83,12 @@ export default function HomePage() {
             <Typography variant='h3' sx={{ color: 'white', mb: 1 }}>
               Students:
             </Typography>
-            <StudentsButton visitStudentsPageHelper={visitStudentsPageHelper} />
+            <StudentsButton visitStudentsPage={visitStudentsPage} />
 
             <Typography variant='h3' sx={{ color: 'white', mb: 1, mt: 8 }}>
               Teachers:
             </Typography>
-            <Button
-              variant='contained'
-              size='large'
-              startIcon={<SchoolIcon />}
-              onClick={() => setOpenTeacherModal(true)}
-            >
-              Teachers page
-            </Button>
+            <TeachersButton visitTeachersPage={visitTeachersPage} />
           </Box>
         </Grid>
 
@@ -124,29 +99,10 @@ export default function HomePage() {
         </Grid>
       </Grid>
 
-      <BasicModal open={openTeacherModal} handleClose={handleCloseTeacherModal}>
-        <Typography variant='h5'>Hello teacher</Typography>
-
-        <ModalTextField
-          label='Classroom'
-          refObject={classTeacherInput}
-          autoFocus={true}
-        />
-        <ModalTextField
-          label='Password'
-          refObject={passTeacherInput}
-          type='password'
-        />
-
-        <Button variant='contained' size='large' onClick={visitTeachersPage}>
-          Visit Teacher&apos;s Room
-        </Button>
-      </BasicModal>
-
       {process.env.NEXT_PUBLIC_NODE_ENV === 'development' && (
         <DevLinkShortcuts
-          visitTeachersPageHelper={visitTeachersPageHelper}
-          visitStudentsPageHelper={visitStudentsPageHelper}
+          visitTeachersPage={visitTeachersPage}
+          visitStudentsPage={visitStudentsPage}
         />
       )}
     </main>

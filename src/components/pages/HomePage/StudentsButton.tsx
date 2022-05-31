@@ -8,21 +8,20 @@ import { throttle } from 'lodash-es';
 import BasicModal from '@components/shared/Modal';
 import ModalTextField from '@components/shared/ModalTextField';
 
-export default function StudentsButton({ visitStudentsPageHelper }) {
-  const [openStudentModal, setOpenStudentModal] = useState(false);
-  const handleCloseStudentModal = () => setOpenStudentModal(false);
-  const classStudentInput = useRef<HTMLInputElement>(null);
-  const studentNameInput = useRef<HTMLInputElement>(null);
+export default function StudentsButton({ visitStudentsPage }) {
+  const [open, setOpen] = useState(false);
+  const classroomInput = useRef<HTMLInputElement>(null);
+  const studentInput = useRef<HTMLInputElement>(null);
 
-  async function visitStudentsPage() {
-    const classroom = classStudentInput.current.value.trim().toLowerCase();
-    const student = studentNameInput.current.value.trim();
-    await visitStudentsPageHelper(classroom, student);
+  async function visitStudentsPageHelper() {
+    const classroom = classroomInput.current.value.trim().toLowerCase();
+    const student = studentInput.current.value.trim();
+    await visitStudentsPage(classroom, student);
   }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps
   const throttledVisitStudentsPage = useCallback(
-    throttle(() => visitStudentsPage(), 2000, {
+    throttle(() => visitStudentsPageHelper(), 2000, {
       leading: true,
       trailing: false,
     }),
@@ -35,22 +34,22 @@ export default function StudentsButton({ visitStudentsPageHelper }) {
         variant='contained'
         size='large'
         startIcon={<LightbulbIcon />}
-        onClick={() => setOpenStudentModal(true)}
+        onClick={() => setOpen(true)}
       >
         Students page
       </Button>
 
-      <BasicModal open={openStudentModal} handleClose={handleCloseStudentModal}>
+      <BasicModal open={open} onClose={() => setOpen(false)}>
         <Typography variant='h5'>Hello student</Typography>
 
         <ModalTextField
           label='Classroom'
-          refObject={classStudentInput}
+          refObject={classroomInput}
           autoFocus={true}
         />
         <ModalTextField
           label='Your Name'
-          refObject={studentNameInput}
+          refObject={studentInput}
           maxLength={20}
         />
 
