@@ -35,6 +35,7 @@ export default function TeachersButton({ visitTeachersPage }) {
       >
         Teachers page
       </Button>
+
       <BasicModal open={open} onClose={() => setOpen(false)}>
         <Typography variant='h5'>Hello teacher</Typography>
 
@@ -57,7 +58,6 @@ export default function TeachersButton({ visitTeachersPage }) {
           Visit Teacher&apos;s Room
         </Button>
       </BasicModal>
-      ;
     </>
   );
 }
