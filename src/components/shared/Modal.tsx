@@ -19,7 +19,7 @@ export default function BasicModal(props) {
     <div>
       <Modal
         open={props.open}
-        onClose={props.handleClose}
+        onClose={props.onClose}
         aria-labelledby='modal-modal-title'
         aria-describedby='modal-modal-description'
       >
