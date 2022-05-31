@@ -1,15 +1,26 @@
 /** @jsxImportSource @emotion/react */
 
+import { useContext } from 'react';
 import { Divider, Button, Box } from '@mui/material';
 
+import { SocketContext } from '@contexts/SocketContext';
 import conversationCSS from './Conversation.css';
 
 export default function PairedStudentListItem({
   studentChats,
   displayedChat,
   setDisplayedChat,
-  unpair,
 }) {
+  const socket = useContext(SocketContext);
+
+  function unpair(chatId, student1, student2) {
+    const unpairConfirmed = confirm(
+      `Are you sure you want to unpair ${student1.realName} & ${student2.realName}?`,
+    );
+    unpairConfirmed &&
+      socket.emit('unpair student chat', { chatId, student1, student2 });
+  }
+
   return (
     <>
       {studentChats.map(({ chatId, studentPair: [student1, student2] }) => {
