@@ -9,18 +9,22 @@ import sendMessagesCSS from './SendMessages.css';
 let peerTypingTimer = null;
 export default function SendMessages({ socket, chat, setChat }) {
   const [message, setMessage] = useState('');
-  const [peerHasLeft, setPeerHasLeft] = useState(false);
+  const [chatEndedMsg, setChatEndedMsg] = useState(null);
   const [peerIsTyping, setPeerIsTyping] = useState(false);
   const [peerName, setPeerName] = useState('');
 
   useEffect(() => {
     if (socket) {
       socket.on('peer left chat', () => {
-        setPeerHasLeft(true);
+        setChatEndedMsg('Your peer left the chat');
+      });
+
+      socket.on('teacher ended chat', () => {
+        setChatEndedMsg('Your teacher ended your chat');
       });
 
       socket.on('chat start', () => {
-        setPeerHasLeft(false);
+        setChatEndedMsg(null);
       });
 
       socket.on('chat message', () => {
@@ -76,7 +80,7 @@ export default function SendMessages({ socket, chat, setChat }) {
         {peerIsTyping && `${filterWords(peerName)} is typing...`}
       </Typography>
 
-      {!peerHasLeft && (
+      {!chatEndedMsg && (
         <form onSubmit={sendMessage}>
           <input
             css={sendMessagesCSS.characterName}
@@ -105,10 +109,8 @@ export default function SendMessages({ socket, chat, setChat }) {
           </Fab>
         </form>
       )}
-      {peerHasLeft && (
-        <Typography css={sendMessagesCSS.peerLeft}>
-          Your peer left the chat
-        </Typography>
+      {chatEndedMsg && (
+        <Typography css={sendMessagesCSS.peerLeft}>{chatEndedMsg}</Typography>
       )}
     </Box>
   );

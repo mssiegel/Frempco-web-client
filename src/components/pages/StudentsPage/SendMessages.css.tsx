@@ -38,6 +38,10 @@ const peerLeft = css`
   color: #87002a;
   font-style: italic;
   opacity: 0.7;
+
+  @media (max-width: 500px) {
+    font-size: 24px;
+  }
 `;
 
 const peerIsTyping = css`
