@@ -35,8 +35,9 @@ export default function StudentsButton({ visitStudentsPage }) {
         size='large'
         startIcon={<LightbulbIcon />}
         onClick={() => setOpen(true)}
+        sx={{height: '75px', borderRadius: '12px'}}
       >
-        Students page
+        Student Login
       </Button>
 
       <BasicModal open={open} onClose={() => setOpen(false)}>
