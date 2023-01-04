@@ -10,7 +10,7 @@ export default function Home() {
         <title>Frempco</title>
         <meta
           name='description'
-          content='Frempco lets teachers pair up classmates for text-based improvised chats. Students build up real-world friendships through collaboration and storytelling.'
+          content='Frempco helps teachers improve learning outcomes by guiding students through educational role-play exercises.'
         />
         <link rel='icon' href='/favicon.ico' />
       </Head>
