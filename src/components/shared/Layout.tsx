@@ -7,7 +7,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <Box sx={{ background: '#87002a', minHeight: '100vh', overflowX: 'hidden'}}>
+    <Box sx={{ background: '#87002a', minHeight: '100vh', px: 2 }}>
       <Navbar />
       {children}
     </Box>

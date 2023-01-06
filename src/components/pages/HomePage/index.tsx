@@ -12,7 +12,7 @@ import TeachersButton from './TeachersButton';
 import DevLinkShortcuts from './DevLinkShortcuts';
 import homepageCSS from './Index.css';
 import ExampleChat from '../../../../public/exampleChat.png';
-import ExampleOverview from '../../../../public/exampleOverview.png';
+import ExampleTeacherOverview from '../../../../public/exampleTeacherOverview.png';
 
 export default function HomePage() {
   const router = useRouter();
@@ -43,160 +43,134 @@ export default function HomePage() {
 
   return (
     <main>
-      {/** first page */}
-      <Box color={(theme) => theme.palette.common.white}>
-        <Grid container textAlign='center'>
-          <Grid item md={12} p={2}>
-            <Typography
-              variant='h3'
-              textAlign='left'
-              css={homepageCSS.frempcoHeading}
-            >
-              Frempco
-            </Typography>
-          </Grid>
+      <Grid container color={(theme) => theme.palette.common.white}>
+        <Grid item md={12} p={2}>
+          <Typography variant='h3' textAlign='left' mb={6}>
+            Frempco
+          </Typography>
+        </Grid>
 
-          <Grid
-            item
-            sm={12}
-            md={7}
-            p={2}
-            my={6}
-            css={homepageCSS.firstPageContainer}
-          >
-            <Typography variant='h4' textAlign='center' mb={3}>
+        <Grid item sm={12} md={7} textAlign='center'>
+          <Box maxWidth='700px'>
+            <Typography variant='h4' mb={3}>
               Don&apos;t just tell your students. Show them.
             </Typography>
-            <Box maxWidth='700px' mx='auto'>
-              <Typography fontSize='28px'>
-                Improve learning outcomes by guiding students through
-                educational role-play exercises
-              </Typography>
-            </Box>
-            <Box mx='auto' my={6} display='flex' maxWidth='500px'>
-              <Box mr={2}>
-                <TeachersButton visitTeachersPage={visitTeachersPage} />
-              </Box>
-              <Box ml='auto'>
-                <StudentsButton visitStudentsPage={visitStudentsPage} />
-              </Box>
-            </Box>
-          </Grid>
-          <Grid item sm={12} md={5} p={2} textAlign='left'>
-            <Box maxWidth='500px'>
-              <Typography variant='h4' css={homepageCSS.subjectMatter}>
-                Teach your subject matter while strengthening critical life
-                skills.
-              </Typography>
-            </Box>
-            <List
-              sx={{
-                listStyleType: 'disc',
-                maxWidth: '450px',
-                fontSize: '28px',
-              }}
-            >
-              <ListItem sx={{ display: 'list-item', margin: '0 0 24px 24px' }}>
-                Reflecting on other perspectives
-              </ListItem>
-              <ListItem sx={{ display: 'list-item', margin: '0 0 24px 24px' }}>
-                Improving communication
-              </ListItem>
-              <ListItem sx={{ display: 'list-item', margin: '0 0 24px 24px' }}>
-                Understanding theory in real-world contexts
-              </ListItem>
-            </List>
-          </Grid>
-        </Grid>
-        <Box css={homepageCSS.blankContainer}></Box>
-      </Box>
-
-      {/** second page */}
-      <Box color={(theme) => theme.palette.common.white}>
-        <Grid container minHeight='100vh'>
-          <Grid item sm={12}>
-            <Typography variant='h3' my={6} textAlign='center'>
-              A fun and immersive student experience
+            <Typography fontSize='24px'>
+              Improve learning outcomes by guiding students through educational
+              role-play exercises
             </Typography>
-          </Grid>
-          <Grid item sm={12} md={6} mb={6} p={2}>
-            <Typography variant='h3'>How it works</Typography>
-            <List
-              sx={{
-                listStyleType: 'disc',
-                fontSize: '28px',
-              }}
-            >
-              <ListItem sx={{ display: 'list-item', margin: '0 0 24px 24px' }}>
-                The teacher enters a list of role-playing names
-              </ListItem>
-              <ListItem sx={{ display: 'list-item', margin: '0 0 24px 24px' }}>
-                Each student is placed into a one-on-one chat with a classmate
-              </ListItem>
-              <ListItem sx={{ display: 'list-item', margin: '0 0 24px 24px' }}>
-                Students act out their roles according to teacher-defined
-                scenarios
-              </ListItem>
-              <ListItem sx={{ display: 'list-item', margin: '0 0 24px 24px' }}>
-                Once the role-play scenario concludes, students copy their chats
-                and submit them for grading, just like they would an essay or
-                report
-              </ListItem>
-            </List>
-          </Grid>
-          <Grid item sm={12} md={6}>
-            <Box css={homepageCSS.exampleChat}>
-              <Image
-                src={ExampleChat}
-                alt='example chat'
-                layout='fill'
-                objectFit='contain'
-              />
+            <Box my={6} display='flex' justifyContent='center'>
+              <StudentsButton visitStudentsPage={visitStudentsPage} />
+              <TeachersButton visitTeachersPage={visitTeachersPage} />
             </Box>
-            <Box
-              color={(theme) => theme.palette.common.white}
-              css={homepageCSS.exampleChatText}
-            >
-              <Typography fontSize={24} my={2} px={6}>
-                Two 10th grade students taking on the roles of characters from
-                the novel,{' '}
-                <Box component='span' fontStyle='italic' fontSize={24}>
-                  “Lord of the Flies.”
-                </Box>
-              </Typography>
-            </Box>
-          </Grid>
+          </Box>
         </Grid>
-      </Box>
+        <Grid item sm={12} md={5}>
+          <Typography variant='h5'>
+            Teach your subject matter while strengthening critical life skills.
+          </Typography>
+          <List
+            sx={{
+              listStyleType: 'disc',
+              maxWidth: '450px',
+              fontSize: '22px',
+            }}
+          >
+            <ListItem sx={{ display: 'list-item', marginLeft: '24px' }}>
+              Reflecting on other perspectives
+            </ListItem>
+            <ListItem sx={{ display: 'list-item', marginLeft: '24px' }}>
+              Improving communication
+            </ListItem>
+            <ListItem sx={{ display: 'list-item', marginLeft: '24px' }}>
+              Understanding theory in real-world contexts
+            </ListItem>
+          </List>
+        </Grid>
+      </Grid>
 
-      {/** third page */}
+      <Grid container color={(theme) => theme.palette.common.white}>
+        <Grid item sm={12}>
+          <Typography variant='h4' my={6} textAlign='center'>
+            A fun and immersive student experience
+          </Typography>
+        </Grid>
+        <Grid item sm={12} md={6}>
+          <Typography variant='h4'>How it works</Typography>
+          <List
+            sx={{
+              listStyleType: 'disc',
+              fontSize: '22px',
+            }}
+          >
+            <ListItem sx={{ display: 'list-item', marginLeft: '24px' }}>
+              The teacher enters a list of role-playing names
+            </ListItem>
+            <ListItem sx={{ display: 'list-item', marginLeft: '24px' }}>
+              Each student is placed into a one-on-one chat with a classmate
+            </ListItem>
+            <ListItem sx={{ display: 'list-item', marginLeft: '24px' }}>
+              Students act out their roles according to teacher-defined
+              scenarios
+            </ListItem>
+            <ListItem sx={{ display: 'list-item', marginLeft: '24px' }}>
+              Once the role-play scenario concludes, students copy their chats
+              and submit them for grading, just like they would an essay or
+              report
+            </ListItem>
+          </List>
+        </Grid>
+        <Grid item sm={12} md={6}>
+          <Box css={homepageCSS.exampleChat}>
+            <Image
+              src={ExampleChat}
+              alt='example chat between two students'
+              layout='fill'
+              objectFit='contain'
+            />
+          </Box>
+          <Typography
+            fontSize={20}
+            my={2}
+            px={6}
+            color={(theme) => theme.palette.common.white}
+            textAlign='center'
+          >
+            Two 10th grade students taking on the roles of characters from the
+            novel,{' '}
+            <Box component='span' fontStyle='italic' fontSize={20}>
+              “Lord of the Flies.”
+            </Box>
+          </Typography>
+        </Grid>
+      </Grid>
+
       <Box color={(theme) => theme.palette.common.white}>
-        <Typography variant='h3' my={6} textAlign='center'>
+        <Typography variant='h4' my={6} textAlign='center'>
           An intuitive overview for teachers
         </Typography>
         <Box css={homepageCSS.exampleOverview}>
           <Image
-            src={ExampleOverview}
-            alt='example overview'
+            src={ExampleTeacherOverview}
+            alt='example overview for the teacher'
             layout='fill'
             objectFit='contain'
           />
         </Box>
-        <Typography my={3} textAlign='center' fontSize={24}>
+        <Typography my={2} textAlign='center' fontSize={20}>
           An example of the teacher overview.
         </Typography>
       </Box>
 
-      {/** fourth page */}
-      <Box color={(theme) => theme.palette.common.white} mt={12}>
+      <Box color={(theme) => theme.palette.common.white} mt={7}>
         <Box css={homepageCSS.finalTextBox}>
-          <Typography my={3} fontSize={28}>
+          <Typography fontSize={26}>
             Frempco supports the following curriculums for students aged 10-18:
           </Typography>
           <List
             sx={{
               listStyleType: 'disc',
-              fontSize: '28px',
+              fontSize: '26px',
             }}
           >
             <ListItem sx={{ display: 'list-item', marginLeft: '24px' }}>
@@ -210,13 +184,10 @@ export default function HomePage() {
             </ListItem>
           </List>
         </Box>
-        <Box css={homepageCSS.contact}>
-          <Typography fontSize={24} py={3}>
-            If you have questions or would like free trial access, email Moshe
-            Siegel at siegel.moshes@gmail.com
-          </Typography>
-        </Box>
-        <Box css={homepageCSS.blankContainer}></Box>
+        <Typography fontSize={24} py={4} textAlign='center'>
+          If you have questions or would like free trial access, email Moshe
+          Siegel at siegel.moshes@gmail.com
+        </Typography>
       </Box>
 
       {process.env.NEXT_PUBLIC_NODE_ENV === 'development' && (

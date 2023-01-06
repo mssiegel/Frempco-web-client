@@ -32,7 +32,11 @@ export default function TeachersButton({ visitTeachersPage }) {
         size='large'
         startIcon={<SchoolIcon />}
         onClick={() => setOpen(true)}
-        sx={{height: '75px', borderRadius: '12px', backgroundColor: 'rgb(68, 197, 68)'}}
+        sx={{
+          height: '75px',
+          borderRadius: '12px',
+          backgroundColor: 'rgb(68, 197, 68)',
+        }}
       >
         Teacher Login
       </Button>
