@@ -9,7 +9,7 @@ import CopyButton from '@components/shared/CopyButton';
 export default function Chatbox({ chat }) {
   return (
     <Box css={chatboxCSS.chatboxContainer}>
-      <CopyButton elementId='conversation' />
+      <CopyButton elementId='displayed-chat' />
       <Box css={chatboxCSS.chatboxTop}>
         <Conversation chat={chat} />
       </Box>
