@@ -32,8 +32,13 @@ export default function TeachersButton({ visitTeachersPage }) {
         size='large'
         startIcon={<SchoolIcon />}
         onClick={() => setOpen(true)}
+        sx={{
+          height: '75px',
+          borderRadius: '12px',
+          backgroundColor: 'rgb(68, 197, 68)',
+        }}
       >
-        Teachers page
+        Teacher Login
       </Button>
 
       <BasicModal open={open} onClose={() => setOpen(false)}>
