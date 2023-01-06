@@ -63,7 +63,7 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
   }, [router.events, socket]);
 
   return (
-    <main style={{padding: '16px'}}>
+    <main>
       <Typography variant='h4' sx={{ color: 'white', mb: 4 }}>
         {`Hello ${name}!`}
       </Typography>

@@ -131,7 +131,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
   }
 
   return (
-    <main style={{padding: '16px'}}>
+    <main>
       <Typography variant='h4' sx={{ color: 'white' }}>
         Hello teacher! Welcome to your classroom: {classroomName}
       </Typography>
