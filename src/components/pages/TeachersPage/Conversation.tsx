@@ -15,7 +15,7 @@ export default function Conversation({ chat }) {
   }, [chat.chatId, chat.conversation]);
 
   return (
-    <Box>
+    <Box id='displayed-chat'>
       <Box css={conversationCSS.introText}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box>

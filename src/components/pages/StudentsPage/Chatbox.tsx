@@ -5,7 +5,7 @@ import { Box } from '@mui/material';
 import chatboxCSS from './Chatbox.css';
 import Conversation from './Conversation';
 import SendMessages from './SendMessages';
-import CopyButton from './CopyButton';
+import CopyButton from '@components/shared/CopyButton';
 
 export default function Chatbox({ socket, chat, setChat }) {
   return (
