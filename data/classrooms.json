@@ -1,7 +1,12 @@
 [
   {
     "classroomName": "test",
-    "password": 111
+    "password": 111,
+    "_comment": "available for anyone to use for testing"
+  },
+  { "classroomName": "demo",
+   "password": 111,
+   "_comment":"reserved for sales demos by Moshe S."
   },
   {
     "classroomName": "apple",
