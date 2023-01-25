@@ -19,7 +19,7 @@ Frempco lets teachers pair up classmates for text-based improvised chats. Studen
 
 ## Setup instructions
 
-1. Download the [backend repo](https://github.com/mssiegel/frempco-server) and run it separately
+1. Download the [backend repo](https://github.com/Frempco/web-server) and run it separately
 2. `npm install`
 3. `npm run dev`
 4. Visit [http://localhost:3000](http://localhost:3000)
