@@ -30,7 +30,7 @@ export default function ExampleChat() {
 
   return (
     <>
-      <Chatbox chat={chat} />
+      <Chatbox chat={chat} showCopyButton={true} />
     </>
   );
 }
