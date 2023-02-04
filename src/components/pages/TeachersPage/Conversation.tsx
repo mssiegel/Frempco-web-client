@@ -6,13 +6,14 @@ import { Box, Typography } from '@mui/material';
 import conversationCSS from './Conversation.css';
 import { filterWords, scrollDown } from '@utils/classrooms';
 
-export default function Conversation({ chat }) {
+export default function Conversation({ chat, inAllStudentsChatDisplay }) {
   const [student1, student2] = chat.studentPair;
   const lastMessage = useRef(null);
 
   useEffect(() => {
-    if (chat.chatId !== 'homepage sample chat') scrollDown(lastMessage);
-  }, [chat.chatId, chat.conversation]);
+    if (!inAllStudentsChatDisplay && chat.chatId !== 'homepage sample chat')
+      scrollDown(lastMessage);
+  }, [chat.chatId, chat.conversation, inAllStudentsChatDisplay]);
 
   return (
     <Box id='displayed-chat'>

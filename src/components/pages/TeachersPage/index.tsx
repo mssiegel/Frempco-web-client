@@ -7,6 +7,7 @@ import Chatbox from './Chatbox';
 import UnpairedStudentsList from './UnpairedStudentsList';
 import PairedStudentsList from './PairedStudentsList';
 import ActivateButton from './ActivateButton';
+import AllStudentChatsDisplay from './AllStudentChatsDisplay';
 import { useRouter } from 'next/router';
 
 type StudentPair = [Student, Student];
@@ -127,7 +128,13 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     const chat = studentChats.find((chat) => chat.chatId === displayedChat);
     if (!chat) return null;
 
-    return <Chatbox chat={chat} showCopyButton={true} selected={false} />;
+    return (
+      <Chatbox
+        chat={chat}
+        isTheDisplayedChat={true}
+        inAllStudentsChatDisplay={false}
+      />
+    );
   }
 
   return (
@@ -156,42 +163,11 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           {showDisplayedChat()}
         </Grid>
       </Grid>
-      <Grid
-        container
-        spacing={2}
-        mt={2}
-        pb={2}
-        sx={{ borderTop: '2px dashed silver' }}
-      >
-        <Grid item xs={12}>
-          <Typography variant='h5' sx={{ color: 'white' }}>
-            Click any conversation below to display full chat above
-          </Typography>
-        </Grid>
-        {studentChats.map((chat: StudentChat, i) => {
-          let newChat = { ...chat };
-          newChat.conversation = [...newChat.conversation].slice(-5);
-          return (
-            <Grid
-              key={i}
-              item
-              xs={12}
-              md={6}
-              lg={3}
-              sx={{
-                cursor: 'pointer',
-              }}
-              onClick={() => setDisplayedChat(chat.chatId)}
-            >
-              <Chatbox
-                chat={newChat}
-                showCopyButton={false}
-                selected={chat.chatId === displayedChat}
-              />
-            </Grid>
-          );
-        })}
-      </Grid>
+      <AllStudentChatsDisplay
+        studentChats={studentChats}
+        displayedChat={displayedChat}
+        setDisplayedChat={setDisplayedChat}
+      />
     </main>
   );
 }
