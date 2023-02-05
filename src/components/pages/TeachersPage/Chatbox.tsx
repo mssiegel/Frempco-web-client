@@ -9,22 +9,22 @@ import CopyButton from '@components/shared/CopyButton';
 export default function Chatbox({
   chat,
   isTheDisplayedChat,
-  inAllStudentsChatDisplay,
+  inAllStudentChatsDisplay,
 }) {
   return (
     <Box css={chatboxCSS.chatboxContainer}>
-      {!inAllStudentsChatDisplay && <CopyButton elementId='displayed-chat' />}
+      {!inAllStudentChatsDisplay && <CopyButton elementId='displayed-chat' />}
       <Box
         css={chatboxCSS.chatboxTop}
         border={
-          isTheDisplayedChat && inAllStudentsChatDisplay
-            ? '2px solid black'
+          isTheDisplayedChat && inAllStudentChatsDisplay
+            ? '6px solid royalblue'
             : ''
         }
       >
         <Conversation
           chat={chat}
-          inAllStudentsChatDisplay={inAllStudentsChatDisplay}
+          inAllStudentChatsDisplay={inAllStudentChatsDisplay}
         />
       </Box>
     </Box>

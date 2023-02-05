@@ -14,7 +14,7 @@ type StudentPair = [Student, Student];
 
 type ChatMessage = ['student1' | 'student2', string, string];
 
-interface StudentChat {
+export interface StudentChat {
   chatId: string;
   studentPair: StudentPair;
   conversation: ChatMessage[];
@@ -132,7 +132,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
       <Chatbox
         chat={chat}
         isTheDisplayedChat={true}
-        inAllStudentsChatDisplay={false}
+        inAllStudentChatsDisplay={false}
       />
     );
   }

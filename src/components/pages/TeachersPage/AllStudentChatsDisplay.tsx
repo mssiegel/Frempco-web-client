@@ -21,8 +21,8 @@ export default function AllStudentChatsDisplay({
         </Typography>
       </Grid>
       {studentChats.map((chat, i) => {
-        let newChat = { ...chat };
-        newChat.conversation = [...newChat.conversation].slice(-5);
+        const shortenedChat = { ...chat };
+        shortenedChat.conversation = [...shortenedChat.conversation].slice(-5);
         return (
           <Grid
             key={i}
@@ -36,8 +36,8 @@ export default function AllStudentChatsDisplay({
             onClick={() => setDisplayedChat(chat.chatId)}
           >
             <Chatbox
-              chat={newChat}
-              inAllStudentsChatDisplay={true}
+              chat={shortenedChat}
+              inAllStudentChatsDisplay={true}
               isTheDisplayedChat={chat.chatId === displayedChat}
             />
           </Grid>

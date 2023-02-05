@@ -1,9 +1,11 @@
+import { StudentChat } from '.';
+
 /**
  * Not meant to be used in production.
  * Replace studentChats in ./index.tsx to test out UI with multiple chats during development
  */
 
-export const EXAMPLE_CHATS = [
+export const EXAMPLE_CHATS: StudentChat[] = [
   {
     chatId: '8DmBxTmt0Q_iUbbxAAAn#Ua_hGB2pSD-6CGvdAAAP',
     studentPair: [
