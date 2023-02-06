@@ -7,13 +7,14 @@ import Chatbox from './Chatbox';
 import UnpairedStudentsList from './UnpairedStudentsList';
 import PairedStudentsList from './PairedStudentsList';
 import ActivateButton from './ActivateButton';
+import AllStudentChatsDisplay from './AllStudentChatsDisplay';
 import { useRouter } from 'next/router';
 
 type StudentPair = [Student, Student];
 
 type ChatMessage = ['student1' | 'student2', string, string];
 
-interface StudentChat {
+export interface StudentChat {
   chatId: string;
   studentPair: StudentPair;
   conversation: ChatMessage[];
@@ -127,7 +128,13 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     const chat = studentChats.find((chat) => chat.chatId === displayedChat);
     if (!chat) return null;
 
-    return <Chatbox chat={chat} />;
+    return (
+      <Chatbox
+        chat={chat}
+        isTheDisplayedChat={true}
+        inAllStudentChatsDisplay={false}
+      />
+    );
   }
 
   return (
@@ -156,6 +163,11 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           {showDisplayedChat()}
         </Grid>
       </Grid>
+      <AllStudentChatsDisplay
+        studentChats={studentChats}
+        displayedChat={displayedChat}
+        setDisplayedChat={setDisplayedChat}
+      />
     </main>
   );
 }

@@ -43,7 +43,7 @@ export function filterWords(words: string) {
 
 export function scrollDown(refObject) {
   if (refObject.current)
-    refObject.current.scrollIntoView({ behavior: 'smooth' });
+    refObject.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 export const testClassroomName = classrooms[0].classroomName;
