@@ -4,7 +4,7 @@ const chatboxContainer = css`
   width: 500px;
 
   @media (max-width: 500px) {
-   /* widens the chatbox to more easily type messages on mobile */
+    /* widens the chatbox to more easily type messages on mobile */
     width: 120%;
     margin-left: -13px;
     margin-right: -13px;

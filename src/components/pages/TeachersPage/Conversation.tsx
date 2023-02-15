@@ -33,6 +33,7 @@ export default function Conversation({ chat, inAllStudentChatsDisplay }) {
         let fontCSS = {};
         if (person === 'student1') fontCSS = conversationCSS.student1;
         else if (person === 'student2') fontCSS = conversationCSS.student2;
+        else if (person === 'teacher') fontCSS = conversationCSS.teacher;
 
         return (
           <Typography key={i}>

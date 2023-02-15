@@ -27,7 +27,7 @@ export default function SendMessages({ socket, chat, setChat }) {
         setChatEndedMsg(null);
       });
 
-      socket.on('chat message', () => {
+      socket.on('student sent message', () => {
         setPeerIsTyping(false);
       });
 
@@ -43,7 +43,7 @@ export default function SendMessages({ socket, chat, setChat }) {
       if (socket) {
         socket.off('peer left chat');
         socket.off('chat start');
-        socket.off('chat message');
+        socket.off('student sent message');
         socket.off('peer is typing');
       }
     };
@@ -51,7 +51,6 @@ export default function SendMessages({ socket, chat, setChat }) {
 
   function sendMessage(e) {
     e.preventDefault();
-    console.log('sendMessages form submitted!!');
     if (chat.you && message) {
       setChat((chat) => ({
         ...chat,
@@ -60,7 +59,7 @@ export default function SendMessages({ socket, chat, setChat }) {
       setMessage('');
 
       if (socket) {
-        socket.emit('chat message', {
+        socket.emit('student sent message', {
           character: chat.you,
           message,
         });
