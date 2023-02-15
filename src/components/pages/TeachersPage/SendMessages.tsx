@@ -27,7 +27,6 @@ export default function SendMessages({ socket, chatId, setStudentChats }) {
 
       if (socket) {
         socket.emit('teacher sent message', {
-          character: 'TEACHER',
           message,
           chatId,
         });
