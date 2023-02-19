@@ -16,6 +16,11 @@ const student2 = css`
   color: red;
 `;
 
+const teacher = css`
+  font-weight: bold;
+  color: purple;
+`;
+
 const msg = css`
   word-break: break-word;
 `;
@@ -24,6 +29,7 @@ const conversationCSS = {
   introText,
   student1,
   student2,
+  teacher,
   msg,
 };
 

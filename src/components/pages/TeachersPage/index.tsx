@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 
 type StudentPair = [Student, Student];
 
-type ChatMessage = ['student1' | 'student2', string, string];
+export type ChatMessage = ['student1' | 'student2' | 'teacher', string, string];
 
 export interface StudentChat {
   chatId: string;
@@ -83,30 +83,22 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
       });
 
       socket.on(
-        'student chat message',
+        'teacher listens to student message',
         ({ character, message, socketId, chatId }) => {
           setStudentChats((studentChats) => {
-            const chats = [...studentChats];
-            const chatIndex = chats.findIndex((chat) => chat.chatId === chatId);
-            if (chatIndex === -1) return studentChats;
-
-            const chat = chats[chatIndex];
-
-            const student =
-              chat.studentPair[0].socketId === socketId
-                ? 'student1'
-                : 'student2';
-
-            const newMessage: ChatMessage = [student, character, message];
-
-            const updatedChat = {
-              ...chat,
-              conversation: [...chat.conversation, newMessage],
-            };
-
-            chats[chatIndex] = updatedChat;
-
-            return chats;
+            return studentChats.map((chat) => {
+              if (chat.chatId === chatId) {
+                const student =
+                  chat.studentPair[0].socketId === socketId
+                    ? 'student1'
+                    : 'student2';
+                const newMessage: ChatMessage = [student, character, message];
+                return {
+                  ...chat,
+                  conversation: [...chat.conversation, newMessage],
+                };
+              } else return chat;
+            });
           });
         },
       );
@@ -119,7 +111,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
 
     return () => {
       socket.off('chat ended - two students');
-      socket.off('student chat message');
+      socket.off('teacher listens to student message');
       router.events.off('routeChangeStart', handleRouteChange);
     };
   }, [router.events, socket]);
@@ -130,9 +122,11 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
 
     return (
       <Chatbox
+        socket={socket}
         chat={chat}
         isTheDisplayedChat={true}
         inAllStudentChatsDisplay={false}
+        setStudentChats={setStudentChats}
       />
     );
   }
