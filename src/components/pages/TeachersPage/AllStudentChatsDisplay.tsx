@@ -36,9 +36,11 @@ export default function AllStudentChatsDisplay({
             onClick={() => setDisplayedChat(chat.chatId)}
           >
             <Chatbox
+              socket={null}
               chat={shortenedChat}
               inAllStudentChatsDisplay={true}
               isTheDisplayedChat={chat.chatId === displayedChat}
+              setStudentChats={null}
             />
           </Grid>
         );

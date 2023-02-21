@@ -11,16 +11,25 @@ export default function Conversation({ socket, chat, setChat }) {
   const lastMessage = useRef(null);
   useEffect(() => {
     if (socket) {
-      socket.on('chat message', ({ character, message }) => {
+      socket.on('student sent message', ({ character, message }) => {
         setChat((chat) => ({
           ...chat,
           conversation: [...chat.conversation, ['peer', character, message]],
         }));
       });
+      socket.on('teacher sent message', ({ message }) => {
+        setChat((chat) => ({
+          ...chat,
+          conversation: [...chat.conversation, ['teacher', 'TEACHER', message]],
+        }));
+      });
     }
 
     return () => {
-      if (socket) socket.off('chat message');
+      if (socket) {
+        socket.off('student sent message');
+        socket.off('teacher sent message');
+      }
     };
   }, [setChat, socket]);
 
@@ -44,6 +53,8 @@ export default function Conversation({ socket, chat, setChat }) {
         let fontCSS = {};
         if (person === 'peer') fontCSS = conversationCSS.peer;
         else if (person === 'you') fontCSS = conversationCSS.you;
+        else if (person === 'teacher') fontCSS = conversationCSS.teacher;
+
         return (
           <Typography key={i}>
             <span css={fontCSS}>{filterWords(character)}: </span>
