@@ -21,8 +21,6 @@ export default function HomePage() {
   const { setUser } = useContext(UserContext);
 
   async function visitStudentsPage(classroom: string, student: string) {
-    const classroomObj = getClassroom(classroom);
-    if (!classroomObj) return window.alert(`Invalid classroom: ${classroom}`);
     const getResponse = await fetch(`${apiUrl}/classrooms/${classroom}`);
     const { isActive } = await getResponse.json();
     if (!isActive)
