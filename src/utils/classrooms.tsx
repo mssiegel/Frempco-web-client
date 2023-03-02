@@ -1,7 +1,5 @@
 import Filter from 'bad-words';
 
-import classrooms from 'data/classrooms.json';
-
 export function getRandom<T>(arr: Array<T>): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
