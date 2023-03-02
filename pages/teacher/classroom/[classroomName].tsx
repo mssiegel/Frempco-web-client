@@ -1,6 +1,5 @@
 import Head from 'next/head';
 
-import { getAllClassroomNames, ClassroomProps } from '@utils/classrooms';
 import Layout from '@components/shared/Layout';
 import TeachersPage from '@components/pages/TeachersPage';
 import { useRouter } from 'next/router';

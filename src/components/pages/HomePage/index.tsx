@@ -4,7 +4,6 @@ import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 
-import { getClassroom } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
 import { UserContext } from '@contexts/UserContext';
 import StudentsButton from './StudentsButton';

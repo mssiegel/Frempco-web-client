@@ -2,18 +2,6 @@ import Filter from 'bad-words';
 
 import classrooms from 'data/classrooms.json';
 
-export function getAllClassroomNames() {
-  return classrooms.map(({ classroomName }) => ({
-    params: {
-      classroomName,
-    },
-  }));
-}
-
-export function getClassroom(classroom: string) {
-  return classrooms.find(({ classroomName }) => classroomName === classroom);
-}
-
 export function getRandom<T>(arr: Array<T>): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }
@@ -45,8 +33,6 @@ export function scrollDown(refObject) {
   if (refObject.current)
     refObject.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
-
-export const testClassroomName = classrooms[0].classroomName;
 
 export interface ClassroomProps {
   classroomName: string;

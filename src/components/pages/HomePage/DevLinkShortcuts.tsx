@@ -4,17 +4,16 @@ import { Typography } from '@mui/material';
 
 import { useCallback } from 'react';
 import { throttle } from 'lodash-es';
-import { testClassroomName } from '@utils/classrooms';
 import Link from '@components/shared/Link';
 
 export default function DevLinkShortcuts({
   visitTeachersPage,
   visitStudentsPage,
 }) {
+  const testClassroomName = '0000';
   async function testVisitStudentsPage() {
-    const classroom = testClassroomName;
     const student = `Student ${Math.trunc(Math.random() * 10000).toString()}`;
-    await visitStudentsPage(classroom, student);
+    await visitStudentsPage(testClassroomName, student);
   }
 
   // eslint-disable-next-line react-hooks/exhaustive-deps

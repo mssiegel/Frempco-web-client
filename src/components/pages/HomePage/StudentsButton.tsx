@@ -14,7 +14,7 @@ export default function StudentsButton({ visitStudentsPage }) {
   const studentInput = useRef<HTMLInputElement>(null);
 
   async function visitStudentsPageHelper() {
-    const classroom = classroomInput.current.value.trim().toLowerCase();
+    const classroom = classroomInput.current.value.trim();
     const student = studentInput.current.value.trim();
     await visitStudentsPage(classroom, student);
   }

@@ -3,15 +3,17 @@
 import { Button } from '@mui/material';
 import { School as SchoolIcon } from '@mui/icons-material';
 
-function getRandomInt(min, max) {
-  min = Math.ceil(min);
-  max = Math.floor(max);
-  return Math.floor(Math.random() * (max - min) + min); // The maximum is exclusive and the minimum is inclusive
+function getRandomPin(len: number) {
+  const min = Math.ceil(1);
+  const max = Math.floor(+''.padStart(len, '9'));
+  return Math.floor(Math.random() * (max - min) + min)
+    .toString()
+    .padStart(len, '0');
 }
 
 export default function TeachersButton({ visitTeachersPage }) {
   function visitTeachersPageHelper() {
-    const classroom = getRandomInt(1000, 9999);
+    const classroom = getRandomPin(4);
     visitTeachersPage(classroom);
   }
 
