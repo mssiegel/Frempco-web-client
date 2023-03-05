@@ -44,7 +44,7 @@ export default function StudentsButton({ visitStudentsPage }) {
         <Typography variant='h5'>Hello student</Typography>
 
         <ModalTextField
-          label='Classroom'
+          label='Classroom PIN'
           refObject={classroomInput}
           autoFocus={true}
         />
