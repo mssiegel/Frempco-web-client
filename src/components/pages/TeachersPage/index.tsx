@@ -134,7 +134,9 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
   return (
     <main>
       <Typography variant='h4' sx={{ color: 'white' }}>
-        Hello teacher! Welcome to your classroom: {classroomName}
+        To join this classroom, go to <strong>www.frempco.com</strong>, click
+        the <strong>Student Login</strong> button, and enter PIN{' '}
+        <strong>{classroomName}</strong>
       </Typography>
 
       <ActivateButton socket={socket} classroomName={classroomName} />
