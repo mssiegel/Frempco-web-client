@@ -3,12 +3,9 @@
 import { Button } from '@mui/material';
 import { School as SchoolIcon } from '@mui/icons-material';
 
-function getRandomPin(len: number) {
-  const min = Math.ceil(1);
-  const max = Math.floor(+''.padStart(len, '9'));
-  return Math.floor(Math.random() * (max - min) + min)
-    .toString()
-    .padStart(len, '0');
+function getRandomPin(pinLength: number) {
+  const randomPin = Math.floor(Math.random() * Math.pow(10, pinLength));
+  return randomPin.toString().padStart(pinLength, '0');
 }
 
 export default function TeachersButton({ visitTeachersPage }) {
