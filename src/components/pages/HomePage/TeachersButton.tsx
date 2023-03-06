@@ -1,27 +1,16 @@
 /** @jsxImportSource @emotion/react */
 
-import { Button, Typography } from '@mui/material';
+import { Button } from '@mui/material';
 import { School as SchoolIcon } from '@mui/icons-material';
-import { useState, useRef } from 'react';
 
-import { getClassroom } from '@utils/classrooms';
-import BasicModal from '@components/shared/Modal';
-import ModalTextField from '@components/shared/ModalTextField';
+function getRandomPin(pinLength: number) {
+  const randomPin = Math.random().toString();
+  return randomPin.slice(2, pinLength + 2);
+}
 
 export default function TeachersButton({ visitTeachersPage }) {
-  const [open, setOpen] = useState(false);
-  const classroomInput = useRef<HTMLInputElement>(null);
-  const passwordInput = useRef<HTMLInputElement>(null);
-
   function visitTeachersPageHelper() {
-    const classroom = classroomInput.current.value.trim().toLowerCase();
-    const classroomObj = getClassroom(classroom);
-    if (!classroomObj) return window.alert(`Invalid classroom: ${classroom}`);
-
-    const password = passwordInput.current.value;
-    if (String(classroomObj.password) !== password)
-      return window.alert(`IncorrectPassword: ${password}`);
-
+    const classroom = getRandomPin(4);
     visitTeachersPage(classroom);
   }
 
@@ -31,38 +20,15 @@ export default function TeachersButton({ visitTeachersPage }) {
         variant='contained'
         size='large'
         startIcon={<SchoolIcon />}
-        onClick={() => setOpen(true)}
+        onClick={visitTeachersPageHelper}
         sx={{
           height: '75px',
           borderRadius: '12px',
           backgroundColor: 'rgb(68, 197, 68)',
         }}
       >
-        Teacher Login
+        Create Classroom
       </Button>
-
-      <BasicModal open={open} onClose={() => setOpen(false)}>
-        <Typography variant='h5'>Hello teacher</Typography>
-
-        <ModalTextField
-          label='Classroom'
-          refObject={classroomInput}
-          autoFocus={true}
-        />
-        <ModalTextField
-          label='Password'
-          refObject={passwordInput}
-          type='password'
-        />
-
-        <Button
-          variant='contained'
-          size='large'
-          onClick={visitTeachersPageHelper}
-        >
-          Visit Teacher&apos;s Room
-        </Button>
-      </BasicModal>
     </>
   );
 }

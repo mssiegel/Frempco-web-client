@@ -4,7 +4,6 @@ import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 
-import { getClassroom } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
 import { UserContext } from '@contexts/UserContext';
 import StudentsButton from './StudentsButton';
@@ -21,8 +20,6 @@ export default function HomePage() {
   const { setUser } = useContext(UserContext);
 
   async function visitStudentsPage(classroom: string, student: string) {
-    const classroomObj = getClassroom(classroom);
-    if (!classroomObj) return window.alert(`Invalid classroom: ${classroom}`);
     const getResponse = await fetch(`${apiUrl}/classrooms/${classroom}`);
     const { isActive } = await getResponse.json();
     if (!isActive)

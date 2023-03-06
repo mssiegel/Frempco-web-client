@@ -1,27 +1,13 @@
 import Head from 'next/head';
 
-import { getAllClassroomNames, ClassroomProps } from '@utils/classrooms';
 import Layout from '@components/shared/Layout';
 import StudentsPage from '@components/pages/StudentsPage';
+import { useRouter } from 'next/router';
 
-export async function getStaticPaths() {
-  const paths = getAllClassroomNames();
+export default function StudentPage() {
+  const router = useRouter();
+  const classroomName = router.query.classroomName as string;
 
-  return {
-    paths,
-    fallback: false,
-  };
-}
-
-export async function getStaticProps({ params }) {
-  return {
-    props: {
-      classroomName: params.classroomName,
-    },
-  };
-}
-
-export default function StudentPage({ classroomName }: ClassroomProps) {
   return (
     <Layout>
       <Head>
