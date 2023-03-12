@@ -133,11 +133,7 @@ export default function HomePage() {
             color={(theme) => theme.palette.common.white}
             textAlign='center'
           >
-            Two 10th grade students taking on the roles of characters from the
-            novel,{' '}
-            <Box component='span' fontStyle='italic' fontSize={20}>
-              “Lord of the Flies.”
-            </Box>
+            Two students taking on roles from History.
           </Typography>
         </Grid>
       </Grid>
@@ -182,8 +178,7 @@ export default function HomePage() {
           </List>
         </Box>
         <Typography fontSize={24} py={4} textAlign='center'>
-          If you have questions or would like free trial access, email Moshe
-          Siegel at siegel.moshes@gmail.com
+          To contact us, email Moshe Siegel at siegel.moshes@gmail.com
         </Typography>
       </Box>
 
