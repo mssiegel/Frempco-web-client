@@ -3,6 +3,7 @@ import { Box, Grid, Typography, List, ListItem } from '@mui/material';
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
+import Link from '@components/shared/Link';
 
 import { SocketContext } from '@contexts/SocketContext';
 import { UserContext } from '@contexts/UserContext';
@@ -178,7 +179,15 @@ export default function HomePage() {
           </List>
         </Box>
         <Typography fontSize={24} py={4} textAlign='center'>
-          To contact us, email Moshe Siegel at siegel.moshes@gmail.com
+          To contact us, email Moshe Siegel at{' '}
+          <Link
+            sx={{ color: 'lightblue', textDecoration: 'none' }}
+            href={
+              'mailto:siegel.moshes@gmail.com?subject=Feedback%20on%20Frempco'
+            }
+          >
+            siegel.moshes@gmail.com
+          </Link>
         </Typography>
       </Box>
 
