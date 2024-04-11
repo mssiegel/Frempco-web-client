@@ -31,12 +31,18 @@ export default function Conversation({ chat, inAllStudentChatsDisplay }) {
       </Box>
       {chat.conversation.map(([person, character, message], i) => {
         let fontCSS = {};
-        if (person === 'student1') fontCSS = conversationCSS.student1;
-        else if (person === 'student2') fontCSS = conversationCSS.student2;
-        else if (person === 'teacher') fontCSS = conversationCSS.teacher;
+        let realName = '';
+        if (person === 'student1') {
+          fontCSS = conversationCSS.student1;
+          realName = student1.realName;
+        } else if (person === 'student2') {
+          fontCSS = conversationCSS.student2;
+          realName = student2.realName;
+        } else if (person === 'teacher') fontCSS = conversationCSS.teacher;
 
         return (
           <Typography key={i}>
+            {`(${realName}) `}
             <span css={fontCSS}>{filterWords(character)}: </span>
             <span css={conversationCSS.msg}>{filterWords(message)}</span>
           </Typography>
