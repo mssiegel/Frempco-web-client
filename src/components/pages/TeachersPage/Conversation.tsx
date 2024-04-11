@@ -19,11 +19,10 @@ export default function Conversation({ chat, inAllStudentChatsDisplay }) {
       <Box css={conversationCSS.introText}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box>
-            <span css={conversationCSS.student1}>{student1.realName}</span> (
-            {student1.character})
-            <br />
-            <span css={conversationCSS.student2}>{student2.realName}</span> (
-            {student2.character})
+            ({student1.realName})&nbsp;&nbsp;
+            <span css={conversationCSS.student1}>{student1.character}</span>
+            <br />({student2.realName})&nbsp;&nbsp;
+            <span css={conversationCSS.student2}>{student2.character}</span>
           </Box>
           <span>{chat.startTime}</span>
         </Box>
@@ -42,7 +41,9 @@ export default function Conversation({ chat, inAllStudentChatsDisplay }) {
 
         return (
           <Typography key={i}>
-            {`(${realName}) `}
+            <span css={conversationCSS.lessImportantText}>
+              {realName}&nbsp;&nbsp;
+            </span>
             <span css={fontCSS}>{filterWords(character)}: </span>
             <span css={conversationCSS.msg}>{filterWords(message)}</span>
           </Typography>

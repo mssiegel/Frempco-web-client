@@ -21,6 +21,11 @@ const teacher = css`
   color: purple;
 `;
 
+const lessImportantText = css`
+  font-style: italic;
+  color: gray;
+`;
+
 const msg = css`
   word-break: break-word;
 `;
@@ -31,6 +36,7 @@ const conversationCSS = {
   student2,
   teacher,
   msg,
+  lessImportantText,
 };
 
 export default conversationCSS;
