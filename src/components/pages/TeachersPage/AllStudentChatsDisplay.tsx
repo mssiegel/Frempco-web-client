@@ -29,7 +29,7 @@ export default function AllStudentChatsDisplay({
             item
             xs={12}
             md={6}
-            lg={3}
+            lg={4}
             sx={{
               cursor: 'pointer',
             }}
