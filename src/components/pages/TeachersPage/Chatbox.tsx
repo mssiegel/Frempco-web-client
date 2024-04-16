@@ -1,7 +1,9 @@
 /** @jsxImportSource @emotion/react */
 
 import { Box } from '@mui/material';
+import { useRef, useEffect } from 'react';
 
+import { displayBottomOfElement } from '@utils/classrooms';
 import chatboxCSS from './Chatbox.css';
 import Conversation from './Conversation';
 import CopyButton from '@components/shared/CopyButton';
@@ -14,6 +16,12 @@ export default function Chatbox({
   inAllStudentChatsDisplay,
   setStudentChats,
 }) {
+  useEffect(() => {
+    displayBottomOfElement(chatboxConversationContainer);
+  }, [chat.conversation]);
+
+  const chatboxConversationContainer = useRef(null);
+
   return (
     <Box css={chatboxCSS.chatboxContainer}>
       {!inAllStudentChatsDisplay && <CopyButton elementId='displayed-chat' />}
@@ -24,11 +32,9 @@ export default function Chatbox({
             ? '6px solid royalblue'
             : ''
         }
+        ref={chatboxConversationContainer}
       >
-        <Conversation
-          chat={chat}
-          inAllStudentChatsDisplay={inAllStudentChatsDisplay}
-        />
+        <Conversation chat={chat} />
       </Box>
 
       {/* Include send messages component if its the primary displayed chat */}
