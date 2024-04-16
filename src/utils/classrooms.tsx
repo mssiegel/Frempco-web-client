@@ -27,7 +27,16 @@ export function filterWords(words: string) {
   }
 }
 
-export function scrollDown(refObject) {
+export function displayBottomOfElement(refObject) {
+  // used to display the bottom of a chatbox whenever a new message comes in
+  // used on pages with multiple chatboxes, i.e. teachers page
+  refObject.current.scrollTop = refObject.current.scrollHeight;
+}
+
+export function scrollSlowlyIntoView(refObject) {
+  // used to display the bottom of a chatbox whenever a new message comes in
+  // used on pages with only one chatbox, i.e. students page
+  // do not use this function on pages with multiple chatboxes as then it'd scroll other chatboxes into view whenever a new message arrives
   if (refObject.current)
     refObject.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }

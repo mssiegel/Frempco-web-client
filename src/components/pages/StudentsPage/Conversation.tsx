@@ -5,7 +5,7 @@ import { useEffect, useRef } from 'react';
 
 import conversationCSS from './Conversation.css';
 import { filterWords } from '@utils/classrooms';
-import { scrollDown } from '@utils/classrooms';
+import { scrollSlowlyIntoView } from '@utils/classrooms';
 
 export default function Conversation({ socket, chat, setChat }) {
   const lastMessage = useRef(null);
@@ -34,7 +34,8 @@ export default function Conversation({ socket, chat, setChat }) {
   }, [setChat, socket]);
 
   useEffect(() => {
-    scrollDown(lastMessage);
+    // Scrolling slowly provides a smooth visual effect for displaying new messages
+    scrollSlowlyIntoView(lastMessage);
   }, [chat.conversation]);
 
   return (
