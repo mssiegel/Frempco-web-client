@@ -37,7 +37,7 @@ export default function Conversation({ chat }) {
             {/* Only students have real names; teacher does not */}
             {realName && (
               <span css={conversationCSS.lessImportantText}>
-                {realName} &nbsp;&nbsp;
+                {realName}&nbsp;&nbsp;
               </span>
             )}
             <span css={fontCSS}>{filterWords(character)}: </span>
