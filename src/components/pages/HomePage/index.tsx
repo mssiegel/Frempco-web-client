@@ -41,6 +41,13 @@ export default function HomePage() {
 
   return (
     <main>
+      {process.env.NEXT_PUBLIC_NODE_ENV === 'development' && (
+        <DevLinkShortcuts
+          visitTeachersPage={visitTeachersPage}
+          visitStudentsPage={visitStudentsPage}
+        />
+      )}
+
       <Grid container color={(theme) => theme.palette.common.white}>
         <Grid item md={12} p={2}>
           <Typography variant='h3' textAlign='left' mb={6}>
@@ -192,13 +199,6 @@ export default function HomePage() {
           </Link>
         </Typography>
       </Box>
-
-      {process.env.NEXT_PUBLIC_NODE_ENV === 'development' && (
-        <DevLinkShortcuts
-          visitTeachersPage={visitTeachersPage}
-          visitStudentsPage={visitStudentsPage}
-        />
-      )}
     </main>
   );
 }
