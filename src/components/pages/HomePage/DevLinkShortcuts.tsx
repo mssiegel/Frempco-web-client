@@ -27,7 +27,7 @@ export default function DevLinkShortcuts({
 
   return (
     <>
-      <Typography variant='h5' sx={{ m: 3, mt: 10, color: 'gray' }}>
+      <Typography variant='h5' sx={{ mb: 3, color: 'gray' }}>
         These link shortcuts only appear in the development environment:
       </Typography>
       <Typography variant='h5' sx={{ m: 3 }}>
