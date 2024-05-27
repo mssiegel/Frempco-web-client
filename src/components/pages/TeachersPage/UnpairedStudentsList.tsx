@@ -76,8 +76,8 @@ export default function UnpairedStudentsList({
     }
     socket.emit('pair students', { studentPairs });
 
-    // remove the two unpaired students
     if (studentIndex !== undefined) {
+      // remove the two newly paired students from unpaired list
       const newUnpairedStudents = [...unpairedStudents];
       newUnpairedStudents.splice(studentIndex, 2);
       setUnpairedStudents(newUnpairedStudents);

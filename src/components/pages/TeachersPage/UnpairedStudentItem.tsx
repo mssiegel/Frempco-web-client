@@ -22,7 +22,7 @@ export default function UnpairedStudentItem({
       else if (student2Index === unpaired.length) student2Index = 0;
 
       swap(unpaired, student1Index, student2Index);
-      setUnpairedStudents(unpaired);
+      return unpaired;
     });
   }
 
