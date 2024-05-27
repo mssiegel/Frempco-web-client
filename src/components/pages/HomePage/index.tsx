@@ -2,7 +2,7 @@
 import { Box, Grid, Typography, List, ListItem } from '@mui/material';
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
+import Image from "next/legacy/image";
 import Link from '@components/shared/Link';
 
 import { SocketContext } from '@contexts/SocketContext';
