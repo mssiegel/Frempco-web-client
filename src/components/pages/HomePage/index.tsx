@@ -41,6 +41,13 @@ export default function HomePage() {
 
   return (
     <main>
+      {process.env.NEXT_PUBLIC_NODE_ENV === 'development' && (
+        <DevLinkShortcuts
+          visitTeachersPage={visitTeachersPage}
+          visitStudentsPage={visitStudentsPage}
+        />
+      )}
+
       <Grid container color={(theme) => theme.palette.common.white}>
         <Grid item md={12} p={2}>
           <Typography variant='h3' textAlign='left' mb={6}>
@@ -123,8 +130,9 @@ export default function HomePage() {
             <Image
               src={ExampleChat}
               alt='example chat between two students'
-              layout='fill'
-              objectFit='contain'
+              fill
+              sizes='100vw'
+              style={{ objectFit: 'contain' }}
             />
           </Box>
           <Typography
@@ -147,8 +155,9 @@ export default function HomePage() {
           <Image
             src={ExampleTeacherOverview}
             alt='example overview for the teacher'
-            layout='fill'
-            objectFit='contain'
+            fill
+            sizes='100vw'
+            style={{ objectFit: 'contain' }}
           />
         </Box>
         <Typography my={2} textAlign='center' fontSize={20}>
@@ -190,13 +199,6 @@ export default function HomePage() {
           </Link>
         </Typography>
       </Box>
-
-      {process.env.NEXT_PUBLIC_NODE_ENV === 'development' && (
-        <DevLinkShortcuts
-          visitTeachersPage={visitTeachersPage}
-          visitStudentsPage={visitStudentsPage}
-        />
-      )}
     </main>
   );
 }
