@@ -6,6 +6,10 @@ while keeping the styles of the Material UI Link.
 
 This code was copied & pasted directly from the Material UI example at:
 https://mui.com/guides/routing/#next-js
+
+Edits that made this file different from above copy and paste:
+May 24 2024: When upgrading from Next.js 12 -> Next.js 13 I removed the inner "Anchor a" component from inside the NextLinkComposed. 
+Because the Next.js 13 Link component does not need an inner "a" component
 */
 
 import { forwardRef } from 'react';
@@ -53,9 +57,9 @@ const NextLinkComposed = forwardRef<HTMLAnchorElement, NextLinkComposedProps>(
         shallow={shallow}
         passHref
         locale={locale}
-      >
-        <Anchor ref={ref} {...other} />
-      </NextLink>
+        ref={ref}
+        {...other}
+      />
     );
   },
 );
