@@ -2,7 +2,7 @@
 import { Box, Grid, Typography, List, ListItem } from '@mui/material';
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
-import Image from "next/legacy/image";
+import Image from 'next/image';
 import Link from '@components/shared/Link';
 
 import { SocketContext } from '@contexts/SocketContext';
@@ -123,8 +123,9 @@ export default function HomePage() {
             <Image
               src={ExampleChat}
               alt='example chat between two students'
-              layout='fill'
-              objectFit='contain'
+              fill
+              sizes='100vw'
+              style={{ objectFit: 'contain' }}
             />
           </Box>
           <Typography
@@ -147,8 +148,9 @@ export default function HomePage() {
           <Image
             src={ExampleTeacherOverview}
             alt='example overview for the teacher'
-            layout='fill'
-            objectFit='contain'
+            fill
+            sizes='100vw'
+            style={{ objectFit: 'contain' }}
           />
         </Box>
         <Typography my={2} textAlign='center' fontSize={20}>
