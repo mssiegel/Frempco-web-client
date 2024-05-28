@@ -2,10 +2,12 @@ import { css } from '@emotion/react';
 
 const exampleChat = css`
   position: relative;
-  height: 50vh;
+  margin: auto;
+  width: 100%;
+  max-width: 500px;
 
   @media (max-width: 500px) {
-    height: 40vh;
+    width: 100%;
   }
 `;
 

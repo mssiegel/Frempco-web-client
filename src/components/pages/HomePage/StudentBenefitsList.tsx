@@ -9,8 +9,8 @@ import { Typography } from '@mui/material';
 
 export default function StudentBenefitsList({}) {
   return (
-    <>
-      <Typography textAlign='center' sx={{ fontSize: '26px' }}>
+    <div>
+      <Typography textAlign='center' fontSize={26}>
         Improves communication <RecordVoiceOverIcon />
       </Typography>
       <Typography
@@ -26,7 +26,7 @@ export default function StudentBenefitsList({}) {
         opinions.
       </Typography>
 
-      <Typography textAlign='center' sx={{ fontSize: '26px' }}>
+      <Typography textAlign='center' fontSize={26}>
         Demonstrates knowledge <LocalLibraryIcon />
       </Typography>
       <Typography
@@ -42,16 +42,21 @@ export default function StudentBenefitsList({}) {
         topic.
       </Typography>
 
-      <Typography textAlign='center' sx={{ fontSize: '26px' }}>
+      <Typography textAlign='center' fontSize={26}>
         Increases curiousity <LightModeIcon />
       </Typography>
       <Typography
         textAlign='center'
-        sx={{ fontSize: '20px', maxWidth: '350px', margin: 'auto' }}
+        sx={{
+          fontSize: '20px',
+          maxWidth: '350px',
+          margin: 'auto',
+          paddingBottom: '32px',
+        }}
       >
         Students will emphasize with their characters and will strive to learn
         more about them.
       </Typography>
-    </>
+    </div>
   );
 }

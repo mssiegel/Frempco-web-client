@@ -75,65 +75,69 @@ export default function HomePage() {
           </Box>
         </Grid>
 
-        <Grid item sm={12} md={6}>
+        <Grid
+          item
+          sm={12}
+          md={6}
+          display='flex'
+          justifyContent='center'
+          alignItems='center'
+        >
           <StudentBenefitsList />
         </Grid>
       </Grid>
 
       {/* Section Two */}
-      {/* <Grid container color={(theme) => theme.palette.common.white}>
-        <Grid item sm={12}>
-          <Typography variant='h4' my={6} textAlign='center'>
-            A fun and immersive student experience
-          </Typography>
-        </Grid>
-        <Grid item sm={12} md={6}>
-          <Typography variant='h4'>How it works</Typography>
-          <List
-            sx={{
-              listStyleType: 'disc',
-              fontSize: '22px',
-            }}
-          >
-            <ListItem sx={{ display: 'list-item', marginLeft: '24px' }}>
-              The teacher enters a list of role-playing names
-            </ListItem>
-            <ListItem sx={{ display: 'list-item', marginLeft: '24px' }}>
-              Each student is placed into a one-on-one chat with a classmate
-            </ListItem>
-            <ListItem sx={{ display: 'list-item', marginLeft: '24px' }}>
-              Students act out their roles according to teacher-defined
-              scenarios
-            </ListItem>
-            <ListItem sx={{ display: 'list-item', marginLeft: '24px' }}>
-              Once the role-play scenario concludes, students copy their chats
-              and submit them for grading, just like they would an essay or
-              report
-            </ListItem>
-          </List>
-        </Grid>
-        <Grid item sm={12} md={6}>
+      <Grid
+        container
+        px={1}
+        color={(theme) => theme.palette.common.black}
+        sx={{ backgroundColor: '#e0dfd3' }}
+      >
+        <Grid item sm={12} md={6} mt={4}>
           <Box css={homepageCSS.exampleChat}>
             <Image
               src={ExampleChat}
               alt='example chat between two students'
-              fill
-              sizes='100vw'
-              style={{ objectFit: 'contain' }}
+              layout='responsive'
             />
           </Box>
           <Typography
             fontSize={20}
-            my={2}
-            px={6}
-            color={(theme) => theme.palette.common.white}
+            my={1}
+            color={(theme) => theme.palette.common.black}
             textAlign='center'
           >
             Two students taking on roles from History.
           </Typography>
         </Grid>
-      </Grid> */}
 
+        <Grid item sm={12} md={6} mt={4} display='flex' alignItems='center'>
+          <div>
+            <Typography variant='h4' mb={3}>
+              How it works:
+            </Typography>
+            <Typography fontSize={22} mb={2}>
+              1. The teacher enters a list of roleplaying names based on
+              whatever topic the class is studying.
+            </Typography>
+            <Typography fontSize={22} mb={2}>
+              2. Each student gets assigned a name and is placed into a
+              one-on-one chat with a classmate.
+            </Typography>
+            <Typography fontSize={22} mb={2}>
+              3. Through their one-on-one conversations, students act out their
+              roles.
+            </Typography>
+            <Typography fontSize={22} mb={2}>
+              4. When finished, students copy their chats and submit them for
+              grading, just like they would an essay or report.
+            </Typography>
+          </div>
+        </Grid>
+      </Grid>
+
+      {/* Section Three */}
       {/* <Box color={(theme) => theme.palette.common.white}>
         <Typography variant='h4' my={6} textAlign='center'>
           An intuitive overview for teachers
