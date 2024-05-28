@@ -5,19 +5,13 @@ const exampleChat = css`
   margin: auto;
   width: 100%;
   max-width: 500px;
-
-  @media (max-width: 500px) {
-    width: 100%;
-  }
 `;
 
 const exampleOverview = css`
   position: relative;
-  height: 75vh;
-
-  @media (max-width: 500px) {
-    height: 30vh;
-  }
+  margin: auto;
+  width: 100%;
+  max-width: 800px;
 `;
 
 const finalTextBox = css`

@@ -1,5 +1,5 @@
 /** @jsxImportSource @emotion/react */
-import { Box, Grid, Typography, List, ListItem } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 import { useContext } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
@@ -14,7 +14,7 @@ import StudentBenefitsList from './StudentBenefitsList';
 import homepageCSS from './Index.css';
 import ExampleChat from '../../../../public/exampleChat.png';
 import ExampleTeacherOverview from '../../../../public/exampleTeacherOverview.png';
-import roleplayMasks from '../../../../public/roleplayMasks.png';
+import RoleplayMasks from '../../../../public/roleplayMasks.png';
 
 export default function HomePage() {
   const router = useRouter();
@@ -56,12 +56,19 @@ export default function HomePage() {
 
       {/* Section One */}
       <Grid px={1} container color='black'>
-        <Grid item sm={12} md={6} textAlign='center'>
+        <Grid
+          item
+          sm={12}
+          md={6}
+          textAlign='center'
+          display='flex'
+          justifyContent='center'
+        >
           <Box maxWidth='700px'>
             <Typography variant='h4' mb={3}>
               The FREE Classroom roleplaying product
             </Typography>
-            <Image src={roleplayMasks} alt='Roleplaying masks' width={250} />
+            <Image src={RoleplayMasks} alt='Roleplaying masks' width={250} />
             <Box
               my={6}
               display='flex'
@@ -91,6 +98,7 @@ export default function HomePage() {
       <Grid
         container
         px={1}
+        pb={3}
         color={(theme) => theme.palette.common.black}
         sx={{ backgroundColor: '#e0dfd3' }}
       >
@@ -112,7 +120,15 @@ export default function HomePage() {
           </Typography>
         </Grid>
 
-        <Grid item sm={12} md={6} mt={4} display='flex' alignItems='center'>
+        <Grid
+          item
+          sm={12}
+          md={6}
+          mt={4}
+          px={1}
+          display='flex'
+          alignItems='center'
+        >
           <div>
             <Typography variant='h4' mb={3}>
               How it works:
@@ -138,58 +154,33 @@ export default function HomePage() {
       </Grid>
 
       {/* Section Three */}
-      {/* <Box color={(theme) => theme.palette.common.white}>
-        <Typography variant='h4' my={6} textAlign='center'>
-          An intuitive overview for teachers
+      <Box color={(theme) => theme.palette.common.black}>
+        <Typography variant='h5' mt={6} mb={3} textAlign='center'>
+          The teacher can observe all student conversations. <br />
+          Example Teacher's dashboard:
         </Typography>
         <Box css={homepageCSS.exampleOverview}>
           <Image
             src={ExampleTeacherOverview}
             alt='example overview for the teacher'
-            fill
-            sizes='100vw'
-            style={{ objectFit: 'contain' }}
+            layout='responsive'
           />
         </Box>
-        <Typography my={2} textAlign='center' fontSize={20}>
-          An example of the teacher overview.
-        </Typography>
-      </Box> */}
-      {/* 
-      <Box color={(theme) => theme.palette.common.white} mt={7}>
-        <Box css={homepageCSS.finalTextBox}>
-          <Typography fontSize={26}>
-            Frempco supports the following curriculums for students aged 10-18:
-          </Typography>
-          <List
-            sx={{
-              listStyleType: 'disc',
-              fontSize: '26px',
-            }}
-          >
-            <ListItem sx={{ display: 'list-item', marginLeft: '24px' }}>
-              History
-            </ListItem>
-            <ListItem sx={{ display: 'list-item', marginLeft: '24px' }}>
-              English Literature
-            </ListItem>
-            <ListItem sx={{ display: 'list-item', marginLeft: '24px' }}>
-              Creative Writing
-            </ListItem>
-          </List>
-        </Box>
-        <Typography fontSize={24} py={4} textAlign='center'>
-          To contact us, email Moshe Siegel at{' '}
-          <Link
-            sx={{ color: 'lightblue', textDecoration: 'none' }}
-            href={
-              'mailto:siegel.moshes@gmail.com?subject=Feedback%20on%20Frempco'
-            }
-          >
-            siegel.moshes@gmail.com
-          </Link>
-        </Typography>
-      </Box> */}
+      </Box>
+
+      <Typography color='black' fontSize={22} pb={4} mt={7} textAlign='center'>
+        Frempco is a FREE roleplaying product for classroom teachers and their
+        students. <br />
+        Moshe Siegel maintains Frempco and you can email him at{' '}
+        <Link
+          sx={{ color: 'blue', textDecoration: 'none' }}
+          href={
+            'mailto:siegel.moshes@gmail.com?subject=Feedback%20on%20Frempco'
+          }
+        >
+          siegel.moshes@gmail.com
+        </Link>
+      </Typography>
     </main>
   );
 }
