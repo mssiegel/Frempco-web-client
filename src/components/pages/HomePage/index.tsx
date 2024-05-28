@@ -10,9 +10,11 @@ import { UserContext } from '@contexts/UserContext';
 import StudentsButton from './StudentsButton';
 import TeachersButton from './TeachersButton';
 import DevLinkShortcuts from './DevLinkShortcuts';
+import StudentBenefitsList from './StudentBenefitsList';
 import homepageCSS from './Index.css';
 import ExampleChat from '../../../../public/exampleChat.png';
 import ExampleTeacherOverview from '../../../../public/exampleTeacherOverview.png';
+import roleplayMasks from '../../../../public/roleplayMasks.png';
 
 export default function HomePage() {
   const router = useRouter();
@@ -48,53 +50,38 @@ export default function HomePage() {
         />
       )}
 
-      <Grid container color={(theme) => theme.palette.common.white}>
-        <Grid item md={12} p={2}>
-          <Typography variant='h3' textAlign='left' mb={6}>
-            Frempco
-          </Typography>
-        </Grid>
+      <Typography variant='h3' textAlign='center' mb={6} pt={2} color='black'>
+        Frempco
+      </Typography>
 
-        <Grid item sm={12} md={7} textAlign='center'>
+      {/* Section One */}
+      <Grid px={1} container color='black'>
+        <Grid item sm={12} md={6} textAlign='center'>
           <Box maxWidth='700px'>
             <Typography variant='h4' mb={3}>
-              Don&apos;t just tell your students. Show them.
+              The FREE Classroom roleplaying product
             </Typography>
-            <Typography fontSize='24px'>
-              Improve learning outcomes by guiding students through educational
-              role-play exercises
-            </Typography>
-            <Box my={6} display='flex' justifyContent='center'>
+            <Image src={roleplayMasks} alt='Roleplaying masks' width={250} />
+            <Box
+              my={6}
+              display='flex'
+              justifyContent='center'
+              flexDirection='column'
+              alignItems='center'
+            >
               <StudentsButton visitStudentsPage={visitStudentsPage} />
               <TeachersButton visitTeachersPage={visitTeachersPage} />
             </Box>
           </Box>
         </Grid>
-        <Grid item sm={12} md={5}>
-          <Typography variant='h5'>
-            Teach your subject matter while strengthening critical life skills.
-          </Typography>
-          <List
-            sx={{
-              listStyleType: 'disc',
-              maxWidth: '450px',
-              fontSize: '22px',
-            }}
-          >
-            <ListItem sx={{ display: 'list-item', marginLeft: '24px' }}>
-              Reflecting on other perspectives
-            </ListItem>
-            <ListItem sx={{ display: 'list-item', marginLeft: '24px' }}>
-              Improving communication
-            </ListItem>
-            <ListItem sx={{ display: 'list-item', marginLeft: '24px' }}>
-              Understanding theory in real-world contexts
-            </ListItem>
-          </List>
+
+        <Grid item sm={12} md={6}>
+          <StudentBenefitsList />
         </Grid>
       </Grid>
 
-      <Grid container color={(theme) => theme.palette.common.white}>
+      {/* Section Two */}
+      {/* <Grid container color={(theme) => theme.palette.common.white}>
         <Grid item sm={12}>
           <Typography variant='h4' my={6} textAlign='center'>
             A fun and immersive student experience
@@ -145,9 +132,9 @@ export default function HomePage() {
             Two students taking on roles from History.
           </Typography>
         </Grid>
-      </Grid>
+      </Grid> */}
 
-      <Box color={(theme) => theme.palette.common.white}>
+      {/* <Box color={(theme) => theme.palette.common.white}>
         <Typography variant='h4' my={6} textAlign='center'>
           An intuitive overview for teachers
         </Typography>
@@ -163,8 +150,8 @@ export default function HomePage() {
         <Typography my={2} textAlign='center' fontSize={20}>
           An example of the teacher overview.
         </Typography>
-      </Box>
-
+      </Box> */}
+      {/* 
       <Box color={(theme) => theme.palette.common.white} mt={7}>
         <Box css={homepageCSS.finalTextBox}>
           <Typography fontSize={26}>
@@ -198,7 +185,7 @@ export default function HomePage() {
             siegel.moshes@gmail.com
           </Link>
         </Typography>
-      </Box>
+      </Box> */}
     </main>
   );
 }
