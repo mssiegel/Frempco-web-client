@@ -7,7 +7,7 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   return (
-    <Box sx={{ background: '#87002a', minHeight: '100vh', px: 2 }}>
+    <Box sx={{ minHeight: '100vh' }}>
       <Navbar />
       {children}
     </Box>
@@ -23,9 +23,7 @@ function Navbar() {
           {/* For an explanation: see https://github.com/mssiegel/frempco-client/issues/53 */}
         </Typography>
         <Typography variant='h4' sx={{ ml: 10, pt: 1, pb: 2 }}>
-          <Link href='/' underline='hover' color='white'>
-            Home
-          </Link>
+          <Link href='/'>Home</Link>
         </Typography>
       </>
     )

@@ -33,11 +33,16 @@ export default function StudentsButton({ visitStudentsPage }) {
       <Button
         variant='contained'
         size='large'
-        startIcon={<LightbulbIcon />}
+        endIcon={<LightbulbIcon />}
         onClick={() => setOpen(true)}
-        sx={{ height: '75px', borderRadius: '12px', marginRight: '18px' }}
+        sx={{
+          height: '75px',
+          borderRadius: '12px',
+          marginBottom: '12px',
+          maxWidth: '300px',
+        }}
       >
-        Student Login
+        Student: Join Classroom
       </Button>
 
       <BasicModal open={open} onClose={() => setOpen(false)}>

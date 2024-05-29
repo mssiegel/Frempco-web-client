@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { Grid, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
 
 import { ClassroomProps, Student, currentTime } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
@@ -133,37 +133,47 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
 
   return (
     <main>
-      <Typography variant='h4' sx={{ color: 'white' }}>
-        To join this classroom, go to <strong>www.frempco.com</strong>, click
-        the <strong>Student Login</strong> button, and enter PIN{' '}
-        <strong>{classroomName}</strong>
-      </Typography>
+      <Box mx={2}>
+        <Typography fontSize={20} color='black'>
+          To join this classroom:
+        </Typography>
+        <Typography fontSize={20} color='black' ml={4}>
+          1. Go to <strong>www.frempco.com</strong>
+        </Typography>
+        <Typography fontSize={20} color='black' ml={4}>
+          2. Click the blue button named{' '}
+          <strong>&quot;Student: Join classroom&quot;</strong>
+        </Typography>
+        <Typography fontSize={20} color='black' ml={4}>
+          3. Enter PIN <strong>{classroomName}</strong>
+        </Typography>
 
-      <ActivateButton socket={socket} classroomName={classroomName} />
+        <ActivateButton socket={socket} classroomName={classroomName} />
 
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={5}>
-          <UnpairedStudentsList
-            socket={socket}
-            unpairedStudents={unpairedStudents}
-            setUnpairedStudents={setUnpairedStudents}
-          />
-          <PairedStudentsList
-            studentChats={studentChats}
-            setDisplayedChat={setDisplayedChat}
-            displayedChat={displayedChat}
-          />
+        <Grid container spacing={2}>
+          <Grid item xs={12} md={5}>
+            <UnpairedStudentsList
+              socket={socket}
+              unpairedStudents={unpairedStudents}
+              setUnpairedStudents={setUnpairedStudents}
+            />
+            <PairedStudentsList
+              studentChats={studentChats}
+              setDisplayedChat={setDisplayedChat}
+              displayedChat={displayedChat}
+            />
+          </Grid>
+
+          <Grid item xs={12} md={7}>
+            {showDisplayedChat()}
+          </Grid>
         </Grid>
-
-        <Grid item xs={12} md={7}>
-          {showDisplayedChat()}
-        </Grid>
-      </Grid>
-      <AllStudentChatsDisplay
-        studentChats={studentChats}
-        displayedChat={displayedChat}
-        setDisplayedChat={setDisplayedChat}
-      />
+        <AllStudentChatsDisplay
+          studentChats={studentChats}
+          displayedChat={displayedChat}
+          setDisplayedChat={setDisplayedChat}
+        />
+      </Box>
     </main>
   );
 }

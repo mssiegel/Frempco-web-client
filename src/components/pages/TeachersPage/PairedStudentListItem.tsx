@@ -27,7 +27,7 @@ export default function PairedStudentListItem({
         const selected = chatId === displayedChat;
         return (
           <div key={chatId}>
-            <Divider />
+            <Divider sx={{ borderColor: 'darkgray' }} />
             <span css={selected && conversationCSS.student1}>
               {student1.realName}
             </span>
