@@ -12,9 +12,9 @@ const chatboxContainer = css`
 const chatboxTop = css`
   background: #f8e5e0;
   border-radius: 10px 10px 0 0;
-  min-height: 260px;
+  min-height: 280px;
   padding: 10px 10px 0 10px;
-  max-height: 260px;
+  max-height: 280px;
   overflow-y: overlay;
   scroll-behavior: smooth;
 `;
