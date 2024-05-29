@@ -2,12 +2,14 @@
 
 import { Box, Fab, Typography } from '@mui/material';
 import { Send as SendIcon } from '@mui/icons-material';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { filterWords } from '@utils/classrooms';
 import sendMessagesCSS from './SendMessages.css';
 
 let peerTypingTimer = null;
 export default function SendMessages({ socket, chat, setChat }) {
+  const typeMessageInput = useRef(null);
+
   const [message, setMessage] = useState('');
   const [chatEndedMsg, setChatEndedMsg] = useState(null);
   const [peerIsTyping, setPeerIsTyping] = useState(false);
@@ -57,6 +59,7 @@ export default function SendMessages({ socket, chat, setChat }) {
         conversation: [...chat.conversation, ['you', chat.you, message]],
       }));
       setMessage('');
+      typeMessageInput.current.focus();
 
       if (socket) {
         socket.emit('student sent message', {
@@ -96,6 +99,7 @@ export default function SendMessages({ socket, chat, setChat }) {
             maxLength={75}
             onChange={sendUserIsTyping}
             autoFocus
+            ref={typeMessageInput}
           />
 
           <Fab
