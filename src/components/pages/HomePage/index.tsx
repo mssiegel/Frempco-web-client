@@ -68,7 +68,16 @@ export default function HomePage() {
             <Typography variant='h4' mb={3}>
               The FREE Classroom roleplaying product
             </Typography>
-            <Image src={RoleplayMasks} alt='Roleplaying masks' width={250} />
+            <Image
+              src={RoleplayMasks}
+              alt='Roleplaying masks'
+              priority={true}
+              width={250}
+              style={{
+                maxWidth: '100%',
+                height: 'auto',
+              }}
+            />
             <Box
               my={6}
               display='flex'
@@ -107,7 +116,11 @@ export default function HomePage() {
             <Image
               src={ExampleChat}
               alt='example chat between two students'
-              layout='responsive'
+              sizes='100vw'
+              style={{
+                width: '100%',
+                height: 'auto',
+              }}
             />
           </Box>
           <Typography
@@ -163,7 +176,11 @@ export default function HomePage() {
           <Image
             src={ExampleTeacherOverview}
             alt='example overview for the teacher'
-            layout='responsive'
+            sizes='100vw'
+            style={{
+              width: '100%',
+              height: 'auto',
+            }}
           />
         </Box>
       </Box>
