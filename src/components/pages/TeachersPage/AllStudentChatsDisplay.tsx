@@ -16,7 +16,7 @@ export default function AllStudentChatsDisplay({
       sx={{ borderTop: '2px dashed silver' }}
     >
       <Grid item xs={12}>
-        <Typography variant='h5' sx={{ color: 'white' }}>
+        <Typography variant='h5' color='black'>
           Click any conversation below to display full chat above
         </Typography>
       </Grid>

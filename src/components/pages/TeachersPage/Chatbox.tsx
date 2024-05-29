@@ -29,7 +29,7 @@ export default function Chatbox({
         css={chatboxCSS.chatboxTop}
         border={
           isTheDisplayedChat && inAllStudentChatsDisplay
-            ? '6px solid royalblue'
+            ? '3px solid royalblue'
             : ''
         }
         ref={chatboxConversationContainer}
