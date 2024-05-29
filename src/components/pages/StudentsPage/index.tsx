@@ -74,7 +74,7 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
           src={RoleplayMasks}
           alt='Roleplaying masks'
           priority={true}
-          width={80}
+          width={120}
           style={{
             maxWidth: '100%',
             height: 'auto',
