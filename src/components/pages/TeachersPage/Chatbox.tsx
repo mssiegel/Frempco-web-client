@@ -3,7 +3,7 @@
 import { Box } from '@mui/material';
 import { useRef, useEffect } from 'react';
 
-import { displayBottomOfElement } from '@utils/classrooms';
+import { scrollToBottomOfElement } from '@utils/classrooms';
 import chatboxCSS from './Chatbox.css';
 import Conversation from './Conversation';
 import CopyButton from '@components/shared/CopyButton';
@@ -17,7 +17,7 @@ export default function Chatbox({
   setStudentChats,
 }) {
   useEffect(() => {
-    displayBottomOfElement(chatboxConversationContainer);
+    scrollToBottomOfElement(chatboxConversationContainer);
   }, [chat.conversation]);
 
   const chatboxConversationContainer = useRef(null);
