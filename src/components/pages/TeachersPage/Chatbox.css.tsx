@@ -11,6 +11,7 @@ const chatboxTop = css`
   padding: 10px;
   max-height: 260px;
   overflow-y: overlay;
+  scroll-behavior: smooth;
 `;
 
 const chatboxBottom = css`

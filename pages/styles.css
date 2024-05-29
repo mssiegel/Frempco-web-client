@@ -8,7 +8,7 @@ platforms (Makes windows scrollbars prettier) */
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  background: rgba(128, 128, 128, 0.175);
+  background: rgba(128, 128, 128, 0.375);
   border-radius: 10px;
 }
 
