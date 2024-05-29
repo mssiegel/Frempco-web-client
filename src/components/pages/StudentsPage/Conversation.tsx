@@ -1,14 +1,12 @@
 /** @jsxImportSource @emotion/react */
 
 import { Box, Typography } from '@mui/material';
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 
 import conversationCSS from './Conversation.css';
 import { filterWords } from '@utils/classrooms';
-import { scrollSlowlyIntoView } from '@utils/classrooms';
 
 export default function Conversation({ socket, chat, setChat }) {
-  const lastMessage = useRef(null);
   useEffect(() => {
     if (socket) {
       socket.on('student sent message', ({ character, message }) => {
@@ -32,11 +30,6 @@ export default function Conversation({ socket, chat, setChat }) {
       }
     };
   }, [setChat, socket]);
-
-  useEffect(() => {
-    // Scrolling slowly provides a smooth visual effect for displaying new messages
-    scrollSlowlyIntoView(lastMessage);
-  }, [chat.conversation]);
 
   return (
     <Box id='conversation'>
@@ -63,8 +56,6 @@ export default function Conversation({ socket, chat, setChat }) {
           </Typography>
         );
       })}
-
-      <span ref={lastMessage} />
     </Box>
   );
 }
