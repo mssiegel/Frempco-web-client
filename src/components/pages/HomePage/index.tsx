@@ -118,6 +118,8 @@ export default function HomePage() {
               alt='example chat between two students'
               sizes='100vw'
               style={{
+                border: '1px solid gray',
+                borderRadius: '10px',
                 width: '100%',
                 height: 'auto',
               }}
@@ -178,6 +180,8 @@ export default function HomePage() {
             alt='example overview for the teacher'
             sizes='100vw'
             style={{
+              border: '1px solid lightgray',
+              borderRadius: '5px',
               width: '100%',
               height: 'auto',
             }}
