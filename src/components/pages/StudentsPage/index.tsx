@@ -64,8 +64,11 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
 
   return (
     <main>
-      <Typography variant='h4' sx={{ color: 'white', mb: 4 }}>
-        {`Hello ${name}!`}
+      <Typography
+        variant='h4'
+        sx={{ color: 'black', mb: 4, textAlign: 'center' }}
+      >
+        {`Hello ${name}.`}
       </Typography>
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         {chatInSession ? (

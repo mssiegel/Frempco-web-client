@@ -14,13 +14,13 @@ export default function WelcomeMessage({ classroomName, removedFromClass }) {
             Your teacher removed you from the classroom.
           </Typography>
           <Typography variant='h4'>
-            Please return to the <Link href='/'>homepage</Link>
+            Please return to the <Link href='/'>Homepage</Link>
           </Typography>
         </>
       ) : (
         <>
           <Typography variant='h4' sx={{ mb: 4 }}>
-            Welcome to your classroom: {classroomName}
+            Welcome to classroom {classroomName}.
           </Typography>
           <Typography variant='h4'>Your teacher will pair you soon.</Typography>
         </>

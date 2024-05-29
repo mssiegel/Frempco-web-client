@@ -38,7 +38,7 @@ export function scrollSlowlyIntoView(refObject) {
   // used on pages with only one chatbox, i.e. students page
   // do not use this function on pages with multiple chatboxes as then it'd scroll other chatboxes into view whenever a new message arrives
   if (refObject.current)
-    refObject.current.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    refObject.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
 }
 
 export interface ClassroomProps {

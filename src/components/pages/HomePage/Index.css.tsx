@@ -2,31 +2,19 @@ import { css } from '@emotion/react';
 
 const exampleChat = css`
   position: relative;
-  height: 50vh;
-
-  @media (max-width: 500px) {
-    height: 40vh;
-  }
+  margin: auto;
+  max-width: 500px;
 `;
 
 const exampleOverview = css`
   position: relative;
-  height: 75vh;
-
-  @media (max-width: 500px) {
-    height: 30vh;
-  }
-`;
-
-const finalTextBox = css`
-  max-width: 500px;
   margin: auto;
+  max-width: 800px;
 `;
 
 const homepageCSS = {
   exampleChat,
   exampleOverview,
-  finalTextBox,
 };
 
 export default homepageCSS;
