@@ -170,7 +170,7 @@ export default function HomePage() {
       <Box color={(theme) => theme.palette.common.black}>
         <Typography variant='h5' mt={6} mb={3} textAlign='center'>
           The teacher can observe all student conversations. <br />
-          Example Teacher's dashboard:
+          Example Teacher&apos;s dashboard:
         </Typography>
         <Box css={homepageCSS.exampleOverview}>
           <Image

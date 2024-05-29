@@ -142,7 +142,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
         </Typography>
         <Typography fontSize={20} color='black' ml={4}>
           2. Click the blue button named{' '}
-          <strong>"Student: Join classroom"</strong>
+          <strong>&quot;Student: Join classroom&quot;</strong>
         </Typography>
         <Typography fontSize={20} color='black' ml={4}>
           3. Enter PIN <strong>{classroomName}</strong>
