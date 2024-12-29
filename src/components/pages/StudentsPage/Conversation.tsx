@@ -9,16 +9,16 @@ import { filterWords } from '@utils/classrooms';
 export default function Conversation({ socket, chat, setChat }) {
   useEffect(() => {
     if (socket) {
-      socket.on('student sent message', ({ character, message }) => {
+      socket.on('student sent message', ({ message }) => {
         setChat((chat) => ({
           ...chat,
-          conversation: [...chat.conversation, ['peer', character, message]],
+          conversation: [...chat.conversation, ['peer', message]],
         }));
       });
       socket.on('teacher sent message', ({ message }) => {
         setChat((chat) => ({
           ...chat,
-          conversation: [...chat.conversation, ['teacher', 'TEACHER', message]],
+          conversation: [...chat.conversation, ['teacher', message]],
         }));
       });
     }
@@ -36,18 +36,30 @@ export default function Conversation({ socket, chat, setChat }) {
       <Box css={conversationCSS.introText}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <span>
-            Hi <span css={conversationCSS.you}>{chat.initialChar}</span>
+            Hi <span css={conversationCSS.you}>{chat.characters.you}</span>
           </span>
           <span>{chat.startTime}</span>
         </Box>
         <span>You matched with </span>
-        <span css={conversationCSS.peer}>{chat.peer}</span>
+        <span css={conversationCSS.peer}>{chat.characters.peer}</span>
       </Box>
-      {chat.conversation.map(([person, character, message], i) => {
+      {chat.conversation.map(([messageAuthor, message], i) => {
+        let character = '';
         let fontCSS = {};
-        if (person === 'peer') fontCSS = conversationCSS.peer;
-        else if (person === 'you') fontCSS = conversationCSS.you;
-        else if (person === 'teacher') fontCSS = conversationCSS.teacher;
+        switch (messageAuthor) {
+          case 'you':
+            character = chat.characters.you;
+            fontCSS = conversationCSS.you;
+            break;
+          case 'peer':
+            character = chat.characters.peer;
+            fontCSS = conversationCSS.peer;
+            break;
+          case 'teacher':
+            character = 'TEACHER';
+            fontCSS = conversationCSS.teacher;
+            break;
+        }
 
         return (
           <Typography key={i}>
