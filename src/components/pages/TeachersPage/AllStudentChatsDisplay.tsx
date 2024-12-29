@@ -36,6 +36,7 @@ export default function AllStudentChatsDisplay({
             onClick={() => setDisplayedChat(chat.chatId)}
           >
             <Chatbox
+              // Shortened chats do not have a send message component
               socket={null}
               chat={shortenedChat}
               inAllStudentChatsDisplay={true}

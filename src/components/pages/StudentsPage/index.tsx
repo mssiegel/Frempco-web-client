@@ -19,12 +19,13 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
   const [chatInSession, setChatInSession] = useState(false);
   const [removedFromClass, setRemovedFromClass] = useState(false);
   const [chat, setChat] = useState({
-    you: '',
-    peer: '',
-    initialChar: '',
+    characters: {
+      you: 'your character',
+      peer: 'peer character',
+    },
     conversation: [
-      // ['you', 'vampire', 'i need blood'],
-      // ['peer', 'wizard', 'i will cast a spell to make some'],
+      // ['you', 'i need blood'],
+      // ['peer', 'i will cast a spell to make some'],
     ],
     startTime: '',
   });
@@ -40,9 +41,10 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
     if (socket) {
       socket.on('chat start', ({ yourCharacter, peersCharacter }) => {
         setChat({
-          you: yourCharacter,
-          peer: peersCharacter,
-          initialChar: yourCharacter,
+          characters: {
+            you: yourCharacter,
+            peer: peersCharacter,
+          },
           conversation: [],
           startTime: currentTime(),
         });

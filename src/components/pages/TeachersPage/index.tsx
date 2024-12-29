@@ -12,7 +12,7 @@ import { useRouter } from 'next/router';
 
 type StudentPair = [Student, Student];
 
-export type ChatMessage = ['student1' | 'student2' | 'teacher', string, string];
+export type ChatMessage = ['student1' | 'student2' | 'teacher', string];
 
 export interface StudentChat {
   chatId: string;
@@ -37,8 +37,8 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     //     { socketId: 'as31afdsf', realName: 'Rachel', character: 'dentist' },
     //   ],
     //   conversation: [
-    //     ['student1', 'vampire', 'i need blood'],
-    //     ['student2', 'wizard', 'i will cast a spell to make some'],
+    //     ['student1', 'i need blood'],
+    //     ['student2', 'i will cast a spell to make some'],
     //   ],
     //   startTime: '',
     // },
@@ -84,15 +84,14 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
 
       socket.on(
         'teacher listens to student message',
-        ({ character, message, socketId, chatId }) => {
+        ({ message, socketId, chatId }) => {
           setStudentChats((studentChats) => {
             return studentChats.map((chat) => {
               if (chat.chatId === chatId) {
-                const student =
-                  chat.studentPair[0].socketId === socketId
-                    ? 'student1'
-                    : 'student2';
-                const newMessage: ChatMessage = [student, character, message];
+                const student1 = chat.studentPair[0];
+                const messageAuthor =
+                  student1.socketId === socketId ? 'student1' : 'student2';
+                const newMessage: ChatMessage = [messageAuthor, message];
                 return {
                   ...chat,
                   conversation: [...chat.conversation, newMessage],
