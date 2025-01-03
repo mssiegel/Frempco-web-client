@@ -7,6 +7,7 @@ import Chatbox from './Chatbox';
 import UnpairedStudentsList from './UnpairedStudentsList';
 import PairedStudentsList from './PairedStudentsList';
 import ActivateButton from './ActivateButton';
+import SetTeacherEmailButton from './SetTeacherEmailButton';
 import AllStudentChatsDisplay from './AllStudentChatsDisplay';
 import { useRouter } from 'next/router';
 
@@ -43,6 +44,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     //   startTime: '',
     // },
   ]);
+  const [isActiveClassroom, setIsActiveClassroom] = useState(false);
 
   useEffect(() => {
     if (socket) {
@@ -147,7 +149,16 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           3. Enter PIN <strong>{classroomName}</strong>
         </Typography>
 
-        <ActivateButton socket={socket} classroomName={classroomName} />
+        <ActivateButton
+          socket={socket}
+          classroomName={classroomName}
+          isActiveClassroom={isActiveClassroom}
+          setIsActiveClassroom={setIsActiveClassroom}
+        />
+        <SetTeacherEmailButton
+          classroomName={classroomName}
+          isActiveClassroom={isActiveClassroom}
+        />
 
         <Grid container spacing={2}>
           <Grid item xs={12} md={5}>
