@@ -1,13 +1,15 @@
-import { useState } from 'react';
 import { Button } from '@mui/material';
 import {
   Power as PowerIcon,
   PowerOff as PowerOffIcon,
 } from '@mui/icons-material';
 
-export default function ActivateButton({ socket, classroomName }) {
-  const [isActiveClassroom, setIsActiveClassroom] = useState(false);
-
+export default function ActivateButton({
+  socket,
+  classroomName,
+  isActiveClassroom,
+  setIsActiveClassroom,
+}) {
   function activateClassroom() {
     socket.emit('activate classroom', { classroomName });
     setIsActiveClassroom(true);
@@ -28,7 +30,7 @@ export default function ActivateButton({ socket, classroomName }) {
       variant='contained'
       size='small'
       color='warning'
-      sx={{ my: 3 }}
+      sx={{ my: 3, mr: 2 }}
       startIcon={<PowerOffIcon />}
       onClick={deactivateClassroom}
     >
@@ -38,7 +40,7 @@ export default function ActivateButton({ socket, classroomName }) {
     <Button
       variant='contained'
       size='large'
-      sx={{ my: 3 }}
+      sx={{ my: 3, mr: 2 }}
       startIcon={<PowerIcon />}
       onClick={activateClassroom}
     >

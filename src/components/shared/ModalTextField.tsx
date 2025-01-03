@@ -6,6 +6,8 @@ export default function ModalTextField({
   autoFocus = false,
   type = 'input',
   maxLength = 100,
+  defaultValue = '',
+  required = false,
 }) {
   return (
     <TextField
@@ -18,6 +20,8 @@ export default function ModalTextField({
       inputRef={refObject}
       autoFocus={autoFocus}
       inputProps={{ maxLength }}
+      defaultValue={defaultValue}
+      required={required}
     />
   );
 }
