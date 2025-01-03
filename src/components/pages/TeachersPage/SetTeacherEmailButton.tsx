@@ -45,7 +45,7 @@ export default function SetTeacherEmailButton({
       <BasicModal open={open} onClose={() => setOpen(false)}>
         <form onSubmit={updateTeacherEmail}>
           <Typography variant='h6' sx={{ mb: 1 }}>
-            Teacher's email address
+            {"Teacher's email address"}
           </Typography>
           <Typography variant='subtitle1'>
             Enter your email below to get emailed all the chats from this
