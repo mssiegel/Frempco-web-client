@@ -1,5 +1,7 @@
 import { Box } from '@mui/material';
+
 import PairedStudentListItem from './PairedStudentListItem';
+import { PAIRED } from '@utils/classrooms';
 
 export default function PairedStudentsList({
   studentChats,
@@ -18,7 +20,13 @@ export default function PairedStudentsList({
         my: 3,
       }}
     >
-      Total paired students: <strong>{studentChats.length * 2}</strong>
+      Total paired students:{' '}
+      <strong>
+        {studentChats.reduce(
+          (total, chat) => total + (chat.mode === 'PAIRED' ? 2 : 1),
+          0,
+        )}
+      </strong>
       {/* TODO refactor: since this is a list, the map should be here and not
        in PairedStudentListItem */}
       <PairedStudentListItem
