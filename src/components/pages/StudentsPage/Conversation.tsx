@@ -7,19 +7,23 @@ import conversationCSS from './Conversation.css';
 import { filterWords } from '@utils/classrooms';
 
 export default function Conversation({ socket, chat, setChat }) {
+  function addChatMessage(sender, message) {
+    setChat((chat) => ({
+      ...chat,
+      conversation: [...chat.conversation, [sender, message]],
+    }));
+  }
+
   useEffect(() => {
     if (socket) {
       socket.on('student sent message', ({ message }) => {
-        setChat((chat) => ({
-          ...chat,
-          conversation: [...chat.conversation, ['peer', message]],
-        }));
+        addChatMessage('peer', message);
       });
       socket.on('teacher sent message', ({ message }) => {
-        setChat((chat) => ({
-          ...chat,
-          conversation: [...chat.conversation, ['teacher', message]],
-        }));
+        addChatMessage('teacher', message);
+      });
+      socket.on('solo mode: teacher sent message', ({ message }) => {
+        addChatMessage('teacher', message);
       });
     }
 
@@ -27,6 +31,7 @@ export default function Conversation({ socket, chat, setChat }) {
       if (socket) {
         socket.off('student sent message');
         socket.off('teacher sent message');
+        socket.off('solo mode: teacher sent message');
       }
     };
   }, [setChat, socket]);
@@ -52,6 +57,7 @@ export default function Conversation({ socket, chat, setChat }) {
             fontCSS = conversationCSS.you;
             break;
           case 'peer':
+          case 'chatbot':
             character = chat.characters.peer;
             fontCSS = conversationCSS.peer;
             break;
@@ -63,7 +69,7 @@ export default function Conversation({ socket, chat, setChat }) {
 
         return (
           <Typography key={i}>
-            <span css={fontCSS}>{filterWords(character)}: </span>
+            <span css={fontCSS}>{character}: </span>
             <span css={conversationCSS.msg}>{filterWords(message)}</span>
           </Typography>
         );

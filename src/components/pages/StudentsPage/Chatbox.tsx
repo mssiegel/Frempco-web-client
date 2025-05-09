@@ -9,7 +9,7 @@ import Conversation from './Conversation';
 import SendMessages from './SendMessages';
 import CopyButton from '@components/shared/CopyButton';
 
-export default function Chatbox({ socket, chat, setChat }) {
+export default function Chatbox({ socket, chat, setChat, chatEndedMsg }) {
   useEffect(() => {
     scrollToBottomOfElement(chatboxConversationContainer);
   }, [chat.conversation]);
@@ -23,7 +23,12 @@ export default function Chatbox({ socket, chat, setChat }) {
         <Conversation socket={socket} chat={chat} setChat={setChat} />
       </Box>
       <Box css={chatboxCSS.chatboxBottom}>
-        <SendMessages socket={socket} chat={chat} setChat={setChat} />
+        <SendMessages
+          socket={socket}
+          chat={chat}
+          setChat={setChat}
+          chatEndedMsg={chatEndedMsg}
+        />
       </Box>
     </Box>
   );

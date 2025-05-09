@@ -5,6 +5,8 @@ export default function PairedStudentsList({
   studentChats,
   setDisplayedChat,
   displayedChat,
+  setStudentChats,
+  setUnpairedStudents,
 }) {
   return (
     <Box
@@ -17,10 +19,14 @@ export default function PairedStudentsList({
       }}
     >
       Total paired students: <strong>{studentChats.length * 2}</strong>
+      {/* TODO refactor: since this is a list, the map should be here and not
+       in PairedStudentListItem */}
       <PairedStudentListItem
         studentChats={studentChats}
         setDisplayedChat={setDisplayedChat}
         displayedChat={displayedChat}
+        setStudentChats={setStudentChats}
+        setUnpairedStudents={setUnpairedStudents}
       />
     </Box>
   );

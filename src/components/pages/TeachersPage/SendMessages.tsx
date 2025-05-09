@@ -5,8 +5,14 @@ import { Send as SendIcon } from '@mui/icons-material';
 import { useState } from 'react';
 import sendMessagesCSS from './SendMessages.css';
 import { ChatMessage } from '.';
+import { PAIRED } from '@utils/classrooms';
 
-export default function SendMessages({ socket, chatId, setStudentChats }) {
+export default function SendMessages({
+  socket,
+  chatId,
+  chatMode,
+  setStudentChats,
+}) {
   const [message, setMessage] = useState('');
 
   function sendMessage(e) {
@@ -25,12 +31,16 @@ export default function SendMessages({ socket, chatId, setStudentChats }) {
       });
       setMessage('');
 
-      if (socket) {
-        socket.emit('teacher sent message', {
-          message,
-          chatId,
-        });
-      }
+      if (!socket) return;
+
+      const socketEvent =
+        chatMode === PAIRED
+          ? 'teacher sent message'
+          : 'solo mode: teacher sent message';
+      socket.emit(socketEvent, {
+        message,
+        chatId,
+      });
     }
   }
 

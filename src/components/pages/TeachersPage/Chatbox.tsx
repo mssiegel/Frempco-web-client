@@ -43,6 +43,7 @@ export default function Chatbox({
           <SendMessages
             socket={socket}
             chatId={chat.chatId}
+            chatMode={chat.mode}
             setStudentChats={setStudentChats}
           />
         </Box>

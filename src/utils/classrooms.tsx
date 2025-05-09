@@ -1,5 +1,8 @@
 import Filter from 'bad-words';
 
+export const PAIRED = 'PAIRED';
+export const SOLO = 'SOLO';
+
 export function getRandom<T>(arr: Array<T>): T {
   return arr[Math.floor(Math.random() * arr.length)];
 }

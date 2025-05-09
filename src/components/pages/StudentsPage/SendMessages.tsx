@@ -3,30 +3,19 @@
 import { Box, Fab, Typography } from '@mui/material';
 import { Send as SendIcon } from '@mui/icons-material';
 import { useState, useEffect, useRef } from 'react';
+
 import sendMessagesCSS from './SendMessages.css';
+import { PAIRED, SOLO } from '@utils/classrooms';
 
 let peerTypingTimer = null;
-export default function SendMessages({ socket, chat, setChat }) {
+export default function SendMessages({ socket, chat, setChat, chatEndedMsg }) {
   const typeMessageInput = useRef(null);
 
   const [message, setMessage] = useState('');
-  const [chatEndedMsg, setChatEndedMsg] = useState(null);
   const [peerIsTyping, setPeerIsTyping] = useState(false);
 
   useEffect(() => {
     if (socket) {
-      socket.on('peer left chat', () => {
-        setChatEndedMsg('Your peer left the chat');
-      });
-
-      socket.on('teacher ended chat', () => {
-        setChatEndedMsg('Your teacher ended your chat');
-      });
-
-      socket.on('chat start', () => {
-        setChatEndedMsg(null);
-      });
-
       socket.on('student sent message', () => {
         setPeerIsTyping(false);
       });
@@ -40,8 +29,6 @@ export default function SendMessages({ socket, chat, setChat }) {
 
     return () => {
       if (socket) {
-        socket.off('peer left chat');
-        socket.off('chat start');
         socket.off('student sent message');
         socket.off('peer is typing');
       }
@@ -58,10 +45,27 @@ export default function SendMessages({ socket, chat, setChat }) {
       setMessage('');
       typeMessageInput.current.focus();
 
-      if (socket) {
+      if (!socket) return;
+
+      if (chat.mode === PAIRED) {
         socket.emit('student sent message', {
           message,
+          chatId: chat.chatId,
         });
+      } else {
+        socket.emit(
+          'solo mode: student sent message',
+          {
+            message,
+            chatId: chat.chatId,
+          },
+          ({ chatbotReplyMessages }) => {
+            setChat((chat) => ({
+              ...chat,
+              conversation: [...chat.conversation, ...chatbotReplyMessages],
+            }));
+          },
+        );
       }
     }
   }

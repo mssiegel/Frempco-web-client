@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { Box, Button, Grid } from '@mui/material';
-import { Chat as ChatIcon } from '@mui/icons-material';
+import { Chat as ChatIcon, Group as GroupIcon } from '@mui/icons-material';
 import { chunk } from 'lodash-es';
 
 import { getRandom } from '@utils/classrooms';
@@ -22,6 +22,9 @@ export default function UnpairedStudentsList({
   socket,
   unpairedStudents,
   setUnpairedStudents,
+  setStudentChats,
+  studentChats,
+  setDisplayedChat,
 }) {
   const [characters, setCharacters] = useState(CHARACTERS);
 
@@ -115,6 +118,10 @@ export default function UnpairedStudentsList({
                 student={student1}
                 socket={socket}
                 setUnpairedStudents={setUnpairedStudents}
+                characters={characters}
+                setStudentChats={setStudentChats}
+                studentChats={studentChats}
+                setDisplayedChat={setDisplayedChat}
               />
               {student2 && (
                 <UnpairedStudentItem
@@ -122,6 +129,10 @@ export default function UnpairedStudentsList({
                   student={student2}
                   socket={socket}
                   setUnpairedStudents={setUnpairedStudents}
+                  characters={characters}
+                  setStudentChats={setStudentChats}
+                  studentChats={studentChats}
+                  setDisplayedChat={setDisplayedChat}
                 />
               )}
             </Grid>
@@ -129,12 +140,11 @@ export default function UnpairedStudentsList({
             {student2 && (
               <Grid item xs={3} sx={{ textAlign: 'center' }}>
                 <Button
-                  variant='contained'
                   size='small'
                   sx={{ top: '25%' }}
                   onClick={() => pairStudents(i * 2)}
                 >
-                  Pair up
+                  Pair up <GroupIcon />
                 </Button>
               </Grid>
             )}
