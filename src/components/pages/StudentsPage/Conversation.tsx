@@ -6,36 +6,7 @@ import { useEffect } from 'react';
 import conversationCSS from './Conversation.css';
 import { filterWords } from '@utils/classrooms';
 
-export default function Conversation({ socket, chat, setChat }) {
-  function addChatMessage(sender, message) {
-    setChat((chat) => ({
-      ...chat,
-      conversation: [...chat.conversation, [sender, message]],
-    }));
-  }
-
-  useEffect(() => {
-    if (socket) {
-      socket.on('student sent message', ({ message }) => {
-        addChatMessage('peer', message);
-      });
-      socket.on('teacher sent message', ({ message }) => {
-        addChatMessage('teacher', message);
-      });
-      socket.on('solo mode: teacher sent message', ({ message }) => {
-        addChatMessage('teacher', message);
-      });
-    }
-
-    return () => {
-      if (socket) {
-        socket.off('student sent message');
-        socket.off('teacher sent message');
-        socket.off('solo mode: teacher sent message');
-      }
-    };
-  }, [setChat, socket]);
-
+export default function Conversation({ chat }) {
   return (
     <Box id='conversation'>
       <Box css={conversationCSS.introText}>

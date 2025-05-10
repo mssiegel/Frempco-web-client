@@ -5,21 +5,22 @@ import { Send as SendIcon } from '@mui/icons-material';
 import { useState, useEffect, useRef } from 'react';
 
 import sendMessagesCSS from './SendMessages.css';
-import { PAIRED, SOLO } from '@utils/classrooms';
+import { PAIRED } from '@utils/classrooms';
 
 let peerTypingTimer = null;
-export default function SendMessages({ socket, chat, setChat, chatEndedMsg }) {
+export default function SendMessages({
+  socket,
+  chat,
+  setChat,
+  chatEndedMsg,
+  peerIsTyping,
+  setPeerIsTyping,
+}) {
   const typeMessageInput = useRef(null);
-
   const [message, setMessage] = useState('');
-  const [peerIsTyping, setPeerIsTyping] = useState(false);
 
   useEffect(() => {
     if (socket) {
-      socket.on('student sent message', () => {
-        setPeerIsTyping(false);
-      });
-
       socket.on('peer is typing', () => {
         clearTimeout(peerTypingTimer);
         peerTypingTimer = setTimeout(() => setPeerIsTyping(false), 3000);
@@ -29,7 +30,6 @@ export default function SendMessages({ socket, chat, setChat, chatEndedMsg }) {
 
     return () => {
       if (socket) {
-        socket.off('student sent message');
         socket.off('peer is typing');
       }
     };
