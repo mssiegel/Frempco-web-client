@@ -15,7 +15,7 @@ export default function SendMessages({ socket, chatId, setStudentChats }) {
       setStudentChats((studentChats) => {
         return studentChats.map((chat) => {
           if (chat.chatId === chatId) {
-            const newMessage: ChatMessage = ['teacher', 'TEACHER', message];
+            const newMessage: ChatMessage = ['teacher', message];
             return {
               ...chat,
               conversation: [...chat.conversation, newMessage],

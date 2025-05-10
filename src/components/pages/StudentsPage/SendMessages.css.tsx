@@ -1,19 +1,14 @@
 import { css } from '@emotion/react';
 
 const characterName = css`
-  text-align: center;
-  border-radius: 20px;
-  border: 2px solid lightgrey;
-  height: 40px;
   font-weight: bold;
   color: #0070ff;
   font-size: 16px;
-  width: 210px;
+  margin-left: 20px;
+`;
 
-  :focus {
-    outline: none;
-    border: 3px solid deepskyblue;
-  }
+const messageBar = css`
+  text-align: center;
 `;
 
 const message = css`
@@ -45,13 +40,19 @@ const peerLeft = css`
 `;
 
 const peerIsTyping = css`
-  padding: 5px 10px;
+  padding: 5px 10px 5px 17px;
   text-align: left;
   font-size: 16px;
   color: #aaa;
   font-style: italic;
 `;
 
-const sendMessagesCSS = { characterName, message, peerIsTyping, peerLeft };
+const sendMessagesCSS = {
+  characterName,
+  messageBar,
+  message,
+  peerIsTyping,
+  peerLeft,
+};
 
 export default sendMessagesCSS;

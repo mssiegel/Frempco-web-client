@@ -21,16 +21,25 @@ export default function Conversation({ chat }) {
         </Box>
         ------
       </Box>
-      {chat.conversation.map(([person, character, message], i) => {
-        let fontCSS = {};
+      {chat.conversation.map(([messageAuthor, message], i) => {
+        let character = '';
         let realName = '';
-        if (person === 'student1') {
-          fontCSS = conversationCSS.student1;
-          realName = student1.realName;
-        } else if (person === 'student2') {
-          fontCSS = conversationCSS.student2;
-          realName = student2.realName;
-        } else if (person === 'teacher') fontCSS = conversationCSS.teacher;
+        let fontCSS = {};
+        switch (messageAuthor) {
+          case 'student1':
+            character = student1.character;
+            realName = student1.realName;
+            fontCSS = conversationCSS.student1;
+            break;
+          case 'student2':
+            character = student2.character;
+            realName = student2.realName;
+            fontCSS = conversationCSS.student2;
+            break;
+          case 'teacher':
+            character = 'TEACHER';
+            fontCSS = conversationCSS.teacher;
+        }
 
         return (
           <Typography key={i}>
@@ -40,7 +49,7 @@ export default function Conversation({ chat }) {
                 {realName}&nbsp;&nbsp;
               </span>
             )}
-            <span css={fontCSS}>{filterWords(character)}: </span>
+            <span css={fontCSS}>{character}: </span>
             <span css={conversationCSS.msg}>{filterWords(message)}</span>
           </Typography>
         );

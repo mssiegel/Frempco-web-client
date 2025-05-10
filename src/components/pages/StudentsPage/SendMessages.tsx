@@ -3,7 +3,6 @@
 import { Box, Fab, Typography } from '@mui/material';
 import { Send as SendIcon } from '@mui/icons-material';
 import { useState, useEffect, useRef } from 'react';
-import { filterWords } from '@utils/classrooms';
 import sendMessagesCSS from './SendMessages.css';
 
 let peerTypingTimer = null;
@@ -13,7 +12,6 @@ export default function SendMessages({ socket, chat, setChat }) {
   const [message, setMessage] = useState('');
   const [chatEndedMsg, setChatEndedMsg] = useState(null);
   const [peerIsTyping, setPeerIsTyping] = useState(false);
-  const [peerName, setPeerName] = useState('');
 
   useEffect(() => {
     if (socket) {
@@ -33,11 +31,10 @@ export default function SendMessages({ socket, chat, setChat }) {
         setPeerIsTyping(false);
       });
 
-      socket.on('peer is typing', ({ character }) => {
+      socket.on('peer is typing', () => {
         clearTimeout(peerTypingTimer);
         peerTypingTimer = setTimeout(() => setPeerIsTyping(false), 3000);
         setPeerIsTyping(true);
-        setPeerName(character);
       });
     }
 
@@ -53,17 +50,16 @@ export default function SendMessages({ socket, chat, setChat }) {
 
   function sendMessage(e) {
     e.preventDefault();
-    if (chat.you && message) {
+    if (message) {
       setChat((chat) => ({
         ...chat,
-        conversation: [...chat.conversation, ['you', chat.you, message]],
+        conversation: [...chat.conversation, ['you', message]],
       }));
       setMessage('');
       typeMessageInput.current.focus();
 
       if (socket) {
         socket.emit('student sent message', {
-          character: chat.you,
           message,
         });
       }
@@ -72,44 +68,44 @@ export default function SendMessages({ socket, chat, setChat }) {
 
   function sendUserIsTyping(e) {
     setMessage(e.target.value);
-    socket.emit('student typing', { character: chat.you });
+    socket.emit('student typing');
   }
 
   return (
     <Box>
       <Typography css={sendMessagesCSS.peerIsTyping}>
+        {/* The "&nbsp;" space ensures a consistent layout, preventing the chat
+         messages from shifting when the 'peer is typing' indicator appears. */}
         &nbsp;
-        {peerIsTyping && `${filterWords(peerName)} is typing...`}
+        {peerIsTyping && `${chat.characters.peer} is typing...`}
       </Typography>
 
       {!chatEndedMsg && (
         <form onSubmit={sendMessage}>
-          <input
-            css={sendMessagesCSS.characterName}
-            value={chat.you}
-            placeholder='Your character'
-            maxLength={30}
-            onChange={(e) => setChat({ ...chat, you: e.target.value })}
-          />
+          <Typography css={sendMessagesCSS.characterName}>
+            {chat.characters.you}
+          </Typography>
 
-          <input
-            css={sendMessagesCSS.message}
-            value={message}
-            placeholder='Say something'
-            maxLength={75}
-            onChange={sendUserIsTyping}
-            autoFocus
-            ref={typeMessageInput}
-          />
+          <div css={sendMessagesCSS.messageBar}>
+            <input
+              css={sendMessagesCSS.message}
+              value={message}
+              placeholder='Say something'
+              maxLength={75}
+              onChange={sendUserIsTyping}
+              autoFocus
+              ref={typeMessageInput}
+            />
 
-          <Fab
-            size='small'
-            type='submit'
-            color='primary'
-            style={{ marginLeft: '10px', background: '#940000' }}
-          >
-            <SendIcon />
-          </Fab>
+            <Fab
+              size='small'
+              type='submit'
+              color='primary'
+              style={{ marginLeft: '10px', background: '#940000' }}
+            >
+              <SendIcon />
+            </Fab>
+          </div>
         </form>
       )}
       {chatEndedMsg && (
