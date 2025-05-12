@@ -2,10 +2,13 @@
 import { Box, Typography } from '@mui/material';
 
 import conversationCSS from './Conversation.css';
-import { filterWords } from '@utils/classrooms';
+import { filterWords, PAIRED, Student } from '@utils/classrooms';
 
 export default function Conversation({ chat }) {
-  const [student1, student2] = chat.studentPair;
+  let student1: Student;
+  let student2: Student;
+  if (chat.mode === PAIRED) [student1, student2] = chat.studentPair;
+  else student1 = chat.student;
 
   return (
     <Box id='displayed-chat'>
@@ -14,8 +17,11 @@ export default function Conversation({ chat }) {
           <Box>
             ({student1.realName})&nbsp;&nbsp;
             <span css={conversationCSS.student1}>{student1.character}</span>
-            <br />({student2.realName})&nbsp;&nbsp;
-            <span css={conversationCSS.student2}>{student2.character}</span>
+            <br />
+            {chat.mode === PAIRED && <>{student2.realName}&nbsp;&nbsp;</>}
+            <span css={conversationCSS.student2}>
+              {chat.mode === PAIRED ? student2.character : 'chatbot'}
+            </span>
           </Box>
           <span>{chat.startTime}</span>
         </Box>
@@ -34,6 +40,14 @@ export default function Conversation({ chat }) {
           case 'student2':
             character = student2.character;
             realName = student2.realName;
+            fontCSS = conversationCSS.student2;
+            break;
+          case 'student':
+            character = student1.character;
+            fontCSS = conversationCSS.student1;
+            break;
+          case 'chatbot':
+            character = 'chatbot';
             fontCSS = conversationCSS.student2;
             break;
           case 'teacher':

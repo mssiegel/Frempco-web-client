@@ -6,31 +6,7 @@ import { useEffect } from 'react';
 import conversationCSS from './Conversation.css';
 import { filterWords } from '@utils/classrooms';
 
-export default function Conversation({ socket, chat, setChat }) {
-  useEffect(() => {
-    if (socket) {
-      socket.on('student sent message', ({ message }) => {
-        setChat((chat) => ({
-          ...chat,
-          conversation: [...chat.conversation, ['peer', message]],
-        }));
-      });
-      socket.on('teacher sent message', ({ message }) => {
-        setChat((chat) => ({
-          ...chat,
-          conversation: [...chat.conversation, ['teacher', message]],
-        }));
-      });
-    }
-
-    return () => {
-      if (socket) {
-        socket.off('student sent message');
-        socket.off('teacher sent message');
-      }
-    };
-  }, [setChat, socket]);
-
+export default function Conversation({ chat }) {
   return (
     <Box id='conversation'>
       <Box css={conversationCSS.introText}>
@@ -52,6 +28,7 @@ export default function Conversation({ socket, chat, setChat }) {
             fontCSS = conversationCSS.you;
             break;
           case 'peer':
+          case 'chatbot':
             character = chat.characters.peer;
             fontCSS = conversationCSS.peer;
             break;
@@ -63,7 +40,7 @@ export default function Conversation({ socket, chat, setChat }) {
 
         return (
           <Typography key={i}>
-            <span css={fontCSS}>{filterWords(character)}: </span>
+            <span css={fontCSS}>{character}: </span>
             <span css={conversationCSS.msg}>{filterWords(message)}</span>
           </Typography>
         );

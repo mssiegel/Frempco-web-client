@@ -1,7 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
 import { Box, Grid, Typography } from '@mui/material';
 
-import { ClassroomProps, Student, currentTime } from '@utils/classrooms';
+import {
+  ClassroomProps,
+  Student,
+  currentTime,
+  PAIRED,
+  SOLO,
+} from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
 import Chatbox from './Chatbox';
 import UnpairedStudentsList from './UnpairedStudentsList';
@@ -15,10 +21,21 @@ type StudentPair = [Student, Student];
 
 export type ChatMessage = ['student1' | 'student2' | 'teacher', string];
 
+export type SoloChatMessage = ['student' | 'chatbot' | 'teacher', string];
+
 export interface StudentChat {
+  mode: typeof PAIRED;
   chatId: string;
   studentPair: StudentPair;
   conversation: ChatMessage[];
+  startTime: string;
+}
+
+interface SoloChat {
+  mode: typeof SOLO;
+  chatId: string;
+  student: Student;
+  conversation: SoloChatMessage[];
   startTime: string;
 }
 
@@ -30,7 +47,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
 
   const [unpairedStudents, setUnpairedStudents] = useState<Student[]>([]);
   const [displayedChat, setDisplayedChat] = useState('');
-  const [studentChats, setStudentChats] = useState<StudentChat[]>([
+  const [studentChats, setStudentChats] = useState<(StudentChat | SoloChat)[]>([
     // {
     //   chatId: 'as343da11sf#as31afdsf',
     //   studentPair: [
@@ -52,7 +69,13 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
         if (studentChats.length === 0) setDisplayedChat(chatId);
         setStudentChats((chats) => [
           ...chats,
-          { chatId, studentPair, conversation: [], startTime: currentTime() },
+          {
+            mode: PAIRED,
+            chatId,
+            studentPair,
+            conversation: [],
+            startTime: currentTime(),
+          },
         ]);
       });
 
@@ -64,10 +87,17 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
       });
     }
 
+    socket.on('solo mode: student disconnected', ({ chatId }) => {
+      setStudentChats((chats) =>
+        chats.filter((chat) => chat.chatId !== chatId),
+      );
+    });
+
     return () => {
       if (socket) {
         socket.off('chat started - two students');
         socket.off('student chat unpaired');
+        socket.off('solo mode: student disconnected');
       }
     };
   }, [socket, studentChats.length]);
@@ -89,7 +119,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
         ({ message, socketId, chatId }) => {
           setStudentChats((studentChats) => {
             return studentChats.map((chat) => {
-              if (chat.chatId === chatId) {
+              if (chat.chatId === chatId && chat.mode === PAIRED) {
                 const student1 = chat.studentPair[0];
                 const messageAuthor =
                   student1.socketId === socketId ? 'student1' : 'student2';
@@ -97,6 +127,22 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
                 return {
                   ...chat,
                   conversation: [...chat.conversation, newMessage],
+                };
+              } else return chat;
+            });
+          });
+        },
+      );
+
+      socket.on(
+        'solo mode: teacher listens to new message',
+        ({ messages, chatId }) => {
+          setStudentChats((studentChats) => {
+            return studentChats.map((chat) => {
+              if (chat.chatId === chatId && chat.mode === 'SOLO') {
+                return {
+                  ...chat,
+                  conversation: [...chat.conversation, ...messages],
                 };
               } else return chat;
             });
@@ -113,6 +159,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     return () => {
       socket.off('chat ended - two students');
       socket.off('teacher listens to student message');
+      socket.off('solo mode: teacher listens to new message');
       router.events.off('routeChangeStart', handleRouteChange);
     };
   }, [router.events, socket]);
@@ -166,11 +213,16 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
               socket={socket}
               unpairedStudents={unpairedStudents}
               setUnpairedStudents={setUnpairedStudents}
+              setStudentChats={setStudentChats}
+              studentChats={studentChats}
+              setDisplayedChat={setDisplayedChat}
             />
             <PairedStudentsList
               studentChats={studentChats}
               setDisplayedChat={setDisplayedChat}
               displayedChat={displayedChat}
+              setStudentChats={setStudentChats}
+              setUnpairedStudents={setUnpairedStudents}
             />
           </Grid>
 

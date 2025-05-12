@@ -1,4 +1,5 @@
 import { StudentChat } from '.';
+import { PAIRED } from '@utils/classrooms';
 
 /**
  * Not meant to be used in production.
@@ -7,6 +8,7 @@ import { StudentChat } from '.';
 
 export const EXAMPLE_CHATS: StudentChat[] = [
   {
+    mode: PAIRED,
     chatId: '8DmBxTmt0Q_iUbbxAAAn#Ua_hGB2pSD-6CGvdAAAP',
     studentPair: [
       {
@@ -35,6 +37,7 @@ export const EXAMPLE_CHATS: StudentChat[] = [
     startTime: '12:16 PM',
   },
   {
+    mode: PAIRED,
     chatId: 'bMHZDSrQ_Oj-XukgAABF#PauZMgihsO1fIaG0AABJ',
     studentPair: [
       {
@@ -55,6 +58,7 @@ export const EXAMPLE_CHATS: StudentChat[] = [
     startTime: '12:16 PM',
   },
   {
+    mode: PAIRED,
     chatId: 'NGAuHeC2kJgGf6voAAAl#-vIO1Gi-LTkR3u2HAAAx',
     studentPair: [
       {
@@ -75,6 +79,7 @@ export const EXAMPLE_CHATS: StudentChat[] = [
     startTime: '12:16 PM',
   },
   {
+    mode: PAIRED,
     chatId: '5XFUQ0oJWQiDaQlkAABN#N6C2lemQD7-xNWp0AABR',
     studentPair: [
       {
@@ -95,6 +100,7 @@ export const EXAMPLE_CHATS: StudentChat[] = [
     startTime: '12:16 PM',
   },
   {
+    mode: PAIRED,
     chatId: 'V8XB9Bngez89zaBWAABV#oqNvcYw0MLfU_HAtAABZ',
     studentPair: [
       {
@@ -115,6 +121,7 @@ export const EXAMPLE_CHATS: StudentChat[] = [
     startTime: '12:16 PM',
   },
   {
+    mode: PAIRED,
     chatId: 'mmO7LO7b1aMp4SwkAABd#sqL6DHyk0WWCfwJ_AABh',
     studentPair: [
       {
@@ -133,6 +140,7 @@ export const EXAMPLE_CHATS: StudentChat[] = [
   },
 
   {
+    mode: PAIRED,
     chatId: '8DmBxTmt0Q_iUbbxAAAn#Ua_hGB2pSD-6CGvdAAAP12',
     studentPair: [
       {
@@ -153,6 +161,7 @@ export const EXAMPLE_CHATS: StudentChat[] = [
     startTime: '12:16 PM',
   },
   {
+    mode: PAIRED,
     chatId: 'bMHZDSrQ_Oj-XukgAABF#PauZMgihsO1fIaG0AABJ12',
     studentPair: [
       {
@@ -173,6 +182,7 @@ export const EXAMPLE_CHATS: StudentChat[] = [
     startTime: '12:16 PM',
   },
   {
+    mode: PAIRED,
     chatId: 'NGAuHeC2kJgGf6voAAAl#-vIO1Gi-LTkR3u2HAAAx12',
     studentPair: [
       {
@@ -193,6 +203,7 @@ export const EXAMPLE_CHATS: StudentChat[] = [
     startTime: '12:16 PM',
   },
   {
+    mode: PAIRED,
     chatId: '5XFUQ0oJWQiDaQlkAABN#N6C2lemQD7-xNWp0AABR12',
     studentPair: [
       {
