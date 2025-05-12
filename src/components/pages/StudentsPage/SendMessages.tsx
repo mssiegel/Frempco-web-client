@@ -95,7 +95,7 @@ export default function SendMessages({
               css={sendMessagesCSS.message}
               value={message}
               placeholder='Say something'
-              maxLength={75}
+              maxLength={chat.length === PAIRED ? 75 : 120}
               onChange={sendUserIsTyping}
               autoFocus
               ref={typeMessageInput}
