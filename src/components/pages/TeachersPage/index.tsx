@@ -49,6 +49,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
   const [displayedChat, setDisplayedChat] = useState('');
   const [studentChats, setStudentChats] = useState<(StudentChat | SoloChat)[]>([
     // {
+    //   mode: PAIRED,
     //   chatId: 'as343da11sf#as31afdsf',
     //   studentPair: [
     //     { socketId: 'as343da11sf', realName: 'Sam', character: 'pirate' },
