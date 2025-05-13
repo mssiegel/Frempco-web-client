@@ -16,11 +16,34 @@ export default function PairedStudentListItem({
 }) {
   const socket = useContext(SocketContext);
 
-  function unpair(chatId, chatMode, student1, student2) {
-    const unpairConfirmed = confirm(
-      `Are you sure you want to unpair ${student1.realName} & ${student2.realName}?`,
+  function endAllChats() {
+    const endAllChatsConfirmed = confirm(
+      'Are you sure you want to end all the chats?',
     );
-    if (!unpairConfirmed) return;
+    if (!endAllChatsConfirmed) return;
+
+    for (const chat of studentChats) {
+      if (chat.mode === SOLO) {
+        socket.emit('solo mode: end chat', { chatId: chat.chatId });
+        setUnpairedStudents((unpaired) => [...unpaired, chat.student]);
+      } else {
+        socket.emit('unpair student chat', {
+          chatId: chat.chatId,
+          student1: chat.studentPair[0],
+          student2: chat.studentPair[1],
+        });
+      }
+    }
+    setStudentChats([]);
+  }
+
+  function endChat(chatId, chatMode, student1, student2) {
+    const endChatConfirmed = confirm(
+      `Are you sure you want to end the ${
+        chatMode === SOLO ? 'solo ' : ''
+      }chat for ${student1.realName} & ${student2.realName}?`,
+    );
+    if (!endChatConfirmed) return;
     if (chatMode === SOLO) {
       socket.emit('solo mode: end chat', { chatId });
       setStudentChats((chats) =>
@@ -34,6 +57,17 @@ export default function PairedStudentListItem({
 
   return (
     <>
+      {/* TODO refactor: move the 'end all chats' button to the pairedStudentsList */}
+      <Button
+        sx={{ display: 'block', margin: '8px auto 14px auto' }}
+        variant='contained'
+        size='medium'
+        color='warning'
+        onClick={() => endAllChats()}
+      >
+        End all chats
+      </Button>
+
       {studentChats.map((chat) => {
         const student1 =
           chat.mode === SOLO ? chat.student : chat.studentPair[0];
@@ -68,7 +102,7 @@ export default function PairedStudentListItem({
                 size='small'
                 color='warning'
                 onClick={() =>
-                  unpair(chat.chatId, chat.mode, student1, student2)
+                  endChat(chat.chatId, chat.mode, student1, student2)
                 }
               >
                 {chat.mode === SOLO ? 'End solo chat' : 'End chat'}
