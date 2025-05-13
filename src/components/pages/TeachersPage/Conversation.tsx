@@ -44,6 +44,7 @@ export default function Conversation({ chat }) {
             break;
           case 'student':
             character = student1.character;
+            realName = student1.realName;
             fontCSS = conversationCSS.student1;
             break;
           case 'chatbot':
