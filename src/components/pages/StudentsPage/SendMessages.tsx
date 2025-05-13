@@ -53,6 +53,7 @@ export default function SendMessages({
           chatId: chat.chatId,
         });
       } else {
+        setPeerIsTyping(true);
         socket.emit(
           'solo mode: student sent message',
           {
@@ -60,6 +61,7 @@ export default function SendMessages({
             chatId: chat.chatId,
           },
           ({ chatbotReplyMessages }) => {
+            setPeerIsTyping(false);
             setChat((chat) => ({
               ...chat,
               conversation: [...chat.conversation, ...chatbotReplyMessages],
@@ -75,13 +77,18 @@ export default function SendMessages({
     socket.emit('student typing');
   }
 
+  const peerIsTypingMessage =
+    chat.mode === PAIRED
+      ? `${chat.characters.peer} is typing...`
+      : `chatbot is thinking...`;
+
   return (
     <Box>
       <Typography css={sendMessagesCSS.peerIsTyping}>
         {/* The "&nbsp;" space ensures a consistent layout, preventing the chat
          messages from shifting when the 'peer is typing' indicator appears. */}
         &nbsp;
-        {peerIsTyping && `${chat.characters.peer} is typing...`}
+        {peerIsTyping && peerIsTypingMessage}
       </Typography>
 
       {!chatEndedMsg && (
