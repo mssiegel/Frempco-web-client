@@ -71,7 +71,7 @@ export default function PairedStudentListItem({
                   unpair(chat.chatId, chat.mode, student1, student2)
                 }
               >
-                Unpair
+                {chat.mode === SOLO ? 'End solo chat' : 'End chat'}
               </Button>
             </Box>
           </div>
