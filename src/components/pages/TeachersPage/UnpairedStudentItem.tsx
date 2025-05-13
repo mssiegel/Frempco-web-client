@@ -4,15 +4,20 @@ import {
   ArrowUpward as ArrowUpwardIcon,
   ArrowDownward as ArrowDownwardIcon,
   Close as CloseIcon,
+  PersonOutline as PersonOutlineIcon,
 } from '@mui/icons-material';
-import { Box, IconButton } from '@mui/material';
-import { swap } from '@utils/classrooms';
+import { Button, Box, IconButton } from '@mui/material';
+import { currentTime, getRandom, swap, SOLO } from '@utils/classrooms';
 
 export default function UnpairedStudentItem({
   i,
   student,
   socket,
   setUnpairedStudents,
+  characters,
+  setStudentChats,
+  studentChats,
+  setDisplayedChat,
 }) {
   function swapStudents(student1Index: number, student2Index: number) {
     setUnpairedStudents((unpairedStudents) => {
@@ -31,6 +36,36 @@ export default function UnpairedStudentItem({
       `Are you sure you want to remove ${student.realName}?`,
     );
     if (confirmation) socket.emit('remove student from classroom', student);
+  }
+
+  function startSoloChat() {
+    student.character = getRandom(characters);
+    socket.emit(
+      'solo mode: start chat',
+      {
+        studentSocketId: student.socketId,
+        characterName: student.character,
+      },
+      ({ chatId, messages }) => {
+        if (studentChats.length === 0) setDisplayedChat(chatId);
+
+        setStudentChats((chats) => [
+          ...chats,
+          {
+            mode: SOLO,
+            chatId,
+            student,
+            conversation: messages,
+            startTime: currentTime(),
+          },
+        ]);
+      },
+    );
+
+    // Remove the student who is now solo chatting from the unpaired list
+    setUnpairedStudents((unpairedStudents) => {
+      return unpairedStudents.filter((_, curStudentI) => curStudentI !== i);
+    });
   }
 
   return (
@@ -63,7 +98,7 @@ export default function UnpairedStudentItem({
         {student.realName}
 
         <IconButton
-          aria-label='delete'
+          aria-label='remove student'
           size='small'
           sx={{
             color: 'red',
@@ -73,6 +108,13 @@ export default function UnpairedStudentItem({
         >
           <CloseIcon fontSize='small' />
         </IconButton>
+        <Button
+          size='small'
+          sx={{ marginLeft: '10px' }}
+          onClick={startSoloChat}
+        >
+          Solo <PersonOutlineIcon />
+        </Button>
       </Box>
     </>
   );
