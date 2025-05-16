@@ -15,6 +15,7 @@ export default function SendMessages({
   chatEndedMsg,
   peerIsTyping,
   setPeerIsTyping,
+  setChatEndedMsg,
 }) {
   const typeMessageInput = useRef(null);
   const [message, setMessage] = useState('');
@@ -60,12 +61,22 @@ export default function SendMessages({
             message,
             chatId: chat.chatId,
           },
-          ({ chatbotReplyMessages }) => {
+          ({ chatbotReplyMessages, soloModeAlreadyEnded }) => {
             setPeerIsTyping(false);
-            setChat((chat) => ({
-              ...chat,
-              conversation: [...chat.conversation, ...chatbotReplyMessages],
-            }));
+
+            if (soloModeAlreadyEnded) {
+              setChatEndedMsg(
+                'You were logged out. Revisit www.frempco.com and login again.',
+              );
+            } else if (
+              chatbotReplyMessages &&
+              chatbotReplyMessages.length > 0
+            ) {
+              setChat((chat) => ({
+                ...chat,
+                conversation: [...chat.conversation, ...chatbotReplyMessages],
+              }));
+            }
           },
         );
       }

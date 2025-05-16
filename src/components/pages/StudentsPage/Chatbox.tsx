@@ -9,7 +9,13 @@ import Conversation from './Conversation';
 import SendMessages from './SendMessages';
 import CopyButton from '@components/shared/CopyButton';
 
-export default function Chatbox({ socket, chat, setChat, chatEndedMsg }) {
+export default function Chatbox({
+  socket,
+  chat,
+  setChat,
+  chatEndedMsg,
+  setChatEndedMsg,
+}) {
   const [peerIsTyping, setPeerIsTyping] = useState(false);
 
   function addChatMessage(sender, message) {
@@ -64,6 +70,7 @@ export default function Chatbox({ socket, chat, setChat, chatEndedMsg }) {
           chatEndedMsg={chatEndedMsg}
           peerIsTyping={peerIsTyping}
           setPeerIsTyping={setPeerIsTyping}
+          setChatEndedMsg={setChatEndedMsg}
         />
       </Box>
     </Box>
