@@ -13,7 +13,7 @@ export default function WelcomeMessage({
 }) {
   const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
   const FIFTEEN_SECONDS = 15000;
-  const [hasLostConnection, setHasLostConnection] = useState(false);
+  const [wasConnectionLost, setWasConnectionLost] = useState(false);
 
   useEffect(() => {
     // If a student's smartphone screen goes dark they will lose connection
@@ -27,7 +27,7 @@ export default function WelcomeMessage({
       );
       const { isStudentInsideClassroom } = await getResponse.json();
       if (!isStudentInsideClassroom) {
-        setHasLostConnection(true);
+        setWasConnectionLost(true);
         clearInterval(connectionCheckInterval);
       }
     }, FIFTEEN_SECONDS);
@@ -37,7 +37,7 @@ export default function WelcomeMessage({
 
   return (
     <Box css={welcomeMessageCSS.welcomeMessageContainer}>
-      {removedFromClass || hasLostConnection ? (
+      {removedFromClass || wasConnectionLost ? (
         <>
           <Typography variant='h4' sx={{ mb: 4 }}>
             {removedFromClass

@@ -152,7 +152,6 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
             chat={chat}
             setChat={setChat}
             chatEndedMsg={chatEndedMsg}
-            setChatEndedMsg={setChatEndedMsg}
           />
         ) : (
           <WelcomeMessage

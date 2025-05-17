@@ -16,11 +16,10 @@ export default function SendMessages({
   chatEndedMsg,
   peerIsTyping,
   setPeerIsTyping,
-  setChatEndedMsg,
 }) {
   const typeMessageInput = useRef(null);
   const [message, setMessage] = useState('');
-  const [hasLostConnection, setHasLostConnection] = useState(false);
+  const [wasConnectionLost, setWasConnectionLost] = useState(false);
 
   useEffect(() => {
     if (socket) {
@@ -51,10 +50,18 @@ export default function SendMessages({
       if (!socket) return;
 
       if (chat.mode === PAIRED) {
-        socket.emit('student sent message', {
-          message,
-          chatId: chat.chatId,
-        });
+        socket.emit(
+          'student sent message',
+          {
+            message,
+            chatId: chat.chatId,
+          },
+          ({ studentNotInPairedChat }) => {
+            if (studentNotInPairedChat) {
+              studentLostConnection();
+            }
+          },
+        );
       } else {
         setPeerIsTyping(true);
         socket.emit(
@@ -63,15 +70,11 @@ export default function SendMessages({
             message,
             chatId: chat.chatId,
           },
-          ({ chatbotReplyMessages, soloModeAlreadyEnded }) => {
+          ({ chatbotReplyMessages, studentNotInSoloChat }) => {
             setPeerIsTyping(false);
 
-            if (soloModeAlreadyEnded) {
-              // If a student's smartphone screen goes dark they will lose connection
-              // to the server and will be removed from the server's classroom. When they
-              // try sending another message in solo mode, they will receive an
-              // informational message which tells them they need to login again.
-              setHasLostConnection(true);
+            if (studentNotInSoloChat) {
+              studentLostConnection();
             } else if (
               chatbotReplyMessages &&
               chatbotReplyMessages.length > 0
@@ -87,6 +90,14 @@ export default function SendMessages({
     }
   }
 
+  function studentLostConnection() {
+    // If a student's smartphone screen goes dark they will lose connection
+    // to the server and will be removed from the server's classroom. When they
+    // try sending another message, they will receive an informational message
+    // which tells them they need to login again.
+    setWasConnectionLost(true);
+  }
+
   function sendUserIsTyping(e) {
     setMessage(e.target.value);
     socket.emit('student typing');
@@ -98,7 +109,7 @@ export default function SendMessages({
       : `chatbot is thinking...`;
 
   let chatEndedInformationalMessage = null;
-  if (hasLostConnection) {
+  if (wasConnectionLost) {
     chatEndedInformationalMessage = (
       <>
         You were logged out. Return to the{' '}
