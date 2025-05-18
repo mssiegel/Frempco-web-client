@@ -22,19 +22,27 @@ export default function PairedStudentListItem({
     );
     if (!endAllChatsConfirmed) return;
 
+    const newUnpairedList = [];
+
     for (const chat of studentChats) {
       if (chat.mode === SOLO) {
         socket.emit('solo mode: end chat', { chatId: chat.chatId });
-        setUnpairedStudents((unpaired) => [...unpaired, chat.student]);
+        newUnpairedList.push(chat.student);
       } else {
+        const [student1, student2] = chat.studentPair;
         socket.emit('unpair student chat', {
           chatId: chat.chatId,
-          student1: chat.studentPair[0],
-          student2: chat.studentPair[1],
+          student1,
+          student2,
         });
+        newUnpairedList.push(student1, student2);
       }
     }
     setStudentChats([]);
+
+    // We concat the 'newUnpairedList' to 'unpaired' in case a new student
+    // joined while this function was running.
+    setUnpairedStudents((unpaired) => [...unpaired, ...newUnpairedList]);
   }
 
   function endChat(chatId, chatMode, student1, student2) {
@@ -52,6 +60,10 @@ export default function PairedStudentListItem({
       setUnpairedStudents((unpaired) => [...unpaired, student1]);
     } else {
       socket.emit('unpair student chat', { chatId, student1, student2 });
+      setStudentChats((chats) =>
+        chats.filter((chat) => chat.chatId !== chatId),
+      );
+      setUnpairedStudents((unpaired) => [...unpaired, student1, student2]);
     }
   }
 

@@ -11,6 +11,7 @@ export default function ActivateButton({
   setIsActiveClassroom,
 }) {
   function activateClassroom() {
+    // TODO: add a callback so it will only activate the classroom if the server responds with success
     socket.emit('activate classroom', { classroomName });
     setIsActiveClassroom(true);
   }
