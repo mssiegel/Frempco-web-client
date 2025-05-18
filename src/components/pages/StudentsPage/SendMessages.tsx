@@ -4,6 +4,7 @@ import { Box, Fab, Typography } from '@mui/material';
 import { Send as SendIcon } from '@mui/icons-material';
 import { useState, useEffect, useRef } from 'react';
 
+import Link from '@components/shared/Link';
 import sendMessagesCSS from './SendMessages.css';
 import { PAIRED } from '@utils/classrooms';
 
@@ -18,6 +19,7 @@ export default function SendMessages({
 }) {
   const typeMessageInput = useRef(null);
   const [message, setMessage] = useState('');
+  const [wasConnectionLost, setWasConnectionLost] = useState(false);
 
   useEffect(() => {
     if (socket) {
@@ -48,10 +50,18 @@ export default function SendMessages({
       if (!socket) return;
 
       if (chat.mode === PAIRED) {
-        socket.emit('student sent message', {
-          message,
-          chatId: chat.chatId,
-        });
+        socket.emit(
+          'student sent message',
+          {
+            message,
+            chatId: chat.chatId,
+          },
+          ({ studentNotInPairedChat }) => {
+            if (studentNotInPairedChat) {
+              studentLostConnection();
+            }
+          },
+        );
       } else {
         setPeerIsTyping(true);
         socket.emit(
@@ -60,16 +70,32 @@ export default function SendMessages({
             message,
             chatId: chat.chatId,
           },
-          ({ chatbotReplyMessages }) => {
+          ({ chatbotReplyMessages, studentNotInSoloChat }) => {
             setPeerIsTyping(false);
-            setChat((chat) => ({
-              ...chat,
-              conversation: [...chat.conversation, ...chatbotReplyMessages],
-            }));
+
+            if (studentNotInSoloChat) {
+              studentLostConnection();
+            } else if (
+              chatbotReplyMessages &&
+              chatbotReplyMessages.length > 0
+            ) {
+              setChat((chat) => ({
+                ...chat,
+                conversation: [...chat.conversation, ...chatbotReplyMessages],
+              }));
+            }
           },
         );
       }
     }
+  }
+
+  function studentLostConnection() {
+    // If a student's smartphone screen goes dark they will lose connection
+    // to the server and will be removed from the server's classroom. When they
+    // try sending another message, they will receive an informational message
+    // which tells them they need to login again.
+    setWasConnectionLost(true);
   }
 
   function sendUserIsTyping(e) {
@@ -82,6 +108,18 @@ export default function SendMessages({
       ? `${chat.characters.peer} is typing...`
       : `chatbot is thinking...`;
 
+  let chatEndedInformationalMessage = null;
+  if (wasConnectionLost) {
+    chatEndedInformationalMessage = (
+      <>
+        You were logged out. Return to the{' '}
+        <Link href='/'>Frempco homepage</Link> and login again.
+      </>
+    );
+  } else if (chatEndedMsg) {
+    chatEndedInformationalMessage = chatEndedMsg;
+  }
+
   return (
     <Box>
       <Typography css={sendMessagesCSS.peerIsTyping}>
@@ -91,7 +129,7 @@ export default function SendMessages({
         {peerIsTyping && peerIsTypingMessage}
       </Typography>
 
-      {!chatEndedMsg && (
+      {!chatEndedInformationalMessage && (
         <form onSubmit={sendMessage}>
           <Typography css={sendMessagesCSS.characterName}>
             {chat.characters.you}
@@ -119,8 +157,11 @@ export default function SendMessages({
           </div>
         </form>
       )}
-      {chatEndedMsg && (
-        <Typography css={sendMessagesCSS.peerLeft}>{chatEndedMsg}</Typography>
+
+      {chatEndedInformationalMessage && (
+        <Typography css={sendMessagesCSS.chatEndedInfo}>
+          {chatEndedInformationalMessage}
+        </Typography>
       )}
     </Box>
   );

@@ -6,8 +6,7 @@ const welcomeMessageContainer = css`
   width: 98%;
   max-width: 800px;
   border-radius: 10px;
-  padding-top: 70px;
-  padding-bottom: 70px;
+  padding: 70px 10px;
   text-align: center;
 `;
 

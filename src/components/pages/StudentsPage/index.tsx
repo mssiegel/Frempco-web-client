@@ -157,6 +157,7 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
           <WelcomeMessage
             classroomName={classroomName}
             removedFromClass={removedFromClass}
+            socketId={socket.id}
           />
         )}
       </Box>
