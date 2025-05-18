@@ -1,7 +1,6 @@
 import { Box } from '@mui/material';
 
 import PairedStudentListItem from './PairedStudentListItem';
-import { PAIRED } from '@utils/classrooms';
 
 export default function PairedStudentsList({
   studentChats,

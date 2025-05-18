@@ -26,9 +26,11 @@ const message = css`
   }
 `;
 
-const peerLeft = css`
+const chatEndedInfo = css`
   border-top: 1px dashed grey;
   padding-top: 10px;
+  padding-left: 10px;
+  padding-right: 10px;
   font-size: 32px;
   color: #87002a;
   font-style: italic;
@@ -52,7 +54,7 @@ const sendMessagesCSS = {
   messageBar,
   message,
   peerIsTyping,
-  peerLeft,
+  chatEndedInfo,
 };
 
 export default sendMessagesCSS;
