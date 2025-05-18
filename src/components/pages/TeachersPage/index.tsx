@@ -79,13 +79,6 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           },
         ]);
       });
-
-      socket.on('student chat unpaired', ({ chatId, student1, student2 }) => {
-        setStudentChats((chats) =>
-          chats.filter((chat) => chat.chatId !== chatId),
-        );
-        setUnpairedStudents((unpaired) => [...unpaired, student1, student2]);
-      });
     }
 
     socket.on('solo mode: student disconnected', ({ chatId }) => {
@@ -97,7 +90,6 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     return () => {
       if (socket) {
         socket.off('chat started - two students');
-        socket.off('student chat unpaired');
         socket.off('solo mode: student disconnected');
       }
     };
