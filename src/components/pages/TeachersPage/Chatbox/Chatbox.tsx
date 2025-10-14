@@ -5,9 +5,9 @@ import { useRef, useEffect } from 'react';
 
 import { scrollToBottomOfElement } from '@utils/classrooms';
 import chatboxCSS from './Chatbox.css';
-import Conversation from './Conversation';
+import Conversation from '../Conversation';
 import CopyButton from '@components/shared/CopyButton';
-import SendMessages from './SendMessages';
+import SendMessages from '../SendMessages';
 
 export default function Chatbox({
   socket,

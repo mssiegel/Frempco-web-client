@@ -9,7 +9,7 @@ import {
   SOLO,
 } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
-import Chatbox from './Chatbox';
+import Chatbox from './Chatbox/Chatbox';
 import UnpairedStudentsList from './UnpairedStudentsList';
 import PairedStudentsList from './PairedStudentsList';
 import ActivateButton from './ActivateButton';

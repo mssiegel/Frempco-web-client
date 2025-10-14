@@ -1,6 +1,6 @@
 import { Grid, Typography } from '@mui/material';
 
-import Chatbox from './Chatbox';
+import ReadOnlyChatbox from './Chatbox/ReadOnlyChatbox';
 
 export default function AllStudentChatsDisplay({
   studentChats,
@@ -35,13 +35,9 @@ export default function AllStudentChatsDisplay({
             }}
             onClick={() => setDisplayedChat(chat.chatId)}
           >
-            <Chatbox
-              // Shortened chats do not have a send message component
-              socket={null}
+            <ReadOnlyChatbox
               chat={shortenedChat}
-              inAllStudentChatsDisplay={true}
               isTheDisplayedChat={chat.chatId === displayedChat}
-              setStudentChats={null}
             />
           </Grid>
         );
