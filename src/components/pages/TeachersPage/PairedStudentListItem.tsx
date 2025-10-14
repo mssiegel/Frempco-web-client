@@ -8,7 +8,7 @@ import conversationCSS from './Conversation.css';
 import { SOLO } from '@utils/classrooms';
 
 export default function PairedStudentListItem({
-  studentChats,
+  chat,
   displayedChat,
   setDisplayedChat,
   setStudentChats,
@@ -38,51 +38,43 @@ export default function PairedStudentListItem({
     }
   }
 
+  const student1 = chat.mode === SOLO ? chat.student : chat.studentPair[0];
+  const student2 =
+    chat.mode === SOLO ? { realName: 'chatbot' } : chat.studentPair[1];
+
+  const selected = chat.chatId === displayedChat;
+
   return (
     <>
-      {studentChats.map((chat) => {
-        const student1 =
-          chat.mode === SOLO ? chat.student : chat.studentPair[0];
-        const student2 =
-          chat.mode === SOLO ? { realName: 'chatbot' } : chat.studentPair[1];
+      <Divider sx={{ borderColor: 'darkgray' }} />
+      <span css={selected && conversationCSS.student1}>
+        {student1.realName}
+      </span>
+      <span> &amp; </span>
+      <span css={selected && conversationCSS.student2}>
+        {student2.realName}
+      </span>
 
-        const selected = chat.chatId === displayedChat;
-        return (
-          <div key={chat.chatId}>
-            <Divider sx={{ borderColor: 'darkgray' }} />
-            <span css={selected && conversationCSS.student1}>
-              {student1.realName}
-            </span>
-            <span> &amp; </span>
-            <span css={selected && conversationCSS.student2}>
-              {student2.realName}
-            </span>
+      <Box sx={{ minHeight: 40 }}>
+        {!selected && (
+          <Button
+            size='small'
+            variant='contained'
+            onClick={() => setDisplayedChat(chat.chatId)}
+          >
+            Display chat
+          </Button>
+        )}
 
-            <Box sx={{ minHeight: 40 }}>
-              {!selected && (
-                <Button
-                  size='small'
-                  variant='contained'
-                  onClick={() => setDisplayedChat(chat.chatId)}
-                >
-                  Display chat
-                </Button>
-              )}
-
-              <Button
-                sx={{ marginRight: 6, float: 'right' }}
-                size='small'
-                color='warning'
-                onClick={() =>
-                  endChat(chat.chatId, chat.mode, student1, student2)
-                }
-              >
-                {chat.mode === SOLO ? 'End solo chat' : 'End chat'}
-              </Button>
-            </Box>
-          </div>
-        );
-      })}
+        <Button
+          sx={{ marginRight: 6, float: 'right' }}
+          size='small'
+          color='warning'
+          onClick={() => endChat(chat.chatId, chat.mode, student1, student2)}
+        >
+          {chat.mode === SOLO ? 'End solo chat' : 'End chat'}
+        </Button>
+      </Box>
     </>
   );
 }

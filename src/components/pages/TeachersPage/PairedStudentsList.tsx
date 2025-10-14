@@ -69,15 +69,16 @@ export default function PairedStudentsList({
       >
         End all chats
       </Button>
-      {/* TODO refactor: since this is a list, the map should be here and not
-       in PairedStudentListItem */}
-      <PairedStudentListItem
-        studentChats={studentChats}
-        setDisplayedChat={setDisplayedChat}
-        displayedChat={displayedChat}
-        setStudentChats={setStudentChats}
-        setUnpairedStudents={setUnpairedStudents}
-      />
+      {studentChats.map((chat) => (
+        <PairedStudentListItem
+          key={chat.chatId}
+          chat={chat}
+          displayedChat={displayedChat}
+          setDisplayedChat={setDisplayedChat}
+          setStudentChats={setStudentChats}
+          setUnpairedStudents={setUnpairedStudents}
+        />
+      ))}
     </Box>
   );
 }
