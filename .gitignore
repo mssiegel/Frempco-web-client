@@ -32,3 +32,6 @@ yarn-error.log*
 
 # vercel
 .vercel
+
+# Quokka TS Playground
+ts_playground_quokka.ts
