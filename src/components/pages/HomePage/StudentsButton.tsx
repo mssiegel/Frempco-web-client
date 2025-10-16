@@ -52,11 +52,13 @@ export default function StudentsButton({ visitStudentsPage }) {
           label='Classroom PIN'
           refObject={classroomInput}
           autoFocus={true}
+          required={true}
         />
         <ModalTextField
           label='Your Name'
           refObject={studentInput}
           maxLength={20}
+          required={true}
         />
 
         <Button

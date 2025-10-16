@@ -9,7 +9,7 @@ import {
   SOLO,
 } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
-import Chatbox from './Chatbox';
+import Chatbox from './Chatbox/Chatbox';
 import UnpairedStudentsList from './UnpairedStudentsList';
 import PairedStudentsList from './PairedStudentsList';
 import ActivateButton from './ActivateButton';
@@ -162,13 +162,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     if (!chat) return null;
 
     return (
-      <Chatbox
-        socket={socket}
-        chat={chat}
-        isTheDisplayedChat={true}
-        inAllStudentChatsDisplay={false}
-        setStudentChats={setStudentChats}
-      />
+      <Chatbox socket={socket} chat={chat} setStudentChats={setStudentChats} />
     );
   }
 
