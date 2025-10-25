@@ -169,18 +169,18 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
   return (
     <main>
       <Box mx={2}>
-        <Typography fontSize={20} color='black'>
-          To join this classroom:
+        <Typography fontSize={26} fontFamily='Lora'>
+          Student Instructions
         </Typography>
-        <Typography fontSize={20} color='black' ml={4}>
-          1. Go to <strong>www.frempco.com</strong>
+        <Typography fontSize={17} fontFamily='Lora' mb={2}>
+          Write the following on your blackboard or another highly visible spot
+          for all students to see.
         </Typography>
-        <Typography fontSize={20} color='black' ml={4}>
-          2. Click the blue button named{' '}
-          <strong>&quot;Student: Join classroom&quot;</strong>
+        <Typography fontSize={21} fontFamily='Lora' fontWeight='bold' mb={1}>
+          {'1)'} Join at www.frempco.com
         </Typography>
-        <Typography fontSize={20} color='black' ml={4}>
-          3. Enter PIN <strong>{classroomName}</strong>
+        <Typography fontSize={21} fontFamily='Lora' fontWeight='bold' mb={1}>
+          {'2)'} Enter Game Pin: {classroomName}
         </Typography>
 
         <ActivateButton
