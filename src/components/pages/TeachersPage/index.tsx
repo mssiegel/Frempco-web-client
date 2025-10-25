@@ -1,5 +1,13 @@
 import { useContext, useEffect, useState } from 'react';
-import { Box, Grid, Typography } from '@mui/material';
+import {
+  Box,
+  Grid,
+  Typography,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+} from '@mui/material';
+import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 
 import {
   ClassroomProps,
@@ -182,6 +190,27 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
         <Typography fontSize={21} fontFamily='Lora' fontWeight='bold' mb={1}>
           {'2)'} Enter Game Pin: {classroomName}
         </Typography>
+
+        <Accordion sx={{ boxShadow: 'none' }}>
+          <AccordionSummary
+            expandIcon={<ExpandMoreIcon />}
+            id='pair-students-accordion'
+            sx={{
+              borderRadius: '15px',
+              border: '1px solid #000',
+            }}
+          >
+            <Typography fontFamily='Lora' fontSize='26px'>
+              Step 1: Pair Your Students (7)
+            </Typography>
+          </AccordionSummary>
+          <AccordionDetails>
+            <Typography fontFamily='Lora' fontSize='17px'>
+              Students are paired up automatically as they enter the classroom,
+              but you can adjust pairings by dragging and dropping names.
+            </Typography>
+          </AccordionDetails>
+        </Accordion>
 
         <ActivateButton
           socket={socket}
