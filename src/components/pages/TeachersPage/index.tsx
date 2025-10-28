@@ -24,6 +24,7 @@ import ActivateButton from './ActivateButton';
 import SetTeacherEmailButton from './SetTeacherEmailButton';
 import AllStudentChatsDisplay from './AllStudentChatsDisplay';
 import { useRouter } from 'next/router';
+import PairStudentsAccordion from './PairStudentsAccordion';
 
 type StudentPair = [Student, Student];
 
@@ -191,26 +192,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           {'2)'} Enter Game Pin: {classroomName}
         </Typography>
 
-        <Accordion sx={{ boxShadow: 'none' }}>
-          <AccordionSummary
-            expandIcon={<ExpandMoreIcon />}
-            id='pair-students-accordion'
-            sx={{
-              borderRadius: '15px',
-              border: '1px solid #000',
-            }}
-          >
-            <Typography fontFamily='Lora' fontSize='26px'>
-              Step 1: Pair Your Students (7)
-            </Typography>
-          </AccordionSummary>
-          <AccordionDetails>
-            <Typography fontFamily='Lora' fontSize='17px'>
-              Students are paired up automatically as they enter the classroom,
-              but you can adjust pairings by dragging and dropping names.
-            </Typography>
-          </AccordionDetails>
-        </Accordion>
+        <PairStudentsAccordion />
 
         <ActivateButton
           socket={socket}
