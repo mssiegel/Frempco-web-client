@@ -178,21 +178,22 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
   return (
     <main>
       <Box mx={2}>
-        <Typography fontSize={26} fontFamily='Lora'>
-          Student Instructions
-        </Typography>
-        <Typography fontSize={17} fontFamily='Lora' mb={2}>
-          Write the following on your blackboard or another highly visible spot
-          for all students to see.
-        </Typography>
-        <Typography fontSize={21} fontFamily='Lora' fontWeight='bold' mb={1}>
-          {'1)'} Join at www.frempco.com
-        </Typography>
-        <Typography fontSize={21} fontFamily='Lora' fontWeight='bold' mb={1}>
-          {'2)'} Enter Game Pin: {classroomName}
-        </Typography>
-
-        <PairStudentsAccordion />
+        <Box mb={3}>
+          <Typography fontSize={26} fontFamily='Lora'>
+            Student Instructions
+          </Typography>
+          <Typography fontSize={17} fontFamily='Lora' mb={2}>
+            Write the following on your blackboard or another highly visible
+            spot for all students to see.
+          </Typography>
+          <Typography fontSize={21} fontFamily='Lora' fontWeight='bold' mb={1}>
+            {'1)'} Join at www.frempco.com
+          </Typography>
+          <Typography fontSize={21} fontFamily='Lora' fontWeight='bold' mb={1}>
+            {'2)'} Enter Game Pin: {classroomName}
+          </Typography>
+        </Box>
+        <PairStudentsAccordion count={unpairedStudents.length} />
 
         <ActivateButton
           socket={socket}
