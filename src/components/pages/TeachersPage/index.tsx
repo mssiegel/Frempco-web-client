@@ -21,10 +21,19 @@ import Chatbox from './Chatbox/Chatbox';
 import UnpairedStudentsList from './UnpairedStudentsList';
 import PairedStudentsList from './PairedStudentsList';
 import ActivateButton from './ActivateButton';
-import SetTeacherEmailButton from './SetTeacherEmailButton';
 import AllStudentChatsDisplay from './AllStudentChatsDisplay';
 import { useRouter } from 'next/router';
 import PairStudentsAccordion from './PairStudentsAccordion';
+import SetupClassroomAccordion from './SetupClassroomAccordion';
+
+const CHARACTERS = [
+  'Perfectionist dentist',
+  'Pirate captain',
+  'Tiny warlord',
+  'Dance teacher',
+  'Forgetful surgeon',
+  'Party planner',
+];
 
 type StudentPair = [Student, Student];
 
@@ -56,6 +65,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
 
   const [unpairedStudents, setUnpairedStudents] = useState<Student[]>([]);
   const [displayedChat, setDisplayedChat] = useState('');
+  const [characters, setCharacters] = useState(CHARACTERS);
   const [studentChats, setStudentChats] = useState<(StudentChat | SoloChat)[]>([
     // {
     //   mode: PAIRED,
@@ -193,29 +203,29 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
             {'2)'} Enter Game Pin: {classroomName}
           </Typography>
         </Box>
-        <PairStudentsAccordion count={unpairedStudents.length} />
-
         <ActivateButton
           socket={socket}
           classroomName={classroomName}
           isActiveClassroom={isActiveClassroom}
           setIsActiveClassroom={setIsActiveClassroom}
         />
-        <SetTeacherEmailButton
+        <SetupClassroomAccordion
           classroomName={classroomName}
           isActiveClassroom={isActiveClassroom}
+          characters={characters}
+          setCharacters={setCharacters}
         />
-
+        <PairStudentsAccordion
+          socket={socket}
+          unpairedStudents={unpairedStudents}
+          setUnpairedStudents={setUnpairedStudents}
+          setStudentChats={setStudentChats}
+          studentChats={studentChats}
+          setDisplayedChat={setDisplayedChat}
+          characters={characters}
+        />
         <Grid container spacing={2}>
           <Grid item xs={12} md={5}>
-            <UnpairedStudentsList
-              socket={socket}
-              unpairedStudents={unpairedStudents}
-              setUnpairedStudents={setUnpairedStudents}
-              setStudentChats={setStudentChats}
-              studentChats={studentChats}
-              setDisplayedChat={setDisplayedChat}
-            />
             <PairedStudentsList
               studentChats={studentChats}
               setDisplayedChat={setDisplayedChat}
@@ -224,7 +234,6 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
               setUnpairedStudents={setUnpairedStudents}
             />
           </Grid>
-
           <Grid item xs={12} md={7}>
             {showDisplayedChat()}
           </Grid>

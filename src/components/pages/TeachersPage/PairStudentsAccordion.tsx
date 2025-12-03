@@ -9,16 +9,24 @@ import {
   ErrorOutline as NotificationIcon,
   ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
+import UnpairedStudentsList from './UnpairedStudentsList';
 
-const PairStudentsAccordion = ({ count }: { count: number }) => (
-  <Accordion disableGutters sx={{ boxShadow: 'none' }}>
+const PairStudentsAccordion = ({
+  socket,
+  unpairedStudents,
+  setUnpairedStudents,
+  setStudentChats,
+  studentChats,
+  setDisplayedChat,
+  characters,
+}) => (
+  <Accordion disableGutters sx={{ boxShadow: 'none', mb: 3 }}>
     <AccordionSummary
       expandIcon={<ExpandMoreIcon />}
-      id='pair-students-accordion'
       sx={{ borderRadius: '15px', border: '1px solid black', gap: 2 }}
     >
       <Typography fontFamily='Lora' fontSize='26px'>
-        Step 1: Pair Your Students ({count})
+        Step 2: Pair Your Students ({unpairedStudents.length})
       </Typography>
       <Box
         display='flex'
@@ -27,17 +35,31 @@ const PairStudentsAccordion = ({ count }: { count: number }) => (
         flexGrow={1}
         justifyContent='flex-end'
       >
-        <NotificationIcon />
+        {unpairedStudents.length > 0 && <NotificationIcon />}
         <Typography fontFamily='Lora' fontSize='16px'>
-          There are <strong>{count} students</strong> waiting to start
+          {unpairedStudents.length === 1 ? (
+            <>
+              There is <strong>1 student</strong> waiting to start
+            </>
+          ) : (
+            <>
+              There are <strong>{unpairedStudents.length} students</strong>{' '}
+              waiting to start
+            </>
+          )}
         </Typography>
       </Box>
     </AccordionSummary>
     <AccordionDetails>
-      <Typography fontFamily='Lora' fontSize='17px'>
-        Students are paired up automatically as they enter the classroom, but
-        you can adjust pairings by dragging and dropping names.
-      </Typography>
+      <UnpairedStudentsList
+        socket={socket}
+        unpairedStudents={unpairedStudents}
+        setUnpairedStudents={setUnpairedStudents}
+        setStudentChats={setStudentChats}
+        studentChats={studentChats}
+        setDisplayedChat={setDisplayedChat}
+        characters={characters}
+      />
     </AccordionDetails>
   </Accordion>
 );
