@@ -10,14 +10,12 @@ import SetCharacterList from './SetCharacterList';
 
 interface SetupClassroomAccordionProps {
   classroomName: string;
-  isActiveClassroom: boolean;
   characters: string[];
   setCharacters: (characters: string[]) => void;
 }
 
 const SetupClassroomAccordion = ({
   classroomName,
-  isActiveClassroom,
   characters,
   setCharacters,
 }: SetupClassroomAccordionProps) => (
@@ -31,10 +29,7 @@ const SetupClassroomAccordion = ({
       </Typography>
     </AccordionSummary>
     <AccordionDetails>
-      <SetTeacherEmailButton
-        classroomName={classroomName}
-        isActiveClassroom={isActiveClassroom}
-      />
+      <SetTeacherEmailButton classroomName={classroomName} />
       <SetCharacterList characters={characters} setCharacters={setCharacters} />
     </AccordionDetails>
   </Accordion>

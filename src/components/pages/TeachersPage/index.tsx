@@ -20,7 +20,6 @@ import { SocketContext } from '@contexts/SocketContext';
 import Chatbox from './Chatbox/Chatbox';
 import UnpairedStudentsList from './UnpairedStudentsList';
 import PairedStudentsList from './PairedStudentsList';
-import ActivateButton from './ActivateButton';
 import AllStudentChatsDisplay from './AllStudentChatsDisplay';
 import { useRouter } from 'next/router';
 import PairStudentsAccordion from './PairStudentsAccordion';
@@ -81,7 +80,6 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     //   startTime: '',
     // },
   ]);
-  const [isActiveClassroom, setIsActiveClassroom] = useState(false);
 
   useEffect(() => {
     if (socket) {
@@ -203,15 +201,8 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
             {'2)'} Enter Game Pin: {classroomName}
           </Typography>
         </Box>
-        <ActivateButton
-          socket={socket}
-          classroomName={classroomName}
-          isActiveClassroom={isActiveClassroom}
-          setIsActiveClassroom={setIsActiveClassroom}
-        />
         <SetupClassroomAccordion
           classroomName={classroomName}
-          isActiveClassroom={isActiveClassroom}
           characters={characters}
           setCharacters={setCharacters}
         />

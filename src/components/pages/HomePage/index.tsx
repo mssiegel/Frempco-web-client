@@ -37,6 +37,7 @@ export default function HomePage() {
   }
 
   function visitTeachersPage(classroom: string) {
+    socket.emit('activate classroom', { classroomName: classroom });
     setUser({ isLoggedIn: true });
     router.push(`/teacher/classroom/${classroom}`);
   }
