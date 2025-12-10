@@ -27,7 +27,7 @@ export default function HomePage() {
     const { isActive } = await getResponse.json();
     if (!isActive)
       return window.alert(
-        `Classroom not activated: ${classroom}\n Please wait for your teacher to activate your classroom and try again.`,
+        `Classroom not created: ${classroom}\n Please check that you entered the correct Classroom PIN.`,
       );
     if (student) {
       socket.emit('new student entered', { classroom, student });
@@ -37,6 +37,7 @@ export default function HomePage() {
   }
 
   function visitTeachersPage(classroom: string) {
+    socket.emit('activate classroom', { classroomName: classroom });
     setUser({ isLoggedIn: true });
     router.push(`/teacher/classroom/${classroom}`);
   }

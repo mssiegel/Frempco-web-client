@@ -13,7 +13,7 @@ export default function WelcomeMessage({
 }) {
   const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
   const FIFTEEN_SECONDS = 15000;
-  const [wasConnectionLost, setWasConnectionLost] = useState(false);
+  const [isConnected, setIsConnected] = useState(true);
 
   useEffect(() => {
     // If a student's smartphone screen goes dark they will lose connection
@@ -21,13 +21,19 @@ export default function WelcomeMessage({
     // the student reopens the website on their phone browser, they will see
     // a message to login again because of this setInterval().
     const connectionCheckInterval = setInterval(async () => {
-      const getResponse = await fetch(
-        `${apiUrl}/classrooms/${classroomName}/studentSockets/${socketId}`,
-        { method: 'GET' },
-      );
-      const { isStudentInsideClassroom } = await getResponse.json();
-      if (!isStudentInsideClassroom) {
-        setWasConnectionLost(true);
+      try {
+        const getResponse = await fetch(
+          `${apiUrl}/classrooms/${classroomName}/studentSockets/${socketId}`,
+          { method: 'GET' },
+        );
+        const { isStudentInsideClassroom } = await getResponse.json();
+        if (!isStudentInsideClassroom) {
+          setIsConnected(false);
+          clearInterval(connectionCheckInterval);
+        }
+      } catch (error) {
+        // If the request fails, assume the connection was lost
+        setIsConnected(false);
         clearInterval(connectionCheckInterval);
       }
     }, FIFTEEN_SECONDS);
@@ -37,7 +43,7 @@ export default function WelcomeMessage({
 
   return (
     <Box css={welcomeMessageCSS.welcomeMessageContainer}>
-      {removedFromClass || wasConnectionLost ? (
+      {removedFromClass || !isConnected ? (
         <>
           <Typography variant='h4' sx={{ mb: 4 }}>
             {removedFromClass
