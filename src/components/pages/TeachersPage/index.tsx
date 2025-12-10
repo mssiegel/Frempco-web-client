@@ -1,13 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import {
-  Box,
-  Grid,
-  Typography,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-} from '@mui/material';
-import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
+import { Box, Grid, Typography } from '@mui/material';
 
 import {
   ClassroomProps,
@@ -24,6 +16,7 @@ import AllStudentChatsDisplay from './AllStudentChatsDisplay';
 import { useRouter } from 'next/router';
 import PairStudentsAccordion from './PairStudentsAccordion';
 import SetupClassroomAccordion from './SetupClassroomAccordion';
+import Link from '@components/shared/Link';
 
 const CHARACTERS = [
   'Perfectionist dentist',
@@ -58,6 +51,9 @@ interface SoloChat {
 
 export default function TeachersPage({ classroomName }: ClassroomProps) {
   const router = useRouter();
+  const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
+  const TEN_SECONDS = 10000;
+  const [isConnected, setIsConnected] = useState(true);
 
   const socket = useContext(SocketContext);
   console.log('Teacher socketId:', socket?.id ?? 'No socket found');
@@ -80,6 +76,29 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     //   startTime: '',
     // },
   ]);
+
+  useEffect(() => {
+    // Check if the teacher is still connected to the classroom every 10 seconds
+    const connectionCheckInterval = setInterval(async () => {
+      try {
+        const getResponse = await fetch(
+          `${apiUrl}/classrooms/${classroomName}`,
+          { method: 'GET' },
+        );
+        const { isActive } = await getResponse.json();
+        if (!isActive) {
+          setIsConnected(false);
+          clearInterval(connectionCheckInterval);
+        }
+      } catch (error) {
+        // If the request fails, assume the connection was lost
+        setIsConnected(false);
+        clearInterval(connectionCheckInterval);
+      }
+    }, TEN_SECONDS);
+
+    return () => clearInterval(connectionCheckInterval);
+  }, []);
 
   useEffect(() => {
     if (socket) {
@@ -180,6 +199,17 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
 
     return (
       <Chatbox socket={socket} chat={chat} setStudentChats={setStudentChats} />
+    );
+  }
+
+  if (!isConnected) {
+    return (
+      <Box my={10}>
+        <Typography variant='h4' textAlign='center'>
+          You are no longer connected to this classroom on Frempco. Return to
+          the <Link href='/'>Frempco homepage</Link> and restart your classroom.
+        </Typography>
+      </Box>
     );
   }
 
