@@ -10,12 +10,12 @@ import {
 } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
 import Chatbox from './Chatbox/Chatbox';
-import UnpairedStudentsList from './UnpairedStudentsList';
 import PairedStudentsList from './PairedStudentsList';
 import AllStudentChatsDisplay from './AllStudentChatsDisplay';
 import { useRouter } from 'next/router';
 import PairStudentsAccordion from './PairStudentsAccordion';
 import SetupClassroomAccordion from './SetupClassroomAccordion';
+import ViewChatsInProgressAccordion from './ViewChatsInProgressAccordion';
 import Link from '@components/shared/Link';
 
 const CHARACTERS = [
@@ -41,7 +41,7 @@ export interface StudentChat {
   startTime: string;
 }
 
-interface SoloChat {
+export interface SoloChat {
   mode: typeof SOLO;
   chatId: string;
   student: Student;
@@ -245,6 +245,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           setDisplayedChat={setDisplayedChat}
           characters={characters}
         />
+        <ViewChatsInProgressAccordion studentChats={studentChats} />
         <Grid container spacing={2}>
           <Grid item xs={12} md={5}>
             <PairedStudentsList
