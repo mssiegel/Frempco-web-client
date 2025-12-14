@@ -21,10 +21,23 @@ const chatboxBottom = css`
   background: #f8e5e0;
 `;
 
+const readOnlyChatboxWrapper = css`
+  border-radius: 10px;
+`;
+
+const endChatContainer = css`
+  background: #ffdd9a;
+  border-radius: 0 0 10px 10px;
+  padding: 10px;
+  text-align: center;
+`;
+
 const chatboxCSS = {
   chatboxContainer,
   chatboxTop,
   chatboxBottom,
+  readOnlyChatboxWrapper,
+  endChatContainer,
 };
 
 export default chatboxCSS;
