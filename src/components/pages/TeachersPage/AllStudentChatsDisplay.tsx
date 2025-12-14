@@ -6,6 +6,8 @@ export default function AllStudentChatsDisplay({
   studentChats,
   displayedChat,
   setDisplayedChat,
+  setStudentChats,
+  setUnpairedStudents,
 }) {
   return (
     <Grid
@@ -38,6 +40,8 @@ export default function AllStudentChatsDisplay({
             <ReadOnlyChatbox
               chat={shortenedChat}
               isSelected={chat.chatId === displayedChat}
+              setStudentChats={setStudentChats}
+              setUnpairedStudents={setUnpairedStudents}
             />
           </Grid>
         );

@@ -1,18 +1,66 @@
 /** @jsxImportSource @emotion/react */
 
 import { Box, Button } from '@mui/material';
-import { useRef, useEffect } from 'react';
+import { useRef, useEffect, useContext } from 'react';
 
-import { scrollToBottomOfElement } from '@utils/classrooms';
+import {
+  scrollToBottomOfElement,
+  SOLO,
+  Dispatch,
+  SetStateAction,
+  Student,
+} from '@utils/classrooms';
+import { SocketContext } from '@contexts/SocketContext';
+import { StudentChat, SoloChat } from '../index';
 import chatboxCSS from './Chatbox.css';
 import Conversation from '../Conversation';
 
-export default function ReadOnlyChatbox({ chat, isSelected }) {
+interface ReadOnlyChatboxProps {
+  chat: StudentChat | SoloChat;
+  isSelected: boolean;
+  setStudentChats: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
+  setUnpairedStudents: Dispatch<SetStateAction<Student[]>>;
+}
+
+export default function ReadOnlyChatbox({
+  chat,
+  isSelected,
+  setStudentChats,
+  setUnpairedStudents,
+}: ReadOnlyChatboxProps) {
+  const socket = useContext(SocketContext);
+
   useEffect(() => {
     scrollToBottomOfElement(chatboxConversationContainer);
   }, [chat.conversation]);
 
   const chatboxConversationContainer = useRef(null);
+
+  function endChat(chatId, chatMode, student1, student2) {
+    const endChatConfirmed = confirm(
+      `Are you sure you want to end the ${
+        chatMode === SOLO ? 'solo ' : ''
+      }chat for ${student1.realName} & ${student2.realName}?`,
+    );
+    if (!endChatConfirmed) return;
+    if (chatMode === SOLO) {
+      socket.emit('solo mode: end chat', { chatId });
+      setStudentChats((chats) =>
+        chats.filter((chat) => chat.chatId !== chatId),
+      );
+      setUnpairedStudents((unpaired) => [...unpaired, student1]);
+    } else {
+      socket.emit('unpair student chat', { chatId, student1, student2 });
+      setStudentChats((chats) =>
+        chats.filter((chat) => chat.chatId !== chatId),
+      );
+      setUnpairedStudents((unpaired) => [...unpaired, student1, student2]);
+    }
+  }
+
+  const student1 = chat.mode === SOLO ? chat.student : chat.studentPair[0];
+  const student2 =
+    chat.mode === SOLO ? { realName: 'chatbot' } : chat.studentPair[1];
 
   return (
     <Box
@@ -22,9 +70,17 @@ export default function ReadOnlyChatbox({ chat, isSelected }) {
       <Box css={chatboxCSS.chatboxTop} ref={chatboxConversationContainer}>
         <Conversation chat={chat} />
       </Box>
-      <Box css={chatboxCSS.endChatContainer}>
-        <Button size='medium' color='warning' variant='contained'>
-          End Chat
+      <Box
+        css={chatboxCSS.endChatContainer}
+        onClick={(e) => e.stopPropagation()}
+      >
+        <Button
+          size='medium'
+          color='warning'
+          variant='contained'
+          onClick={() => endChat(chat.chatId, chat.mode, student1, student2)}
+        >
+          {chat.mode === SOLO ? 'End solo chat' : 'End chat'}
         </Button>
       </Box>
     </Box>

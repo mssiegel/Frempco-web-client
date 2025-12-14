@@ -268,6 +268,8 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           studentChats={studentChats}
           displayedChat={displayedChat}
           setDisplayedChat={setDisplayedChat}
+          setStudentChats={setStudentChats}
+          setUnpairedStudents={setUnpairedStudents}
         />
       </Box>
     </main>
