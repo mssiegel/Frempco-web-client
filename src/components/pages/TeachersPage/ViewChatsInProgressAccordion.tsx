@@ -1,27 +1,64 @@
+import { useContext } from 'react';
 import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
   Typography,
+  Button,
 } from '@mui/material';
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import { StudentChat, SoloChat } from './index';
-import { PAIRED, SOLO } from '@utils/classrooms';
+import { PAIRED, SOLO, Dispatch, SetStateAction } from '@utils/classrooms';
+import { SocketContext } from '@contexts/SocketContext';
 
 interface ViewChatsInProgressAccordionProps {
   studentChats: (StudentChat | SoloChat)[];
+  setStudentChats: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
+  setUnpairedStudents: Dispatch<SetStateAction<any[]>>;
 }
 
 const ViewChatsInProgressAccordion = ({
   studentChats,
+  setStudentChats,
+  setUnpairedStudents,
 }: ViewChatsInProgressAccordionProps) => {
+  const socket = useContext(SocketContext);
   const totalStudents = studentChats.length;
   const pairCount = studentChats.filter((chat) => chat.mode === PAIRED).length;
   const soloCount = studentChats.filter((chat) => chat.mode === SOLO).length;
 
   const verb = pairCount === 1 ? 'is' : 'are';
   const pairText = pairCount === 1 ? 'pair' : 'pairs';
-  const soloText = soloCount === 1 ? 'solo chat' : 'solo chats';
+  const soloText = soloCount === 1 ? 'solo student' : 'solo students';
+
+  function endAllChats() {
+    const endAllChatsConfirmed = confirm(
+      'Are you sure you want to end all the chats?',
+    );
+    if (!endAllChatsConfirmed) return;
+
+    const newUnpairedList = [];
+
+    for (const chat of studentChats) {
+      if (chat.mode === SOLO) {
+        socket.emit('solo mode: end chat', { chatId: chat.chatId });
+        newUnpairedList.push(chat.student);
+      } else {
+        const [student1, student2] = chat.studentPair;
+        socket.emit('unpair student chat', {
+          chatId: chat.chatId,
+          student1,
+          student2,
+        });
+        newUnpairedList.push(student1, student2);
+      }
+    }
+    setStudentChats([]);
+
+    // We concat the 'newUnpairedList' to 'unpaired' in case a new student
+    // joined while this function was running.
+    setUnpairedStudents((unpaired) => [...unpaired, ...newUnpairedList]);
+  }
 
   return (
     <Accordion disableGutters sx={{ boxShadow: 'none', mb: 3 }}>
@@ -37,7 +74,7 @@ const ViewChatsInProgressAccordion = ({
         <Typography fontFamily='Lora' fontSize='16px'>
           There {verb}{' '}
           <strong>
-            {pairCount} {pairText} of student chats
+            {pairCount} student {pairText}
           </strong>{' '}
           and{' '}
           <strong>
@@ -45,6 +82,15 @@ const ViewChatsInProgressAccordion = ({
           </strong>
           .
         </Typography>
+        <Button
+          sx={{ my: 2 }}
+          variant='contained'
+          size='medium'
+          color='warning'
+          onClick={() => endAllChats()}
+        >
+          End all chats
+        </Button>
       </AccordionDetails>
     </Accordion>
   );

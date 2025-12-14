@@ -245,7 +245,11 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           setDisplayedChat={setDisplayedChat}
           characters={characters}
         />
-        <ViewChatsInProgressAccordion studentChats={studentChats} />
+        <ViewChatsInProgressAccordion
+          studentChats={studentChats}
+          setStudentChats={setStudentChats}
+          setUnpairedStudents={setUnpairedStudents}
+        />
         <Grid container spacing={2}>
           <Grid item xs={12} md={5}>
             <PairedStudentsList

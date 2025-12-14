@@ -1,3 +1,4 @@
+import React from 'react';
 import Filter from 'bad-words';
 
 export const PAIRED = 'PAIRED';
@@ -45,3 +46,6 @@ export interface Student {
   realName: string;
   character?: string;
 }
+
+export type Dispatch<T> = React.Dispatch<T>;
+export type SetStateAction<T> = React.SetStateAction<T>;
