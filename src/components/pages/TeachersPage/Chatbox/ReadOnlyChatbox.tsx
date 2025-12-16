@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { Box, Button } from '@mui/material';
-import { useRef, useEffect, useContext } from 'react';
+import { useRef, useEffect, useContext, useState } from 'react';
 
 import {
   scrollToBottomOfElement,
@@ -29,15 +29,24 @@ export default function ReadOnlyChatbox({
   setUnpairedStudents,
 }: ReadOnlyChatboxProps) {
   const socket = useContext(SocketContext);
-
-  useEffect(() => {
-    scrollToBottomOfElement(chatboxConversationContainer);
-  }, [chat.conversation]);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   const chatboxConversationContainer = useRef(null);
 
-  function expandChat() {
-    console.log('expandChat clicked');
+  const displayChat: StudentChat | SoloChat = { ...chat };
+  if (!isExpanded) {
+    displayChat.conversation = [...displayChat.conversation].slice(
+      -5,
+    ) as typeof displayChat.conversation;
+  }
+
+  useEffect(() => {
+    scrollToBottomOfElement(chatboxConversationContainer);
+  }, [displayChat.conversation]);
+
+  function expandChat(e: React.MouseEvent) {
+    e.stopPropagation();
+    setIsExpanded((prev) => !prev);
   }
 
   function endChat(chatId, chatMode, student1, student2) {
@@ -68,11 +77,17 @@ export default function ReadOnlyChatbox({
 
   return (
     <Box
-      css={chatboxCSS.chatboxContainer && chatboxCSS.readOnlyChatboxWrapper}
+      css={[chatboxCSS.chatboxContainer, chatboxCSS.readOnlyChatboxWrapper]}
       border={isSelected ? '3px solid royalblue' : ''}
     >
-      <Box css={chatboxCSS.chatboxTop} ref={chatboxConversationContainer}>
-        <Conversation chat={chat} />
+      <Box
+        css={[
+          chatboxCSS.chatboxTop,
+          isExpanded && chatboxCSS.expandedChatboxTop,
+        ]}
+        ref={chatboxConversationContainer}
+      >
+        <Conversation chat={displayChat} />
       </Box>
       <Box
         css={chatboxCSS.chatButtonsContainer}
@@ -84,7 +99,7 @@ export default function ReadOnlyChatbox({
           variant='contained'
           onClick={expandChat}
         >
-          Expand chat
+          {isExpanded ? 'Collapse chat' : 'Expand chat'}
         </Button>
         <Button
           size='medium'

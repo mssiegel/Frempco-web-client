@@ -1,6 +1,17 @@
 import { Grid, Typography } from '@mui/material';
+import { Dispatch, SetStateAction } from 'react';
 
+import { Student } from '@utils/classrooms';
+import { StudentChat, SoloChat } from './index';
 import ReadOnlyChatbox from './Chatbox/ReadOnlyChatbox';
+
+interface AllStudentChatsDisplayProps {
+  studentChats: (StudentChat | SoloChat)[];
+  displayedChat: string;
+  setDisplayedChat: Dispatch<SetStateAction<string>>;
+  setStudentChats: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
+  setUnpairedStudents: Dispatch<SetStateAction<Student[]>>;
+}
 
 export default function AllStudentChatsDisplay({
   studentChats,
@@ -8,7 +19,7 @@ export default function AllStudentChatsDisplay({
   setDisplayedChat,
   setStudentChats,
   setUnpairedStudents,
-}) {
+}: AllStudentChatsDisplayProps) {
   return (
     <Grid
       container
@@ -23,8 +34,6 @@ export default function AllStudentChatsDisplay({
         </Typography>
       </Grid>
       {studentChats.map((chat, i) => {
-        const shortenedChat = { ...chat };
-        shortenedChat.conversation = [...shortenedChat.conversation].slice(-5);
         return (
           <Grid
             key={i}
@@ -38,7 +47,7 @@ export default function AllStudentChatsDisplay({
             onClick={() => setDisplayedChat(chat.chatId)}
           >
             <ReadOnlyChatbox
-              chat={shortenedChat}
+              chat={chat}
               isSelected={chat.chatId === displayedChat}
               setStudentChats={setStudentChats}
               setUnpairedStudents={setUnpairedStudents}

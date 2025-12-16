@@ -4,6 +4,10 @@ const chatboxContainer = css`
   max-width: 600px;
 `;
 
+const expandedChatbox = css`
+  max-width: 600px;
+`;
+
 const chatboxTop = css`
   background: #f8e5e0;
   border-radius: 10px 10px 0 0;
@@ -12,6 +16,12 @@ const chatboxTop = css`
   max-height: 280px;
   overflow-y: overlay;
   scroll-behavior: smooth;
+  transition: all 0.3s ease-in-out;
+`;
+
+const expandedChatboxTop = css`
+  min-height: 500px;
+  max-height: 600px;
 `;
 
 const chatboxBottom = css`
@@ -35,7 +45,9 @@ const chatButtonsContainer = css`
 
 const chatboxCSS = {
   chatboxContainer,
+  expandedChatbox,
   chatboxTop,
+  expandedChatboxTop,
   chatboxBottom,
   readOnlyChatboxWrapper,
   chatButtonsContainer,
