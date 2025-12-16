@@ -36,6 +36,10 @@ export default function ReadOnlyChatbox({
 
   const chatboxConversationContainer = useRef(null);
 
+  function expandChat() {
+    console.log('expandChat clicked');
+  }
+
   function endChat(chatId, chatMode, student1, student2) {
     const endChatConfirmed = confirm(
       `Are you sure you want to end the ${
@@ -71,9 +75,17 @@ export default function ReadOnlyChatbox({
         <Conversation chat={chat} />
       </Box>
       <Box
-        css={chatboxCSS.endChatContainer}
+        css={chatboxCSS.chatButtonsContainer}
         onClick={(e) => e.stopPropagation()}
       >
+        <Button
+          size='medium'
+          color='primary'
+          variant='contained'
+          onClick={expandChat}
+        >
+          Expand chat
+        </Button>
         <Button
           size='medium'
           color='warning'
