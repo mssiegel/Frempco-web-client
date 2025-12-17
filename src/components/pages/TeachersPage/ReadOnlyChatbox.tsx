@@ -38,16 +38,9 @@ export default function ReadOnlyChatbox({
 
   const chatboxConversationContainer = useRef(null);
 
-  const displayChat: StudentChat | SoloChat = { ...chat };
-  if (!isExpanded) {
-    displayChat.conversation = [...displayChat.conversation].slice(
-      -5,
-    ) as typeof displayChat.conversation;
-  }
-
   useEffect(() => {
     scrollToBottomOfElement(chatboxConversationContainer);
-  }, [displayChat.conversation]);
+  }, [chat.conversation]);
 
   function expandChat(e: React.MouseEvent) {
     e.stopPropagation();
@@ -89,7 +82,17 @@ export default function ReadOnlyChatbox({
         ]}
         ref={chatboxConversationContainer}
       >
-        <Conversation chat={displayChat} elementId={`chat-${chat.chatId}`} />
+        <Conversation
+          chat={
+            isExpanded
+              ? chat
+              : ({
+                  ...chat,
+                  conversation: [...chat.conversation].slice(-5),
+                } as StudentChat | SoloChat)
+          }
+          elementId={`chat-${chat.chatId}`}
+        />
       </Box>
       <Box
         css={chatboxCSS.buttonsContainer}
