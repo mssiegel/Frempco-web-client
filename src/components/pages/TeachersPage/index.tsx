@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import {
   ClassroomProps,
@@ -9,13 +9,10 @@ import {
   SOLO,
 } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
-import Chatbox from './Chatbox/Chatbox';
-import UnpairedStudentsList from './UnpairedStudentsList';
-import PairedStudentsList from './PairedStudentsList';
-import AllStudentChatsDisplay from './AllStudentChatsDisplay';
 import { useRouter } from 'next/router';
 import PairStudentsAccordion from './PairStudentsAccordion';
 import SetupClassroomAccordion from './SetupClassroomAccordion';
+import ViewChatsInProgressAccordion from './ViewChatsInProgressAccordion';
 import Link from '@components/shared/Link';
 
 const CHARACTERS = [
@@ -41,7 +38,7 @@ export interface StudentChat {
   startTime: string;
 }
 
-interface SoloChat {
+export interface SoloChat {
   mode: typeof SOLO;
   chatId: string;
   student: Student;
@@ -59,7 +56,6 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
   console.log('Teacher socketId:', socket?.id ?? 'No socket found');
 
   const [unpairedStudents, setUnpairedStudents] = useState<Student[]>([]);
-  const [displayedChat, setDisplayedChat] = useState('');
   const [characters, setCharacters] = useState(CHARACTERS);
   const [studentChats, setStudentChats] = useState<(StudentChat | SoloChat)[]>([
     // {
@@ -103,7 +99,6 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
   useEffect(() => {
     if (socket) {
       socket.on('chat started - two students', ({ chatId, studentPair }) => {
-        if (studentChats.length === 0) setDisplayedChat(chatId);
         setStudentChats((chats) => [
           ...chats,
           {
@@ -193,15 +188,6 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     };
   }, [router.events, socket]);
 
-  function showDisplayedChat() {
-    const chat = studentChats.find((chat) => chat.chatId === displayedChat);
-    if (!chat) return null;
-
-    return (
-      <Chatbox socket={socket} chat={chat} setStudentChats={setStudentChats} />
-    );
-  }
-
   if (!isConnected) {
     return (
       <Box my={10}>
@@ -242,27 +228,12 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           setUnpairedStudents={setUnpairedStudents}
           setStudentChats={setStudentChats}
           studentChats={studentChats}
-          setDisplayedChat={setDisplayedChat}
           characters={characters}
         />
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={5}>
-            <PairedStudentsList
-              studentChats={studentChats}
-              setDisplayedChat={setDisplayedChat}
-              displayedChat={displayedChat}
-              setStudentChats={setStudentChats}
-              setUnpairedStudents={setUnpairedStudents}
-            />
-          </Grid>
-          <Grid item xs={12} md={7}>
-            {showDisplayedChat()}
-          </Grid>
-        </Grid>
-        <AllStudentChatsDisplay
+        <ViewChatsInProgressAccordion
           studentChats={studentChats}
-          displayedChat={displayedChat}
-          setDisplayedChat={setDisplayedChat}
+          setStudentChats={setStudentChats}
+          setUnpairedStudents={setUnpairedStudents}
         />
       </Box>
     </main>

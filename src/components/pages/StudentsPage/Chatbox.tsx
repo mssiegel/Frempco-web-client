@@ -52,7 +52,9 @@ export default function Chatbox({ socket, chat, setChat, chatEndedMsg }) {
 
   return (
     <Box css={chatboxCSS.chatboxContainer}>
-      <CopyButton elementId='conversation' />
+      <Box sx={{ mb: 1 }}>
+        <CopyButton elementId='conversation' />
+      </Box>
       <Box css={chatboxCSS.chatboxTop} ref={chatboxConversationContainer}>
         <Conversation chat={chat} />
       </Box>

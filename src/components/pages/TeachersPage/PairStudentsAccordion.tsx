@@ -17,7 +17,6 @@ const PairStudentsAccordion = ({
   setUnpairedStudents,
   setStudentChats,
   studentChats,
-  setDisplayedChat,
   characters,
 }) => (
   <Accordion disableGutters sx={{ boxShadow: 'none', mb: 3 }}>
@@ -57,7 +56,6 @@ const PairStudentsAccordion = ({
         setUnpairedStudents={setUnpairedStudents}
         setStudentChats={setStudentChats}
         studentChats={studentChats}
-        setDisplayedChat={setDisplayedChat}
         characters={characters}
       />
     </AccordionDetails>
