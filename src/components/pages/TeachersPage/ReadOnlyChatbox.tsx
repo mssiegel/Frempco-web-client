@@ -17,21 +17,19 @@ import {
 
 import { scrollToBottomOfElement, SOLO, Student } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
-import { StudentChat, SoloChat } from '../index';
-import chatboxCSS from './Chatbox.css';
-import Conversation from '../Conversation';
+import { StudentChat, SoloChat } from './index';
+import chatboxCSS from './ReadOnlyChatbox.css';
+import Conversation from './Conversation';
 import CopyButton from '@components/shared/CopyButton';
 
 interface ReadOnlyChatboxProps {
   chat: StudentChat | SoloChat;
-  isSelected: boolean;
   setStudentChats: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
   setUnpairedStudents: Dispatch<SetStateAction<Student[]>>;
 }
 
 export default function ReadOnlyChatbox({
   chat,
-  isSelected,
   setStudentChats,
   setUnpairedStudents,
 }: ReadOnlyChatboxProps) {
@@ -83,10 +81,7 @@ export default function ReadOnlyChatbox({
     chat.mode === SOLO ? { realName: 'chatbot' } : chat.studentPair[1];
 
   return (
-    <Box
-      css={[chatboxCSS.chatboxContainer, chatboxCSS.readOnlyChatboxWrapper]}
-      border={isSelected ? '3px solid royalblue' : ''}
-    >
+    <Box css={[chatboxCSS.chatboxContainer]}>
       <Box
         css={[
           chatboxCSS.chatboxTop,
@@ -97,7 +92,7 @@ export default function ReadOnlyChatbox({
         <Conversation chat={displayChat} elementId={`chat-${chat.chatId}`} />
       </Box>
       <Box
-        css={chatboxCSS.chatButtonsContainer}
+        css={chatboxCSS.buttonsContainer}
         onClick={(e) => e.stopPropagation()}
       >
         <Button
