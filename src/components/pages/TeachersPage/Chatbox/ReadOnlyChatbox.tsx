@@ -2,6 +2,11 @@
 
 import { Box, Button } from '@mui/material';
 import { useRef, useEffect, useContext, useState } from 'react';
+import {
+  UnfoldMore as UnfoldMoreIcon,
+  UnfoldLess as UnfoldLessIcon,
+  Stop as StopIcon,
+} from '@mui/icons-material';
 
 import {
   scrollToBottomOfElement,
@@ -98,6 +103,7 @@ export default function ReadOnlyChatbox({
           size='medium'
           color='primary'
           variant='contained'
+          startIcon={isExpanded ? <UnfoldLessIcon /> : <UnfoldMoreIcon />}
           onClick={expandChat}
         >
           {isExpanded ? 'Collapse' : 'Expand'}
@@ -107,6 +113,7 @@ export default function ReadOnlyChatbox({
           size='medium'
           color='error'
           variant='contained'
+          startIcon={<StopIcon />}
           onClick={() => endChat(chat.chatId, chat.mode, student1, student2)}
         >
           {chat.mode === SOLO ? 'End solo' : 'End pair'}
