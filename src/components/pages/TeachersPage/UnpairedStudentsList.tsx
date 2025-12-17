@@ -1,22 +1,12 @@
 /** @jsxImportSource @emotion/react */
 
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Box, Button, Grid } from '@mui/material';
 import { Chat as ChatIcon, Group as GroupIcon } from '@mui/icons-material';
 import { chunk } from 'lodash-es';
 
 import { getRandom } from '@utils/classrooms';
 import UnpairedStudentItem from './UnpairedStudentItem';
-import SetCharacterList from './SetCharacterList';
-
-const CHARACTERS = [
-  'Perfectionist dentist',
-  'Pirate captain',
-  'Tiny warlord',
-  'Dance teacher',
-  'Forgetful surgeon',
-  'Party planner',
-];
 
 export default function UnpairedStudentsList({
   socket,
@@ -24,10 +14,8 @@ export default function UnpairedStudentsList({
   setUnpairedStudents,
   setStudentChats,
   studentChats,
-  setDisplayedChat,
+  characters,
 }) {
-  const [characters, setCharacters] = useState(CHARACTERS);
-
   useEffect(() => {
     if (socket) {
       socket.on('new student joined', (student) => {
@@ -121,7 +109,6 @@ export default function UnpairedStudentsList({
                 characters={characters}
                 setStudentChats={setStudentChats}
                 studentChats={studentChats}
-                setDisplayedChat={setDisplayedChat}
               />
               {student2 && (
                 <UnpairedStudentItem
@@ -132,7 +119,6 @@ export default function UnpairedStudentsList({
                   characters={characters}
                   setStudentChats={setStudentChats}
                   studentChats={studentChats}
-                  setDisplayedChat={setDisplayedChat}
                 />
               )}
             </Grid>
@@ -161,12 +147,6 @@ export default function UnpairedStudentsList({
           >
             Pair up all students
           </Button>
-        </Box>
-        <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-          <SetCharacterList
-            characters={characters}
-            setCharacters={setCharacters}
-          />
         </Box>
       </Box>
     </>

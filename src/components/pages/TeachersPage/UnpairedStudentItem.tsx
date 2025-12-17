@@ -17,7 +17,6 @@ export default function UnpairedStudentItem({
   characters,
   setStudentChats,
   studentChats,
-  setDisplayedChat,
 }) {
   function swapStudents(student1Index: number, student2Index: number) {
     setUnpairedStudents((unpairedStudents) => {
@@ -47,8 +46,6 @@ export default function UnpairedStudentItem({
         characterName: student.character,
       },
       ({ chatId, messages }) => {
-        if (studentChats.length === 0) setDisplayedChat(chatId);
-
         setStudentChats((chats) => [
           ...chats,
           {

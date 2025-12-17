@@ -1,5 +1,5 @@
 import { useContext, useEffect, useState } from 'react';
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 import {
   ClassroomProps,
@@ -9,13 +9,20 @@ import {
   SOLO,
 } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
-import Chatbox from './Chatbox/Chatbox';
-import UnpairedStudentsList from './UnpairedStudentsList';
-import PairedStudentsList from './PairedStudentsList';
-import ActivateButton from './ActivateButton';
-import SetTeacherEmailButton from './SetTeacherEmailButton';
-import AllStudentChatsDisplay from './AllStudentChatsDisplay';
 import { useRouter } from 'next/router';
+import PairStudentsAccordion from './PairStudentsAccordion';
+import SetupClassroomAccordion from './SetupClassroomAccordion';
+import ViewChatsInProgressAccordion from './ViewChatsInProgressAccordion';
+import Link from '@components/shared/Link';
+
+const CHARACTERS = [
+  'Perfectionist dentist',
+  'Pirate captain',
+  'Tiny warlord',
+  'Dance teacher',
+  'Forgetful surgeon',
+  'Party planner',
+];
 
 type StudentPair = [Student, Student];
 
@@ -31,7 +38,7 @@ export interface StudentChat {
   startTime: string;
 }
 
-interface SoloChat {
+export interface SoloChat {
   mode: typeof SOLO;
   chatId: string;
   student: Student;
@@ -41,12 +48,15 @@ interface SoloChat {
 
 export default function TeachersPage({ classroomName }: ClassroomProps) {
   const router = useRouter();
+  const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
+  const TEN_SECONDS = 10000;
+  const [isConnected, setIsConnected] = useState(true);
 
   const socket = useContext(SocketContext);
   console.log('Teacher socketId:', socket?.id ?? 'No socket found');
 
   const [unpairedStudents, setUnpairedStudents] = useState<Student[]>([]);
-  const [displayedChat, setDisplayedChat] = useState('');
+  const [characters, setCharacters] = useState(CHARACTERS);
   const [studentChats, setStudentChats] = useState<(StudentChat | SoloChat)[]>([
     // {
     //   mode: PAIRED,
@@ -62,12 +72,33 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     //   startTime: '',
     // },
   ]);
-  const [isActiveClassroom, setIsActiveClassroom] = useState(false);
+
+  useEffect(() => {
+    // Check if the teacher is still connected to the classroom every 10 seconds
+    const connectionCheckInterval = setInterval(async () => {
+      try {
+        const getResponse = await fetch(
+          `${apiUrl}/classrooms/${classroomName}`,
+          { method: 'GET' },
+        );
+        const { isActive } = await getResponse.json();
+        if (!isActive) {
+          setIsConnected(false);
+          clearInterval(connectionCheckInterval);
+        }
+      } catch (error) {
+        // If the request fails, assume the connection was lost
+        setIsConnected(false);
+        clearInterval(connectionCheckInterval);
+      }
+    }, TEN_SECONDS);
+
+    return () => clearInterval(connectionCheckInterval);
+  }, []);
 
   useEffect(() => {
     if (socket) {
       socket.on('chat started - two students', ({ chatId, studentPair }) => {
-        if (studentChats.length === 0) setDisplayedChat(chatId);
         setStudentChats((chats) => [
           ...chats,
           {
@@ -157,70 +188,52 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     };
   }, [router.events, socket]);
 
-  function showDisplayedChat() {
-    const chat = studentChats.find((chat) => chat.chatId === displayedChat);
-    if (!chat) return null;
-
+  if (!isConnected) {
     return (
-      <Chatbox socket={socket} chat={chat} setStudentChats={setStudentChats} />
+      <Box my={10}>
+        <Typography variant='h4' textAlign='center'>
+          You are no longer connected to this classroom on Frempco. Return to
+          the <Link href='/'>Frempco homepage</Link> and restart your classroom.
+        </Typography>
+      </Box>
     );
   }
 
   return (
     <main>
       <Box mx={2}>
-        <Typography fontSize={20} color='black'>
-          To join this classroom:
-        </Typography>
-        <Typography fontSize={20} color='black' ml={4}>
-          1. Go to <strong>www.frempco.com</strong>
-        </Typography>
-        <Typography fontSize={20} color='black' ml={4}>
-          2. Click the blue button named{' '}
-          <strong>&quot;Student: Join classroom&quot;</strong>
-        </Typography>
-        <Typography fontSize={20} color='black' ml={4}>
-          3. Enter PIN <strong>{classroomName}</strong>
-        </Typography>
-
-        <ActivateButton
+        <Box mb={3}>
+          <Typography fontSize={26} fontFamily='Lora'>
+            Student Instructions
+          </Typography>
+          <Typography fontSize={17} fontFamily='Lora' mb={2}>
+            Write the following on your blackboard or another highly visible
+            spot for all students to see.
+          </Typography>
+          <Typography fontSize={21} fontFamily='Lora' fontWeight='bold' mb={1}>
+            {'1)'} Join at www.frempco.com
+          </Typography>
+          <Typography fontSize={21} fontFamily='Lora' fontWeight='bold' mb={1}>
+            {'2)'} Enter Game Pin: {classroomName}
+          </Typography>
+        </Box>
+        <SetupClassroomAccordion
+          classroomName={classroomName}
+          characters={characters}
+          setCharacters={setCharacters}
+        />
+        <PairStudentsAccordion
           socket={socket}
-          classroomName={classroomName}
-          isActiveClassroom={isActiveClassroom}
-          setIsActiveClassroom={setIsActiveClassroom}
-        />
-        <SetTeacherEmailButton
-          classroomName={classroomName}
-          isActiveClassroom={isActiveClassroom}
-        />
-
-        <Grid container spacing={2}>
-          <Grid item xs={12} md={5}>
-            <UnpairedStudentsList
-              socket={socket}
-              unpairedStudents={unpairedStudents}
-              setUnpairedStudents={setUnpairedStudents}
-              setStudentChats={setStudentChats}
-              studentChats={studentChats}
-              setDisplayedChat={setDisplayedChat}
-            />
-            <PairedStudentsList
-              studentChats={studentChats}
-              setDisplayedChat={setDisplayedChat}
-              displayedChat={displayedChat}
-              setStudentChats={setStudentChats}
-              setUnpairedStudents={setUnpairedStudents}
-            />
-          </Grid>
-
-          <Grid item xs={12} md={7}>
-            {showDisplayedChat()}
-          </Grid>
-        </Grid>
-        <AllStudentChatsDisplay
+          unpairedStudents={unpairedStudents}
+          setUnpairedStudents={setUnpairedStudents}
+          setStudentChats={setStudentChats}
           studentChats={studentChats}
-          displayedChat={displayedChat}
-          setDisplayedChat={setDisplayedChat}
+          characters={characters}
+        />
+        <ViewChatsInProgressAccordion
+          studentChats={studentChats}
+          setStudentChats={setStudentChats}
+          setUnpairedStudents={setUnpairedStudents}
         />
       </Box>
     </main>

@@ -1,3 +1,4 @@
+import React from 'react';
 import Filter from 'bad-words';
 
 export const PAIRED = 'PAIRED';
