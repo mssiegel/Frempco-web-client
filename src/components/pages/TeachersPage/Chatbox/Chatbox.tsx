@@ -18,9 +18,9 @@ export default function Chatbox({ socket, chat, setStudentChats }) {
 
   return (
     <Box css={chatboxCSS.chatboxContainer}>
-      <CopyButton elementId='displayed-chat' />
+      <CopyButton elementId={`chat-${chat.chatId}`} isTeachersPage={true} />
       <Box css={chatboxCSS.chatboxTop} ref={chatboxConversationContainer}>
-        <Conversation chat={chat} />
+        <Conversation chat={chat} elementId={`chat-${chat.chatId}`} />
       </Box>
       <Box css={chatboxCSS.chatboxBottom}>
         <SendMessages
@@ -33,4 +33,3 @@ export default function Chatbox({ socket, chat, setStudentChats }) {
     </Box>
   );
 }
-

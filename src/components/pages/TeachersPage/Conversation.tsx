@@ -3,15 +3,21 @@ import { Box, Typography } from '@mui/material';
 
 import conversationCSS from './Conversation.css';
 import { filterWords, PAIRED, Student } from '@utils/classrooms';
+import { StudentChat, SoloChat } from './index';
 
-export default function Conversation({ chat }) {
+interface ConversationProps {
+  chat: StudentChat | SoloChat;
+  elementId: string;
+}
+
+export default function Conversation({ chat, elementId }: ConversationProps) {
   let student1: Student;
   let student2: Student;
   if (chat.mode === PAIRED) [student1, student2] = chat.studentPair;
   else student1 = chat.student;
 
   return (
-    <Box id='displayed-chat'>
+    <Box id={elementId}>
       <Box css={conversationCSS.introText}>
         <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
           <Box>

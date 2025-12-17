@@ -1,9 +1,17 @@
 /** @jsxImportSource @emotion/react */
 
-import { Fab } from '@mui/material';
+import { Button } from '@mui/material';
 import { ContentCopy as ContentCopyIcon } from '@mui/icons-material';
 
-export default function CopyButton({ elementId }) {
+interface CopyButtonProps {
+  elementId: string;
+  isTeachersPage?: boolean;
+}
+
+export default function CopyButton({
+  elementId,
+  isTeachersPage,
+}: CopyButtonProps) {
   const copyToClipboard = () => {
     const temp = document.createElement('div');
     temp.setAttribute('contentEditable', 'true');
@@ -20,20 +28,15 @@ export default function CopyButton({ elementId }) {
   };
   return (
     <>
-      <Fab
-        variant='extended'
-        size='small'
-        color='primary'
-        style={{
-          marginBottom: '10px',
-          background: '#940000',
-          textTransform: 'none',
-        }}
+      <Button
+        size='medium'
+        color='secondary'
+        variant='contained'
+        startIcon={<ContentCopyIcon />}
         onClick={copyToClipboard}
       >
-        <ContentCopyIcon />
-        &nbsp;Copy chat
-      </Fab>
+        {isTeachersPage ? 'Copy' : 'Copy chat'}
+      </Button>
     </>
   );
 }
