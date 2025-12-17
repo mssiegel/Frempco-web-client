@@ -1,20 +1,21 @@
 /** @jsxImportSource @emotion/react */
 
 import { Box, Button } from '@mui/material';
-import { useRef, useEffect, useContext, useState } from 'react';
+import {
+  Dispatch,
+  SetStateAction,
+  useRef,
+  useEffect,
+  useContext,
+  useState,
+} from 'react';
 import {
   UnfoldMore as UnfoldMoreIcon,
   UnfoldLess as UnfoldLessIcon,
   Stop as StopIcon,
 } from '@mui/icons-material';
 
-import {
-  scrollToBottomOfElement,
-  SOLO,
-  Dispatch,
-  SetStateAction,
-  Student,
-} from '@utils/classrooms';
+import { scrollToBottomOfElement, SOLO, Student } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
 import { StudentChat, SoloChat } from '../index';
 import chatboxCSS from './Chatbox.css';

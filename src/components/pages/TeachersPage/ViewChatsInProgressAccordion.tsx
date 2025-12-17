@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { Dispatch, SetStateAction, useContext } from 'react';
 import {
   Accordion,
   AccordionSummary,
@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import { StudentChat, SoloChat } from './index';
-import { PAIRED, SOLO, Dispatch, SetStateAction } from '@utils/classrooms';
+import { PAIRED, SOLO } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
 
 interface ViewChatsInProgressAccordionProps {
