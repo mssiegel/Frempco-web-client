@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from 'react';
 import {
   Accordion,
   AccordionSummary,
@@ -11,7 +12,7 @@ import SetCharacterList from './SetCharacterList';
 interface SetupClassroomAccordionProps {
   classroomName: string;
   characters: string[];
-  setCharacters: (characters: string[]) => void;
+  setCharacters: Dispatch<SetStateAction<string[]>>;
 }
 
 const SetupClassroomAccordion = ({
