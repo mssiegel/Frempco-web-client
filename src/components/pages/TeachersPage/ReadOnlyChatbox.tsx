@@ -46,12 +46,13 @@ export default function ReadOnlyChatbox({
   useEffect(() => {
     if (isExpanded) {
       // Scroll the buttons container into view when the chatbox's expand animation finishes
+      const expansionAnimationInMilliseconds = 300;
       setTimeout(() => {
         buttonsContainerRef.current.scrollIntoView({
           behavior: 'smooth',
           block: 'end',
         });
-      }, 300);
+      }, expansionAnimationInMilliseconds);
     }
   }, [isExpanded]);
 
