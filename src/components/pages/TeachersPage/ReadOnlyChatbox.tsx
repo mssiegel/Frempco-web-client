@@ -36,11 +36,24 @@ export default function ReadOnlyChatbox({
   const socket = useContext(SocketContext);
   const [isExpanded, setIsExpanded] = useState(false);
 
-  const chatboxConversationContainer = useRef(null);
+  const chatboxConversationContainer = useRef<HTMLDivElement>(null);
+  const buttonsContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     scrollToBottomOfElement(chatboxConversationContainer);
-  }, [chat.conversation]);
+  }, [chat.conversation, isExpanded]);
+
+  useEffect(() => {
+    if (isExpanded) {
+      // Scroll the buttons container into view when the chatbox's expand animation finishes
+      setTimeout(() => {
+        buttonsContainerRef.current.scrollIntoView({
+          behavior: 'smooth',
+          block: 'end',
+        });
+      }, 300);
+    }
+  }, [isExpanded]);
 
   function expandChat(e: React.MouseEvent) {
     e.stopPropagation();
@@ -97,6 +110,7 @@ export default function ReadOnlyChatbox({
       <Box
         css={chatboxCSS.buttonsContainer}
         onClick={(e) => e.stopPropagation()}
+        ref={buttonsContainerRef}
       >
         <Button
           size='medium'
