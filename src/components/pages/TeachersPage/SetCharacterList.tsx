@@ -1,12 +1,20 @@
 /** @jsxImportSource @emotion/react */
 
-import { useState, useRef } from 'react';
-import { Box, Button, TextField } from '@mui/material';
+import { useState, useRef, Dispatch, SetStateAction } from 'react';
+import { Box, Button, TextField, Typography } from '@mui/material';
 import { PersonOutline as PersonOutlineIcon } from '@mui/icons-material';
 
 import BasicModal from '@components/shared/Modal';
 
-export default function SetCharacterList({ characters, setCharacters }) {
+interface SetCharacterListProps {
+  characters: string[];
+  setCharacters: Dispatch<SetStateAction<string[]>>;
+}
+
+export default function SetCharacterList({
+  characters,
+  setCharacters,
+}: SetCharacterListProps) {
   const [open, setOpen] = useState(false);
   const characterListTextArea = useRef<HTMLTextAreaElement>();
 
@@ -22,6 +30,9 @@ export default function SetCharacterList({ characters, setCharacters }) {
 
   return (
     <>
+      <Typography fontFamily='Lora' fontSize='20px' sx={{ mb: 1 }}>
+        Characters: {characters?.length > 0 && characters.join(', ')}
+      </Typography>
       <Button
         variant='contained'
         size='large'

@@ -5,7 +5,13 @@ import { Email as EmailIcon } from '@mui/icons-material';
 import BasicModal from '@components/shared/Modal';
 import ModalTextField from '@components/shared/ModalTextField';
 
-export default function SetTeacherEmailButton({ classroomName }) {
+interface SetTeacherEmailButtonProps {
+  classroomName: string;
+}
+
+export default function SetTeacherEmailButton({
+  classroomName,
+}: SetTeacherEmailButtonProps) {
   const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
 
   const [email, setEmail] = useState('');
@@ -26,11 +32,14 @@ export default function SetTeacherEmailButton({ classroomName }) {
 
   return (
     <>
+      <Typography fontFamily='Lora' fontSize='20px' sx={{ mb: 1 }}>
+        Email: {email}
+      </Typography>
       <Button
         variant='contained'
-        size='small'
+        size='large'
         color='secondary'
-        sx={{ my: 3 }}
+        sx={{ mb: 3 }}
         startIcon={<EmailIcon />}
         onClick={() => setOpen(true)}
       >
@@ -57,7 +66,7 @@ export default function SetTeacherEmailButton({ classroomName }) {
             required
           />
           <Button variant='contained' size='large' type='submit' sx={{ mt: 1 }}>
-            Set email
+            Save
           </Button>
         </form>
       </BasicModal>
