@@ -10,7 +10,7 @@ import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import { StudentChat, SoloChat } from './index';
 import { PAIRED, SOLO } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
-import AllStudentChatsDisplay from './AllStudentChatsDisplay';
+import DisplayOfChats from './DisplayOfChats';
 
 interface ChatsInProgressAccordionProps {
   studentChats: (StudentChat | SoloChat)[];
@@ -92,7 +92,7 @@ const ChatsInProgressAccordion = ({
         >
           End all chats
         </Button>
-        <AllStudentChatsDisplay
+        <DisplayOfChats
           studentChats={studentChats}
           setStudentChats={setStudentChats}
           setUnpairedStudents={setUnpairedStudents}

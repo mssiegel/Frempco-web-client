@@ -5,17 +5,17 @@ import { Student } from '@utils/classrooms';
 import { StudentChat, SoloChat } from './index';
 import ReadOnlyChatbox from './ReadOnlyChatbox';
 
-interface AllStudentChatsDisplayProps {
+interface DisplayOfChatsProps {
   studentChats: (StudentChat | SoloChat)[];
   setStudentChats: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
   setUnpairedStudents: Dispatch<SetStateAction<Student[]>>;
 }
 
-export default function AllStudentChatsDisplay({
+export default function DisplayOfChats({
   studentChats,
   setStudentChats,
   setUnpairedStudents,
-}: AllStudentChatsDisplayProps) {
+}: DisplayOfChatsProps) {
   return (
     <Grid container spacing={2} mt={2} pb={2}>
       {studentChats.map((chat, i) => {
