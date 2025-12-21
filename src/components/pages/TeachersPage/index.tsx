@@ -12,7 +12,7 @@ import { SocketContext } from '@contexts/SocketContext';
 import { useRouter } from 'next/router';
 import UnpairedStudentsAccordion from './UnpairedStudentsAccordion';
 import SetupClassroomAccordion from './SetupClassroomAccordion';
-import ViewChatsInProgressAccordion from './ViewChatsInProgressAccordion';
+import ChatsInProgressAccordion from './ChatsInProgressAccordion';
 import Link from '@components/shared/Link';
 
 const CHARACTERS = [
@@ -230,7 +230,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           studentChats={studentChats}
           characters={characters}
         />
-        <ViewChatsInProgressAccordion
+        <ChatsInProgressAccordion
           studentChats={studentChats}
           setStudentChats={setStudentChats}
           setUnpairedStudents={setUnpairedStudents}
