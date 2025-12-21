@@ -11,7 +11,7 @@ import {
 } from '@mui/icons-material';
 import UnpairedStudentsList from './UnpairedStudentsList';
 
-const PairStudentsAccordion = ({
+const UnpairedStudentsAccordion = ({
   socket,
   unpairedStudents,
   setUnpairedStudents,
@@ -62,4 +62,4 @@ const PairStudentsAccordion = ({
   </Accordion>
 );
 
-export default PairStudentsAccordion;
+export default UnpairedStudentsAccordion;
