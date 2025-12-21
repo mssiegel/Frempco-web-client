@@ -10,19 +10,19 @@ import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import { StudentChat, SoloChat } from './index';
 import { PAIRED, SOLO } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
-import AllStudentChatsDisplay from './AllStudentChatsDisplay';
+import DisplayOfChats from './DisplayOfChats';
 
-interface ViewChatsInProgressAccordionProps {
+interface ChatsInProgressAccordionProps {
   studentChats: (StudentChat | SoloChat)[];
   setStudentChats: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
   setUnpairedStudents: Dispatch<SetStateAction<any[]>>;
 }
 
-const ViewChatsInProgressAccordion = ({
+const ChatsInProgressAccordion = ({
   studentChats,
   setStudentChats,
   setUnpairedStudents,
-}: ViewChatsInProgressAccordionProps) => {
+}: ChatsInProgressAccordionProps) => {
   const socket = useContext(SocketContext);
   const totalStudents = studentChats.length;
   const pairCount = studentChats.filter((chat) => chat.mode === PAIRED).length;
@@ -92,7 +92,7 @@ const ViewChatsInProgressAccordion = ({
         >
           End all chats
         </Button>
-        <AllStudentChatsDisplay
+        <DisplayOfChats
           studentChats={studentChats}
           setStudentChats={setStudentChats}
           setUnpairedStudents={setUnpairedStudents}
@@ -102,4 +102,4 @@ const ViewChatsInProgressAccordion = ({
   );
 };
 
-export default ViewChatsInProgressAccordion;
+export default ChatsInProgressAccordion;
