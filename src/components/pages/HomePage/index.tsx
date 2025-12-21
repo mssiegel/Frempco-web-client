@@ -27,7 +27,7 @@ export default function HomePage() {
     const { isActive } = await getResponse.json();
     if (!isActive)
       return window.alert(
-        `Classroom not found: ${classroom}\n Check that you entered the correct Classroom PIN.`,
+        `Classroom not found: ${classroom}\nCheck that you entered the correct Classroom PIN.`,
       );
     if (student) {
       socket.emit('new student entered', { classroom, student });
