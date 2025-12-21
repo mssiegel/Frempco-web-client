@@ -1,3 +1,4 @@
+import { Dispatch, SetStateAction } from 'react';
 import {
   Accordion,
   AccordionSummary,
@@ -9,7 +10,19 @@ import {
   ErrorOutline as NotificationIcon,
   ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
+import { Socket } from 'socket.io-client';
+import { Student } from '@utils/classrooms';
+import { StudentChat, SoloChat } from './index';
 import UnpairedStudentsList from './UnpairedStudentsList';
+
+interface UnpairedStudentsAccordionProps {
+  socket: Socket;
+  unpairedStudents: Student[];
+  setUnpairedStudents: Dispatch<SetStateAction<Student[]>>;
+  setStudentChats: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
+  studentChats: (StudentChat | SoloChat)[];
+  characters: string[];
+}
 
 const UnpairedStudentsAccordion = ({
   socket,
@@ -18,7 +31,7 @@ const UnpairedStudentsAccordion = ({
   setStudentChats,
   studentChats,
   characters,
-}) => (
+}: UnpairedStudentsAccordionProps) => (
   <Accordion disableGutters sx={{ boxShadow: 'none', mb: 3 }}>
     <AccordionSummary
       expandIcon={<ExpandMoreIcon />}
