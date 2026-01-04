@@ -73,6 +73,8 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     // },
   ]);
 
+  const wasCharactersUpdated = JSON.stringify(characters) !== JSON.stringify(CHARACTERS);
+
   useEffect(() => {
     // Check if the teacher is still connected to the classroom every 10 seconds
     const connectionCheckInterval = setInterval(async () => {
@@ -221,6 +223,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           classroomName={classroomName}
           characters={characters}
           setCharacters={setCharacters}
+          wasCharactersUpdated={wasCharactersUpdated}
         />
         <UnpairedStudentsAccordion
           socket={socket}

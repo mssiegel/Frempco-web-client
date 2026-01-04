@@ -18,21 +18,33 @@ interface SetupClassroomAccordionProps {
   classroomName: string;
   characters: string[];
   setCharacters: Dispatch<SetStateAction<string[]>>;
+  wasCharactersUpdated: boolean;
 }
+
+const EMPTY_EMAIL = '';
 
 const SetupClassroomAccordion = ({
   classroomName,
   characters,
   setCharacters,
+  wasCharactersUpdated,
 }: SetupClassroomAccordionProps) => {
-  const [email, setEmail] = useState('');
+  const [email, setEmail] = useState(EMPTY_EMAIL);
 
-  const missing: string[] = [];
-  if (email.trim() === '') missing.push('email');
-  if (characters.length === 0) missing.push('characters');
+  const remainingSetupOptions: string[] = [];
+  if (email === EMPTY_EMAIL) remainingSetupOptions.push('email');
+  if (!wasCharactersUpdated) remainingSetupOptions.push('characters');
 
-  const statusText =
-    missing.length > 0 ? `Not yet set: ${missing.join(', ')}` : 'All set';
+  let remainingSetupOptionsText = 'All set up!';
+
+  if (remainingSetupOptions.length === 2) {
+  remainingSetupOptionsText = 'Email and characters have not been set';
+  } else if (remainingSetupOptions.length === 1) {
+    remainingSetupOptionsText =
+      remainingSetupOptions[0] === 'email'
+        ? 'Email has not been set'
+        : 'Characters have not been set';
+  }
 
   return (
     <Accordion disableGutters sx={{ boxShadow: 'none', mb: 3 }}>
@@ -43,7 +55,6 @@ const SetupClassroomAccordion = ({
         <Typography fontFamily='Lora' fontSize='26px'>
           Step 1: Setup Your Classroom
         </Typography>
-
         <Box
           display='flex'
           alignItems='center'
@@ -51,20 +62,18 @@ const SetupClassroomAccordion = ({
           flexGrow={1}
           justifyContent='flex-end'
         >
-          {missing.length > 0 && <ErrorOutlineIcon />}
+          {remainingSetupOptions.length > 0 && <ErrorOutlineIcon />}
           <Typography fontFamily='Lora' fontSize='16px'>
-            {statusText}
+            {remainingSetupOptionsText}
           </Typography>
         </Box>
       </AccordionSummary>
-
       <AccordionDetails>
         <SetTeacherEmailButton
           classroomName={classroomName}
           email={email}
           setEmail={setEmail}
         />
-
         <SetCharacterList characters={characters} setCharacters={setCharacters} />
       </AccordionDetails>
     </Accordion>
