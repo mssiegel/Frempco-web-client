@@ -31,20 +31,17 @@ const SetupClassroomAccordion = ({
 }: SetupClassroomAccordionProps) => {
   const [email, setEmail] = useState(EMPTY_EMAIL);
 
-  const remainingSetupOptions: string[] = [];
-  if (email === EMPTY_EMAIL) remainingSetupOptions.push('email');
-  if (!wasCharactersUpdated) remainingSetupOptions.push('characters');
+  const wasEmailUpdated = email !== EMPTY_EMAIL;
+  const hasRemainingSetupOptions = !wasEmailUpdated || !wasCharactersUpdated;
 
-  let remainingSetupOptionsText = 'All set up!';
-
-  if (remainingSetupOptions.length === 2) {
-    remainingSetupOptionsText = 'Email and characters have not been set';
-  } else if (remainingSetupOptions.length === 1) {
-    remainingSetupOptionsText =
-      remainingSetupOptions[0] === 'email'
-        ? 'Email has not been set'
-        : 'Characters have not been set';
-  }
+  const remainingSetupOptionsText =
+    wasEmailUpdated && wasCharactersUpdated
+      ? 'All set up!'
+      : !wasEmailUpdated && !wasCharactersUpdated
+      ? 'Email and characters have not been set'
+      : !wasEmailUpdated
+      ? 'Email has not been set'
+      : 'Characters have not been set';
 
   return (
     <Accordion disableGutters sx={{ boxShadow: 'none', mb: 3 }}>
@@ -62,7 +59,7 @@ const SetupClassroomAccordion = ({
           flexGrow={1}
           justifyContent='flex-end'
         >
-          {remainingSetupOptions.length > 0 && <ErrorOutlineIcon />}
+          {hasRemainingSetupOptions && <ErrorOutlineIcon />}
           <Typography fontFamily='Lora' fontSize='16px'>
             {remainingSetupOptionsText}
           </Typography>
