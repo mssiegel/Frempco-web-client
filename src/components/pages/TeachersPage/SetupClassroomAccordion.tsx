@@ -38,7 +38,7 @@ const SetupClassroomAccordion = ({
   let remainingSetupOptionsText = 'All set up!';
 
   if (remainingSetupOptions.length === 2) {
-  remainingSetupOptionsText = 'Email and characters have not been set';
+    remainingSetupOptionsText = 'Email and characters have not been set';
   } else if (remainingSetupOptions.length === 1) {
     remainingSetupOptionsText =
       remainingSetupOptions[0] === 'email'
@@ -74,7 +74,10 @@ const SetupClassroomAccordion = ({
           email={email}
           setEmail={setEmail}
         />
-        <SetCharacterList characters={characters} setCharacters={setCharacters} />
+        <SetCharacterList
+          characters={characters}
+          setCharacters={setCharacters}
+        />
       </AccordionDetails>
     </Accordion>
   );

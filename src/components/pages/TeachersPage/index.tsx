@@ -73,7 +73,8 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     // },
   ]);
 
-  const wasCharactersUpdated = JSON.stringify(characters) !== JSON.stringify(CHARACTERS);
+  const wasCharactersUpdated =
+    JSON.stringify(characters) !== JSON.stringify(CHARACTERS);
 
   useEffect(() => {
     // Check if the teacher is still connected to the classroom every 10 seconds
