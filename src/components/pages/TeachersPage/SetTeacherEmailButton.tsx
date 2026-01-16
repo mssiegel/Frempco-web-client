@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import React, { Dispatch, SetStateAction, useState, useRef } from 'react';
 import { Button, Typography } from '@mui/material';
 import { Email as EmailIcon } from '@mui/icons-material';
 
@@ -7,14 +7,16 @@ import ModalTextField from '@components/shared/ModalTextField';
 
 interface SetTeacherEmailButtonProps {
   classroomName: string;
+  email: string;
+  setEmail: Dispatch<SetStateAction<string>>;
 }
 
 export default function SetTeacherEmailButton({
   classroomName,
+  email,
+  setEmail,
 }: SetTeacherEmailButtonProps) {
   const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
-
-  const [email, setEmail] = useState('');
   const [open, setOpen] = useState(false);
   const emailInput = useRef<HTMLInputElement>(null);
 
