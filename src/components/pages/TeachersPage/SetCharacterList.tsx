@@ -18,20 +18,28 @@ export default function SetCharacterList({
   const [open, setOpen] = useState(false);
   const characterListTextArea = useRef<HTMLTextAreaElement>();
 
+  const [error, setError] = useState<string | null>(null);
+
   const setCharacterList = () => {
     const characters = characterListTextArea.current.value.split('\n');
     const trimmedCharacters = characters
       .map((ch) => ch.trim())
       .filter((ch) => ch);
 
+    if (trimmedCharacters.length === 0) {
+      setError('Error: Please enter at least one character name.');
+      return;
+    }
+
     setCharacters(trimmedCharacters);
     setOpen(false);
+    setError(null);
   };
 
   return (
     <>
       <Typography fontFamily='Lora' fontSize='20px' sx={{ mb: 1 }}>
-        Characters: {characters?.length > 0 && characters.join(', ')}
+        Characters: {characters.join(', ')}
       </Typography>
       <Button
         variant='contained'
@@ -53,6 +61,12 @@ export default function SetCharacterList({
           defaultValue={characters.join('\n')}
           inputRef={characterListTextArea}
         />
+
+        {error && (
+          <Typography color='error' sx={{ mt: 2, textAlign: 'center' }}>
+            {error}
+          </Typography>
+        )}
 
         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
           <Button variant='contained' size='large' onClick={setCharacterList}>
