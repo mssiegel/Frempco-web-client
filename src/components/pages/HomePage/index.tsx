@@ -162,8 +162,7 @@ export default function HomePage() {
               roles.
             </Typography>
             <Typography fontSize={22} mb={2}>
-              4. When finished, students copy their chats and submit them for
-              grading, just like they would an essay or report.
+              4. The teacher receives the full chat transcripts by email after each session.
             </Typography>
           </div>
         </Grid>
