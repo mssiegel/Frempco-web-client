@@ -1,9 +1,9 @@
 /** @jsxImportSource @emotion/react */
 
 import { Box, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
 
 import Link from '@components/shared/Link';
+import { useStudentInClassroom } from '@hooks/useStudentInClassroom';
 import welcomeMessageCSS from './WelcomeMessage.css';
 
 export default function WelcomeMessage({
@@ -11,35 +11,7 @@ export default function WelcomeMessage({
   removedFromClass,
   socketId,
 }) {
-  const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
-  const FIFTEEN_SECONDS = 15000;
-  const [isConnected, setIsConnected] = useState(true);
-
-  useEffect(() => {
-    // If a student's smartphone screen goes dark they will lose connection
-    // to the server and will be removed from the server's classroom. When
-    // the student reopens the website on their phone browser, they will see
-    // a message to login again because of this setInterval().
-    const connectionCheckInterval = setInterval(async () => {
-      try {
-        const getResponse = await fetch(
-          `${apiUrl}/classrooms/${classroomName}/studentSockets/${socketId}`,
-          { method: 'GET' },
-        );
-        const { isStudentInsideClassroom } = await getResponse.json();
-        if (!isStudentInsideClassroom) {
-          setIsConnected(false);
-          clearInterval(connectionCheckInterval);
-        }
-      } catch (error) {
-        // If the request fails, assume the connection was lost
-        setIsConnected(false);
-        clearInterval(connectionCheckInterval);
-      }
-    }, FIFTEEN_SECONDS);
-
-    return () => clearInterval(connectionCheckInterval);
-  }, []);
+  const isConnected = useStudentInClassroom(classroomName, socketId);
 
   return (
     <Box css={welcomeMessageCSS.welcomeMessageContainer}>

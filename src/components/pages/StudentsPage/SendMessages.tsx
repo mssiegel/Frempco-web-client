@@ -6,6 +6,7 @@ import { Dispatch, SetStateAction, useState, useEffect, useRef } from 'react';
 import { Socket } from 'socket.io-client';
 
 import Link from '@components/shared/Link';
+import { useStudentInClassroom } from '@hooks/useStudentInClassroom';
 import sendMessagesCSS from './SendMessages.css';
 import { PAIRED } from '@utils/classrooms';
 import { StudentPairedChat, StudentSoloChat } from './index';
@@ -36,7 +37,7 @@ export default function SendMessages({
 }: SendMessagesProps) {
   const typeMessageInput = useRef(null);
   const [message, setMessage] = useState('');
-  const [wasConnectionLost, setWasConnectionLost] = useState(false);
+  const isConnected = useStudentInClassroom(classroomName, socketId);
 
   useEffect(() => {
     if (socket) {
@@ -53,37 +54,6 @@ export default function SendMessages({
       }
     };
   }, [socket]);
-
-  useEffect(() => {
-    // If a student's smartphone screen goes dark they will lose connection
-    // to the server and will be removed from the server's classroom. When
-    // the student reopens the website on their phone browser, they will see
-    // a message to login again because of this setInterval().
-    if (!classroomName || !socketId) return;
-
-    const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
-    const FIFTEEN_SECONDS = 15000;
-
-    const connectionCheckInterval = setInterval(async () => {
-      try {
-        const getResponse = await fetch(
-          `${apiUrl}/classrooms/${classroomName}/studentSockets/${socketId}`,
-          { method: 'GET' },
-        );
-        const { isStudentInsideClassroom } = await getResponse.json();
-        if (!isStudentInsideClassroom) {
-          setWasConnectionLost(true);
-          clearInterval(connectionCheckInterval);
-        }
-      } catch (error) {
-        // If the request fails, assume the connection was lost
-        setWasConnectionLost(true);
-        clearInterval(connectionCheckInterval);
-      }
-    }, FIFTEEN_SECONDS);
-
-    return () => clearInterval(connectionCheckInterval);
-  }, [classroomName, socketId]);
 
   function sendMessage(e) {
     e.preventDefault();
@@ -138,7 +108,7 @@ export default function SendMessages({
       : `chatbot is thinking...`;
 
   let chatEndedInformationalMessage = null;
-  if (wasConnectionLost) {
+  if (!isConnected) {
     chatEndedInformationalMessage = (
       <>
         You were logged out. Return to the{' '}
