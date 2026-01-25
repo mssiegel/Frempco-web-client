@@ -10,7 +10,6 @@ import { useStudentInClassroom } from '@hooks/useStudentInClassroom';
 import sendMessagesCSS from './SendMessages.css';
 import { PAIRED } from '@utils/classrooms';
 import { StudentPairedChat, StudentSoloChat } from './index';
-import { ChatMessage, SoloChatMessage } from './index';
 
 interface SendMessagesProps {
   socket: Socket;
@@ -60,7 +59,7 @@ export default function SendMessages({
     if (message) {
       setChat((chat) => ({
         ...chat,
-        conversation: [...chat.conversation, ['you', message] as ChatMessage | SoloChatMessage],
+        conversation: [...chat.conversation, ['you', message]],
       }) as StudentPairedChat | StudentSoloChat);
       setMessage('');
       typeMessageInput.current.focus();
