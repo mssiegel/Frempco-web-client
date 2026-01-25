@@ -101,11 +101,6 @@ export default function SendMessages({
         socket.emit(
           'student sent message',
           { message },
-          ({ studentNotInPairedChat }) => {
-            if (studentNotInPairedChat) {
-              studentLostConnection();
-            }
-          },
         );
       } else {
         setPeerIsTyping(true);
@@ -114,12 +109,10 @@ export default function SendMessages({
           {
             message,
           },
-          ({ chatbotReplyMessages, studentNotInSoloChat }) => {
+          ({ chatbotReplyMessages }) => {
             setPeerIsTyping(false);
 
-            if (studentNotInSoloChat) {
-              studentLostConnection();
-            } else if (
+            if (
               chatbotReplyMessages &&
               chatbotReplyMessages.length > 0
             ) {
@@ -132,14 +125,6 @@ export default function SendMessages({
         );
       }
     }
-  }
-
-  function studentLostConnection() {
-    // If a student's smartphone screen goes dark they will lose connection
-    // to the server and will be removed from the server's classroom. When they
-    // try sending another message, they will receive an informational message
-    // which tells them they need to login again.
-    setWasConnectionLost(true);
   }
 
   function sendUserIsTyping(e) {
