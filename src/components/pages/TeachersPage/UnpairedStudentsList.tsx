@@ -84,7 +84,7 @@ export default function UnpairedStudentsList({
     <>
       <Box
         sx={{
-          maxWidth: '400px',
+          maxWidth: '500px',
           bgcolor: 'white',
           border: '1px solid black',
           p: '5px',
