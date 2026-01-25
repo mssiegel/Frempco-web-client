@@ -2,13 +2,28 @@
 
 import { Box, Fab, Typography } from '@mui/material';
 import { Send as SendIcon } from '@mui/icons-material';
-import { useState, useEffect, useRef } from 'react';
+import { Dispatch, SetStateAction, useState, useEffect, useRef } from 'react';
+import { Socket } from 'socket.io-client';
 
 import Link from '@components/shared/Link';
+import { useStudentInClassroom } from '@hooks/useStudentInClassroom';
 import sendMessagesCSS from './SendMessages.css';
 import { PAIRED } from '@utils/classrooms';
+import { StudentPairedChat, StudentSoloChat } from './index';
+
+interface SendMessagesProps {
+  socket: Socket;
+  chat: StudentPairedChat | StudentSoloChat;
+  setChat: Dispatch<SetStateAction<StudentPairedChat | StudentSoloChat>>;
+  chatEndedMsg: null | string;
+  peerIsTyping: boolean;
+  setPeerIsTyping: Dispatch<SetStateAction<boolean>>;
+  classroomName: string;
+  socketId: string;
+}
 
 let peerTypingTimer = null;
+
 export default function SendMessages({
   socket,
   chat,
@@ -16,10 +31,12 @@ export default function SendMessages({
   chatEndedMsg,
   peerIsTyping,
   setPeerIsTyping,
-}) {
+  classroomName,
+  socketId,
+}: SendMessagesProps) {
   const typeMessageInput = useRef(null);
   const [message, setMessage] = useState('');
-  const [wasConnectionLost, setWasConnectionLost] = useState(false);
+  const isConnected = useStudentInClassroom(classroomName, socketId);
 
   useEffect(() => {
     if (socket) {
@@ -43,7 +60,7 @@ export default function SendMessages({
       setChat((chat) => ({
         ...chat,
         conversation: [...chat.conversation, ['you', message]],
-      }));
+      }) as StudentPairedChat | StudentSoloChat);
       setMessage('');
       typeMessageInput.current.focus();
 
@@ -52,15 +69,7 @@ export default function SendMessages({
       if (chat.mode === PAIRED) {
         socket.emit(
           'student sent message',
-          {
-            message,
-            chatId: chat.chatId,
-          },
-          ({ studentNotInPairedChat }) => {
-            if (studentNotInPairedChat) {
-              studentLostConnection();
-            }
-          },
+          { message },
         );
       } else {
         setPeerIsTyping(true);
@@ -68,34 +77,23 @@ export default function SendMessages({
           'solo mode: student sent message',
           {
             message,
-            chatId: chat.chatId,
           },
-          ({ chatbotReplyMessages, studentNotInSoloChat }) => {
+          ({ chatbotReplyMessages }) => {
             setPeerIsTyping(false);
 
-            if (studentNotInSoloChat) {
-              studentLostConnection();
-            } else if (
+            if (
               chatbotReplyMessages &&
               chatbotReplyMessages.length > 0
             ) {
               setChat((chat) => ({
                 ...chat,
                 conversation: [...chat.conversation, ...chatbotReplyMessages],
-              }));
+              }) as StudentPairedChat | StudentSoloChat);
             }
           },
         );
       }
     }
-  }
-
-  function studentLostConnection() {
-    // If a student's smartphone screen goes dark they will lose connection
-    // to the server and will be removed from the server's classroom. When they
-    // try sending another message, they will receive an informational message
-    // which tells them they need to login again.
-    setWasConnectionLost(true);
   }
 
   function sendUserIsTyping(e) {
@@ -109,7 +107,7 @@ export default function SendMessages({
       : `chatbot is thinking...`;
 
   let chatEndedInformationalMessage = null;
-  if (wasConnectionLost) {
+  if (!isConnected) {
     chatEndedInformationalMessage = (
       <>
         You were logged out. Return to the{' '}
@@ -140,7 +138,7 @@ export default function SendMessages({
               css={sendMessagesCSS.message}
               value={message}
               placeholder='Say something'
-              maxLength={chat.length === PAIRED ? 75 : 120}
+              maxLength={chat.mode === PAIRED ? 75 : 120}
               onChange={sendUserIsTyping}
               autoFocus
               ref={typeMessageInput}

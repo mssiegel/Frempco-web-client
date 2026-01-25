@@ -16,11 +16,6 @@ const peer = css`
   color: red;
 `;
 
-const teacher = css`
-  font-weight: bold;
-  color: purple;
-`;
-
 const msg = css`
   word-break: break-word;
 `;
@@ -29,7 +24,6 @@ const conversationCSS = {
   introText,
   peer,
   you,
-  teacher,
   msg,
 };
 
