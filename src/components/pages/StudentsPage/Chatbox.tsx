@@ -43,21 +43,11 @@ export default function Chatbox({
         setPeerIsTyping(false);
         addChatMessage('peer', message);
       });
-
-      socket.on('teacher sent message', ({ message }) => {
-        addChatMessage('teacher', message);
-      });
-
-      socket.on('solo mode: teacher sent message', ({ message }) => {
-        addChatMessage('teacher', message);
-      });
     }
 
     return () => {
       if (socket) {
         socket.off('student sent message');
-        socket.off('teacher sent message');
-        socket.off('solo mode: teacher sent message');
       }
     };
   }, [setChat, socket]);
