@@ -2,13 +2,28 @@
 
 import { Box, Fab, Typography } from '@mui/material';
 import { Send as SendIcon } from '@mui/icons-material';
-import { useState, useEffect, useRef } from 'react';
+import { Dispatch, SetStateAction, useState, useEffect, useRef } from 'react';
+import { Socket } from 'socket.io-client';
 
 import Link from '@components/shared/Link';
 import sendMessagesCSS from './SendMessages.css';
 import { PAIRED } from '@utils/classrooms';
+import { StudentPairedChat, StudentSoloChat } from './index';
+import { ChatMessage, SoloChatMessage } from '@components/pages/TeachersPage';
+
+interface SendMessagesProps {
+  socket: Socket;
+  chat: StudentPairedChat | StudentSoloChat;
+  setChat: Dispatch<SetStateAction<StudentPairedChat | StudentSoloChat>>;
+  chatEndedMsg: null | string;
+  peerIsTyping: boolean;
+  setPeerIsTyping: Dispatch<SetStateAction<boolean>>;
+  classroomName: string;
+  socketId: string;
+}
 
 let peerTypingTimer = null;
+
 export default function SendMessages({
   socket,
   chat,
@@ -16,7 +31,9 @@ export default function SendMessages({
   chatEndedMsg,
   peerIsTyping,
   setPeerIsTyping,
-}) {
+  classroomName,
+  socketId,
+}: SendMessagesProps) {
   const typeMessageInput = useRef(null);
   const [message, setMessage] = useState('');
   const [wasConnectionLost, setWasConnectionLost] = useState(false);
@@ -37,13 +54,44 @@ export default function SendMessages({
     };
   }, [socket]);
 
+  useEffect(() => {
+    // If a student's smartphone screen goes dark they will lose connection
+    // to the server and will be removed from the server's classroom. When
+    // the student reopens the website on their phone browser, they will see
+    // a message to login again because of this setInterval().
+    if (!classroomName || !socketId) return;
+
+    const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
+    const FIFTEEN_SECONDS = 15000;
+
+    const connectionCheckInterval = setInterval(async () => {
+      try {
+        const getResponse = await fetch(
+          `${apiUrl}/classrooms/${classroomName}/studentSockets/${socketId}`,
+          { method: 'GET' },
+        );
+        const { isStudentInsideClassroom } = await getResponse.json();
+        if (!isStudentInsideClassroom) {
+          setWasConnectionLost(true);
+          clearInterval(connectionCheckInterval);
+        }
+      } catch (error) {
+        // If the request fails, assume the connection was lost
+        setWasConnectionLost(true);
+        clearInterval(connectionCheckInterval);
+      }
+    }, FIFTEEN_SECONDS);
+
+    return () => clearInterval(connectionCheckInterval);
+  }, [classroomName, socketId]);
+
   function sendMessage(e) {
     e.preventDefault();
     if (message) {
       setChat((chat) => ({
         ...chat,
-        conversation: [...chat.conversation, ['you', message]],
-      }));
+        conversation: [...chat.conversation, ['you', message] as ChatMessage | SoloChatMessage],
+      }) as StudentPairedChat | StudentSoloChat);
       setMessage('');
       typeMessageInput.current.focus();
 
@@ -52,10 +100,7 @@ export default function SendMessages({
       if (chat.mode === PAIRED) {
         socket.emit(
           'student sent message',
-          {
-            message,
-            chatId: chat.chatId,
-          },
+          { message },
           ({ studentNotInPairedChat }) => {
             if (studentNotInPairedChat) {
               studentLostConnection();
@@ -68,7 +113,6 @@ export default function SendMessages({
           'solo mode: student sent message',
           {
             message,
-            chatId: chat.chatId,
           },
           ({ chatbotReplyMessages, studentNotInSoloChat }) => {
             setPeerIsTyping(false);
@@ -82,7 +126,7 @@ export default function SendMessages({
               setChat((chat) => ({
                 ...chat,
                 conversation: [...chat.conversation, ...chatbotReplyMessages],
-              }));
+              }) as StudentPairedChat | StudentSoloChat);
             }
           },
         );
@@ -140,7 +184,7 @@ export default function SendMessages({
               css={sendMessagesCSS.message}
               value={message}
               placeholder='Say something'
-              maxLength={chat.length === PAIRED ? 75 : 120}
+              maxLength={chat.mode === PAIRED ? 75 : 120}
               onChange={sendUserIsTyping}
               autoFocus
               ref={typeMessageInput}

@@ -11,7 +11,7 @@ import WelcomeMessage from './WelcomeMessage';
 import RoleplayMasks from '../../../../public/roleplayMasks.png';
 import { ChatMessage, SoloChatMessage } from '@components/pages/TeachersPage';
 
-interface StudentPairedChat {
+export interface StudentPairedChat {
   mode: typeof PAIRED;
   characters: {
     you: string;
@@ -21,7 +21,7 @@ interface StudentPairedChat {
   startTime: string;
 }
 
-interface StudentSoloChat {
+export interface StudentSoloChat {
   mode: typeof SOLO;
   characters: {
     you: string;
@@ -52,7 +52,7 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
   //   ],
   //   startTime: '',
   // }
-  const [chatEndedMsg, setChatEndedMsg] = useState(null);
+  const [chatEndedMsg, setChatEndedMsg] = useState<null | string>(null);
 
   const router = useRouter();
 
@@ -152,6 +152,8 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
             chat={chat}
             setChat={setChat}
             chatEndedMsg={chatEndedMsg}
+            classroomName={classroomName}
+            socketId={socket.id}
           />
         ) : (
           <WelcomeMessage

@@ -1,15 +1,33 @@
 /** @jsxImportSource @emotion/react */
 
 import { Box } from '@mui/material';
-import { useEffect, useRef, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
+import { Socket } from 'socket.io-client';
 
 import { scrollToBottomOfElement } from '@utils/classrooms';
 import chatboxCSS from './Chatbox.css';
 import Conversation from './Conversation';
 import SendMessages from './SendMessages';
 import CopyButton from '@components/shared/CopyButton';
+import { StudentPairedChat, StudentSoloChat } from './index';
 
-export default function Chatbox({ socket, chat, setChat, chatEndedMsg }) {
+interface ChatboxProps {
+  socket: Socket;
+  chat: StudentPairedChat | StudentSoloChat;
+  setChat: Dispatch<SetStateAction<StudentPairedChat | StudentSoloChat>>;
+  chatEndedMsg: null | string;
+  classroomName: string;
+  socketId: string;
+}
+
+export default function Chatbox({
+  socket,
+  chat,
+  setChat,
+  chatEndedMsg,
+  classroomName,
+  socketId,
+}: ChatboxProps) {
   const [peerIsTyping, setPeerIsTyping] = useState(false);
 
   function addChatMessage(sender, message) {
@@ -66,6 +84,8 @@ export default function Chatbox({ socket, chat, setChat, chatEndedMsg }) {
           chatEndedMsg={chatEndedMsg}
           peerIsTyping={peerIsTyping}
           setPeerIsTyping={setPeerIsTyping}
+          classroomName={classroomName}
+          socketId={socketId}
         />
       </Box>
     </Box>
