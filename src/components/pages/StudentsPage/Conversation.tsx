@@ -1,12 +1,16 @@
 /** @jsxImportSource @emotion/react */
 
 import { Box, Typography } from '@mui/material';
-import { useEffect } from 'react';
 
 import conversationCSS from './Conversation.css';
 import { filterWords } from '@utils/classrooms';
+import { StudentPairedChat, StudentSoloChat } from './index';
 
-export default function Conversation({ chat }) {
+interface ConversationProps {
+  chat: StudentPairedChat | StudentSoloChat;
+}
+
+export default function Conversation({ chat }: ConversationProps) {
   return (
     <Box id='conversation'>
       <Box css={conversationCSS.introText}>
@@ -31,10 +35,6 @@ export default function Conversation({ chat }) {
           case 'chatbot':
             character = chat.characters.peer;
             fontCSS = conversationCSS.peer;
-            break;
-          case 'teacher':
-            character = 'TEACHER';
-            fontCSS = conversationCSS.teacher;
             break;
         }
 

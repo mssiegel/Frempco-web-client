@@ -9,7 +9,7 @@ import Link from '@components/shared/Link';
 import sendMessagesCSS from './SendMessages.css';
 import { PAIRED } from '@utils/classrooms';
 import { StudentPairedChat, StudentSoloChat } from './index';
-import { ChatMessage, SoloChatMessage } from '@components/pages/TeachersPage';
+import { ChatMessage, SoloChatMessage } from './index';
 
 interface SendMessagesProps {
   socket: Socket;

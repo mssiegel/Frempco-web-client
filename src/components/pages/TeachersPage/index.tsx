@@ -26,9 +26,9 @@ const CHARACTERS = [
 
 type StudentPair = [Student, Student];
 
-export type ChatMessage = ['you' | 'student1' | 'student2' | 'teacher', string];
+export type ChatMessage = ['student1' | 'student2' | 'teacher', string];
 
-export type SoloChatMessage = ['you' | 'student' | 'chatbot' | 'teacher', string];
+export type SoloChatMessage = ['student' | 'chatbot' | 'teacher', string];
 
 export interface StudentChat {
   mode: typeof PAIRED;

@@ -9,7 +9,10 @@ import { UserContext } from '@contexts/UserContext';
 import Chatbox from './Chatbox';
 import WelcomeMessage from './WelcomeMessage';
 import RoleplayMasks from '../../../../public/roleplayMasks.png';
-import { ChatMessage, SoloChatMessage } from '@components/pages/TeachersPage';
+
+export type ChatMessage = ['you' | 'peer', string];
+
+export type SoloChatMessage = ['you' | 'chatbot', string];
 
 export interface StudentPairedChat {
   mode: typeof PAIRED;
