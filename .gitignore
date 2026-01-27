@@ -35,3 +35,6 @@ yarn-error.log*
 
 # Quokka TS Playground
 ts_playground_quokka.ts
+
+# IDEs and editors
+.cursorignore
