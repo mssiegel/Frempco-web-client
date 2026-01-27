@@ -16,7 +16,7 @@ export default function WelcomeMessage({
   classroomName,
   removedFromClass,
   socketId,
-} : WelcomeMessageProps) {
+}: WelcomeMessageProps) {
   const isConnected = useStudentInClassroom(classroomName, socketId);
 
   return (
