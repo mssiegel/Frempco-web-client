@@ -57,20 +57,20 @@ export default function SendMessages({
   function sendMessage(e) {
     e.preventDefault();
     if (message) {
-      setChat((chat) => ({
-        ...chat,
-        conversation: [...chat.conversation, ['you', message]],
-      }) as StudentPairedChat | StudentSoloChat);
+      setChat(
+        (chat) =>
+          ({
+            ...chat,
+            conversation: [...chat.conversation, ['you', message]],
+          } as StudentPairedChat | StudentSoloChat),
+      );
       setMessage('');
       typeMessageInput.current.focus();
 
       if (!socket) return;
 
       if (chat.mode === PAIRED) {
-        socket.emit(
-          'student sent message',
-          { message },
-        );
+        socket.emit('student sent message', { message });
       } else {
         setPeerIsTyping(true);
         socket.emit(
@@ -81,14 +81,17 @@ export default function SendMessages({
           ({ chatbotReplyMessages }) => {
             setPeerIsTyping(false);
 
-            if (
-              chatbotReplyMessages &&
-              chatbotReplyMessages.length > 0
-            ) {
-              setChat((chat) => ({
-                ...chat,
-                conversation: [...chat.conversation, ...chatbotReplyMessages],
-              }) as StudentPairedChat | StudentSoloChat);
+            if (chatbotReplyMessages && chatbotReplyMessages.length > 0) {
+              setChat(
+                (chat) =>
+                  ({
+                    ...chat,
+                    conversation: [
+                      ...chat.conversation,
+                      ...chatbotReplyMessages,
+                    ],
+                  } as StudentPairedChat | StudentSoloChat),
+              );
             }
           },
         );
