@@ -67,7 +67,7 @@ export default function HomePage() {
         >
           <Box maxWidth='700px'>
             <Typography variant='h4' mb={3}>
-              The FREE Classroom roleplaying product
+              Bring Learning to Life Through Student Role-Play
             </Typography>
             <Image
               src={RoleplayMasks}
@@ -162,7 +162,8 @@ export default function HomePage() {
               roles.
             </Typography>
             <Typography fontSize={22} mb={2}>
-              4. The teacher receives the full chat transcripts by email after each session.
+              4. The teacher receives the full chat transcripts by email after
+              each session.
             </Typography>
           </div>
         </Grid>
