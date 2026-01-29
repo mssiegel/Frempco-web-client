@@ -65,9 +65,12 @@ export default function HomePage() {
           display='flex'
           justifyContent='center'
         >
-          <Box maxWidth='700px'>
-            <Typography variant='h4' mb={3}>
-              Bring Learning to Life Through Student Role-Play
+          <Box width='700px'>
+            <Typography variant='h2' mb={3}>
+              Bring Learning to Life Through{' '}
+              <Box component='span' color='secondary.main'>
+                Student Role-Play
+              </Box>
             </Typography>
             <Image
               src={RoleplayMasks}
