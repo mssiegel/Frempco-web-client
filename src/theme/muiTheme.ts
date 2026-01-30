@@ -5,22 +5,11 @@ import { createTheme } from '@mui/material/styles';
  * Modify this to override the default theme options for MUI components
  */
 const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#2B313B',
-      // light: '#',
-      // dark: '#',
-      // contrastText: '#',
-    },
-    secondary: {
-      main: '#5B5DF9',
-    },
-    text: {
-      primary: '#2B313B',
-      secondary: '#718098)',
-      // disabled: '#',
-    },
-  },
+  // palette: {
+  //   primary: {},
+  //   secondary: {},
+  //   text: {},
+  // },
 
   typography: {
     fontFamily: 'Inter',
