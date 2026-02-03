@@ -38,3 +38,4 @@ ts_playground_quokka.ts
 
 # IDEs and editors
 .cursorignore
+.vscode/launch.json
