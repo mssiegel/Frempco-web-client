@@ -68,7 +68,7 @@ export default function HomePage() {
           <Box width='700px'>
             <Typography variant='h2' mb={3}>
               Bring Learning to Life Through{' '}
-              <Box component='span' /* color='secondary.500' */>
+              <Box component='span' color='primary.500'>
                 Student Role-Play
               </Box>
             </Typography>
