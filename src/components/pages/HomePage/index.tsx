@@ -82,13 +82,7 @@ export default function HomePage() {
                 height: 'auto',
               }}
             />
-            <Box
-              my={6}
-              display='flex'
-              justifyContent='center'
-              flexDirection='column'
-              alignItems='center'
-            >
+            <Box my={6} display='flex' gap={1}>
               <StudentsButton visitStudentsPage={visitStudentsPage} />
               <TeachersButton visitTeachersPage={visitTeachersPage} />
             </Box>

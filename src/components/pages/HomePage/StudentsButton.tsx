@@ -1,7 +1,10 @@
 /** @jsxImportSource @emotion/react */
 
 import { Button, Typography } from '@mui/material';
-import { Lightbulb as LightbulbIcon } from '@mui/icons-material';
+import {
+  Lightbulb as LightbulbIcon,
+  PlayArrowOutlined as PlayArrowOutlinedIcon,
+} from '@mui/icons-material';
 import { useState, useRef, useCallback } from 'react';
 import { throttle } from 'lodash-es';
 
@@ -32,17 +35,15 @@ export default function StudentsButton({ visitStudentsPage }) {
     <>
       <Button
         variant='contained'
-        size='large'
-        endIcon={<LightbulbIcon />}
+        color='primary'
+        startIcon={<PlayArrowOutlinedIcon />}
         onClick={() => setOpen(true)}
         sx={{
-          height: '75px',
-          borderRadius: '12px',
-          marginBottom: '12px',
-          maxWidth: '300px',
+          width: '167px',
+          height: '48px',
         }}
       >
-        Student: Join Classroom
+        Join a Game
       </Button>
 
       <BasicModal open={open} onClose={() => setOpen(false)}>
