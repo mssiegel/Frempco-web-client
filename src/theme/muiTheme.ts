@@ -64,6 +64,40 @@ const theme = createTheme({
       letterSpacing: '-0.96px',
     },
   },
+  components: {
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          textTransform: 'none',
+        },
+      },
+      variants: [
+        {
+          props: { variant: 'contained', color: 'primary' },
+          style: {
+            backgroundColor: '#5B5DF9',
+            color: '#fff',
+            borderRadius: '8px',
+            width: '161px',
+            height: '48px',
+            boxShadow: '3px 3px 0 0 rgba(0, 0, 0, 0.25)',
+            '&:hover': {
+              backgroundColor: '#070AC5',
+              boxShadow: '3px 4px 0 0 rgba(0, 0, 0, 0.15)',
+            },
+            '.Mui-focusVisible': {
+              backgroundColor: '#5B5DF9',
+              boxShadow: '0 1px 2px 0 rgba(10, 13, 18, 0.05)',
+            },
+            '&.Mui-disabled': {
+              backgroundColor: '#EBECFE',
+              boxShadow: '0 1px 2px 0 rgba(10, 13, 18, 0.05)',
+            },
+          },
+        },
+      ],
+    },
+  },
 });
 
 export default theme;

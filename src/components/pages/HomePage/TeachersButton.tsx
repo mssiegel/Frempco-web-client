@@ -19,16 +19,9 @@ export default function TeachersButton({ visitTeachersPage }) {
       <Button
         variant='contained'
         size='large'
-        endIcon={<SchoolIcon />}
         onClick={visitTeachersPageHelper}
-        sx={{
-          height: '75px',
-          borderRadius: '12px',
-          backgroundColor: 'rgb(68, 197, 68)',
-          maxWidth: '300px',
-        }}
       >
-        Teacher: Make Classroom
+        Start a Game
       </Button>
     </>
   );
