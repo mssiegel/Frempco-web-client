@@ -35,7 +35,15 @@ const theme = createTheme({
       200: '#EBECFE',
       100: '#F8F8FF',
     },
-    // secondary: {},
+    secondary: {
+      dark: '#95C021',
+      main: '#BFE35B',
+      light: '#DDF0A8',
+      600: '#95C021',
+      500: '#BFE35B',
+      400: '#DDF0A8',
+      300: '#F8FCEE',
+    },
     neutrals: {
       dark: '#2B313B',
       main: '#4D586A',
@@ -69,6 +77,15 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           textTransform: 'none',
+          borderRadius: '8px',
+          padding: '12px 20px',
+          boxShadow: '3px 3px 0 0 rgba(0, 0, 0, 0.25)',
+          '&:hover': {
+            boxShadow: '3px 4px 0 0 rgba(0, 0, 0, 0.15)',
+          },
+          '&.Mui-disabled': {
+            boxShadow: '3px 3px 0 0 rgba(0, 0, 0, 0.05)',
+          },
         },
       },
       variants: [
@@ -77,21 +94,38 @@ const theme = createTheme({
           style: {
             backgroundColor: '#5B5DF9',
             color: '#fff',
-            borderRadius: '8px',
-            width: '161px',
-            height: '48px',
-            boxShadow: '3px 3px 0 0 rgba(0, 0, 0, 0.25)',
             '&:hover': {
               backgroundColor: '#070AC5',
-              boxShadow: '3px 4px 0 0 rgba(0, 0, 0, 0.15)',
             },
             '.Mui-focusVisible': {
               backgroundColor: '#5B5DF9',
-              boxShadow: '0 1px 2px 0 rgba(10, 13, 18, 0.05)',
+              border: '3px solid #EBECFE',
+              boxShadow: '3px 3px 0 0 rgba(0, 0, 0, 0.25)',
             },
             '&.Mui-disabled': {
               backgroundColor: '#EBECFE',
-              boxShadow: '0 1px 2px 0 rgba(10, 13, 18, 0.05)',
+            },
+          },
+        },
+        {
+          props: { variant: 'outlined', color: 'primary' },
+          style: {
+            backgroundColor: '#fff',
+            color: '#5B5DF9',
+            border: '2px solid #5B5DF9',
+            '&:hover': {
+              backgroundColor: '#EBECFE',
+              border: '2px solid #5B5DF9',
+            },
+            '.Mui-focusVisible': {
+              backgroundColor: '#EBECFE',
+              border: '3px solid #C4C5FD',
+              boxShadow: '3px 4px 0 0 rgba(0, 0, 0, 0.15)',
+            },
+            '&.Mui-disabled': {
+              backgroundColor: '#fff',
+              color: '#C4C5FD',
+              border: '2px solid #C4C5FD',
             },
           },
         },
