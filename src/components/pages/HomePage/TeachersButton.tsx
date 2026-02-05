@@ -17,8 +17,8 @@ export default function TeachersButton({ visitTeachersPage }) {
   return (
     <>
       <Button
-        variant='contained'
-        size='large'
+        variant='outlined'
+        color='primary'
         onClick={visitTeachersPageHelper}
       >
         Start a Game

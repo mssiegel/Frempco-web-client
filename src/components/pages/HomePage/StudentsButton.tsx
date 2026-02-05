@@ -38,10 +38,6 @@ export default function StudentsButton({ visitStudentsPage }) {
         color='primary'
         startIcon={<PlayArrowOutlinedIcon />}
         onClick={() => setOpen(true)}
-        sx={{
-          width: '167px',
-          height: '48px',
-        }}
       >
         Join a Game
       </Button>
