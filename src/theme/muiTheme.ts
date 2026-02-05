@@ -64,12 +64,48 @@ const theme = createTheme({
   },
   typography: {
     fontFamily: 'Inter',
+    h1: {
+      fontSize: '60px',
+      fontWeight: 400,
+      lineHeight: '72px' /* 120% */,
+      letterSpacing: '-1.2px',
+    },
     h2: {
-      fontSize: 48,
-      fontStyle: 'normal',
+      fontSize: '48px',
       fontWeight: 500,
       lineHeight: '60px' /* 125% */,
       letterSpacing: '-0.96px',
+    },
+    h3: {
+      fontSize: '36px',
+      fontWeight: 400,
+      lineHeight: '44px' /* 122.222% */,
+      letterSpacing: '-0.72px',
+    },
+    h4: {
+      fontSize: '30px',
+      fontWeight: 400,
+      lineHeight: '38px' /* 126.667% */,
+    },
+    h5: {
+      fontSize: '24px',
+      fontWeight: 600,
+      lineHeight: '32px' /* 133.333% */,
+    },
+    body1: {
+      fontSize: '20px',
+      fontWeight: 400,
+      lineHeight: '30px' /* 150% */,
+    },
+    body2: {
+      fontSize: '16px',
+      fontWeight: 400,
+      lineHeight: '24px' /* 150% */,
+    },
+    caption: {
+      fontSize: '14px',
+      fontWeight: 400,
+      lineHeight: '20px' /* 142.857% */,
     },
   },
   components: {
@@ -77,6 +113,10 @@ const theme = createTheme({
       styleOverrides: {
         root: {
           textTransform: 'none',
+          fontFamily: 'Inter',
+          fontSize: '16px',
+          fontWeight: 600,
+          lineHeight: '24px' /* 150% */,
           borderRadius: '8px',
           padding: '12px 20px',
           boxShadow: '3px 3px 0 0 rgba(0, 0, 0, 0.25)',
