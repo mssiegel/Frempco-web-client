@@ -43,7 +43,7 @@ export default function HomePage() {
   }
 
   return (
-    <main style={{ display: 'flex', flexDirection: 'column', height: '100vh' }}>
+    <main>
       {process.env.NEXT_PUBLIC_NODE_ENV === 'development' && (
         <DevLinkShortcuts
           visitTeachersPage={visitTeachersPage}
@@ -58,6 +58,10 @@ export default function HomePage() {
         padding='24px 80px'
         borderBottom='2px solid'
         borderColor='neutrals.200'
+        position='sticky'
+        top={0}
+        zIndex={1000}
+        bgcolor='neutrals.white'
         sx={{ padding: { xs: '24px 40px', md: '24px 80px' } }}
       >
         <Box display='flex' gap={1} alignItems='flex-end'>
@@ -85,160 +89,151 @@ export default function HomePage() {
         </Box>
       </Box>
 
-      {/* Page Content Container */}
-      <Box display='flex' flexDirection='column' sx={{ overflowY: 'auto' }}>
-        {/* Section One */}
-        <Grid px={1} container color='black'>
-          <Grid
-            item
-            sm={12}
-            md={6}
-            textAlign='center'
-            display='flex'
-            justifyContent='center'
-          >
-            <Box width='700px'>
-              <Typography variant='h2' mb={3}>
-                Bring Learning to Life Through{' '}
-                <Box component='span' color='primary.500'>
-                  Student Role-Play
-                </Box>
-              </Typography>
-              <Image
-                src={RoleplayMasks}
-                alt='Roleplaying masks'
-                priority={true}
-                width={250}
-                style={{
-                  maxWidth: '100%',
-                  height: 'auto',
-                }}
-              />
-              <Box my={6} display='flex' gap={1}>
-                <StudentsButton visitStudentsPage={visitStudentsPage} />
-                <TeachersButton visitTeachersPage={visitTeachersPage} />
-              </Box>
-            </Box>
-          </Grid>
-
-          <Grid
-            item
-            sm={12}
-            md={6}
-            display='flex'
-            justifyContent='center'
-            alignItems='center'
-          >
-            <StudentBenefitsList />
-          </Grid>
-        </Grid>
-
-        {/* Section Two */}
+      {/* Section One */}
+      <Grid px={1} container color='black'>
         <Grid
-          container
-          px={1}
-          pb={3}
-          color={(theme) => theme.palette.common.black}
-          sx={{ backgroundColor: '#e0dfd3' }}
+          item
+          sm={12}
+          md={6}
+          textAlign='center'
+          display='flex'
+          justifyContent='center'
         >
-          <Grid item sm={12} md={6} mt={4}>
-            <Box css={homepageCSS.exampleChat}>
-              <Image
-                src={ExampleChat}
-                alt='example chat between two students'
-                sizes='100vw'
-                style={{
-                  border: '1px solid gray',
-                  borderRadius: '10px',
-                  width: '100%',
-                  height: 'auto',
-                }}
-              />
-            </Box>
-            <Typography
-              fontSize={20}
-              my={1}
-              color={(theme) => theme.palette.common.black}
-              textAlign='center'
-            >
-              Two students taking on roles from History.
+          <Box width='700px'>
+            <Typography variant='h2' mb={3}>
+              Bring Learning to Life Through{' '}
+              <Box component='span' color='primary.500'>
+                Student Role-Play
+              </Box>
             </Typography>
-          </Grid>
-
-          <Grid
-            item
-            sm={12}
-            md={6}
-            mt={4}
-            px={1}
-            display='flex'
-            alignItems='center'
-          >
-            <div>
-              <Typography variant='h4' mb={3}>
-                How it works:
-              </Typography>
-              <Typography fontSize={22} mb={2}>
-                1. The teacher enters a list of roleplaying names based on
-                whatever topic the class is studying.
-              </Typography>
-              <Typography fontSize={22} mb={2}>
-                2. Each student gets assigned a name and is placed into a
-                one-on-one chat with a classmate.
-              </Typography>
-              <Typography fontSize={22} mb={2}>
-                3. Through their one-on-one conversations, students act out
-                their roles.
-              </Typography>
-              <Typography fontSize={22} mb={2}>
-                4. The teacher receives the full chat transcripts by email after
-                each session.
-              </Typography>
-            </div>
-          </Grid>
+            <Image
+              src={RoleplayMasks}
+              alt='Roleplaying masks'
+              priority={true}
+              width={250}
+              style={{
+                maxWidth: '100%',
+                height: 'auto',
+              }}
+            />
+            <Box my={6} display='flex' gap={1}>
+              <StudentsButton visitStudentsPage={visitStudentsPage} />
+              <TeachersButton visitTeachersPage={visitTeachersPage} />
+            </Box>
+          </Box>
         </Grid>
 
-        {/* Section Three */}
-        <Box color={(theme) => theme.palette.common.black}>
-          <Typography variant='h5' mt={6} mb={3} textAlign='center'>
-            The teacher can observe all student conversations. <br />
-            Example Teacher&apos;s dashboard:
-          </Typography>
-          <Box css={homepageCSS.exampleOverview}>
+        <Grid
+          item
+          sm={12}
+          md={6}
+          display='flex'
+          justifyContent='center'
+          alignItems='center'
+        >
+          <StudentBenefitsList />
+        </Grid>
+      </Grid>
+
+      {/* Section Two */}
+      <Grid
+        container
+        px={1}
+        pb={3}
+        color={(theme) => theme.palette.common.black}
+        sx={{ backgroundColor: '#e0dfd3' }}
+      >
+        <Grid item sm={12} md={6} mt={4}>
+          <Box css={homepageCSS.exampleChat}>
             <Image
-              src={ExampleTeacherOverview}
-              alt='example overview for the teacher'
+              src={ExampleChat}
+              alt='example chat between two students'
               sizes='100vw'
               style={{
-                border: '1px solid lightgray',
-                borderRadius: '5px',
+                border: '1px solid gray',
+                borderRadius: '10px',
                 width: '100%',
                 height: 'auto',
               }}
             />
           </Box>
-        </Box>
-
-        <Typography
-          color='black'
-          fontSize={22}
-          pb={4}
-          mt={7}
-          textAlign='center'
-        >
-          Frempco is a FREE roleplaying product for classroom teachers and their
-          students. <br />
-          Moshe Siegel maintains Frempco and you can email him at{' '}
-          <Link
-            sx={{ color: 'blue', textDecoration: 'none' }}
-            href={
-              'mailto:siegel.moshes@gmail.com?subject=Feedback%20on%20Frempco'
-            }
+          <Typography
+            fontSize={20}
+            my={1}
+            color={(theme) => theme.palette.common.black}
+            textAlign='center'
           >
-            siegel.moshes@gmail.com
-          </Link>
+            Two students taking on roles from History.
+          </Typography>
+        </Grid>
+
+        <Grid
+          item
+          sm={12}
+          md={6}
+          mt={4}
+          px={1}
+          display='flex'
+          alignItems='center'
+        >
+          <div>
+            <Typography variant='h4' mb={3}>
+              How it works:
+            </Typography>
+            <Typography fontSize={22} mb={2}>
+              1. The teacher enters a list of roleplaying names based on
+              whatever topic the class is studying.
+            </Typography>
+            <Typography fontSize={22} mb={2}>
+              2. Each student gets assigned a name and is placed into a
+              one-on-one chat with a classmate.
+            </Typography>
+            <Typography fontSize={22} mb={2}>
+              3. Through their one-on-one conversations, students act out their
+              roles.
+            </Typography>
+            <Typography fontSize={22} mb={2}>
+              4. The teacher receives the full chat transcripts by email after
+              each session.
+            </Typography>
+          </div>
+        </Grid>
+      </Grid>
+
+      {/* Section Three */}
+      <Box color={(theme) => theme.palette.common.black}>
+        <Typography variant='h5' mt={6} mb={3} textAlign='center'>
+          The teacher can observe all student conversations. <br />
+          Example Teacher&apos;s dashboard:
         </Typography>
+        <Box css={homepageCSS.exampleOverview}>
+          <Image
+            src={ExampleTeacherOverview}
+            alt='example overview for the teacher'
+            sizes='100vw'
+            style={{
+              border: '1px solid lightgray',
+              borderRadius: '5px',
+              width: '100%',
+              height: 'auto',
+            }}
+          />
+        </Box>
       </Box>
+
+      <Typography color='black' fontSize={22} pb={4} mt={7} textAlign='center'>
+        Frempco is a FREE roleplaying product for classroom teachers and their
+        students. <br />
+        Moshe Siegel maintains Frempco and you can email him at{' '}
+        <Link
+          sx={{ color: 'blue', textDecoration: 'none' }}
+          href={
+            'mailto:siegel.moshes@gmail.com?subject=Feedback%20on%20Frempco'
+          }
+        >
+          siegel.moshes@gmail.com
+        </Link>
+      </Typography>
     </main>
   );
 }
