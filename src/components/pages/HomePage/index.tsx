@@ -15,6 +15,8 @@ import homepageCSS from './Index.css';
 import ExampleChat from '../../../../public/exampleChat.png';
 import ExampleTeacherOverview from '../../../../public/exampleTeacherOverview.png';
 import RoleplayMasks from '../../../../public/roleplayMasks.png';
+import Group3 from '../../../../public/Group 3.svg';
+import Group4 from '../../../../public/Group 4.svg';
 
 export default function HomePage() {
   const router = useRouter();
@@ -51,9 +53,38 @@ export default function HomePage() {
         />
       )}
 
-      <Typography variant='h3' textAlign='center' mb={6} pt={2} color='black'>
-        Frempco
-      </Typography>
+      <Box
+        display='flex'
+        justifyContent='space-between'
+        alignItems='center'
+        padding='24px 80px'
+        borderBottom='2px solid'
+        borderColor='neutrals.200'
+      >
+        <Box display='flex' gap={1} alignItems='flex-end' flex='1 1 0'>
+          <Image
+            src={Group3}
+            alt='Frempco logo icon'
+            width={26}
+            style={{ height: 'auto' }}
+          />
+          <Image
+            src={Group4}
+            alt='Frempco logo text'
+            width={105}
+            style={{ height: 'auto' }}
+          />
+        </Box>
+        <Box
+          sx={{
+            display: { xs: 'none', md: 'flex' },
+            gap: 1,
+          }}
+        >
+          <StudentsButton visitStudentsPage={visitStudentsPage} />
+          <TeachersButton visitTeachersPage={visitTeachersPage} />
+        </Box>
+      </Box>
 
       {/* Section One */}
       <Grid px={1} container color='black'>
