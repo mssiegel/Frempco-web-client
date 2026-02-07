@@ -8,19 +8,18 @@ interface LayoutProps {
 export default function Layout({ children }: LayoutProps) {
   return (
     <Box sx={{ minHeight: '100vh' }}>
-      <Navbar />
+      <DevHomeLinkShortcut />
       {children}
     </Box>
   );
 }
 
-function Navbar() {
+function DevHomeLinkShortcut() {
   return (
     process.env.NEXT_PUBLIC_NODE_ENV === 'development' && (
       <>
         <Typography variant='h5' sx={{ color: 'gray' }}>
           This link shortcut only appears in the development environment:
-          {/* For an explanation: see https://github.com/mssiegel/frempco-client/issues/53 */}
         </Typography>
         <Typography variant='h4' sx={{ ml: 10, pt: 1, pb: 2 }}>
           <Link href='/'>Home</Link>
