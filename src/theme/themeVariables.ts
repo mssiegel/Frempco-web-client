@@ -111,7 +111,7 @@ export const MuiButton: Components['MuiButton'] = {
       props: { variant: 'contained', color: 'primary' },
       style: {
         backgroundColor: palette.primary['500'],
-        color: '#fff',
+        color: palette.neutrals.white,
         '&:hover': {
           backgroundColor: palette.primary['600'],
         },
@@ -128,7 +128,7 @@ export const MuiButton: Components['MuiButton'] = {
     {
       props: { variant: 'outlined', color: 'primary' },
       style: {
-        backgroundColor: '#fff',
+        backgroundColor: palette.neutrals.white,
         color: palette.primary['500'],
         border: `2px solid ${palette.primary['500']}`,
         '&:hover': {
