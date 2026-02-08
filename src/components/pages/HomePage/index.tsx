@@ -11,6 +11,7 @@ import StudentsButton from './StudentsButton';
 import TeachersButton from './TeachersButton';
 import DevLinkShortcuts from './DevLinkShortcuts';
 import StudentBenefitsList from './StudentBenefitsList';
+import Header from './Header';
 import homepageCSS from './Index.css';
 import ExampleChat from '../../../../public/exampleChat.png';
 import ExampleTeacherOverview from '../../../../public/exampleTeacherOverview.png';
@@ -51,9 +52,10 @@ export default function HomePage() {
         />
       )}
 
-      <Typography variant='h3' textAlign='center' mb={6} pt={2} color='black'>
-        Frempco
-      </Typography>
+      <Header
+        visitStudentsPage={visitStudentsPage}
+        visitTeachersPage={visitTeachersPage}
+      />
 
       {/* Section One */}
       <Grid px={1} container color='black'>
