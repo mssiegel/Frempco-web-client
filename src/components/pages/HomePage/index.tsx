@@ -55,7 +55,6 @@ export default function HomePage() {
         display='flex'
         justifyContent='space-between'
         alignItems='center'
-        padding='24px 80px'
         borderBottom='2px solid'
         borderColor='neutrals.200'
         position='sticky'
