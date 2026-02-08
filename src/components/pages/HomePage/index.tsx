@@ -11,6 +11,7 @@ import StudentsButton from './StudentsButton';
 import TeachersButton from './TeachersButton';
 import DevLinkShortcuts from './DevLinkShortcuts';
 import StudentBenefitsList from './StudentBenefitsList';
+import Header from './Header';
 import homepageCSS from './Index.css';
 import ExampleChat from '../../../../public/exampleChat.png';
 import ExampleTeacherOverview from '../../../../public/exampleTeacherOverview.png';
@@ -51,42 +52,10 @@ export default function HomePage() {
         />
       )}
 
-      <Box
-        display='flex'
-        justifyContent='space-between'
-        alignItems='center'
-        borderBottom='2px solid'
-        borderColor='neutrals.200'
-        position='sticky'
-        top={0}
-        zIndex={1000}
-        bgcolor='neutrals.white'
-        sx={{ padding: { xs: '24px 40px', md: '24px 80px' } }}
-      >
-        <Box display='flex' gap={1} alignItems='flex-end'>
-          <Image
-            src='/frempcoLogoIcon.svg'
-            alt='Frempco logo icon'
-            width={26}
-            height={25}
-          />
-          <Image
-            src={'/frempcoLogoText.svg'}
-            alt='Frempco logo text'
-            width={105}
-            height={18}
-          />
-        </Box>
-        <Box
-          sx={{
-            display: { xs: 'none', md: 'flex' },
-            gap: 1,
-          }}
-        >
-          <StudentsButton visitStudentsPage={visitStudentsPage} />
-          <TeachersButton visitTeachersPage={visitTeachersPage} />
-        </Box>
-      </Box>
+      <Header
+        visitStudentsPage={visitStudentsPage}
+        visitTeachersPage={visitTeachersPage}
+      />
 
       {/* Section One */}
       <Grid px={1} container color='black'>
