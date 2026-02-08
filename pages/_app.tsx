@@ -5,6 +5,7 @@ import { ThemeProvider } from '@mui/material/styles';
 import { CssBaseline } from '@mui/material';
 import { CacheProvider, EmotionCache } from '@emotion/react';
 import { Analytics as VercelAnalytics } from '@vercel/analytics/react';
+import 'material-symbols';
 
 import theme from '@theme/muiTheme';
 import { createEmotionCache } from '@config/emotion';
