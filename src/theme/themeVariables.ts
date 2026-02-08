@@ -149,3 +149,10 @@ export const MuiButton: Components['MuiButton'] = {
     },
   ],
 };
+
+export const MuiIcon = {
+  defaultProps: {
+    // Replaces the `material-icons` default value.
+    baseClassName: 'material-symbols-outlined',
+  },
+};

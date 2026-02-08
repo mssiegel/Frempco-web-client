@@ -1,10 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { Button, Typography } from '@mui/material';
-import {
-  Lightbulb as LightbulbIcon,
-  PlayArrowOutlined as PlayArrowOutlinedIcon,
-} from '@mui/icons-material';
+import { Button, Icon, Typography } from '@mui/material';
 import { useState, useRef, useCallback } from 'react';
 import { throttle } from 'lodash-es';
 
@@ -36,7 +32,7 @@ export default function StudentsButton({ visitStudentsPage }) {
       <Button
         variant='contained'
         color='primary'
-        startIcon={<PlayArrowOutlinedIcon />}
+        startIcon={<Icon sx={{ fontSize: 24 }}>play_arrow</Icon>}
         onClick={() => setOpen(true)}
       >
         Join a Game
