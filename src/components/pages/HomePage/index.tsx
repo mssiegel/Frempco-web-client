@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { Box, Grid, Typography } from '@mui/material';
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from '@components/shared/Link';
@@ -22,6 +22,7 @@ export default function HomePage() {
   const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
   const socket = useContext(SocketContext);
   const { setUser } = useContext(UserContext);
+  const gameButtonsRef = useRef<HTMLDivElement>(null);
 
   async function visitStudentsPage(classroom: string, student: string) {
     const getResponse = await fetch(`${apiUrl}/classrooms/${classroom}`);
@@ -55,6 +56,7 @@ export default function HomePage() {
       <Header
         visitStudentsPage={visitStudentsPage}
         visitTeachersPage={visitTeachersPage}
+        scrollTrackRef={gameButtonsRef}
       />
 
       {/* Section One */}
@@ -67,7 +69,7 @@ export default function HomePage() {
           display='flex'
           justifyContent='center'
         >
-          <Box width='700px'>
+          <Box>
             <Typography variant='h2' mb={3}>
               Bring Learning to Life Through{' '}
               <Box component='span' color='primary.500'>
@@ -84,7 +86,7 @@ export default function HomePage() {
                 height: 'auto',
               }}
             />
-            <Box my={6} display='flex' gap={1}>
+            <Box ref={gameButtonsRef} my={6} display='flex' gap={1}>
               <StudentsButton visitStudentsPage={visitStudentsPage} />
               <TeachersButton visitTeachersPage={visitTeachersPage} />
             </Box>
