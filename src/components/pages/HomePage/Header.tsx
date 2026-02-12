@@ -39,8 +39,6 @@ export default function Header({
     return () => window.removeEventListener('scroll', handleScroll);
   }, [headerRef, scrollTrackRef, setIsScrollTrackVisible]);
 
-  const showStudentsBtn = !isXs || (isXs && !isScrollTrackVisible);
-
   return (
     <Box
       ref={headerRef}
@@ -76,10 +74,12 @@ export default function Header({
         gap={1}
         height='52px' // Prevent layout shift when buttons appear/disappear
       >
-        {showStudentsBtn && (
+        {!isScrollTrackVisible && (
           <StudentsButton visitStudentsPage={visitStudentsPage} />
         )}
-        {!isXs && <TeachersButton visitTeachersPage={visitTeachersPage} />}
+        {!isXs && !isScrollTrackVisible && (
+          <TeachersButton visitTeachersPage={visitTeachersPage} />
+        )}
       </Box>
     </Box>
   );
