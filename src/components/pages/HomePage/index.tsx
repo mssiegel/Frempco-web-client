@@ -70,7 +70,7 @@ export default function HomePage() {
           display='flex'
           justifyContent='center'
         >
-          <Box maxWidth='700px'>
+          <Box>
             <Typography variant={isMobile ? 'h3' : 'h2'} mb={3}>
               Bring Learning to Life Through{' '}
               <Box component='span' color='primary.500'>
