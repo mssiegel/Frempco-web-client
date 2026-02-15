@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
-import { Box, Grid, Typography } from '@mui/material';
+import { Box, Grid, useMediaQuery, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { useContext, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
@@ -22,6 +23,8 @@ export default function HomePage() {
   const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
   const socket = useContext(SocketContext);
   const { setUser } = useContext(UserContext);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const gameButtonsRef = useRef<HTMLDivElement>(null);
 
   async function visitStudentsPage(classroom: string, student: string) {
@@ -70,7 +73,7 @@ export default function HomePage() {
           justifyContent='center'
         >
           <Box>
-            <Typography variant='h2' mb={3}>
+            <Typography variant={isMobile ? 'h3' : 'h2'} mb={3}>
               Bring Learning to Life Through{' '}
               <Box component='span' color='primary.500'>
                 Student Role-Play
