@@ -28,8 +28,9 @@ export default function Header({
       const headerPosition = headerRef.current.getBoundingClientRect();
       const gameButtonsPosition =
         gameButtonsRef.current.getBoundingClientRect();
-      // Show buttons in header when the game buttons ref scrolls above the header
-
+      // Show buttons in header when user has scrolled past the buttons in the
+      // main content. So they can easily navigate to other pages without
+      // having to scroll back up.
       setShouldShowHeaderButtons(
         headerPosition.bottom > gameButtonsPosition.bottom,
       );
