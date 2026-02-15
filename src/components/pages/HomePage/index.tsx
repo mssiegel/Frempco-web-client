@@ -59,7 +59,7 @@ export default function HomePage() {
       <Header
         visitStudentsPage={visitStudentsPage}
         visitTeachersPage={visitTeachersPage}
-        scrollTrackRef={gameButtonsRef}
+        gameButtonsRef={gameButtonsRef}
       />
 
       {/* Section One */}
