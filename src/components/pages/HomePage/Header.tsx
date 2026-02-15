@@ -6,38 +6,39 @@ import StudentsButton from './StudentsButton';
 import TeachersButton from './TeachersButton';
 import { useEffect, useRef, useState } from 'react';
 
+interface HeaderProps {
+  visitStudentsPage: (classroom: string, student: string) => void;
+  visitTeachersPage: (classroom: string) => void;
+  gameButtonsRef: React.RefObject<HTMLElement>;
+}
+
 export default function Header({
   visitStudentsPage,
   visitTeachersPage,
-  scrollTrackRef,
-}: {
-  visitStudentsPage: (classroom: string, student: string) => Promise<void>;
-  visitTeachersPage: (classroom: string) => void;
-  scrollTrackRef: React.RefObject<HTMLElement>;
-}) {
+  gameButtonsRef,
+}: HeaderProps) {
   const theme = useTheme();
-  const isXs = !useMediaQuery(theme.breakpoints.up('md')); // Indicates if the screen is extra small (mobile)
-
-  const [isScrollTrackVisible, setIsScrollTrackVisible] = useState(true);
+  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
+  const [shouldShowHeaderButtons, setShouldShowHeaderButtons] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
 
-  // Checks if the scroll-tracked element is visible relative to the header
   useEffect(() => {
     function handleScroll() {
-      if (!headerRef.current || !scrollTrackRef.current) return;
-      const headerRect = headerRef.current.getBoundingClientRect();
-      const trackedRect = scrollTrackRef.current.getBoundingClientRect();
-
-      // If tracked element's top is below header's bottom, it's visible
-      const isVisible = trackedRect.top > headerRect.bottom;
-      setIsScrollTrackVisible(isVisible);
+      if (!headerRef.current || !gameButtonsRef.current) return;
+      const headerPosition = headerRef.current.getBoundingClientRect();
+      const gameButtonsPosition =
+        gameButtonsRef.current.getBoundingClientRect();
+      // Show buttons in header when user has scrolled past the buttons in the
+      // main content. So they can easily navigate to other pages without
+      // having to scroll back up.
+      setShouldShowHeaderButtons(
+        headerPosition.bottom > gameButtonsPosition.bottom,
+      );
     }
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    handleScroll(); // Initial check
+    window.addEventListener('scroll', handleScroll);
 
     return () => window.removeEventListener('scroll', handleScroll);
-  }, [headerRef, scrollTrackRef, setIsScrollTrackVisible]);
+  }, [gameButtonsRef, headerRef]);
 
   return (
     <Box
@@ -60,7 +61,7 @@ export default function Header({
           width={26}
           height={25}
         />
-        {!isXs && (
+        {!isMobile && (
           <Image
             src={'/frempcoLogoText.svg'}
             alt='Frempco logo text'
@@ -74,11 +75,13 @@ export default function Header({
         gap={1}
         height='52px' // Prevent layout shift when buttons appear/disappear
       >
-        {!isScrollTrackVisible && (
-          <StudentsButton visitStudentsPage={visitStudentsPage} />
-        )}
-        {!isXs && !isScrollTrackVisible && (
-          <TeachersButton visitTeachersPage={visitTeachersPage} />
+        {shouldShowHeaderButtons && (
+          <>
+            <StudentsButton visitStudentsPage={visitStudentsPage} />
+            {!isMobile && (
+              <TeachersButton visitTeachersPage={visitTeachersPage} />
+            )}
+          </>
         )}
       </Box>
     </Box>
