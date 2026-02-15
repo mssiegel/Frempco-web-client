@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import { Box, Grid, useMediaQuery, Typography } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useContext } from 'react';
+import { useContext, useRef } from 'react';
 import { useRouter } from 'next/router';
 import Image from 'next/image';
 import Link from '@components/shared/Link';
@@ -25,6 +25,7 @@ export default function HomePage() {
   const { setUser } = useContext(UserContext);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const gameButtonsRef = useRef<HTMLDivElement>(null);
 
   async function visitStudentsPage(classroom: string, student: string) {
     const getResponse = await fetch(`${apiUrl}/classrooms/${classroom}`);
@@ -58,6 +59,7 @@ export default function HomePage() {
       <Header
         visitStudentsPage={visitStudentsPage}
         visitTeachersPage={visitTeachersPage}
+        scrollTrackRef={gameButtonsRef}
       />
 
       {/* Section One */}
@@ -87,7 +89,7 @@ export default function HomePage() {
                 height: 'auto',
               }}
             />
-            <Box my={6} display='flex' gap={1}>
+            <Box ref={gameButtonsRef} my={6} display='flex' gap={1}>
               <StudentsButton visitStudentsPage={visitStudentsPage} />
               <TeachersButton visitTeachersPage={visitTeachersPage} />
             </Box>
