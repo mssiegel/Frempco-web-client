@@ -3,7 +3,6 @@ import { Box, Grid, Typography } from '@mui/material';
 import Image from 'next/image';
 import StudentsButton from './StudentsButton';
 import TeachersButton from './TeachersButton';
-import StudentBenefitsList from './StudentBenefitsList';
 import RoleplayMasks from '../../../../public/roleplayMasks.png';
 
 interface HeroProps {
