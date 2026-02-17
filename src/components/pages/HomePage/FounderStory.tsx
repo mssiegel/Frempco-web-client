@@ -1,3 +1,5 @@
+/** @jsxImportSource @emotion/react */
+
 import { Typography } from '@mui/material';
 
 import Link from '@components/shared/Link';
