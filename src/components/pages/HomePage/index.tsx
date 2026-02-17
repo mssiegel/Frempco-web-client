@@ -8,15 +8,17 @@ import Link from '@components/shared/Link';
 
 import { SocketContext } from '@contexts/SocketContext';
 import { UserContext } from '@contexts/UserContext';
-import StudentsButton from './StudentsButton';
-import TeachersButton from './TeachersButton';
+import CoreValues from './CoreValues';
 import DevLinkShortcuts from './DevLinkShortcuts';
-import StudentBenefitsList from './StudentBenefitsList';
+import ForWhom from './ForWhom';
+import FounderStory from './FounderStory';
 import Header from './Header';
+import HowItWorks from './HowItWorks';
+import Hero from './Hero';
+import ProductBenefits from './ProductBenefits';
 import homepageCSS from './Index.css';
 import ExampleChat from '../../../../public/exampleChat.png';
 import ExampleTeacherOverview from '../../../../public/exampleTeacherOverview.png';
-import RoleplayMasks from '../../../../public/roleplayMasks.png';
 
 export default function HomePage() {
   const router = useRouter();
@@ -63,52 +65,28 @@ export default function HomePage() {
       />
 
       {/* Section One */}
-      <Grid px={1} container color='black'>
-        <Grid
-          item
-          sm={12}
-          md={6}
-          textAlign='center'
-          display='flex'
-          justifyContent='center'
-        >
-          <Box>
-            <Typography variant={isMobile ? 'h3' : 'h2'} mb={3}>
-              Bring Learning to Life Through{' '}
-              <Box component='span' color='primary.500'>
-                Student Role-Play
-              </Box>
-            </Typography>
-            <Image
-              src={RoleplayMasks}
-              alt='Roleplaying masks'
-              priority={true}
-              width={250}
-              style={{
-                maxWidth: '100%',
-                height: 'auto',
-              }}
-            />
-            <Box ref={gameButtonsRef} my={6} display='flex' gap={1}>
-              <StudentsButton visitStudentsPage={visitStudentsPage} />
-              <TeachersButton visitTeachersPage={visitTeachersPage} />
-            </Box>
-          </Box>
-        </Grid>
-
-        <Grid
-          item
-          sm={12}
-          md={6}
-          display='flex'
-          justifyContent='center'
-          alignItems='center'
-        >
-          <StudentBenefitsList />
-        </Grid>
-      </Grid>
+      <Hero
+        isMobile={isMobile}
+        gameButtonsRef={gameButtonsRef}
+        visitStudentsPage={visitStudentsPage}
+        visitTeachersPage={visitTeachersPage}
+      />
 
       {/* Section Two */}
+      <ProductBenefits />
+
+      {/* Section Three */}
+      <HowItWorks />
+
+      {/* Section Four */}
+      <CoreValues />
+
+      {/* Section Five */}
+      <ForWhom />
+
+      {/* Section Six */}
+      <FounderStory />
+
       <Grid
         container
         px={1}
