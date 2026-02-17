@@ -1,10 +1,8 @@
 /** @jsxImportSource @emotion/react */
-import { Box, Grid, useMediaQuery, Typography } from '@mui/material';
+import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useContext, useRef } from 'react';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
-import Link from '@components/shared/Link';
 
 import { SocketContext } from '@contexts/SocketContext';
 import { UserContext } from '@contexts/UserContext';
@@ -16,9 +14,6 @@ import Header from './Header';
 import HowItWorks from './HowItWorks';
 import Hero from './Hero';
 import ProductBenefits from './ProductBenefits';
-import homepageCSS from './Index.css';
-import ExampleChat from '../../../../public/exampleChat.png';
-import ExampleTeacherOverview from '../../../../public/exampleTeacherOverview.png';
 
 export default function HomePage() {
   const router = useRouter();
@@ -86,105 +81,6 @@ export default function HomePage() {
 
       {/* Section Six */}
       <FounderStory />
-
-      <Grid
-        container
-        px={1}
-        pb={3}
-        color={(theme) => theme.palette.common.black}
-        sx={{ backgroundColor: '#e0dfd3' }}
-      >
-        <Grid item sm={12} md={6} mt={4}>
-          <Box css={homepageCSS.exampleChat}>
-            <Image
-              src={ExampleChat}
-              alt='example chat between two students'
-              sizes='100vw'
-              style={{
-                border: '1px solid gray',
-                borderRadius: '10px',
-                width: '100%',
-                height: 'auto',
-              }}
-            />
-          </Box>
-          <Typography
-            fontSize={20}
-            my={1}
-            color={(theme) => theme.palette.common.black}
-            textAlign='center'
-          >
-            Two students taking on roles from History.
-          </Typography>
-        </Grid>
-
-        <Grid
-          item
-          sm={12}
-          md={6}
-          mt={4}
-          px={1}
-          display='flex'
-          alignItems='center'
-        >
-          <div>
-            <Typography variant='h4' mb={3}>
-              How it works:
-            </Typography>
-            <Typography fontSize={22} mb={2}>
-              1. The teacher enters a list of roleplaying names based on
-              whatever topic the class is studying.
-            </Typography>
-            <Typography fontSize={22} mb={2}>
-              2. Each student gets assigned a name and is placed into a
-              one-on-one chat with a classmate.
-            </Typography>
-            <Typography fontSize={22} mb={2}>
-              3. Through their one-on-one conversations, students act out their
-              roles.
-            </Typography>
-            <Typography fontSize={22} mb={2}>
-              4. The teacher receives the full chat transcripts by email after
-              each session.
-            </Typography>
-          </div>
-        </Grid>
-      </Grid>
-
-      {/* Section Three */}
-      <Box color={(theme) => theme.palette.common.black}>
-        <Typography variant='h5' mt={6} mb={3} textAlign='center'>
-          The teacher can observe all student conversations. <br />
-          Example Teacher&apos;s dashboard:
-        </Typography>
-        <Box css={homepageCSS.exampleOverview}>
-          <Image
-            src={ExampleTeacherOverview}
-            alt='example overview for the teacher'
-            sizes='100vw'
-            style={{
-              border: '1px solid lightgray',
-              borderRadius: '5px',
-              width: '100%',
-              height: 'auto',
-            }}
-          />
-        </Box>
-      </Box>
-
-      <Typography color='black' fontSize={22} pb={4} mt={7} textAlign='center'>
-        Frempco is a FREE roleplaying product for classroom teachers and their
-        students. <br />
-        Moshe Siegel maintains Frempco and you can email him at{' '}
-        <Link
-          sx={{ color: 'blue', textDecoration: 'none' }}
-          href={
-            'mailto:siegel.moshes@gmail.com?subject=Feedback%20on%20Frempco'
-          }
-        >
-          siegel.moshes@gmail.com
-        </Link>
-      </Typography>
     </main>
   );
 }

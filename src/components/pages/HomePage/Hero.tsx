@@ -3,7 +3,6 @@ import { Box, Grid, Typography } from '@mui/material';
 import Image from 'next/image';
 import StudentsButton from './StudentsButton';
 import TeachersButton from './TeachersButton';
-import StudentBenefitsList from './StudentBenefitsList';
 import RoleplayMasks from '../../../../public/roleplayMasks.png';
 
 interface HeroProps {
@@ -36,16 +35,7 @@ export default function Hero({
               Student Role-Play
             </Box>
           </Typography>
-          <Image
-            src={RoleplayMasks}
-            alt='Roleplaying masks'
-            priority={true}
-            width={250}
-            style={{
-              maxWidth: '100%',
-              height: 'auto',
-            }}
-          />
+
           <Box ref={gameButtonsRef} my={6} display='flex' gap={1}>
             <StudentsButton visitStudentsPage={visitStudentsPage} />
             <TeachersButton visitTeachersPage={visitTeachersPage} />
@@ -53,15 +43,17 @@ export default function Hero({
         </Box>
       </Grid>
 
-      <Grid
-        item
-        sm={12}
-        md={6}
-        display='flex'
-        justifyContent='center'
-        alignItems='center'
-      >
-        <StudentBenefitsList />
+      <Grid item sm={12} md={6}>
+        <Image
+          src={RoleplayMasks}
+          alt='Roleplaying masks'
+          priority={true}
+          width={250}
+          style={{
+            maxWidth: '100%',
+            height: 'auto',
+          }}
+        />
       </Grid>
     </Grid>
   );
