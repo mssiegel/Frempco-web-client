@@ -45,9 +45,21 @@ export default function Hero({
             100% free.
           </Typography>
 
-          <Box ref={gameButtonsRef} my={6} display='flex' gap={1}>
-            <StudentsButton visitStudentsPage={visitStudentsPage} />
-            <TeachersButton visitTeachersPage={visitTeachersPage} />
+          <Box
+            ref={gameButtonsRef}
+            my={6}
+            display='flex'
+            flexDirection={isMobile ? 'column' : 'row'}
+            gap={1}
+          >
+            <StudentsButton
+              visitStudentsPage={visitStudentsPage}
+              fullWidth={isMobile}
+            />
+            <TeachersButton
+              visitTeachersPage={visitTeachersPage}
+              fullWidth={isMobile}
+            />
           </Box>
         </Box>
       </Grid>

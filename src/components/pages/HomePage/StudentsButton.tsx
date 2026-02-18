@@ -7,7 +7,15 @@ import { throttle } from 'lodash-es';
 import BasicModal from '@components/shared/Modal';
 import ModalTextField from '@components/shared/ModalTextField';
 
-export default function StudentsButton({ visitStudentsPage }) {
+interface StudentsButtonProps {
+  visitStudentsPage: (classroom: string, student: string) => void;
+  fullWidth?: boolean;
+}
+
+export default function StudentsButton({
+  visitStudentsPage,
+  fullWidth,
+}: StudentsButtonProps) {
   const [open, setOpen] = useState(false);
   const classroomInput = useRef<HTMLInputElement>(null);
   const studentInput = useRef<HTMLInputElement>(null);
@@ -34,6 +42,7 @@ export default function StudentsButton({ visitStudentsPage }) {
         color='primary'
         startIcon={<Icon sx={{ fontSize: 24 }}>play_arrow</Icon>}
         onClick={() => setOpen(true)}
+        fullWidth={fullWidth}
       >
         Join a Game
       </Button>

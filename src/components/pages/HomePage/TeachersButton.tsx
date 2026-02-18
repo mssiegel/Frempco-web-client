@@ -8,7 +8,15 @@ function getRandomPin(pinLength: number) {
   return randomPin.slice(2, pinLength + 2);
 }
 
-export default function TeachersButton({ visitTeachersPage }) {
+interface TeachersButtonProps {
+  visitTeachersPage: (classroom: string) => void;
+  fullWidth?: boolean;
+}
+
+export default function TeachersButton({
+  visitTeachersPage,
+  fullWidth,
+}: TeachersButtonProps) {
   function visitTeachersPageHelper() {
     const classroom = getRandomPin(4);
     visitTeachersPage(classroom);
@@ -20,6 +28,7 @@ export default function TeachersButton({ visitTeachersPage }) {
         variant='outlined'
         color='primary'
         onClick={visitTeachersPageHelper}
+        fullWidth={fullWidth}
       >
         Start a Game
       </Button>
