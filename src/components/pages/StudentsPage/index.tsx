@@ -1,7 +1,7 @@
 import { Box, Typography } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-=
+
 import { ClassroomProps, currentTime, PAIRED, SOLO } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
 import { UserContext } from '@contexts/UserContext';
