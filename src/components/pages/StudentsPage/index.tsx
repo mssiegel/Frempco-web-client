@@ -1,14 +1,12 @@
 import { Box, Typography } from '@mui/material';
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 
 import { ClassroomProps, currentTime, PAIRED, SOLO } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
 import { UserContext } from '@contexts/UserContext';
 import Chatbox from './Chatbox';
 import WelcomeMessage from './WelcomeMessage';
-import RoleplayMasks from '../../../../public/roleplayMasks.png';
 
 export type ChatMessage = ['you' | 'peer', string];
 
@@ -130,18 +128,6 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
       <Typography variant='h4' textAlign='center' my={1}>
         Frempco
       </Typography>
-      <Box m={1} display='flex' justifyContent='center'>
-        <Image
-          src={RoleplayMasks}
-          alt='Roleplaying masks'
-          priority={true}
-          width={120}
-          style={{
-            maxWidth: '100%',
-            height: 'auto',
-          }}
-        />
-      </Box>
       <Typography
         variant='h4'
         sx={{ color: 'black', mb: 4, textAlign: 'center' }}

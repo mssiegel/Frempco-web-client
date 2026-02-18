@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { useMediaQuery } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useContext, useRef } from 'react';
 import { useRouter } from 'next/router';
@@ -60,28 +60,30 @@ export default function HomePage() {
         gameButtonsRef={gameButtonsRef}
       />
 
-      {/* Section One */}
-      <Hero
-        isMobile={isMobile}
-        gameButtonsRef={gameButtonsRef}
-        visitStudentsPage={visitStudentsPage}
-        visitTeachersPage={visitTeachersPage}
-      />
+      <Box sx={{ mx: isMobile ? 2 : 0 }}>
+        {/* Section One */}
+        <Hero
+          isMobile={isMobile}
+          gameButtonsRef={gameButtonsRef}
+          visitStudentsPage={visitStudentsPage}
+          visitTeachersPage={visitTeachersPage}
+        />
 
-      {/* Section Two */}
-      <ProductBenefits />
+        {/* Section Two */}
+        <ProductBenefits />
 
-      {/* Section Three */}
-      <HowItWorks />
+        {/* Section Three */}
+        <HowItWorks />
 
-      {/* Section Four */}
-      <CoreValues />
+        {/* Section Four */}
+        <CoreValues />
 
-      {/* Section Five */}
-      <ForWhom />
+        {/* Section Five */}
+        <ForWhom />
 
-      {/* Section Six */}
-      <FounderStory />
+        {/* Section Six */}
+        <FounderStory />
+      </Box>
     </main>
   );
 }
