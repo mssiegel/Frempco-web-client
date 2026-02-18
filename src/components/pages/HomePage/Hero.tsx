@@ -28,10 +28,10 @@ export default function Hero({
       }}
     >
       {/* Left margin - 1 column */}
-      <Grid item xs={12} md={1} />
+      <Grid item md={1} />
 
       {/* Text content - 5 columns */}
-      <Grid item xs={12} md={5}>
+      <Grid item md={5}>
         <Box>
           <Typography variant={isMobile ? 'h3' : 'h2'} mb={3}>
             Bring Learning to Life Through{' '}
@@ -65,10 +65,10 @@ export default function Hero({
       </Grid>
 
       {/* Spacing - 1 column */}
-      <Grid item xs={12} md={1} />
+      <Grid item md={1} />
 
       {/* Image - 4 columns */}
-      <Grid item xs={12} md={4}>
+      <Grid item md={4} sx={{ margin: 'auto' }}>
         <Image
           src={exampleRoleplay}
           alt='Example roleplay between two students'
@@ -83,7 +83,7 @@ export default function Hero({
       </Grid>
 
       {/* Right margin - 1 column */}
-      <Grid item xs={12} md={1} />
+      <Grid item md={1} />
     </Grid>
   );
 }
