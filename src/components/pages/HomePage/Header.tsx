@@ -58,14 +58,14 @@ export default function Header({
     >
       <Box display='flex' gap={1} alignItems='flex-end'>
         <Image
-          src='/frempcoLogoIcon.svg'
+          src='/frempco-logo-icon.svg'
           alt='Frempco logo icon'
           width={26}
           height={25}
         />
         {!isMobile && (
           <Image
-            src={'/frempcoLogoText.svg'}
+            src={'/frempco-logo-text.svg'}
             alt='Frempco logo text'
             width={105}
             height={18}
