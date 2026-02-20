@@ -71,12 +71,15 @@ export default function ProductBenefits({ isMobile }): JSX.Element | null {
       {/* Image - 5 columns */}
       <Grid
         item
+        xs={12}
         md={5}
         sx={{
           padding: {
             xs: '32px 0', // Vertical spacing on mobile
             md: '0 0 0 64px', // Left padding to align with Roleplay image (in Hero section)
           },
+          display: 'flex',
+          justifyContent: { xs: 'center', md: 'flex-start' },
         }}
       >
         <ComputerImage isMobile={isMobile} />
