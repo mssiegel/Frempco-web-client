@@ -3,6 +3,7 @@
 import { Box, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import Image from 'next/image';
+import { throttle } from 'lodash-es';
 
 import StudentsButton from './StudentsButton';
 import TeachersButton from './TeachersButton';
@@ -25,21 +26,34 @@ export default function Header({
   const headerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    function handleScroll() {
-      if (!headerRef.current || !gameButtonsRef.current) return;
-      const headerPosition = headerRef.current.getBoundingClientRect();
-      const gameButtonsPosition =
-        gameButtonsRef.current.getBoundingClientRect();
-      // Show buttons in header when user has scrolled past the buttons in the
-      // main content. So they can easily navigate to other pages without
-      // having to scroll back up.
-      setShouldShowHeaderButtons(
-        headerPosition.bottom > gameButtonsPosition.bottom,
-      );
-    }
-    window.addEventListener('scroll', handleScroll);
+    // Throttling avoids running this layout calculation on every scroll
+    // event, thereby reducing the browser's CPU usage.
+    const handleScroll = throttle(
+      () => {
+        if (!headerRef.current || !gameButtonsRef.current) return;
+        const headerPosition = headerRef.current.getBoundingClientRect();
+        const gameButtonsPosition =
+          gameButtonsRef.current.getBoundingClientRect();
+        // Show buttons in header when user has scrolled past the buttons in the
+        // main content. So they can easily navigate to other pages without
+        // having to scroll back up.
+        setShouldShowHeaderButtons(
+          headerPosition.bottom > gameButtonsPosition.bottom,
+        );
+      },
+      60,
+      {
+        leading: true,
+        trailing: true,
+      },
+    );
 
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+      handleScroll.cancel();
+    };
   }, [gameButtonsRef, headerRef]);
 
   return (
