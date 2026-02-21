@@ -45,15 +45,9 @@ export default function ProductBenefits({ isMobile }): JSX.Element {
               gap: '16px',
             }}
           >
-            <CustomListItem>
-              The mystery of role-play makes learning more fun and engaging
-            </CustomListItem>
-            <CustomListItem>
-              Teachers receive full chat transcripts by email after each session
-            </CustomListItem>
-            <CustomListItem>
-              No accounts, no setup — just open the link and start learning
-            </CustomListItem>
+            <CustomListItem text='The mystery of role-play makes learning more fun and engaging' />
+            <CustomListItem text='Teachers receive full chat transcripts by email after each session' />
+            <CustomListItem text='No accounts, no setup — just open the link and start learning' />
           </List>
         </Box>
       </Grid>
@@ -81,7 +75,7 @@ export default function ProductBenefits({ isMobile }): JSX.Element {
   );
 }
 
-function CustomListItem({ children }) {
+function CustomListItem({ text }: { text: string }): JSX.Element {
   return (
     <ListItem
       sx={{
@@ -98,7 +92,7 @@ function CustomListItem({ children }) {
           flex: '1 0 0',
         }}
       >
-        {children}
+        {text}
       </Typography>
     </ListItem>
   );
