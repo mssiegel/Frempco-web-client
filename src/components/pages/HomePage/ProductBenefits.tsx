@@ -2,7 +2,7 @@
 
 import { Typography, Box, List, ListItem, Grid } from '@mui/material';
 
-export default function ProductBenefits({ isMobile }): JSX.Element | null {
+export default function ProductBenefits({ isMobile }): JSX.Element {
   return (
     <Grid
       container
@@ -15,12 +15,7 @@ export default function ProductBenefits({ isMobile }): JSX.Element | null {
 
       {/* Text content - 5 columns */}
       <Grid item md={5}>
-        <Box
-          display='flex'
-          flexDirection='column'
-          alignItems='flex-start'
-          gap={4}
-        >
+        <Box display='flex' flexDirection='column' gap={4}>
           {/* Heading and subheading */}
           <Box
             sx={{
@@ -48,9 +43,7 @@ export default function ProductBenefits({ isMobile }): JSX.Element | null {
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              alignItems: 'flex-start',
               gap: '16px',
-              alignSelf: 'stretch',
               maxWidth: '705px',
             }}
           >
@@ -105,11 +98,7 @@ function CustomListItem({ children }) {
       <Typography
         sx={{
           typography: { xs: 'body2', md: 'body1' },
-          display: 'flex',
-          flexDirection: 'column',
-          justifyContent: 'center',
           flex: '1 0 0',
-          alignSelf: 'stretch',
         }}
       >
         {children}
@@ -124,7 +113,6 @@ function ComputerImage({ isMobile }) {
     <Box
       sx={{
         width: { xs: '344px', md: '538px' },
-        height: 'auto',
         aspectRatio: '269/165',
         background: {
           xs: 'url(/homepage-computer.jpg) lightgray -116.345px -180.777px / 166.504% 271.618% no-repeat',
