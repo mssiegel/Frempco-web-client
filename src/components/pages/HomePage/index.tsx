@@ -70,7 +70,7 @@ export default function HomePage() {
         />
 
         {/* Section Two */}
-        <ProductBenefits />
+        <ProductBenefits isMobile={isMobile} />
 
         {/* Section Three */}
         <HowItWorks />
