@@ -21,7 +21,6 @@ export default function ProductBenefits({ isMobile }): JSX.Element {
             sx={{
               display: 'flex',
               flexDirection: 'column',
-              justifyContent: 'center',
               alignItems: 'flex-start',
               gap: '16px',
               maxWidth: { xs: '316px', md: '628px' },
@@ -44,7 +43,6 @@ export default function ProductBenefits({ isMobile }): JSX.Element {
               display: 'flex',
               flexDirection: 'column',
               gap: '16px',
-              maxWidth: '705px',
             }}
           >
             <CustomListItem>
@@ -54,8 +52,7 @@ export default function ProductBenefits({ isMobile }): JSX.Element {
               Teachers receive full chat transcripts by email after each session
             </CustomListItem>
             <CustomListItem>
-              No accounts, no logins, no setup — just open the link and start
-              learning
+              No accounts, no setup — just open the link and start learning
             </CustomListItem>
           </List>
         </Box>
