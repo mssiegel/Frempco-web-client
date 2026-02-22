@@ -2,7 +2,6 @@
 
 import { Box, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import Image from 'next/image';
 import { throttle } from 'lodash-es';
 
 import StudentsButton from './StudentsButton';
@@ -24,6 +23,7 @@ export default function Header({
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
   const [shouldShowHeaderButtons, setShouldShowHeaderButtons] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
+  const transition = '220ms cubic-bezier(0.4, 0, 0.2, 1)';
 
   useEffect(() => {
     // Throttling avoids running this layout calculation on every scroll
@@ -80,27 +80,41 @@ export default function Header({
           alt='Frempco logo icon'
           style={{ height: isMobile ? 50 : 36, width: 'auto' }}
         />
-        {showLogoText && (
+        <Box
+          sx={{
+            display: 'flex',
+            maxWidth: showLogoText ? '220px' : '0px',
+            opacity: showLogoText ? 1 : 0,
+            transform: showLogoText ? 'scale(1)' : 'scale(0.5)',
+            transition: `max-width ${transition}, opacity ${transition}, transform ${transition}, margin ${transition}`,
+            willChange: 'max-width, opacity, transform, margin',
+          }}
+        >
           <img
             src='/frempco-logo-text.svg'
             alt='Frempco logo text'
             style={{ height: 36, width: 'auto' }}
           />
-        )}
+        </Box>
       </Box>
       <Box
         display='flex'
         gap={isMobile ? 0 : 1}
         height='52px' // Prevent layout shift when buttons appear/disappear
+        alignItems='center'
+        sx={{
+          opacity: shouldShowHeaderButtons ? 1 : 0,
+          transform: shouldShowHeaderButtons
+            ? 'translateY(0)'
+            : 'translateY(-6px)',
+          visibility: shouldShowHeaderButtons ? 'visible' : 'hidden',
+          pointerEvents: shouldShowHeaderButtons ? 'auto' : 'none',
+          transition: `opacity ${transition}, transform ${transition}, visibility ${transition}`,
+          willChange: 'opacity, transform',
+        }}
       >
-        {shouldShowHeaderButtons && (
-          <>
-            <StudentsButton visitStudentsPage={visitStudentsPage} />
-            {!isMobile && (
-              <TeachersButton visitTeachersPage={visitTeachersPage} />
-            )}
-          </>
-        )}
+        <StudentsButton visitStudentsPage={visitStudentsPage} />
+        {!isMobile && <TeachersButton visitTeachersPage={visitTeachersPage} />}
       </Box>
     </Box>
   );
