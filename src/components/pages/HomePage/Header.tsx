@@ -56,11 +56,13 @@ export default function Header({
     };
   }, [gameButtonsRef, headerRef]);
 
+  const hasSpaceForLogoText = !isMobile || !shouldShowHeaderButtons;
+
   return (
     <Box
       ref={headerRef}
       display='flex'
-      justifyContent='space-between'
+      justifyContent={isMobile ? 'space-between' : 'space-evenly'}
       alignItems='center'
       borderBottom='2px solid'
       borderColor='neutrals.200'
@@ -68,15 +70,15 @@ export default function Header({
       top={0}
       zIndex={1000}
       bgcolor='neutrals.white'
-      sx={{ padding: { xs: '24px 40px', md: '12px 80px' } }}
+      sx={{ padding: { xs: '12px 16px', md: '12px 80px' } }}
     >
       <Box display='flex' gap={2} alignItems='flex-end'>
         <img
           src='/frempco-logo-icon.svg'
           alt='Frempco logo icon'
-          style={{ height: 36, width: 'auto' }}
+          style={{ height: isMobile ? 50 : 36, width: 'auto' }}
         />
-        {!isMobile && (
+        {hasSpaceForLogoText && (
           <img
             src='/frempco-logo-text.svg'
             alt='Frempco logo text'
@@ -86,7 +88,7 @@ export default function Header({
       </Box>
       <Box
         display='flex'
-        gap={1}
+        gap={isMobile ? 0 : 1}
         height='52px' // Prevent layout shift when buttons appear/disappear
       >
         {shouldShowHeaderButtons && (
