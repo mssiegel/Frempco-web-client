@@ -80,22 +80,7 @@ export default function Header({
           alt='Frempco logo icon'
           style={{ height: isMobile ? 50 : 36, width: 'auto' }}
         />
-        <Box
-          sx={{
-            display: 'flex',
-            maxWidth: showLogoText ? '220px' : '0px',
-            opacity: showLogoText ? 1 : 0,
-            transform: showLogoText ? 'scale(1)' : 'scale(0.5)',
-            transition: `max-width ${transition}, opacity ${transition}, transform ${transition}, margin ${transition}`,
-            willChange: 'max-width, opacity, transform, margin',
-          }}
-        >
-          <img
-            src='/frempco-logo-text.svg'
-            alt='Frempco logo text'
-            style={{ height: 36, width: 'auto' }}
-          />
-        </Box>
+        <LogoText showLogoText={showLogoText} transition={transition} />
       </Box>
       <Box
         display='flex'
@@ -116,6 +101,32 @@ export default function Header({
         <StudentsButton visitStudentsPage={visitStudentsPage} />
         {!isMobile && <TeachersButton visitTeachersPage={visitTeachersPage} />}
       </Box>
+    </Box>
+  );
+}
+
+interface LogoTextProps {
+  showLogoText: boolean;
+  transition: string;
+}
+
+function LogoText({ showLogoText, transition }: LogoTextProps) {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        maxWidth: showLogoText ? '220px' : '0px',
+        opacity: showLogoText ? 1 : 0,
+        transform: showLogoText ? 'scale(1)' : 'scale(0.5)',
+        transition: `max-width ${transition}, opacity ${transition}, transform ${transition}, margin ${transition}`,
+        willChange: 'max-width, opacity, transform, margin',
+      }}
+    >
+      <img
+        src='/frempco-logo-text.svg'
+        alt='Frempco logo text'
+        style={{ height: 36, width: 'auto' }}
+      />
     </Box>
   );
 }
