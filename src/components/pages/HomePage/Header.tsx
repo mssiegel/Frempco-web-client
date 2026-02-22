@@ -70,11 +70,11 @@ export default function Header({
       bgcolor='neutrals.white'
       sx={{ padding: { xs: '24px 40px', md: '12px 80px' } }}
     >
-      <Box display='flex' gap={1} alignItems='flex-end'>
+      <Box display='flex' gap={2} alignItems='flex-end'>
         <img
           src='/frempco-logo-icon.svg'
           alt='Frempco logo icon'
-          style={{ height: 36, width: 'auto', marginRight: 8 }}
+          style={{ height: 36, width: 'auto' }}
         />
         {!isMobile && (
           <img
