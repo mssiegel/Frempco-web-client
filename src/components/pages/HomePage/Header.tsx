@@ -80,7 +80,7 @@ function LogoText({ showLogoText, transition }: LogoTextProps) {
     <Box
       sx={{
         display: 'flex',
-        maxWidth: showLogoText ? '220px' : '0px',
+        maxWidth: showLogoText ? '100px' : '0px',
         opacity: showLogoText ? 1 : 0,
         transform: showLogoText ? 'scale(1)' : 'scale(0.5)',
         transition: `max-width ${transition}, opacity ${transition}, transform ${transition}, margin ${transition}`,
