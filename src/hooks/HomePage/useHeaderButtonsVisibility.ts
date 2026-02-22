@@ -22,7 +22,8 @@ export function useHeaderButtonsVisibility({
         if (!headerRef.current || !gameButtonsRef.current) return;
 
         const headerPosition = headerRef.current.getBoundingClientRect();
-        const gameButtonsPosition = gameButtonsRef.current.getBoundingClientRect();
+        const gameButtonsPosition =
+          gameButtonsRef.current.getBoundingClientRect();
 
         setShouldShowHeaderButtons(
           headerPosition.bottom > gameButtonsPosition.bottom,
