@@ -56,7 +56,9 @@ export default function Header({
     };
   }, [gameButtonsRef, headerRef]);
 
-  const hasSpaceForLogoText = !isMobile || !shouldShowHeaderButtons;
+  // There is room for the logo text on desktop. And also on mobile when the
+  // buttons are hidden.
+  const showLogoText = !isMobile || !shouldShowHeaderButtons;
 
   return (
     <Box
@@ -78,7 +80,7 @@ export default function Header({
           alt='Frempco logo icon'
           style={{ height: isMobile ? 50 : 36, width: 'auto' }}
         />
-        {hasSpaceForLogoText && (
+        {showLogoText && (
           <img
             src='/frempco-logo-text.svg'
             alt='Frempco logo text'
