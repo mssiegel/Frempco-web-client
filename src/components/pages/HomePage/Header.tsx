@@ -2,11 +2,11 @@
 
 import { Box, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { throttle } from 'lodash-es';
 
 import StudentsButton from './StudentsButton';
 import TeachersButton from './TeachersButton';
-import { useEffect, useRef, useState } from 'react';
+import { useRef } from 'react';
+import { useHeaderButtonsVisibility } from '@hooks/HomePage/useHeaderButtonsVisibility';
 
 interface HeaderProps {
   visitStudentsPage: (classroom: string, student: string) => void;
@@ -21,40 +21,11 @@ export default function Header({
 }: HeaderProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
-  const [shouldShowHeaderButtons, setShouldShowHeaderButtons] = useState(false);
   const headerRef = useRef<HTMLDivElement>(null);
-  const transition = '220ms cubic-bezier(0.4, 0, 0.2, 1)';
-
-  useEffect(() => {
-    // Throttling avoids running this layout calculation on every scroll
-    // event, thereby reducing the browser's CPU usage.
-    const handleScroll = throttle(
-      () => {
-        if (!headerRef.current || !gameButtonsRef.current) return;
-        const headerPosition = headerRef.current.getBoundingClientRect();
-        const gameButtonsPosition =
-          gameButtonsRef.current.getBoundingClientRect();
-        // Show buttons in header when user has scrolled past the buttons in the
-        // main content. So they can easily navigate to other pages without
-        // having to scroll back up.
-        setShouldShowHeaderButtons(
-          headerPosition.bottom > gameButtonsPosition.bottom,
-        );
-      },
-      60,
-      {
-        leading: true,
-        trailing: true,
-      },
-    );
-
-    window.addEventListener('scroll', handleScroll, { passive: true });
-
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-      handleScroll.cancel();
-    };
-  }, [gameButtonsRef, headerRef]);
+  const shouldShowHeaderButtons = useHeaderButtonsVisibility({
+    gameButtonsRef,
+    headerRef,
+  });
 
   // There is room for the logo text on desktop. And also on mobile when the
   // buttons are hidden.
@@ -80,23 +51,17 @@ export default function Header({
           alt='Frempco logo icon'
           style={{ height: isMobile ? 50 : 36, width: 'auto' }}
         />
-        <LogoText showLogoText={showLogoText} transition={transition} />
+        <LogoText
+          showLogoText={showLogoText}
+          transition={HEADER_ANIMATION_TRANSITION}
+        />
       </Box>
       <Box
         display='flex'
         gap={isMobile ? 0 : 1}
         height='52px' // Prevent layout shift when buttons appear/disappear
         alignItems='center'
-        sx={{
-          opacity: shouldShowHeaderButtons ? 1 : 0,
-          transform: shouldShowHeaderButtons
-            ? 'translateY(0)'
-            : 'translateY(-6px)',
-          visibility: shouldShowHeaderButtons ? 'visible' : 'hidden',
-          pointerEvents: shouldShowHeaderButtons ? 'auto' : 'none',
-          transition: `opacity ${transition}, transform ${transition}, visibility ${transition}`,
-          willChange: 'opacity, transform',
-        }}
+        sx={getHeaderButtonsSx(shouldShowHeaderButtons)}
       >
         <StudentsButton visitStudentsPage={visitStudentsPage} />
         {!isMobile && <TeachersButton visitTeachersPage={visitTeachersPage} />}
@@ -129,4 +94,17 @@ function LogoText({ showLogoText, transition }: LogoTextProps) {
       />
     </Box>
   );
+}
+
+const HEADER_ANIMATION_TRANSITION = '220ms cubic-bezier(0.4, 0, 0.2, 1)';
+
+function getHeaderButtonsSx(shouldShowHeaderButtons: boolean) {
+  return {
+    opacity: shouldShowHeaderButtons ? 1 : 0,
+    transform: shouldShowHeaderButtons ? 'translateY(0)' : 'translateY(-6px)',
+    visibility: shouldShowHeaderButtons ? 'visible' : 'hidden',
+    pointerEvents: shouldShowHeaderButtons ? 'auto' : 'none',
+    transition: `opacity ${HEADER_ANIMATION_TRANSITION}, transform ${HEADER_ANIMATION_TRANSITION}, visibility ${HEADER_ANIMATION_TRANSITION}`,
+    willChange: 'opacity, transform',
+  };
 }
