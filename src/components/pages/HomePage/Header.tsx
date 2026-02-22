@@ -68,21 +68,19 @@ export default function Header({
       top={0}
       zIndex={1000}
       bgcolor='neutrals.white'
-      sx={{ padding: { xs: '24px 40px', md: '24px 80px' } }}
+      sx={{ padding: { xs: '24px 40px', md: '12px 80px' } }}
     >
-      <Box display='flex' gap={1} alignItems='flex-end'>
-        <Image
+      <Box display='flex' gap={2} alignItems='flex-end'>
+        <img
           src='/frempco-logo-icon.svg'
           alt='Frempco logo icon'
-          width={26}
-          height={25}
+          style={{ height: 36, width: 'auto' }}
         />
         {!isMobile && (
-          <Image
-            src={'/frempco-logo-text.svg'}
+          <img
+            src='/frempco-logo-text.svg'
             alt='Frempco logo text'
-            width={105}
-            height={18}
+            style={{ height: 36, width: 'auto' }}
           />
         )}
       </Box>
