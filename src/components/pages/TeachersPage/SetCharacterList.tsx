@@ -16,6 +16,7 @@ export default function SetCharacterList({
   setCharacters,
 }: SetCharacterListProps) {
   const [open, setOpen] = useState(false);
+  const [error, setError] = useState<string | null>(null);
   const characterListTextArea = useRef<HTMLTextAreaElement>();
 
   const setCharacterList = () => {
@@ -24,14 +25,24 @@ export default function SetCharacterList({
       .map((ch) => ch.trim())
       .filter((ch) => ch);
 
+    if (trimmedCharacters.length === 0) {
+      setError('Enter at least one character name.');
+      return;
+    }
+
     setCharacters(trimmedCharacters);
     setOpen(false);
   };
 
+  function handleClose() {
+    setOpen(false);
+    setError(null);
+  }
+
   return (
     <>
       <Typography fontFamily='Lora' fontSize='20px' sx={{ mb: 1 }}>
-        Characters: {characters?.length > 0 && characters.join(', ')}
+        Characters: {characters.join(', ')}
       </Typography>
       <Button
         variant='contained'
@@ -43,7 +54,7 @@ export default function SetCharacterList({
         Set Character List
       </Button>
 
-      <BasicModal open={open} onClose={() => setOpen(false)}>
+      <BasicModal open={open} onClose={handleClose}>
         <TextField
           label='Character List'
           multiline
@@ -53,6 +64,12 @@ export default function SetCharacterList({
           defaultValue={characters.join('\n')}
           inputRef={characterListTextArea}
         />
+
+        {error && (
+          <Typography color='error' sx={{ mt: 2, textAlign: 'center' }}>
+            {error}
+          </Typography>
+        )}
 
         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
           <Button variant='contained' size='large' onClick={setCharacterList}>
