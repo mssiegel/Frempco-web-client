@@ -2,14 +2,13 @@
 
 import { Typography, Box, List, ListItem, Grid } from '@mui/material';
 
-export default function ProductBenefits({ isMobile }): JSX.Element {
+export default function ProductBenefits({
+  isMobile,
+}: {
+  isMobile: boolean;
+}): JSX.Element {
   return (
-    <Grid
-      container
-      sx={{
-        pt: { xs: 7, md: 15 },
-      }}
-    >
+    <Grid container sx={{ pt: isMobile ? 7 : 15 }}>
       {/* Left margin - 1 column */}
       <Grid item md={1} />
 
@@ -23,11 +22,11 @@ export default function ProductBenefits({ isMobile }): JSX.Element {
               flexDirection: 'column',
               alignItems: 'flex-start',
               gap: '16px',
-              maxWidth: { xs: '316px', md: '628px' },
+              maxWidth: isMobile ? '316px' : '628px',
             }}
           >
             <Typography
-              sx={{ typography: { xs: 'h4', md: 'h3' }, maxWidth: '584px' }}
+              sx={{ typography: isMobile ? 'h4' : 'h3', maxWidth: '584px' }}
             >
               Where Learning Feels Like Play (and Still Counts)
             </Typography>
@@ -45,9 +44,18 @@ export default function ProductBenefits({ isMobile }): JSX.Element {
               gap: '16px',
             }}
           >
-            <CustomListItem text='Classmates have conversations where they help each other step into character.' />
-            <CustomListItem text='Teachers can observe and guide the roleplaying sessions to ensure effective learning.' />
-            <CustomListItem text='After each session, teachers receive the full conversations by email.' />
+            <CustomListItem
+              text='Classmates have conversations where they help each other step into character.'
+              isMobile={isMobile}
+            />
+            <CustomListItem
+              text='Teachers can observe and guide the roleplaying sessions to ensure effective learning.'
+              isMobile={isMobile}
+            />
+            <CustomListItem
+              text='After each session, teachers receive the full conversations by email.'
+              isMobile={isMobile}
+            />
           </List>
         </Box>
       </Grid>
@@ -58,12 +66,10 @@ export default function ProductBenefits({ isMobile }): JSX.Element {
         xs={12}
         md={5}
         sx={{
-          padding: {
-            xs: '32px 0', // Vertical spacing on mobile
-            md: '0 0 0 64px', // Left padding to align with Roleplay image (in Hero section)
-          },
-          display: { xs: 'flex', md: 'block' },
-          justifyContent: { xs: 'center', md: 'initial' },
+          // For padding: Mobile - Vertical spacing, Desktop - Left padding to align with Roleplay image in Hero section
+          padding: isMobile ? '32px 0' : '0 0 0 64px',
+          display: isMobile ? 'flex' : 'block',
+          justifyContent: isMobile ? 'center' : 'initial',
         }}
       >
         <ComputerImage isMobile={isMobile} />
@@ -75,7 +81,13 @@ export default function ProductBenefits({ isMobile }): JSX.Element {
   );
 }
 
-function CustomListItem({ text }: { text: string }): JSX.Element {
+function CustomListItem({
+  text,
+  isMobile,
+}: {
+  text: string;
+  isMobile: boolean;
+}): JSX.Element {
   return (
     <ListItem
       sx={{
@@ -88,7 +100,7 @@ function CustomListItem({ text }: { text: string }): JSX.Element {
       {starSVG}
       <Typography
         sx={{
-          typography: { xs: 'body2', md: 'body1' },
+          typography: isMobile ? 'body2' : 'body1',
           flex: '1 0 0',
         }}
       >
@@ -98,24 +110,23 @@ function CustomListItem({ text }: { text: string }): JSX.Element {
   );
 }
 
-function ComputerImage({ isMobile }) {
+function ComputerImage({ isMobile }: { isMobile: boolean }): JSX.Element {
   return (
     // Actual image is applied as background on this Box to allow the squiggly accent to be positioned on top of it more easily
     <Box
       sx={{
-        width: { xs: '344px', md: '538px' },
+        width: isMobile ? '344px' : '538px',
         aspectRatio: '269/165',
-        background: {
-          xs: 'url(/homepage-computer.jpg) lightgray -116.345px -180.777px / 166.504% 271.618% no-repeat',
-          md: 'url(/homepage-computer.jpg) lightgray -181.958px -282.732px / 166.504% 271.618% no-repeat',
-        },
+        background: isMobile
+          ? 'url(/homepage-computer.jpg) lightgray -116.345px -180.777px / 166.504% 271.618% no-repeat'
+          : 'url(/homepage-computer.jpg) lightgray -181.958px -282.732px / 166.504% 271.618% no-repeat',
         position: 'relative', // To position the squiggly SVG absolutely within this Box
       }}
     >
       <Box
         sx={{
           right: 6,
-          top: { xs: -24, md: -48 },
+          top: isMobile ? -24 : -48,
           position: 'absolute',
         }}
       >
