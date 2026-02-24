@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { Box, useMediaQuery } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+import { Box } from '@mui/material';
 
 import StudentsButton from './StudentsButton';
 import TeachersButton from './TeachersButton';
@@ -12,15 +11,15 @@ interface HeaderProps {
   visitStudentsPage: (classroom: string, student: string) => void;
   visitTeachersPage: (classroom: string) => void;
   gameButtonsRef: React.RefObject<HTMLElement>;
+  isMobile: boolean;
 }
 
 export default function Header({
   visitStudentsPage,
   visitTeachersPage,
   gameButtonsRef,
-}: HeaderProps) {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
+  isMobile,
+}: HeaderProps): JSX.Element {
   const headerRef = useRef<HTMLDivElement>(null);
   const shouldShowHeaderButtons = useHeaderButtonsVisibility({
     gameButtonsRef,
@@ -43,7 +42,7 @@ export default function Header({
       top={0}
       zIndex={1000}
       bgcolor='neutrals.white'
-      sx={{ padding: { xs: '10px 16px', md: '12px 80px' } }}
+      sx={{ padding: isMobile ? '10px 16px' : '12px 80px' }}
     >
       <Box display='flex' gap={2} alignItems='flex-end'>
         <img

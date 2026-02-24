@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
 import { Button } from '@mui/material';
-import { School as SchoolIcon } from '@mui/icons-material';
 
 function getRandomPin(pinLength: number) {
   const randomPin = Math.random().toString();

@@ -22,7 +22,7 @@ export default function HomePage() {
   const socket = useContext(SocketContext);
   const { setUser } = useContext(UserContext);
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.only('xs'));
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const gameButtonsRef = useRef<HTMLDivElement>(null);
 
   async function visitStudentsPage(classroom: string, student: string) {
@@ -58,6 +58,7 @@ export default function HomePage() {
         visitStudentsPage={visitStudentsPage}
         visitTeachersPage={visitTeachersPage}
         gameButtonsRef={gameButtonsRef}
+        isMobile={isMobile}
       />
 
       <Box sx={{ mx: isMobile ? 2 : 0 }}>
