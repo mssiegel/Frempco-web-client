@@ -32,8 +32,8 @@ export default function ProductBenefits({ isMobile }): JSX.Element {
               Where Learning Feels Like Play (and Still Counts)
             </Typography>
             <Typography>
-              Role-play, real conversation, and simple tools that make
-              engagement effortless.
+              A conversation game that is loved by <strong>schools</strong>,{' '}
+              <strong>teachers</strong>, and <strong>students</strong>.
             </Typography>
           </Box>
 
@@ -45,9 +45,9 @@ export default function ProductBenefits({ isMobile }): JSX.Element {
               gap: '16px',
             }}
           >
-            <CustomListItem text='The mystery of role-play makes learning more fun and engaging' />
-            <CustomListItem text='Teachers receive full chat transcripts by email after each session' />
-            <CustomListItem text='No accounts, no setup — just open the link and start learning' />
+            <CustomListItem text='Classmates have conversations where they help each other step into character.' />
+            <CustomListItem text='Teachers can observe and guide the roleplaying sessions to ensure effective learning.' />
+            <CustomListItem text='After each session, teachers receive the full conversations by email.' />
           </List>
         </Box>
       </Grid>

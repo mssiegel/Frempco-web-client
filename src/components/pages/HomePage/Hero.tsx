@@ -36,13 +36,13 @@ export default function Hero({
           <Typography variant={isMobile ? 'h3' : 'h2'} mb={3}>
             Bring Learning to Life Through{' '}
             <Box component='span' color='primary.500'>
-              Student Role-Play
+              Role-Play
             </Box>
           </Typography>
           <Typography variant='body1' color='neutrals.400'>
-            Paired conversations that help classmates step into character, think
-            critically, and engage authentically. No accounts, instant setup.
-            100% free.
+            A <strong>classroom game</strong> that excites both{' '}
+            <strong>teachers</strong> and <strong>students</strong>. No
+            accounts, fast setup, <strong>100% free</strong>.
           </Typography>
 
           <Box
