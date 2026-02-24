@@ -1,14 +1,21 @@
 /** @jsxImportSource @emotion/react */
 
-import { Button, Typography } from '@mui/material';
-import { Lightbulb as LightbulbIcon } from '@mui/icons-material';
+import { Button, Icon, Typography } from '@mui/material';
 import { useState, useRef, useCallback } from 'react';
 import { throttle } from 'lodash-es';
 
 import BasicModal from '@components/shared/Modal';
 import ModalTextField from '@components/shared/ModalTextField';
 
-export default function StudentsButton({ visitStudentsPage }) {
+interface StudentsButtonProps {
+  visitStudentsPage: (classroom: string, student: string) => void;
+  fullWidth?: boolean;
+}
+
+export default function StudentsButton({
+  visitStudentsPage,
+  fullWidth,
+}: StudentsButtonProps) {
   const [open, setOpen] = useState(false);
   const classroomInput = useRef<HTMLInputElement>(null);
   const studentInput = useRef<HTMLInputElement>(null);
@@ -32,17 +39,12 @@ export default function StudentsButton({ visitStudentsPage }) {
     <>
       <Button
         variant='contained'
-        size='large'
-        endIcon={<LightbulbIcon />}
+        color='primary'
+        startIcon={<Icon sx={{ fontSize: 24 }}>play_arrow</Icon>}
         onClick={() => setOpen(true)}
-        sx={{
-          height: '75px',
-          borderRadius: '12px',
-          marginBottom: '12px',
-          maxWidth: '300px',
-        }}
+        fullWidth={fullWidth}
       >
-        Student: Join Classroom
+        Join a Game
       </Button>
 
       <BasicModal open={open} onClose={() => setOpen(false)}>
