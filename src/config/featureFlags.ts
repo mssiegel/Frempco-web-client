@@ -1,5 +1,5 @@
 const newLoginFlowForStudents = {
-  enabled: true,
+  enabled: false,
   description:
     'Enables the login flow which takes the student to a new page to enter their classroom PIN',
 };
