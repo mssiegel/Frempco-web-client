@@ -3,11 +3,13 @@ import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import { ClassroomProps, currentTime, PAIRED, SOLO } from '@utils/classrooms';
+import featureFlags from '@config/featureFlags';
 import { SocketContext } from '@contexts/SocketContext';
 import { UserContext } from '@contexts/UserContext';
 import Chatbox from './Chatbox';
 import WelcomeMessage from './WelcomeMessage';
-import featureFlags from '@config/featureFlags';
+import Header from './Header';
+import LoginFlow from './LoginFlow';
 
 export type ChatMessage = ['you' | 'peer', string];
 
@@ -125,7 +127,12 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
   }, [router.events, socket]);
 
   if (featureFlags.newLoginFlowForStudents.enabled) {
-    return <main>New Student login flow</main>;
+    return (
+      <main>
+        <Header />
+        <LoginFlow />
+      </main>
+    );
   }
 
   return (
