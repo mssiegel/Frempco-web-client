@@ -7,6 +7,7 @@ import { SocketContext } from '@contexts/SocketContext';
 import { UserContext } from '@contexts/UserContext';
 import Chatbox from './Chatbox';
 import WelcomeMessage from './WelcomeMessage';
+import featureFlags from '@config/featureFlags';
 
 export type ChatMessage = ['you' | 'peer', string];
 
@@ -122,6 +123,10 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
       }
     };
   }, [router.events, socket]);
+
+  if (featureFlags.newLoginFlowForStudents.enabled) {
+    return <main>New Student login flow</main>;
+  }
 
   return (
     <main>
