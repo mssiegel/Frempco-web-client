@@ -38,9 +38,11 @@ export interface StudentSoloChat {
 export default function StudentsPage({ classroomName }: ClassroomProps) {
   const socket = useContext(SocketContext);
   const { user } = useContext(UserContext);
-  const { name } = user;
+  const { name: old_name } = user;
   console.log('Student socketId:', socket?.id ?? 'No socket found');
 
+  const [name, setName] = useState('');
+  const [pin, setPin] = useState<number>();
   const [chatInSession, setChatInSession] = useState(false);
   const [removedFromClass, setRemovedFromClass] = useState(false);
   const [chat, setChat] = useState<StudentPairedChat | StudentSoloChat>();
@@ -128,9 +130,22 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
 
   if (featureFlags.newLoginFlowForStudents.enabled) {
     return (
-      <main>
-        <Header />
-        <LoginFlow />
+      <main
+        style={{
+          minHeight: '100vh',
+          position: 'relative',
+          display: 'grid',
+          placeItems: 'center',
+        }}
+      >
+        <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
+          <Header />
+        </Box>
+        <Box>
+          {!name && <LoginFlow pin={pin} setPin={setPin} setName={setName} />}
+          {name &&
+            "Welcome to the classroom! Your teacher will let you know when it's time to chat."}
+        </Box>
       </main>
     );
   }
@@ -144,7 +159,7 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
         variant='h4'
         sx={{ color: 'black', mb: 4, textAlign: 'center' }}
       >
-        {`Hello ${name}.`}
+        {`Hello ${old_name}.`}
       </Typography>
       <Box sx={{ display: 'flex', justifyContent: 'center' }}>
         {chatInSession ? (
