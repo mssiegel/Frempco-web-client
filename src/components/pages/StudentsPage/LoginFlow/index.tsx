@@ -47,7 +47,7 @@ export default function LoginFlow({
   };
 
   return (
-    <Box sx={{ display: 'flex', gap: 2, alignItems: 'flex-start' }}>
+    <Box>
       {pin === undefined ? (
         <PinInputStep
           setPin={setPin}

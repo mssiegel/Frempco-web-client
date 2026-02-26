@@ -1,4 +1,4 @@
-import { TextField } from '@mui/material';
+import { Box, TextField, Typography } from '@mui/material';
 import type { SxProps, Theme } from '@mui/material/styles';
 import { useState } from 'react';
 import SubmitButton from './SubmitButton';
@@ -30,23 +30,29 @@ export default function PinInputStep({
   };
 
   return (
-    <>
-      <TextField
-        autoFocus
-        placeholder='Game PIN'
-        variant='outlined'
-        value={pinInput}
-        onChange={(e) => setPinInput(e.target.value)}
-        error={pinError !== ''}
-        helperText={pinError}
-        inputProps={{
-          inputMode: 'numeric',
-          pattern: '[0-9]*',
-          maxLength: PIN_LENGTH,
-        }}
-        sx={inputSx}
-      />
-      <SubmitButton onClick={submitPIN} height={buttonHeight} />
-    </>
+    <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+      <Typography variant='h1' align='center' sx={{ color: 'primary.500' }}>
+        Frempco
+      </Typography>
+      <Box sx={{ display: 'flex', gap: 2, mt: '32px' }}>
+        <TextField
+          autoFocus
+          autoComplete='off'
+          placeholder='Game PIN'
+          variant='outlined'
+          value={pinInput}
+          onChange={(e) => setPinInput(e.target.value)}
+          error={pinError !== ''}
+          helperText={pinError}
+          inputProps={{
+            inputMode: 'numeric',
+            pattern: '[0-9]*',
+            maxLength: PIN_LENGTH,
+          }}
+          sx={inputSx}
+        />
+        <SubmitButton onClick={submitPIN} height={buttonHeight} />
+      </Box>
+    </Box>
   );
 }
