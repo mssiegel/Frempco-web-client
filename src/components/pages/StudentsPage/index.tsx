@@ -130,9 +130,20 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
 
   if (featureFlags.newLoginFlowForStudents.enabled) {
     return (
-      <main>
-        <Header />
-        {!name && <LoginFlow pin={pin} setPin={setPin} setName={setName} />}
+      <main
+        style={{
+          minHeight: '100vh',
+          position: 'relative',
+          display: 'grid',
+          placeItems: 'center',
+        }}
+      >
+        <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
+          <Header />
+        </Box>
+        <Box>
+          {!name && <LoginFlow pin={pin} setPin={setPin} setName={setName} />}
+        </Box>
       </main>
     );
   }
