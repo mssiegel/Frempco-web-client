@@ -17,8 +17,10 @@ export default function LoginFlow({
   setPin,
   setName,
 }: LoginFlowProps): JSX.Element {
+  const isPinStep = pin === undefined;
+
   const inputSx = {
-    width: pin === undefined ? 200 : 350,
+    width: isPinStep ? 200 : 350,
     '& .MuiOutlinedInput-root': {
       height: BUTTON_HEIGHT,
       borderRadius: '16px',
@@ -48,7 +50,7 @@ export default function LoginFlow({
 
   return (
     <Box>
-      {pin === undefined ? (
+      {isPinStep ? (
         <PinInputStep
           setPin={setPin}
           buttonHeight={BUTTON_HEIGHT}
