@@ -1,4 +1,4 @@
-import { TextField } from '@mui/material';
+import { Box, TextField, Typography } from '@mui/material';
 import type { SxProps, Theme } from '@mui/material/styles';
 import { useState } from 'react';
 import SubmitButton from './SubmitButton';
@@ -20,16 +20,27 @@ export default function NameInputStep({
 
   return (
     <>
-      <TextField
-        autoFocus
-        placeholder='Name'
-        variant='outlined'
-        value={nameInput}
-        onChange={(e) => setNameInput(e.target.value)}
-        inputProps={{ maxLength: NAME_MAX_LENGTH }}
-        sx={inputSx}
-      />
-      <SubmitButton onClick={() => setName(nameInput)} height={buttonHeight} />
+      <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+        <Typography variant='h1' align='center' sx={{ color: 'primary.500' }}>
+          Enter Name
+        </Typography>
+        <Box sx={{ display: 'flex', gap: 2, mt: '32px' }}>
+          <TextField
+            autoFocus
+            autoComplete='off'
+            placeholder='Name'
+            variant='outlined'
+            value={nameInput}
+            onChange={(e) => setNameInput(e.target.value)}
+            inputProps={{ maxLength: NAME_MAX_LENGTH }}
+            sx={inputSx}
+          />
+          <SubmitButton
+            onClick={() => setName(nameInput)}
+            height={buttonHeight}
+          />
+        </Box>
+      </Box>
     </>
   );
 }
