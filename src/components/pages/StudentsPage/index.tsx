@@ -143,6 +143,8 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
         </Box>
         <Box>
           {!name && <LoginFlow pin={pin} setPin={setPin} setName={setName} />}
+          {name &&
+            "Welcome to the classroom! Your teacher will let you know when it's time to chat."}
         </Box>
       </main>
     );
