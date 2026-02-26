@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { Box, TextField } from '@mui/material';
+import { Box, Button, Icon, TextField } from '@mui/material';
 
 const PIN_LENGTH = 4;
 
@@ -16,7 +16,7 @@ export default function LoginFlow({
   setName,
 }: LoginFlowProps): JSX.Element {
   return (
-    <Box>
+    <Box sx={{ display: 'flex', gap: 2 }}>
       <TextField
         autoFocus
         placeholder='Game PIN'
@@ -33,8 +33,8 @@ export default function LoginFlow({
             backgroundColor: 'neutrals.white',
             boxShadow: '3px 3px 0 0 rgba(0, 0, 0, 0.25)',
             '& input': {
-              p: '16px',
-              color: 'neutrals.500',
+              p: '12px',
+              color: 'neutrals.600',
               textAlign: 'center',
               fontSize: '32px',
             },
@@ -54,6 +54,20 @@ export default function LoginFlow({
           },
         }}
       />
+      <Button
+        aria-label='Join game'
+        sx={{
+          padding: '12px',
+          borderRadius: '16px',
+          backgroundColor: 'neutrals.white',
+          boxShadow: '3px 3px 0 0 rgba(0, 0, 0, 0.25)',
+          border: '1px solid silver',
+        }}
+      >
+        <Icon sx={{ fontSize: 40, color: 'neutrals.600' }}>
+          arrow_right_alt
+        </Icon>
+      </Button>
     </Box>
   );
 }
