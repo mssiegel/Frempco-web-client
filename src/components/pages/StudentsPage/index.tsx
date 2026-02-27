@@ -142,7 +142,7 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
         }}
       >
         <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
-          <Header />
+          <Header isMobile={isMobile} />
         </Box>
         <Box>
           {!name && (
