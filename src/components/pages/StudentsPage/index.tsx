@@ -1,4 +1,5 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
@@ -41,6 +42,8 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
   const { name: old_name } = user;
   console.log('Student socketId:', socket?.id ?? 'No socket found');
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [name, setName] = useState('');
   const [pin, setPin] = useState<number>();
   const [chatInSession, setChatInSession] = useState(false);
@@ -142,7 +145,14 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
           <Header />
         </Box>
         <Box>
-          {!name && <LoginFlow pin={pin} setPin={setPin} setName={setName} />}
+          {!name && (
+            <LoginFlow
+              pin={pin}
+              setPin={setPin}
+              setName={setName}
+              isMobile={isMobile}
+            />
+          )}
           {name &&
             "Welcome to the classroom! Your teacher will let you know when it's time to chat."}
         </Box>
