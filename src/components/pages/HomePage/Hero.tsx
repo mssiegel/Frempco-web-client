@@ -4,7 +4,7 @@ import { Box, Grid, Typography } from '@mui/material';
 import Image from 'next/image';
 import StudentsButton from './StudentsButton';
 import TeachersButton from './TeachersButton';
-import exampleRoleplay from '../../../../public/homepage-example-roleplay.png';
+import exampleRoleplayImage from '../../../../public/HomePage/homepage-example-roleplay.png';
 
 interface HeroProps {
   isMobile: boolean;
@@ -70,7 +70,7 @@ export default function Hero({
       {/* Image - 4 columns */}
       <Grid item md={4} sx={{ margin: 'auto' }}>
         <Image
-          src={exampleRoleplay}
+          src={exampleRoleplayImage}
           alt='Example roleplay between two students'
           priority={true}
           style={{
