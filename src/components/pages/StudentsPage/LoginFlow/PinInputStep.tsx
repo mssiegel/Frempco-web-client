@@ -19,9 +19,11 @@ export default function PinInputStep({
   const [pinInput, setPinInput] = useState('');
   const [pinError, setPinError] = useState('');
 
+  const isInvalidFormatForPIN = (inputPIN: string) => !/^\d{4}$/.test(inputPIN);
+
   function submitPIN(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    if (!/^\d{4}$/.test(pinInput)) {
+    if (isInvalidFormatForPIN(pinInput)) {
       setPinError('A Game PIN is 4 digits');
       return;
     }
