@@ -19,7 +19,8 @@ export default function PinInputStep({
   const [pinInput, setPinInput] = useState('');
   const [pinError, setPinError] = useState('');
 
-  const submitPIN = () => {
+  function submitPIN(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     if (!/^\d{4}$/.test(pinInput)) {
       setPinError('A Game PIN is 4 digits');
       return;
@@ -27,14 +28,18 @@ export default function PinInputStep({
 
     setPinError('');
     setPin(Number(pinInput));
-  };
+  }
 
   return (
     <Box sx={{ display: 'flex', flexDirection: 'column' }}>
       <Typography variant='h1' align='center' sx={{ color: 'primary.500' }}>
         Frempco
       </Typography>
-      <Box sx={{ display: 'flex', gap: 2, mt: '32px' }}>
+      <Box
+        component='form'
+        onSubmit={submitPIN}
+        sx={{ display: 'flex', gap: 2, mt: '32px' }}
+      >
         <TextField
           autoFocus
           autoComplete='off'
@@ -46,12 +51,11 @@ export default function PinInputStep({
           helperText={pinError}
           inputProps={{
             inputMode: 'numeric',
-            pattern: '[0-9]*',
             maxLength: PIN_LENGTH,
           }}
           sx={inputSx}
         />
-        <SubmitButton onClick={submitPIN} height={buttonHeight} />
+        <SubmitButton height={buttonHeight} />
       </Box>
     </Box>
   );

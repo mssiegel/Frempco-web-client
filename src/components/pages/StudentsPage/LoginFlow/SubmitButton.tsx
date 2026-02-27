@@ -3,17 +3,15 @@
 import { Button, Icon } from '@mui/material';
 
 interface SubmitButtonProps {
-  onClick: () => void;
   height: number;
 }
 
 export default function SubmitButton({
-  onClick,
   height,
 }: SubmitButtonProps): JSX.Element {
   return (
     <Button
-      onClick={onClick}
+      type='submit'
       sx={{
         padding: '12px',
         height,
