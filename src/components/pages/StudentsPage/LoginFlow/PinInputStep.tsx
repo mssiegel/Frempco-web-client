@@ -16,20 +16,32 @@ export default function PinInputStep({
   buttonHeight,
   inputSx,
 }: PinInputStepProps): JSX.Element {
+  const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
   const [pinInput, setPinInput] = useState('');
   const [pinError, setPinError] = useState('');
 
   const isInvalidFormatForPIN = (inputPIN: string) => !/^\d{4}$/.test(inputPIN);
 
-  function submitPIN(e: React.FormEvent<HTMLFormElement>) {
+  async function submitPIN(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (isInvalidFormatForPIN(pinInput)) {
       setPinError('A Game PIN is 4 digits');
       return;
     }
 
-    setPinError('');
-    setPin(Number(pinInput));
+    try {
+      const response = await fetch(`${apiUrl}/classrooms/${pinInput}`);
+      const { isActive } = await response.json();
+      if (!isActive) {
+        setPinError('Classroom not found. Check your Game PIN.');
+        return;
+      }
+
+      setPinError('');
+      setPin(Number(pinInput));
+    } catch {
+      setPinError('Unable to verify Game PIN. Please try again.');
+    }
   }
 
   return (
