@@ -17,10 +17,26 @@ export default function NameInputStep({
   inputSx,
 }: NameInputStepProps): JSX.Element {
   const [nameInput, setNameInput] = useState('');
+  const [nameError, setNameError] = useState('');
+
+  function handleNameInputChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const value = e.target.value;
+    setNameInput(value);
+
+    if (value.trim() !== '') setNameError('');
+  }
 
   function submitName(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setName(nameInput);
+    const trimmedName = nameInput.trim();
+
+    if (trimmedName === '') {
+      setNameError('Please enter your name');
+      return;
+    }
+
+    setNameError('');
+    setName(trimmedName);
   }
 
   return (
@@ -40,7 +56,9 @@ export default function NameInputStep({
             placeholder='Name'
             variant='outlined'
             value={nameInput}
-            onChange={(e) => setNameInput(e.target.value)}
+            onChange={handleNameInputChange}
+            error={nameError !== ''}
+            helperText={nameError}
             inputProps={{ maxLength: NAME_MAX_LENGTH }}
             sx={inputSx}
           />
