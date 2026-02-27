@@ -73,6 +73,7 @@ export default function LoginFlow({
           setName={setName}
           buttonHeight={BUTTON_HEIGHT}
           inputSx={inputSx}
+          pin={pin}
         />
       )}
     </Box>
