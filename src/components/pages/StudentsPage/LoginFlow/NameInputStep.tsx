@@ -1,12 +1,13 @@
 import { Box, TextField, Typography } from '@mui/material';
 import type { SxProps, Theme } from '@mui/material/styles';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
+
 import SubmitButton from './SubmitButton';
 
 const NAME_MAX_LENGTH = 16;
 
 interface NameInputStepProps {
-  setName: React.Dispatch<React.SetStateAction<string>>;
+  setName: Dispatch<SetStateAction<string>>;
   buttonHeight: number;
   inputSx: SxProps<Theme>;
 }

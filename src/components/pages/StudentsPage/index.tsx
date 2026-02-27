@@ -3,7 +3,7 @@ import { useTheme } from '@mui/material/styles';
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
-import { ClassroomProps, currentTime, PAIRED, SOLO } from '@utils/classrooms';
+import { currentTime, PAIRED, SOLO } from '@utils/classrooms';
 import featureFlags from '@config/featureFlags';
 import { SocketContext } from '@contexts/SocketContext';
 import { UserContext } from '@contexts/UserContext';
@@ -36,7 +36,7 @@ export interface StudentSoloChat {
   startTime: string;
 }
 
-export default function StudentsPage({ classroomName }: ClassroomProps) {
+export default function StudentsPage(): JSX.Element {
   const socket = useContext(SocketContext);
   const { user } = useContext(UserContext);
   const { name: old_name } = user;
@@ -45,7 +45,7 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [name, setName] = useState('');
-  const [pin, setPin] = useState<number>();
+  const [pin, setPin] = useState('');
   const [chatInSession, setChatInSession] = useState(false);
   const [removedFromClass, setRemovedFromClass] = useState(false);
   const [chat, setChat] = useState<StudentPairedChat | StudentSoloChat>();
@@ -178,12 +178,12 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
             chat={chat}
             setChat={setChat}
             chatEndedMsg={chatEndedMsg}
-            classroomName={classroomName}
+            classroomName={pin}
             socketId={socket.id}
           />
         ) : (
           <WelcomeMessage
-            classroomName={classroomName}
+            classroomName={pin}
             removedFromClass={removedFromClass}
             socketId={socket.id}
           />
