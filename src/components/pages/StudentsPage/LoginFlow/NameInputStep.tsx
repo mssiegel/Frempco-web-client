@@ -18,13 +18,22 @@ export default function NameInputStep({
 }: NameInputStepProps): JSX.Element {
   const [nameInput, setNameInput] = useState('');
 
+  function submitName(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
+    setName(nameInput);
+  }
+
   return (
     <>
       <Box sx={{ display: 'flex', flexDirection: 'column' }}>
         <Typography variant='h1' align='center' sx={{ color: 'primary.500' }}>
           Enter Name
         </Typography>
-        <Box sx={{ display: 'flex', gap: 2, mt: '32px' }}>
+        <Box
+          component='form'
+          onSubmit={submitName}
+          sx={{ display: 'flex', gap: 2, mt: '32px' }}
+        >
           <TextField
             autoFocus
             autoComplete='off'
@@ -35,10 +44,7 @@ export default function NameInputStep({
             inputProps={{ maxLength: NAME_MAX_LENGTH }}
             sx={inputSx}
           />
-          <SubmitButton
-            onClick={() => setName(nameInput)}
-            height={buttonHeight}
-          />
+          <SubmitButton height={buttonHeight} />
         </Box>
       </Box>
     </>

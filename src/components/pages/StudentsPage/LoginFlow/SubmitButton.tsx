@@ -13,6 +13,7 @@ export default function SubmitButton({
 }: SubmitButtonProps): JSX.Element {
   return (
     <Button
+      type='submit'
       onClick={onClick}
       sx={{
         padding: '12px',
