@@ -1,12 +1,13 @@
 import { Box, TextField, Typography } from '@mui/material';
 import type { SxProps, Theme } from '@mui/material/styles';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
+
 import SubmitButton from './SubmitButton';
 
 const PIN_LENGTH = 4;
 
 interface PinInputStepProps {
-  setPin: React.Dispatch<React.SetStateAction<number | undefined>>;
+  setPin: Dispatch<SetStateAction<string>>;
   buttonHeight: number;
   inputSx: SxProps<Theme>;
 }
@@ -38,7 +39,7 @@ export default function PinInputStep({
       }
 
       setPinError('');
-      setPin(Number(pinInput));
+      setPin(pinInput);
     } catch {
       setPinError('Unable to verify Game PIN. Please try again.');
     }

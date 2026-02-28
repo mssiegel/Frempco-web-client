@@ -8,10 +8,7 @@ const isBrowser = () => typeof window !== 'undefined';
 
 export default function CheckAuthentication({ children }) {
   const router = useRouter();
-  const protectedRoutes = [
-    '/teacher/classroom/[classroomName]',
-    '/student/classroom/[classroomName]',
-  ];
+  const protectedRoutes = ['/teacher/classroom/[classroomName]'];
 
   const isProtectedPath = protectedRoutes.includes(router.pathname);
 

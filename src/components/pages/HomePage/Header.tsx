@@ -8,7 +8,7 @@ import { useRef } from 'react';
 import { useHeaderButtonsVisibility } from '@hooks/HomePage/useHeaderButtonsVisibility';
 
 interface HeaderProps {
-  visitStudentsPage: (classroom: string, student: string) => void;
+  visitStudentsPage: (isDevTestUser?: boolean) => void;
   visitTeachersPage: (classroom: string) => void;
   gameButtonsRef: React.RefObject<HTMLElement>;
   isMobile: boolean;

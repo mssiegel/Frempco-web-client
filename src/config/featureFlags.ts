@@ -1,11 +1,10 @@
-const newLoginFlowForStudents = {
-  enabled: false,
-  description:
-    'Enables the login flow which takes the student to a new page to enter their classroom PIN',
-};
+// Feature flags let us ship smaller Pull Requests by allowing us to hide our
+// production code behind a flag until we're ready to enable it.
+interface FeatureFlag {
+  enabled: boolean;
+  description?: string;
+}
 
-const featureFlags = {
-  newLoginFlowForStudents,
-};
+const featureFlags: Record<string, FeatureFlag> = {};
 
 export default featureFlags;

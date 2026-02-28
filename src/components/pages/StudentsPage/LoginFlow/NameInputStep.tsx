@@ -1,20 +1,25 @@
 import { Box, TextField, Typography } from '@mui/material';
 import type { SxProps, Theme } from '@mui/material/styles';
-import { useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
+
 import SubmitButton from './SubmitButton';
 
 const NAME_MAX_LENGTH = 16;
 
 interface NameInputStepProps {
-  setName: React.Dispatch<React.SetStateAction<string>>;
+  setName: Dispatch<SetStateAction<string>>;
   buttonHeight: number;
   inputSx: SxProps<Theme>;
+  pin: string;
+  addStudentToGameroom: (studentName: string, pin: string) => void;
 }
 
 export default function NameInputStep({
   setName,
   buttonHeight,
   inputSx,
+  pin,
+  addStudentToGameroom,
 }: NameInputStepProps): JSX.Element {
   const [nameInput, setNameInput] = useState('');
   const [nameError, setNameError] = useState('');
@@ -37,6 +42,7 @@ export default function NameInputStep({
 
     setNameError('');
     setName(trimmedName);
+    addStudentToGameroom(trimmedName, pin);
   }
 
   return (

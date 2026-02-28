@@ -1,16 +1,19 @@
 /** @jsxImportSource @emotion/react */
 
 import { Box } from '@mui/material';
+import { Dispatch, SetStateAction, useState } from 'react';
+
 import NameInputStep from './NameInputStep';
 import PinInputStep from './PinInputStep';
 
 const BUTTON_HEIGHT = 72;
 
 interface LoginFlowProps {
-  pin: number | undefined;
-  setPin: React.Dispatch<React.SetStateAction<number | undefined>>;
-  setName: React.Dispatch<React.SetStateAction<string>>;
+  pin: string;
+  setPin: Dispatch<SetStateAction<string>>;
+  setName: Dispatch<SetStateAction<string>>;
   isMobile: boolean;
+  addStudentToGameroom: (studentName: string, pin: string) => void;
 }
 
 export default function LoginFlow({
@@ -18,8 +21,9 @@ export default function LoginFlow({
   setPin,
   setName,
   isMobile,
+  addStudentToGameroom,
 }: LoginFlowProps): JSX.Element {
-  const isPinStep = pin === undefined;
+  const isPinStep = pin === '';
   const PIN_INPUT_WIDTH = 200;
   const NAME_INPUT_WIDTH_MOBILE = 250;
   const NAME_INPUT_WIDTH_DESKTOP = 350;
@@ -71,6 +75,8 @@ export default function LoginFlow({
           setName={setName}
           buttonHeight={BUTTON_HEIGHT}
           inputSx={inputSx}
+          pin={pin}
+          addStudentToGameroom={addStudentToGameroom}
         />
       )}
     </Box>
