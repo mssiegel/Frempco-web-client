@@ -1,6 +1,6 @@
-import React from 'react';
 import Filter from 'bad-words';
 
+export const TEST_CLASSROOM_NAME = '0000';
 export const PAIRED = 'PAIRED';
 export const SOLO = 'SOLO';
 

@@ -18,25 +18,17 @@ import ProductBenefits from './ProductBenefits';
 
 export default function HomePage() {
   const router = useRouter();
-  const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
   const socket = useContext(SocketContext);
   const { setUser } = useContext(UserContext);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const gameButtonsRef = useRef<HTMLDivElement>(null);
 
-  async function visitStudentsPage(classroom: string, student: string) {
-    const getResponse = await fetch(`${apiUrl}/classrooms/${classroom}`);
-    const { isActive } = await getResponse.json();
-    if (!isActive)
-      return window.alert(
-        `Classroom not found: ${classroom}\nCheck that you entered the correct Classroom PIN.`,
-      );
-    if (student) {
-      socket.emit('new student entered', { classroom, student });
-      setUser({ isLoggedIn: true, name: student });
-      router.push(`/student/classroom/${classroom}`);
-    }
+  function visitStudentsPage(isDevTestUser: boolean = false) {
+    const studentUrl = isDevTestUser
+      ? '/student?isDevTestUser=true'
+      : '/student';
+    router.push(studentUrl);
   }
 
   function visitTeachersPage(classroom: string) {

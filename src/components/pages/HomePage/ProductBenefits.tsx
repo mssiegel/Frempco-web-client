@@ -118,8 +118,8 @@ function ComputerImage({ isMobile }: { isMobile: boolean }): JSX.Element {
         width: isMobile ? '344px' : '538px',
         aspectRatio: '269/165',
         background: isMobile
-          ? 'url(/homepage-computer.jpg) lightgray -116.345px -180.777px / 166.504% 271.618% no-repeat'
-          : 'url(/homepage-computer.jpg) lightgray -181.958px -282.732px / 166.504% 271.618% no-repeat',
+          ? 'url(/HomePage/homepage-computer.jpg) lightgray -116.345px -180.777px / 166.504% 271.618% no-repeat'
+          : 'url(/HomePage/homepage-computer.jpg) lightgray -181.958px -282.732px / 166.504% 271.618% no-repeat',
         position: 'relative', // To position the squiggly SVG absolutely within this Box
       }}
     >

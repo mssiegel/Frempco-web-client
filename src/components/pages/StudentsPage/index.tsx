@@ -1,12 +1,19 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
-import { ClassroomProps, currentTime, PAIRED, SOLO } from '@utils/classrooms';
+import {
+  currentTime,
+  PAIRED,
+  SOLO,
+  TEST_CLASSROOM_NAME,
+} from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
-import { UserContext } from '@contexts/UserContext';
 import Chatbox from './Chatbox';
 import WelcomeMessage from './WelcomeMessage';
+import Header from './Header';
+import LoginFlow from './LoginFlow';
 
 export type ChatMessage = ['you' | 'peer', string];
 
@@ -32,12 +39,15 @@ export interface StudentSoloChat {
   startTime: string;
 }
 
-export default function StudentsPage({ classroomName }: ClassroomProps) {
+export default function StudentsPage(): JSX.Element {
   const socket = useContext(SocketContext);
-  const { user } = useContext(UserContext);
-  const { name } = user;
   console.log('Student socketId:', socket?.id ?? 'No socket found');
 
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
+  const [isDevTestUser, setIsDevTestUser] = useState(false);
+  const [name, setName] = useState('');
+  const [pin, setPin] = useState('');
   const [chatInSession, setChatInSession] = useState(false);
   const [removedFromClass, setRemovedFromClass] = useState(false);
   const [chat, setChat] = useState<StudentPairedChat | StudentSoloChat>();
@@ -54,8 +64,38 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
   //   startTime: '',
   // }
   const [chatEndedMsg, setChatEndedMsg] = useState<null | string>(null);
-
   const router = useRouter();
+
+  function addStudentToGameroom(studentName: string, pin: string) {
+    socket.emit('new student entered', {
+      student: studentName,
+      classroom: pin,
+    });
+  }
+
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+
+    const shouldUseDevTestUser =
+      new URLSearchParams(window.location.search).get('isDevTestUser') ===
+      'true';
+
+    if (shouldUseDevTestUser) {
+      const generatedStudentName = `Student ${Math.trunc(
+        Math.random() * 10000,
+      ).toString()}`;
+
+      setIsDevTestUser(true);
+      setName(generatedStudentName);
+      setPin(TEST_CLASSROOM_NAME);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (isDevTestUser && name && pin) {
+      addStudentToGameroom(name, pin);
+    }
+  }, [isDevTestUser, name, pin]);
 
   useEffect(() => {
     const handleRouteChange = (url, { shallow }) => {
@@ -124,32 +164,53 @@ export default function StudentsPage({ classroomName }: ClassroomProps) {
   }, [router.events, socket]);
 
   return (
-    <main>
-      <Typography variant='h4' textAlign='center' my={1}>
-        Frempco
-      </Typography>
-      <Typography
-        variant='h4'
-        sx={{ color: 'black', mb: 4, textAlign: 'center' }}
-      >
-        {`Hello ${name}.`}
-      </Typography>
-      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-        {chatInSession ? (
-          <Chatbox
-            socket={socket}
-            chat={chat}
-            setChat={setChat}
-            chatEndedMsg={chatEndedMsg}
-            classroomName={classroomName}
-            socketId={socket.id}
+    <main
+      style={{
+        minHeight: '100vh',
+        position: 'relative',
+        display: 'grid',
+        placeItems: 'center',
+      }}
+    >
+      <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
+        <Header isMobile={isMobile} />
+      </Box>
+      <Box>
+        {!name ? (
+          <LoginFlow
+            pin={pin}
+            setPin={setPin}
+            setName={setName}
+            isMobile={isMobile}
+            addStudentToGameroom={addStudentToGameroom}
           />
         ) : (
-          <WelcomeMessage
-            classroomName={classroomName}
-            removedFromClass={removedFromClass}
-            socketId={socket.id}
-          />
+          <>
+            <Typography
+              variant='h4'
+              sx={{ color: 'black', mb: 4, textAlign: 'center' }}
+            >
+              {`Hello ${name}.`}
+            </Typography>
+            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+              {chatInSession ? (
+                <Chatbox
+                  socket={socket}
+                  chat={chat}
+                  setChat={setChat}
+                  chatEndedMsg={chatEndedMsg}
+                  classroomName={pin}
+                  socketId={socket.id}
+                />
+              ) : (
+                <WelcomeMessage
+                  classroomName={pin}
+                  removedFromClass={removedFromClass}
+                  socketId={socket.id}
+                />
+              )}
+            </Box>
+          </>
         )}
       </Box>
     </main>

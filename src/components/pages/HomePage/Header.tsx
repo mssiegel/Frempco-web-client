@@ -8,7 +8,7 @@ import { useRef } from 'react';
 import { useHeaderButtonsVisibility } from '@hooks/HomePage/useHeaderButtonsVisibility';
 
 interface HeaderProps {
-  visitStudentsPage: (classroom: string, student: string) => void;
+  visitStudentsPage: (isDevTestUser?: boolean) => void;
   visitTeachersPage: (classroom: string) => void;
   gameButtonsRef: React.RefObject<HTMLElement>;
   isMobile: boolean;
@@ -46,7 +46,7 @@ export default function Header({
     >
       <Box display='flex' gap={2} alignItems='flex-end'>
         <img
-          src='/frempco-logo-icon.svg'
+          src='/HomePage/frempco-logo-icon.svg'
           alt='Frempco logo icon'
           style={{ height: isMobile ? 50 : 36, width: 'auto' }}
         />
@@ -88,7 +88,7 @@ function LogoText({ showLogoText, transition }: LogoTextProps) {
       }}
     >
       <img
-        src='/frempco-logo-text.svg'
+        src='/HomePage/frempco-logo-text.svg'
         alt='Frempco logo text'
         style={{ height: 36, width: 'auto' }}
       />
