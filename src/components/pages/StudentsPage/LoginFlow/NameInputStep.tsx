@@ -1,8 +1,7 @@
 import { Box, TextField, Typography } from '@mui/material';
 import type { SxProps, Theme } from '@mui/material/styles';
-import { Dispatch, SetStateAction, useContext, useState } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 
-import { SocketContext } from '@contexts/SocketContext';
 import SubmitButton from './SubmitButton';
 
 const NAME_MAX_LENGTH = 16;
@@ -12,7 +11,7 @@ interface NameInputStepProps {
   buttonHeight: number;
   inputSx: SxProps<Theme>;
   pin: string;
-  addStudentToGameroom: (classroom: string, studentName: string) => void;
+  addStudentToGameroom: (studentName: string, pin: string) => void;
 }
 
 export default function NameInputStep({
@@ -24,7 +23,6 @@ export default function NameInputStep({
 }: NameInputStepProps): JSX.Element {
   const [nameInput, setNameInput] = useState('');
   const [nameError, setNameError] = useState('');
-  const socket = useContext(SocketContext);
 
   function handleNameInputChange(e: React.ChangeEvent<HTMLInputElement>) {
     const value = e.target.value;
@@ -44,7 +42,7 @@ export default function NameInputStep({
 
     setNameError('');
     setName(trimmedName);
-    addStudentToGameroom(pin, trimmedName);
+    addStudentToGameroom(trimmedName, pin);
   }
 
   return (

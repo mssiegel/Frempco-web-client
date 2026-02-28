@@ -13,7 +13,7 @@ interface LoginFlowProps {
   setPin: Dispatch<SetStateAction<string>>;
   setName: Dispatch<SetStateAction<string>>;
   isMobile: boolean;
-  addStudentToGameroom: (classroom: string, studentName: string) => void;
+  addStudentToGameroom: (studentName: string, pin: string) => void;
 }
 
 export default function LoginFlow({

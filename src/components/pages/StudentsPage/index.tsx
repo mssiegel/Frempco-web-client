@@ -43,16 +43,11 @@ export default function StudentsPage(): JSX.Element {
   const socket = useContext(SocketContext);
   console.log('Student socketId:', socket?.id ?? 'No socket found');
 
-  const isDevTestUser =
-    new URLSearchParams(window.location.search).get('isDevTestUser') === 'true';
-  const testUserName = `Student ${Math.trunc(
-    Math.random() * 10000,
-  ).toString()}`;
-
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const [name, setName] = useState(isDevTestUser ? testUserName : '');
-  const [pin, setPin] = useState(isDevTestUser ? TEST_CLASSROOM_NAME : '');
+  const [isDevTestUser, setIsDevTestUser] = useState(false);
+  const [name, setName] = useState('');
+  const [pin, setPin] = useState('');
   const [chatInSession, setChatInSession] = useState(false);
   const [removedFromClass, setRemovedFromClass] = useState(false);
   const [chat, setChat] = useState<StudentPairedChat | StudentSoloChat>();
@@ -71,16 +66,36 @@ export default function StudentsPage(): JSX.Element {
   const [chatEndedMsg, setChatEndedMsg] = useState<null | string>(null);
   const router = useRouter();
 
-  function addStudentToGameroom(pin: string, studentName: string) {
+  function addStudentToGameroom(studentName: string, pin: string) {
     socket.emit('new student entered', {
-      classroom: pin,
       student: studentName,
+      classroom: pin,
     });
   }
 
   useEffect(() => {
-    if (isDevTestUser) addStudentToGameroom(pin, name);
+    if (typeof window === 'undefined') return;
+
+    const shouldUseDevTestUser =
+      new URLSearchParams(window.location.search).get('isDevTestUser') ===
+      'true';
+
+    if (shouldUseDevTestUser) {
+      const generatedStudentName = `Student ${Math.trunc(
+        Math.random() * 10000,
+      ).toString()}`;
+
+      setIsDevTestUser(true);
+      setName(generatedStudentName);
+      setPin(TEST_CLASSROOM_NAME);
+    }
   }, []);
+
+  useEffect(() => {
+    if (isDevTestUser && name && pin) {
+      addStudentToGameroom(name, pin);
+    }
+  }, [isDevTestUser, name, pin]);
 
   useEffect(() => {
     const handleRouteChange = (url, { shallow }) => {
