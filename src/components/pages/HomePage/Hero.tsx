@@ -9,7 +9,7 @@ import exampleRoleplayImage from '../../../../public/HomePage/homepage-example-r
 interface HeroProps {
   isMobile: boolean;
   gameButtonsRef: React.RefObject<HTMLDivElement>;
-  visitStudentsPage: (classroom: string, student: string) => void;
+  visitStudentsPage: (isDevTestUser?: boolean) => void;
   visitTeachersPage: (classroom: string) => void;
 }
 

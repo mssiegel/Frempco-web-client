@@ -12,6 +12,7 @@ interface NameInputStepProps {
   buttonHeight: number;
   inputSx: SxProps<Theme>;
   pin: string;
+  addStudentToGameroom: (classroom: string, studentName: string) => void;
 }
 
 export default function NameInputStep({
@@ -19,6 +20,7 @@ export default function NameInputStep({
   buttonHeight,
   inputSx,
   pin,
+  addStudentToGameroom,
 }: NameInputStepProps): JSX.Element {
   const [nameInput, setNameInput] = useState('');
   const [nameError, setNameError] = useState('');
@@ -42,10 +44,7 @@ export default function NameInputStep({
 
     setNameError('');
     setName(trimmedName);
-    socket.emit('new student entered', {
-      classroom: pin,
-      student: trimmedName,
-    });
+    addStudentToGameroom(pin, trimmedName);
   }
 
   return (

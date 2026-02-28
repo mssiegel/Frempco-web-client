@@ -13,6 +13,7 @@ interface LoginFlowProps {
   setPin: Dispatch<SetStateAction<string>>;
   setName: Dispatch<SetStateAction<string>>;
   isMobile: boolean;
+  addStudentToGameroom: (classroom: string, studentName: string) => void;
 }
 
 export default function LoginFlow({
@@ -20,6 +21,7 @@ export default function LoginFlow({
   setPin,
   setName,
   isMobile,
+  addStudentToGameroom,
 }: LoginFlowProps): JSX.Element {
   const isPinStep = pin === '';
   const PIN_INPUT_WIDTH = 200;
@@ -74,6 +76,7 @@ export default function LoginFlow({
           buttonHeight={BUTTON_HEIGHT}
           inputSx={inputSx}
           pin={pin}
+          addStudentToGameroom={addStudentToGameroom}
         />
       )}
     </Box>
