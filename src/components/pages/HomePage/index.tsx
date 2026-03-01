@@ -15,6 +15,7 @@ import Header from './Header';
 import HowItWorks from './HowItWorks';
 import Hero from './Hero';
 import ProductBenefits from './ProductBenefits';
+import { DEV_TEST_USER_QUERY_PARAM } from '@utils/classrooms';
 
 export default function HomePage() {
   const router = useRouter();
@@ -26,7 +27,7 @@ export default function HomePage() {
 
   function visitStudentsPage(isDevTestUser: boolean = false) {
     const studentUrl = isDevTestUser
-      ? '/student?isDevTestUser=true'
+      ? `/student?${DEV_TEST_USER_QUERY_PARAM}=true`
       : '/student';
     router.push(studentUrl);
   }
