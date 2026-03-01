@@ -7,7 +7,7 @@ import SubmitButton from './SubmitButton';
 const NAME_MAX_LENGTH = 16;
 
 interface NameInputStepProps {
-  setName: Dispatch<SetStateAction<string>>;
+  setStudentName: Dispatch<SetStateAction<string>>;
   buttonHeight: number;
   inputSx: SxProps<Theme>;
   pin: string;
@@ -15,7 +15,7 @@ interface NameInputStepProps {
 }
 
 export default function NameInputStep({
-  setName,
+  setStudentName,
   buttonHeight,
   inputSx,
   pin,
@@ -41,7 +41,7 @@ export default function NameInputStep({
     }
 
     setNameError('');
-    setName(trimmedName);
+    setStudentName(trimmedName);
     addStudentToGameroom(trimmedName, pin);
   }
 

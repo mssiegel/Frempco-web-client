@@ -48,7 +48,7 @@ export default function StudentsPage(): JSX.Element {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const [name, setName] = useState('');
+  const [studentName, setStudentName] = useState('');
   const [pin, setPin] = useState('');
   const [chatInSession, setChatInSession] = useState(false);
   const [removedFromClass, setRemovedFromClass] = useState(false);
@@ -80,7 +80,7 @@ export default function StudentsPage(): JSX.Element {
       Math.random() * 10000,
     ).toString()}`;
 
-    setName(randomStudentName);
+    setStudentName(randomStudentName);
     setPin(TEST_CLASSROOM_NAME);
     addStudentToGameroom(randomStudentName, TEST_CLASSROOM_NAME);
     sessionStorage.setItem(DEV_TEST_USER_SESSION_FLAG, 'true');
@@ -180,40 +180,34 @@ export default function StudentsPage(): JSX.Element {
         <Header isMobile={isMobile} />
       </Box>
       <Box>
-        {!name ? (
+        {!studentName ? (
           <LoginFlow
             pin={pin}
             setPin={setPin}
-            setName={setName}
+            setStudentName={setStudentName}
             isMobile={isMobile}
             addStudentToGameroom={addStudentToGameroom}
           />
         ) : (
           <>
-            <Typography
-              variant='h4'
-              sx={{ color: 'black', mb: 4, textAlign: 'center' }}
-            >
-              {`Hello ${name}.`}
-            </Typography>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              {chatInSession ? (
-                <Chatbox
-                  socket={socket}
-                  chat={chat}
-                  setChat={setChat}
-                  chatEndedMsg={chatEndedMsg}
-                  classroomName={pin}
-                  socketId={socket.id}
-                />
-              ) : (
-                <WelcomeMessage
-                  classroomName={pin}
-                  removedFromClass={removedFromClass}
-                  socketId={socket.id}
-                />
-              )}
-            </Box>
+            {chatInSession ? (
+              <Chatbox
+                socket={socket}
+                chat={chat}
+                setChat={setChat}
+                chatEndedMsg={chatEndedMsg}
+                classroomName={pin}
+                socketId={socket.id}
+              />
+            ) : (
+              <WelcomeMessage
+                pin={pin}
+                removedFromClass={removedFromClass}
+                socketId={socket.id}
+                studentName={studentName}
+                isMobile={isMobile}
+              />
+            )}
           </>
         )}
       </Box>
