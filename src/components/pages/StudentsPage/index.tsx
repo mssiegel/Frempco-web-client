@@ -190,30 +190,24 @@ export default function StudentsPage(): JSX.Element {
           />
         ) : (
           <>
-            <Typography
-              variant='h4'
-              sx={{ color: 'black', mb: 4, textAlign: 'center' }}
-            >
-              {`Hello ${name}.`}
-            </Typography>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              {chatInSession ? (
-                <Chatbox
-                  socket={socket}
-                  chat={chat}
-                  setChat={setChat}
-                  chatEndedMsg={chatEndedMsg}
-                  classroomName={pin}
-                  socketId={socket.id}
-                />
-              ) : (
-                <WelcomeMessage
-                  classroomName={pin}
-                  removedFromClass={removedFromClass}
-                  socketId={socket.id}
-                />
-              )}
-            </Box>
+            {chatInSession ? (
+              <Chatbox
+                socket={socket}
+                chat={chat}
+                setChat={setChat}
+                chatEndedMsg={chatEndedMsg}
+                classroomName={pin}
+                socketId={socket.id}
+              />
+            ) : (
+              <WelcomeMessage
+                classroomName={pin}
+                removedFromClass={removedFromClass}
+                socketId={socket.id}
+                studentName={name}
+                isMobile={isMobile}
+              />
+            )}
           </>
         )}
       </Box>
