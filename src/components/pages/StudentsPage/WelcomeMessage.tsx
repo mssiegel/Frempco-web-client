@@ -36,7 +36,7 @@ export default function WelcomeMessage({
         variant={isMobile ? 'h4' : 'h1'}
         sx={{ py: 4 }}
         align='center'
-      >{`Hello, ${studentName}!`}</Typography>
+      >{`Hello ${studentName}`}</Typography>
       {removedFromClass || !isConnected ? (
         <>
           <Typography variant='h4' sx={{ mb: 4 }} align='center'>
