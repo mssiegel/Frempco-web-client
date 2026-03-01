@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 
 import {
   currentTime,
+  DEV_TEST_USER_QUERY_PARAM,
   PAIRED,
   SOLO,
   TEST_CLASSROOM_NAME,
@@ -39,7 +40,6 @@ export interface StudentSoloChat {
   startTime: string;
 }
 
-const DEV_TEST_USER_QUERY_PARAM = 'isDevTestUser';
 const DEV_TEST_USER_SESSION_FLAG = 'wasDevTestUserSet';
 
 export default function StudentsPage(): JSX.Element {
@@ -75,6 +75,17 @@ export default function StudentsPage(): JSX.Element {
     });
   }
 
+  function initializeDevTestUser() {
+    const randomStudentName = `Student ${Math.trunc(
+      Math.random() * 10000,
+    ).toString()}`;
+
+    setName(randomStudentName);
+    setPin(TEST_CLASSROOM_NAME);
+    addStudentToGameroom(randomStudentName, TEST_CLASSROOM_NAME);
+    sessionStorage.setItem(DEV_TEST_USER_SESSION_FLAG, 'true');
+  }
+
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
@@ -86,14 +97,7 @@ export default function StudentsPage(): JSX.Element {
       sessionStorage.getItem(DEV_TEST_USER_SESSION_FLAG) === 'true';
 
     if (isDevTestUserRequested && !hasInitializedDevTestUser) {
-      const randomStudentName = `Student ${Math.trunc(
-        Math.random() * 10000,
-      ).toString()}`;
-
-      setName(randomStudentName);
-      setPin(TEST_CLASSROOM_NAME);
-      addStudentToGameroom(randomStudentName, TEST_CLASSROOM_NAME);
-      sessionStorage.setItem(DEV_TEST_USER_SESSION_FLAG, 'true');
+      initializeDevTestUser();
     }
   }, []);
 
