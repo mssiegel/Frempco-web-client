@@ -39,13 +39,15 @@ export interface StudentSoloChat {
   startTime: string;
 }
 
+const DEV_TEST_USER_QUERY_PARAM = 'isDevTestUser';
+const DEV_TEST_USER_SESSION_FLAG = 'wasDevTestUserSet';
+
 export default function StudentsPage(): JSX.Element {
   const socket = useContext(SocketContext);
   console.log('Student socketId:', socket?.id ?? 'No socket found');
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const [isDevTestUser, setIsDevTestUser] = useState(false);
   const [name, setName] = useState('');
   const [pin, setPin] = useState('');
   const [chatInSession, setChatInSession] = useState(false);
@@ -76,26 +78,24 @@ export default function StudentsPage(): JSX.Element {
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const shouldUseDevTestUser =
-      new URLSearchParams(window.location.search).get('isDevTestUser') ===
-      'true';
+    const isDevTestUserRequested =
+      new URLSearchParams(window.location.search).get(
+        DEV_TEST_USER_QUERY_PARAM,
+      ) === 'true';
+    const hasInitializedDevTestUser =
+      sessionStorage.getItem(DEV_TEST_USER_SESSION_FLAG) === 'true';
 
-    if (shouldUseDevTestUser) {
-      const generatedStudentName = `Student ${Math.trunc(
+    if (isDevTestUserRequested && !hasInitializedDevTestUser) {
+      const randomStudentName = `Student ${Math.trunc(
         Math.random() * 10000,
       ).toString()}`;
 
-      setIsDevTestUser(true);
-      setName(generatedStudentName);
+      setName(randomStudentName);
       setPin(TEST_CLASSROOM_NAME);
+      addStudentToGameroom(randomStudentName, TEST_CLASSROOM_NAME);
+      sessionStorage.setItem(DEV_TEST_USER_SESSION_FLAG, 'true');
     }
   }, []);
-
-  useEffect(() => {
-    if (isDevTestUser && name && pin) {
-      addStudentToGameroom(name, pin);
-    }
-  }, [isDevTestUser, name, pin]);
 
   useEffect(() => {
     const handleRouteChange = (url, { shallow }) => {
