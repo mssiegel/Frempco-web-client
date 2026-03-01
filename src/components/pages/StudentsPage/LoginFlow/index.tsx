@@ -1,7 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { Box } from '@mui/material';
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 
 import NameInputStep from './NameInputStep';
 import PinInputStep from './PinInputStep';
@@ -11,7 +11,7 @@ const BUTTON_HEIGHT = 72;
 interface LoginFlowProps {
   pin: string;
   setPin: Dispatch<SetStateAction<string>>;
-  setName: Dispatch<SetStateAction<string>>;
+  setStudentName: Dispatch<SetStateAction<string>>;
   isMobile: boolean;
   addStudentToGameroom: (studentName: string, pin: string) => void;
 }
@@ -19,7 +19,7 @@ interface LoginFlowProps {
 export default function LoginFlow({
   pin,
   setPin,
-  setName,
+  setStudentName,
   isMobile,
   addStudentToGameroom,
 }: LoginFlowProps): JSX.Element {
@@ -72,7 +72,7 @@ export default function LoginFlow({
         />
       ) : (
         <NameInputStep
-          setName={setName}
+          setStudentName={setStudentName}
           buttonHeight={BUTTON_HEIGHT}
           inputSx={inputSx}
           pin={pin}

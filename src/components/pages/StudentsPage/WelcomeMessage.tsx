@@ -7,7 +7,7 @@ import Link from '@components/shared/Link';
 import { useStudentInClassroom } from '@hooks/useStudentInClassroom';
 
 interface WelcomeMessageProps {
-  classroomName: string;
+  pin: string;
   removedFromClass: boolean;
   socketId: string;
   studentName: string;
@@ -15,13 +15,13 @@ interface WelcomeMessageProps {
 }
 
 export default function WelcomeMessage({
-  classroomName,
+  pin,
   removedFromClass,
   socketId,
   studentName,
   isMobile,
 }: WelcomeMessageProps) {
-  const isConnected = useStudentInClassroom(classroomName, socketId);
+  const isConnected = useStudentInClassroom(pin, socketId);
 
   return (
     <Box>
