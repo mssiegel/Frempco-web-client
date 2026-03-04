@@ -19,19 +19,14 @@ export default function Conversation({ chat, elementId }: ConversationProps) {
   return (
     <Box id={elementId}>
       <Box css={conversationCSS.introText}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <Box>
-            ({student1.realName})&nbsp;&nbsp;
-            <span css={conversationCSS.student1}>{student1.character}</span>
-            <br />
-            {chat.mode === PAIRED && <>{student2.realName}&nbsp;&nbsp;</>}
-            <span css={conversationCSS.student2}>
-              {chat.mode === PAIRED ? student2.character : 'chatbot'}
-            </span>
-          </Box>
-          <span>{chat.startTime}</span>
-        </Box>
-        ------
+        ({student1.realName})&nbsp;&nbsp;
+        <span css={conversationCSS.student1}>{student1.character}</span>
+        <br />
+        {chat.mode === PAIRED && <>{student2.realName}&nbsp;&nbsp;</>}
+        <span css={conversationCSS.student2}>
+          {chat.mode === PAIRED ? student2.character : 'chatbot'}
+        </span>
+        <Box>------</Box>
       </Box>
       {chat.conversation.map(([messageAuthor, message], i) => {
         let character = '';

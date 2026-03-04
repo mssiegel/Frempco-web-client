@@ -27,7 +27,6 @@ export interface StudentPairedChat {
     peer: string;
   };
   conversation: ChatMessage[];
-  startTime: string;
 }
 
 export interface StudentSoloChat {
@@ -37,7 +36,6 @@ export interface StudentSoloChat {
     peer: string;
   };
   conversation: SoloChatMessage[];
-  startTime: string;
 }
 
 const DEV_TEST_USER_SESSION_FLAG = 'wasDevTestUserSet';
@@ -63,7 +61,6 @@ export default function StudentsPage(): JSX.Element {
   //     // ['you', 'i need blood'],
   //     // ['peer', 'i will cast a spell to make some'],
   //   ],
-  //   startTime: '',
   // }
   const [chatEndedMsg, setChatEndedMsg] = useState<null | string>(null);
   const router = useRouter();
@@ -120,7 +117,6 @@ export default function StudentsPage(): JSX.Element {
             peer: peersCharacter,
           },
           conversation: [],
-          startTime: currentTime(),
         });
         setChatInSession(true);
         setChatEndedMsg(null);
@@ -134,7 +130,6 @@ export default function StudentsPage(): JSX.Element {
             peer: 'chatbot',
           },
           conversation: messages,
-          startTime: currentTime(),
         });
         setChatInSession(true);
         setChatEndedMsg(null);

@@ -8,8 +8,8 @@ import { scrollToBottomOfElement } from '@utils/classrooms';
 import chatboxCSS from './Chatbox.css';
 import Conversation from './Conversation';
 import SendMessages from './SendMessages';
-import CopyButton from '@components/shared/CopyButton';
 import { StudentPairedChat, StudentSoloChat } from './index';
+import Header from './Chatbox/Header';
 
 interface ChatboxProps {
   socket: Socket;
@@ -60,9 +60,10 @@ export default function Chatbox({
 
   return (
     <Box css={chatboxCSS.chatboxContainer}>
-      <Box sx={{ mb: 1 }}>
-        <CopyButton elementId='conversation' />
-      </Box>
+      <Header
+        yourCharacter={chat.characters.you}
+        peerCharacter={chat.characters.peer}
+      />
       <Box css={chatboxCSS.chatboxTop} ref={chatboxConversationContainer}>
         <Conversation chat={chat} />
       </Box>
