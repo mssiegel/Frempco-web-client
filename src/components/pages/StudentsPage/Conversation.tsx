@@ -12,17 +12,7 @@ interface ConversationProps {
 
 export default function Conversation({ chat }: ConversationProps) {
   return (
-    <Box id='conversation'>
-      <Box css={conversationCSS.introText}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between' }}>
-          <span>
-            Hi <span css={conversationCSS.you}>{chat.characters.you}</span>
-          </span>
-          <span>{chat.startTime}</span>
-        </Box>
-        <span>You matched with </span>
-        <span css={conversationCSS.peer}>{chat.characters.peer}</span>
-      </Box>
+    <Box>
       {chat.conversation.map(([messageAuthor, message], i) => {
         let character = '';
         let fontCSS = {};

@@ -53,7 +53,6 @@ export default function UnpairedStudentItem({
             chatId,
             student,
             conversation: messages,
-            startTime: currentTime(),
           },
         ]);
       },
