@@ -6,7 +6,7 @@ import { Socket } from 'socket.io-client';
 
 import { scrollToBottomOfElement } from '@utils/classrooms';
 import chatboxCSS from './Chatbox.css';
-import Conversation from './Conversation';
+import Conversation from './Chatbox/Conversation';
 import SendMessages from './SendMessages';
 import { StudentPairedChat, StudentSoloChat } from './index';
 import Header from './Chatbox/Header';
@@ -59,12 +59,31 @@ export default function Chatbox({
   const chatboxConversationContainer = useRef(null);
 
   return (
-    <Box css={chatboxCSS.chatboxContainer}>
+    <Box
+      css={chatboxCSS.chatboxContainer}
+      sx={{
+        boxShadow: '0 20px 24px -4px rgba(10, 13, 18, 0.08)',
+        border: '1px dashed silver',
+        borderRadius: '12px',
+      }}
+    >
       <Header
         yourCharacter={chat.characters.you}
         peerCharacter={chat.characters.peer}
       />
-      <Box css={chatboxCSS.chatboxTop} ref={chatboxConversationContainer}>
+      <Box
+        ref={chatboxConversationContainer}
+        sx={{
+          background: 'neutrals.white',
+          borderRadius: '10px 10px 0 0',
+          minHeight: '280px',
+          py: '10px',
+          px: '16px',
+          maxHeight: '350px',
+          overflowY: 'overlay',
+          scrollBehavior: 'smooth',
+        }}
+      >
         <Conversation chat={chat} />
       </Box>
       <Box css={chatboxCSS.chatboxBottom}>
