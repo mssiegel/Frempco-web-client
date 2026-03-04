@@ -93,6 +93,10 @@ export default function StudentsPage(): JSX.Element {
       new URLSearchParams(window.location.search).get(
         DEV_TEST_USER_QUERY_PARAM,
       ) === 'true';
+    // Persist this flag in sessionStorage (instead of React state) so
+    // Next.js Fast Refresh after local saves does not create a new dev test
+    // user. sessionStorage survives within the current tab session, so we
+    // initialize only one dev test user per session.
     const hasInitializedDevTestUser =
       sessionStorage.getItem(DEV_TEST_USER_SESSION_FLAG) === 'true';
 
