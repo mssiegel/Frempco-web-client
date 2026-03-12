@@ -180,38 +180,36 @@ export default function StudentsPage(): JSX.Element {
       <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
         <Header isMobile={isMobile} />
       </Box>
-      <Box>
-        {!studentName ? (
-          <LoginFlow
-            pin={pin}
-            setPin={setPin}
-            setStudentName={setStudentName}
-            isMobile={isMobile}
-            addStudentToGameroom={addStudentToGameroom}
-          />
-        ) : (
-          <>
-            {chatInSession ? (
-              <Chatbox
-                socket={socket}
-                chat={chat}
-                setChat={setChat}
-                chatEndedMsg={chatEndedMsg}
-                classroomName={pin}
-                socketId={socket.id}
-              />
-            ) : (
-              <WelcomeMessage
-                pin={pin}
-                removedFromClass={removedFromClass}
-                socketId={socket.id}
-                studentName={studentName}
-                isMobile={isMobile}
-              />
-            )}
-          </>
-        )}
-      </Box>
+      {!studentName ? (
+        <LoginFlow
+          pin={pin}
+          setPin={setPin}
+          setStudentName={setStudentName}
+          isMobile={isMobile}
+          addStudentToGameroom={addStudentToGameroom}
+        />
+      ) : (
+        <>
+          {chatInSession ? (
+            <Chatbox
+              socket={socket}
+              chat={chat}
+              setChat={setChat}
+              chatEndedMsg={chatEndedMsg}
+              classroomName={pin}
+              socketId={socket.id}
+            />
+          ) : (
+            <WelcomeMessage
+              pin={pin}
+              removedFromClass={removedFromClass}
+              socketId={socket.id}
+              studentName={studentName}
+              isMobile={isMobile}
+            />
+          )}
+        </>
+      )}
     </main>
   );
 }
