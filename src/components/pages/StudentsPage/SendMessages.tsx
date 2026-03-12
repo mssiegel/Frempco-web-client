@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { Box, Fab, Typography } from '@mui/material';
-import { Send as SendIcon } from '@mui/icons-material';
+import { Box, Fab, Icon, Typography } from '@mui/material';
 import { Dispatch, SetStateAction, useState, useEffect, useRef } from 'react';
 import { Socket } from 'socket.io-client';
 
@@ -16,20 +15,16 @@ interface SendMessagesProps {
   chat: StudentPairedChat | StudentSoloChat;
   setChat: Dispatch<SetStateAction<StudentPairedChat | StudentSoloChat>>;
   chatEndedMsg: null | string;
-  peerIsTyping: boolean;
   setPeerIsTyping: Dispatch<SetStateAction<boolean>>;
   classroomName: string;
   socketId: string;
 }
-
-let peerTypingTimer = null;
 
 export default function SendMessages({
   socket,
   chat,
   setChat,
   chatEndedMsg,
-  peerIsTyping,
   setPeerIsTyping,
   classroomName,
   socketId,
@@ -37,22 +32,6 @@ export default function SendMessages({
   const typeMessageInput = useRef(null);
   const [message, setMessage] = useState('');
   const isConnected = useStudentInClassroom(classroomName, socketId);
-
-  useEffect(() => {
-    if (socket) {
-      socket.on('peer is typing', () => {
-        clearTimeout(peerTypingTimer);
-        peerTypingTimer = setTimeout(() => setPeerIsTyping(false), 3000);
-        setPeerIsTyping(true);
-      });
-    }
-
-    return () => {
-      if (socket) {
-        socket.off('peer is typing');
-      }
-    };
-  }, [socket]);
 
   function sendMessage(e) {
     e.preventDefault();
@@ -104,11 +83,6 @@ export default function SendMessages({
     socket.emit('student typing');
   }
 
-  const peerIsTypingMessage =
-    chat.mode === PAIRED
-      ? `${chat.characters.peer} is typing...`
-      : `chatbot is thinking...`;
-
   let chatEndedInformationalMessage = null;
   if (!isConnected) {
     chatEndedInformationalMessage = (
@@ -123,24 +97,13 @@ export default function SendMessages({
 
   return (
     <Box>
-      <Typography css={sendMessagesCSS.peerIsTyping}>
-        {/* The "&nbsp;" space ensures a consistent layout, preventing the chat
-         messages from shifting when the 'peer is typing' indicator appears. */}
-        &nbsp;
-        {peerIsTyping && peerIsTypingMessage}
-      </Typography>
-
       {!chatEndedInformationalMessage && (
         <form onSubmit={sendMessage}>
-          <Typography css={sendMessagesCSS.characterName}>
-            {chat.characters.you}
-          </Typography>
-
-          <div css={sendMessagesCSS.messageBar}>
+          <Box sx={{ textAlign: 'center' }}>
             <input
               css={sendMessagesCSS.message}
               value={message}
-              placeholder='Say something'
+              placeholder={`Talk as ${chat.characters.you}...`}
               maxLength={chat.mode === PAIRED ? 75 : 120}
               onChange={sendUserIsTyping}
               autoFocus
@@ -151,11 +114,11 @@ export default function SendMessages({
               size='small'
               type='submit'
               color='primary'
-              style={{ marginLeft: '10px', background: '#940000' }}
+              style={{ marginLeft: '10px' }}
             >
-              <SendIcon />
+              <Icon sx={{ fontSize: 24 }}>send</Icon>
             </Fab>
-          </div>
+          </Box>
         </form>
       )}
 
