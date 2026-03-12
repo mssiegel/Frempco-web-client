@@ -75,7 +75,6 @@ export default function Chatbox({
         <Box
           ref={chatboxConversationContainer}
           sx={{
-            background: 'neutrals.white',
             borderRadius: '10px 10px 0 0',
             minHeight: '280px',
             maxHeight: '350px',
@@ -84,20 +83,23 @@ export default function Chatbox({
             mt: '10px',
           }}
         >
-          <Conversation chat={chat} />
-        </Box>
-        <Box sx={{ borderRadius: '0 0 10px 10px' }}>
-          <SendMessages
-            socket={socket}
+          <Conversation
             chat={chat}
-            setChat={setChat}
-            chatEndedMsg={chatEndedMsg}
+            socket={socket}
             peerIsTyping={peerIsTyping}
             setPeerIsTyping={setPeerIsTyping}
-            classroomName={classroomName}
-            socketId={socketId}
           />
         </Box>
+
+        <SendMessages
+          socket={socket}
+          chat={chat}
+          setChat={setChat}
+          chatEndedMsg={chatEndedMsg}
+          setPeerIsTyping={setPeerIsTyping}
+          classroomName={classroomName}
+          socketId={socketId}
+        />
       </Box>
     </Box>
   );

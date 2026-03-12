@@ -30,17 +30,8 @@ const chatEndedInfo = css`
   }
 `;
 
-const peerIsTyping = css`
-  padding: 5px 10px 5px 17px;
-  text-align: left;
-  font-size: 16px;
-  color: #aaa;
-  font-style: italic;
-`;
-
 const sendMessagesCSS = {
   message,
-  peerIsTyping,
   chatEndedInfo,
 };
 

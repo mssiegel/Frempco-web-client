@@ -1,15 +1,26 @@
 /** @jsxImportSource @emotion/react */
 
+import { Dispatch, SetStateAction } from 'react';
 import { Box, Typography } from '@mui/material';
+import { Socket } from 'socket.io-client';
 
 import { filterWords } from '@utils/classrooms';
 import { StudentPairedChat, StudentSoloChat } from '../index';
+import PeerIsTyping from './PeerIsTyping';
 
 interface ConversationProps {
   chat: StudentPairedChat | StudentSoloChat;
+  socket: Socket;
+  peerIsTyping: boolean;
+  setPeerIsTyping: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function Conversation({ chat }: ConversationProps): JSX.Element {
+export default function Conversation({
+  chat,
+  socket,
+  peerIsTyping,
+  setPeerIsTyping,
+}: ConversationProps): JSX.Element {
   return (
     <Box>
       {chat.conversation.map(([messageAuthor, message], i) => {
@@ -43,6 +54,12 @@ export default function Conversation({ chat }: ConversationProps): JSX.Element {
           </Box>
         );
       })}
+      <PeerIsTyping
+        chat={chat}
+        socket={socket}
+        peerIsTyping={peerIsTyping}
+        setPeerIsTyping={setPeerIsTyping}
+      />
     </Box>
   );
 }

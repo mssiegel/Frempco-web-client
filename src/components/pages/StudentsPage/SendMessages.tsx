@@ -15,20 +15,16 @@ interface SendMessagesProps {
   chat: StudentPairedChat | StudentSoloChat;
   setChat: Dispatch<SetStateAction<StudentPairedChat | StudentSoloChat>>;
   chatEndedMsg: null | string;
-  peerIsTyping: boolean;
   setPeerIsTyping: Dispatch<SetStateAction<boolean>>;
   classroomName: string;
   socketId: string;
 }
-
-let peerTypingTimer = null;
 
 export default function SendMessages({
   socket,
   chat,
   setChat,
   chatEndedMsg,
-  peerIsTyping,
   setPeerIsTyping,
   classroomName,
   socketId,
@@ -36,22 +32,6 @@ export default function SendMessages({
   const typeMessageInput = useRef(null);
   const [message, setMessage] = useState('');
   const isConnected = useStudentInClassroom(classroomName, socketId);
-
-  useEffect(() => {
-    if (socket) {
-      socket.on('peer is typing', () => {
-        clearTimeout(peerTypingTimer);
-        peerTypingTimer = setTimeout(() => setPeerIsTyping(false), 3000);
-        setPeerIsTyping(true);
-      });
-    }
-
-    return () => {
-      if (socket) {
-        socket.off('peer is typing');
-      }
-    };
-  }, [socket]);
 
   function sendMessage(e) {
     e.preventDefault();
@@ -103,11 +83,6 @@ export default function SendMessages({
     socket.emit('student typing');
   }
 
-  const peerIsTypingMessage =
-    chat.mode === PAIRED
-      ? `${chat.characters.peer} is typing...`
-      : `chatbot is thinking...`;
-
   let chatEndedInformationalMessage = null;
   if (!isConnected) {
     chatEndedInformationalMessage = (
@@ -122,13 +97,6 @@ export default function SendMessages({
 
   return (
     <Box>
-      <Typography css={sendMessagesCSS.peerIsTyping}>
-        {/* The "&nbsp;" space ensures a consistent layout, preventing the chat
-         messages from shifting when the 'peer is typing' indicator appears. */}
-        &nbsp;
-        {peerIsTyping && peerIsTypingMessage}
-      </Typography>
-
       {!chatEndedInformationalMessage && (
         <form onSubmit={sendMessage}>
           <Box sx={{ textAlign: 'center' }}>
