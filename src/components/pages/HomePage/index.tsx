@@ -17,6 +17,8 @@ import Hero from './Hero';
 import ProductBenefits from './ProductBenefits';
 import { DEV_TEST_USER_QUERY_PARAM } from '@utils/classrooms';
 
+const DEV_TEST_USER_SESSION_FLAG = 'wasDevTestUserSet';
+
 export default function HomePage() {
   const router = useRouter();
   const socket = useContext(SocketContext);
@@ -29,6 +31,11 @@ export default function HomePage() {
     const studentUrl = isDevTestUser
       ? `/student?${DEV_TEST_USER_QUERY_PARAM}=true`
       : '/student';
+
+    // Deletes any prior dev test user session flags. A new one gets saved into
+    // session storage when visiting the students page.
+    if (isDevTestUser) sessionStorage.removeItem(DEV_TEST_USER_SESSION_FLAG);
+
     router.push(studentUrl);
   }
 
