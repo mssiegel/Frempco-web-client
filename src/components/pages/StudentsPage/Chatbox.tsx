@@ -63,8 +63,10 @@ export default function Chatbox({
       css={chatboxCSS.chatboxContainer}
       sx={{
         boxShadow: '0 20px 24px -4px rgba(10, 13, 18, 0.08)',
-        border: '1px dashed silver',
+        border: '1px solid silver',
         borderRadius: '12px',
+        paddingBottom: '16px',
+        backgroundColor: 'white',
       }}
     >
       <Header
@@ -75,12 +77,11 @@ export default function Chatbox({
         <Box
           ref={chatboxConversationContainer}
           sx={{
-            borderRadius: '10px 10px 0 0',
             minHeight: '280px',
             maxHeight: '350px',
             overflowY: 'overlay',
             scrollBehavior: 'smooth',
-            mt: '10px',
+            my: '10px',
           }}
         >
           <Conversation

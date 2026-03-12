@@ -173,6 +173,8 @@ export default function StudentsPage(): JSX.Element {
         position: 'relative',
         display: 'grid',
         placeItems: 'center',
+        background:
+          'var(--Gradients, linear-gradient(180deg, #FFF 0%, #EBECFE 100%))',
       }}
     >
       <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
