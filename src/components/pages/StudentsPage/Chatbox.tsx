@@ -5,7 +5,6 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
 import { scrollToBottomOfElement } from '@utils/classrooms';
-import chatboxCSS from './Chatbox.css';
 import Conversation from './Chatbox/Conversation';
 import SendMessages from './SendMessages';
 import { StudentPairedChat, StudentSoloChat } from './index';
@@ -60,13 +59,16 @@ export default function Chatbox({
 
   return (
     <Box
-      css={chatboxCSS.chatboxContainer}
       sx={{
         boxShadow: '0 20px 24px -4px rgba(10, 13, 18, 0.08)',
         border: '1px solid silver',
         borderRadius: '12px',
         paddingBottom: '16px',
         backgroundColor: 'white',
+        width: '500px',
+        '@media (max-width: 500px)': {
+          width: '100%',
+        },
       }}
     >
       <Header
