@@ -1,7 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { Box, Fab, Typography } from '@mui/material';
-import { Send as SendIcon } from '@mui/icons-material';
+import { Box, Fab, Icon, Typography } from '@mui/material';
 import { Dispatch, SetStateAction, useState, useEffect, useRef } from 'react';
 import { Socket } from 'socket.io-client';
 
@@ -132,15 +131,11 @@ export default function SendMessages({
 
       {!chatEndedInformationalMessage && (
         <form onSubmit={sendMessage}>
-          <Typography css={sendMessagesCSS.characterName}>
-            {chat.characters.you}
-          </Typography>
-
-          <div css={sendMessagesCSS.messageBar}>
+          <Box sx={{ textAlign: 'center' }}>
             <input
               css={sendMessagesCSS.message}
               value={message}
-              placeholder='Say something'
+              placeholder={`Talk as ${chat.characters.you}...`}
               maxLength={chat.mode === PAIRED ? 75 : 120}
               onChange={sendUserIsTyping}
               autoFocus
@@ -151,11 +146,11 @@ export default function SendMessages({
               size='small'
               type='submit'
               color='primary'
-              style={{ marginLeft: '10px', background: '#940000' }}
+              style={{ marginLeft: '10px' }}
             >
-              <SendIcon />
+              <Icon sx={{ fontSize: 24 }}>send</Icon>
             </Fab>
-          </div>
+          </Box>
         </form>
       )}
 
