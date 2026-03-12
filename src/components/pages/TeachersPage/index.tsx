@@ -35,7 +35,6 @@ export interface StudentChat {
   chatId: string;
   studentPair: StudentPair;
   conversation: ChatMessage[];
-  startTime: string;
 }
 
 export interface SoloChat {
@@ -43,7 +42,6 @@ export interface SoloChat {
   chatId: string;
   student: Student;
   conversation: SoloChatMessage[];
-  startTime: string;
 }
 
 export default function TeachersPage({ classroomName }: ClassroomProps) {
@@ -69,7 +67,6 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     //     ['student1', 'i need blood'],
     //     ['student2', 'i will cast a spell to make some'],
     //   ],
-    //   startTime: '',
     // },
   ]);
 
@@ -109,7 +106,6 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
             chatId,
             studentPair,
             conversation: [],
-            startTime: currentTime(),
           },
         ]);
       });

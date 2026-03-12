@@ -34,7 +34,6 @@ export const EXAMPLE_CHATS: StudentChat[] = [
       ['student1', 'no'],
       ['student1', 'boooo'],
     ],
-    startTime: '12:16 PM',
   },
   {
     mode: PAIRED,
@@ -55,7 +54,6 @@ export const EXAMPLE_CHATS: StudentChat[] = [
       ['student1', 'hola'],
       ['student2', 'hey'],
     ],
-    startTime: '12:16 PM',
   },
   {
     mode: PAIRED,
@@ -76,7 +74,6 @@ export const EXAMPLE_CHATS: StudentChat[] = [
       ['student1', 'wats up'],
       ['student2', 'hello'],
     ],
-    startTime: '12:16 PM',
   },
   {
     mode: PAIRED,
@@ -97,7 +94,6 @@ export const EXAMPLE_CHATS: StudentChat[] = [
       ['student1', 'wus good'],
       ['student2', 'hi!'],
     ],
-    startTime: '12:16 PM',
   },
   {
     mode: PAIRED,
@@ -118,7 +114,6 @@ export const EXAMPLE_CHATS: StudentChat[] = [
       ['student1', 'how r u'],
       ['student2', 'yo'],
     ],
-    startTime: '12:16 PM',
   },
   {
     mode: PAIRED,
@@ -136,7 +131,6 @@ export const EXAMPLE_CHATS: StudentChat[] = [
       },
     ],
     conversation: [['student2', 'yo']],
-    startTime: '12:19 PM',
   },
 
   {
@@ -158,7 +152,6 @@ export const EXAMPLE_CHATS: StudentChat[] = [
       ['student1', 'hey!'],
       ['student2', 'yooo'],
     ],
-    startTime: '12:16 PM',
   },
   {
     mode: PAIRED,
@@ -179,7 +172,6 @@ export const EXAMPLE_CHATS: StudentChat[] = [
       ['student1', 'hola'],
       ['student2', 'hey'],
     ],
-    startTime: '12:16 PM',
   },
   {
     mode: PAIRED,
@@ -200,7 +192,6 @@ export const EXAMPLE_CHATS: StudentChat[] = [
       ['student1', 'wats up'],
       ['student2', 'hello'],
     ],
-    startTime: '12:16 PM',
   },
   {
     mode: PAIRED,
@@ -221,6 +212,5 @@ export const EXAMPLE_CHATS: StudentChat[] = [
       ['student1', 'wus good'],
       ['student2', 'hi!'],
     ],
-    startTime: '12:16 PM',
   },
 ];

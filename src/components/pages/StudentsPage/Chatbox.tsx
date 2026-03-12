@@ -5,11 +5,10 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
 import { scrollToBottomOfElement } from '@utils/classrooms';
-import chatboxCSS from './Chatbox.css';
-import Conversation from './Conversation';
+import Conversation from './Chatbox/Conversation';
 import SendMessages from './SendMessages';
-import CopyButton from '@components/shared/CopyButton';
 import { StudentPairedChat, StudentSoloChat } from './index';
+import Header from './Chatbox/Header';
 
 interface ChatboxProps {
   socket: Socket;
@@ -59,20 +58,47 @@ export default function Chatbox({
   const chatboxConversationContainer = useRef(null);
 
   return (
-    <Box css={chatboxCSS.chatboxContainer}>
-      <Box sx={{ mb: 1 }}>
-        <CopyButton elementId='conversation' />
-      </Box>
-      <Box css={chatboxCSS.chatboxTop} ref={chatboxConversationContainer}>
-        <Conversation chat={chat} />
-      </Box>
-      <Box css={chatboxCSS.chatboxBottom}>
+    <Box
+      sx={{
+        boxShadow: '0 20px 24px -4px rgba(10, 13, 18, 0.08)',
+        border: '1px solid silver',
+        borderRadius: '12px',
+        paddingBottom: '16px',
+        backgroundColor: 'white',
+        width: '500px',
+        '@media (max-width: 500px)': {
+          width: '100%',
+        },
+      }}
+    >
+      <Header
+        yourCharacter={chat.characters.you}
+        peerCharacter={chat.characters.peer}
+      />
+      <Box sx={{ px: '16px' }}>
+        <Box
+          ref={chatboxConversationContainer}
+          sx={{
+            minHeight: '280px',
+            maxHeight: '350px',
+            overflowY: 'overlay',
+            scrollBehavior: 'smooth',
+            my: '10px',
+          }}
+        >
+          <Conversation
+            chat={chat}
+            socket={socket}
+            peerIsTyping={peerIsTyping}
+            setPeerIsTyping={setPeerIsTyping}
+          />
+        </Box>
+
         <SendMessages
           socket={socket}
           chat={chat}
           setChat={setChat}
           chatEndedMsg={chatEndedMsg}
-          peerIsTyping={peerIsTyping}
           setPeerIsTyping={setPeerIsTyping}
           classroomName={classroomName}
           socketId={socketId}

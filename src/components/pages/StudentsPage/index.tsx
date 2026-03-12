@@ -5,6 +5,7 @@ import { useRouter } from 'next/router';
 
 import {
   currentTime,
+  DEV_TEST_USER_QUERY_PARAM,
   PAIRED,
   SOLO,
   TEST_CLASSROOM_NAME,
@@ -26,7 +27,6 @@ export interface StudentPairedChat {
     peer: string;
   };
   conversation: ChatMessage[];
-  startTime: string;
 }
 
 export interface StudentSoloChat {
@@ -36,8 +36,9 @@ export interface StudentSoloChat {
     peer: string;
   };
   conversation: SoloChatMessage[];
-  startTime: string;
 }
+
+const DEV_TEST_USER_SESSION_FLAG = 'wasDevTestUserSet';
 
 export default function StudentsPage(): JSX.Element {
   const socket = useContext(SocketContext);
@@ -45,8 +46,7 @@ export default function StudentsPage(): JSX.Element {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const [isDevTestUser, setIsDevTestUser] = useState(false);
-  const [name, setName] = useState('');
+  const [studentName, setStudentName] = useState('');
   const [pin, setPin] = useState('');
   const [chatInSession, setChatInSession] = useState(false);
   const [removedFromClass, setRemovedFromClass] = useState(false);
@@ -61,7 +61,6 @@ export default function StudentsPage(): JSX.Element {
   //     // ['you', 'i need blood'],
   //     // ['peer', 'i will cast a spell to make some'],
   //   ],
-  //   startTime: '',
   // }
   const [chatEndedMsg, setChatEndedMsg] = useState<null | string>(null);
   const router = useRouter();
@@ -73,29 +72,35 @@ export default function StudentsPage(): JSX.Element {
     });
   }
 
+  function initializeDevTestUser() {
+    const randomStudentName = `Student ${Math.trunc(
+      Math.random() * 10000,
+    ).toString()}`;
+
+    setStudentName(randomStudentName);
+    setPin(TEST_CLASSROOM_NAME);
+    addStudentToGameroom(randomStudentName, TEST_CLASSROOM_NAME);
+    sessionStorage.setItem(DEV_TEST_USER_SESSION_FLAG, 'true');
+  }
+
   useEffect(() => {
     if (typeof window === 'undefined') return;
 
-    const shouldUseDevTestUser =
-      new URLSearchParams(window.location.search).get('isDevTestUser') ===
-      'true';
+    const isDevTestUserRequested =
+      new URLSearchParams(window.location.search).get(
+        DEV_TEST_USER_QUERY_PARAM,
+      ) === 'true';
+    // Persist this flag in sessionStorage (instead of React state) so
+    // Next.js Fast Refresh after local saves does not create a new dev test
+    // user. sessionStorage survives within the current tab session, so we
+    // initialize only one dev test user per session.
+    const hasInitializedDevTestUser =
+      sessionStorage.getItem(DEV_TEST_USER_SESSION_FLAG) === 'true';
 
-    if (shouldUseDevTestUser) {
-      const generatedStudentName = `Student ${Math.trunc(
-        Math.random() * 10000,
-      ).toString()}`;
-
-      setIsDevTestUser(true);
-      setName(generatedStudentName);
-      setPin(TEST_CLASSROOM_NAME);
+    if (isDevTestUserRequested && !hasInitializedDevTestUser) {
+      initializeDevTestUser();
     }
   }, []);
-
-  useEffect(() => {
-    if (isDevTestUser && name && pin) {
-      addStudentToGameroom(name, pin);
-    }
-  }, [isDevTestUser, name, pin]);
 
   useEffect(() => {
     const handleRouteChange = (url, { shallow }) => {
@@ -112,7 +117,6 @@ export default function StudentsPage(): JSX.Element {
             peer: peersCharacter,
           },
           conversation: [],
-          startTime: currentTime(),
         });
         setChatInSession(true);
         setChatEndedMsg(null);
@@ -126,7 +130,6 @@ export default function StudentsPage(): JSX.Element {
             peer: 'chatbot',
           },
           conversation: messages,
-          startTime: currentTime(),
         });
         setChatInSession(true);
         setChatEndedMsg(null);
@@ -170,49 +173,43 @@ export default function StudentsPage(): JSX.Element {
         position: 'relative',
         display: 'grid',
         placeItems: 'center',
+        background:
+          'var(--Gradients, linear-gradient(180deg, #FFF 0%, #EBECFE 100%))',
       }}
     >
       <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
         <Header isMobile={isMobile} />
       </Box>
-      <Box>
-        {!name ? (
-          <LoginFlow
-            pin={pin}
-            setPin={setPin}
-            setName={setName}
-            isMobile={isMobile}
-            addStudentToGameroom={addStudentToGameroom}
-          />
-        ) : (
-          <>
-            <Typography
-              variant='h4'
-              sx={{ color: 'black', mb: 4, textAlign: 'center' }}
-            >
-              {`Hello ${name}.`}
-            </Typography>
-            <Box sx={{ display: 'flex', justifyContent: 'center' }}>
-              {chatInSession ? (
-                <Chatbox
-                  socket={socket}
-                  chat={chat}
-                  setChat={setChat}
-                  chatEndedMsg={chatEndedMsg}
-                  classroomName={pin}
-                  socketId={socket.id}
-                />
-              ) : (
-                <WelcomeMessage
-                  classroomName={pin}
-                  removedFromClass={removedFromClass}
-                  socketId={socket.id}
-                />
-              )}
-            </Box>
-          </>
-        )}
-      </Box>
+      {!studentName ? (
+        <LoginFlow
+          pin={pin}
+          setPin={setPin}
+          setStudentName={setStudentName}
+          isMobile={isMobile}
+          addStudentToGameroom={addStudentToGameroom}
+        />
+      ) : (
+        <>
+          {chatInSession ? (
+            <Chatbox
+              socket={socket}
+              chat={chat}
+              setChat={setChat}
+              chatEndedMsg={chatEndedMsg}
+              classroomName={pin}
+              socketId={socket.id}
+            />
+          ) : (
+            <WelcomeMessage
+              pin={pin}
+              removedFromClass={removedFromClass}
+              socketId={socket.id}
+              studentName={studentName}
+              isMobile={isMobile}
+            />
+          )}
+        </>
+      )}
     </main>
   );
 }

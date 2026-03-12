@@ -1,18 +1,7 @@
 import { css } from '@emotion/react';
 
-const characterName = css`
-  font-weight: bold;
-  color: #0070ff;
-  font-size: 16px;
-  margin-left: 20px;
-`;
-
-const messageBar = css`
-  text-align: center;
-`;
-
 const message = css`
-  border-radius: 20px;
+  border-radius: 24px;
   border: 2px solid lightgrey;
   height: 50px;
   margin-top: 8px;
@@ -41,19 +30,8 @@ const chatEndedInfo = css`
   }
 `;
 
-const peerIsTyping = css`
-  padding: 5px 10px 5px 17px;
-  text-align: left;
-  font-size: 16px;
-  color: #aaa;
-  font-style: italic;
-`;
-
 const sendMessagesCSS = {
-  characterName,
-  messageBar,
   message,
-  peerIsTyping,
   chatEndedInfo,
 };
 
