@@ -9,15 +9,8 @@ const chatboxContainer = css`
   }
 `;
 
-const chatboxBottom = css`
-  border-radius: 0 0 10px 10px;
-  padding: 0 0 10px 0;
-  background: #f8e5e0;
-`;
-
 const chatboxCSS = {
   chatboxContainer,
-  chatboxBottom,
 };
 
 export default chatboxCSS;

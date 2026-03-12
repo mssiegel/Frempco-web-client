@@ -71,32 +71,33 @@ export default function Chatbox({
         yourCharacter={chat.characters.you}
         peerCharacter={chat.characters.peer}
       />
-      <Box
-        ref={chatboxConversationContainer}
-        sx={{
-          background: 'neutrals.white',
-          borderRadius: '10px 10px 0 0',
-          minHeight: '280px',
-          py: '10px',
-          px: '16px',
-          maxHeight: '350px',
-          overflowY: 'overlay',
-          scrollBehavior: 'smooth',
-        }}
-      >
-        <Conversation chat={chat} />
-      </Box>
-      <Box css={chatboxCSS.chatboxBottom}>
-        <SendMessages
-          socket={socket}
-          chat={chat}
-          setChat={setChat}
-          chatEndedMsg={chatEndedMsg}
-          peerIsTyping={peerIsTyping}
-          setPeerIsTyping={setPeerIsTyping}
-          classroomName={classroomName}
-          socketId={socketId}
-        />
+      <Box sx={{ px: '16px' }}>
+        <Box
+          ref={chatboxConversationContainer}
+          sx={{
+            background: 'neutrals.white',
+            borderRadius: '10px 10px 0 0',
+            minHeight: '280px',
+            maxHeight: '350px',
+            overflowY: 'overlay',
+            scrollBehavior: 'smooth',
+            mt: '10px',
+          }}
+        >
+          <Conversation chat={chat} />
+        </Box>
+        <Box sx={{ borderRadius: '0 0 10px 10px' }}>
+          <SendMessages
+            socket={socket}
+            chat={chat}
+            setChat={setChat}
+            chatEndedMsg={chatEndedMsg}
+            peerIsTyping={peerIsTyping}
+            setPeerIsTyping={setPeerIsTyping}
+            classroomName={classroomName}
+            socketId={socketId}
+          />
+        </Box>
       </Box>
     </Box>
   );
