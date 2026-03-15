@@ -5,10 +5,12 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
 import { scrollToBottomOfElement } from '@utils/classrooms';
+import { useStudentInClassroom } from '@hooks/useStudentInClassroom';
 import Conversation from './Chatbox/Conversation';
 import SendMessages from './SendMessages';
 import { StudentPairedChat, StudentSoloChat } from './index';
 import Header from './Chatbox/Header';
+import ChatEndedSection from './Chatbox/ChatEndedSection';
 
 interface ChatboxProps {
   socket: Socket;
@@ -28,6 +30,8 @@ export default function Chatbox({
   socketId,
 }: ChatboxProps) {
   const [peerIsTyping, setPeerIsTyping] = useState(false);
+  const isConnected = useStudentInClassroom(classroomName, socketId);
+  const hasChatEnded = !isConnected || Boolean(chatEndedMsg);
 
   function addChatMessage(sender, message) {
     setChat((chat) => ({
@@ -94,15 +98,19 @@ export default function Chatbox({
           />
         </Box>
 
-        <SendMessages
-          socket={socket}
-          chat={chat}
-          setChat={setChat}
-          chatEndedMsg={chatEndedMsg}
-          setPeerIsTyping={setPeerIsTyping}
-          classroomName={classroomName}
-          socketId={socketId}
-        />
+        {!hasChatEnded ? (
+          <SendMessages
+            socket={socket}
+            chat={chat}
+            setChat={setChat}
+            setPeerIsTyping={setPeerIsTyping}
+          />
+        ) : (
+          <ChatEndedSection
+            isConnected={isConnected}
+            chatEndedMsg={chatEndedMsg}
+          />
+        )}
       </Box>
     </Box>
   );
