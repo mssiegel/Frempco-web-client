@@ -15,24 +15,8 @@ const message = css`
   }
 `;
 
-const chatEndedInfo = css`
-  border-top: 1px dashed grey;
-  padding-top: 10px;
-  padding-left: 10px;
-  padding-right: 10px;
-  font-size: 32px;
-  color: #87002a;
-  font-style: italic;
-  opacity: 0.7;
-
-  @media (max-width: 500px) {
-    font-size: 24px;
-  }
-`;
-
 const sendMessagesCSS = {
   message,
-  chatEndedInfo,
 };
 
 export default sendMessagesCSS;
