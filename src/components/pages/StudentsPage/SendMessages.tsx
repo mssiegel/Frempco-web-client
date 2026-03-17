@@ -1,10 +1,14 @@
-/** @jsxImportSource @emotion/react */
-
-import { Box, Fab, Icon } from '@mui/material';
-import { Dispatch, SetStateAction, useRef, useState } from 'react';
+import { Box, Fab, Icon, InputBase } from '@mui/material';
+import {
+  ChangeEvent,
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useRef,
+  useState,
+} from 'react';
 import { Socket } from 'socket.io-client';
 
-import sendMessagesCSS from './SendMessages.css';
 import { PAIRED } from '@utils/classrooms';
 import { StudentPairedChat, StudentSoloChat } from './index';
 
@@ -21,10 +25,10 @@ export default function SendMessages({
   setChat,
   setPeerIsTyping,
 }: SendMessagesProps) {
-  const typeMessageInput = useRef(null);
+  const typeMessageInput = useRef<HTMLInputElement | null>(null);
   const [message, setMessage] = useState('');
 
-  function sendMessage(e) {
+  function sendMessage(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (message) {
       setChat(
@@ -35,7 +39,7 @@ export default function SendMessages({
           } as StudentPairedChat | StudentSoloChat),
       );
       setMessage('');
-      typeMessageInput.current.focus();
+      typeMessageInput.current?.focus();
 
       if (!socket) return;
 
@@ -69,7 +73,9 @@ export default function SendMessages({
     }
   }
 
-  function sendUserIsTyping(e) {
+  function sendUserIsTyping(
+    e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) {
     setMessage(e.target.value);
     socket.emit('student typing');
   }
@@ -78,14 +84,31 @@ export default function SendMessages({
     <Box>
       <form onSubmit={sendMessage}>
         <Box sx={{ textAlign: 'center' }}>
-          <input
-            css={sendMessagesCSS.message}
+          <InputBase
             value={message}
             placeholder={`Talk as ${chat.characters.you}...`}
-            maxLength={chat.mode === PAIRED ? 75 : 120}
+            multiline
+            minRows={1}
+            maxRows={6}
+            inputProps={{
+              maxLength: chat.mode === PAIRED ? 75 : 120,
+            }}
             onChange={sendUserIsTyping}
             autoFocus
-            ref={typeMessageInput}
+            inputRef={typeMessageInput}
+            sx={{
+              borderRadius: '24px',
+              border: '2px solid lightgrey',
+              minHeight: '50px',
+              mt: 1,
+              width: '84%',
+              fontSize: '17px',
+              px: 2.5,
+              py: 1,
+              '&.Mui-focused': {
+                border: '3px solid deepskyblue',
+              },
+            }}
           />
 
           <Fab
