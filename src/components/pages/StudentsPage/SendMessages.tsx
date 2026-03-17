@@ -86,14 +86,17 @@ export default function SendMessages({
         <Box
           sx={{
             borderRadius: '24px',
-            border: '2px solid lightgrey',
+            border: '1px solid',
+            borderColor: 'neutrals.200',
             minHeight: '50px',
             mt: 1,
+            mx: 1,
             px: 0.5,
             py: 0.5,
             display: 'flex',
             '&:focus-within': {
-              border: '3px solid deepskyblue',
+              border: '1px solid',
+              borderColor: 'primary.500',
             },
           }}
         >
@@ -111,7 +114,7 @@ export default function SendMessages({
             inputRef={typeMessageInput}
             sx={{
               flex: 1,
-              fontSize: '17px',
+              fontSize: '18px',
               px: 1,
             }}
           />

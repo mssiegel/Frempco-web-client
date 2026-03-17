@@ -97,21 +97,20 @@ export default function Chatbox({
             setPeerIsTyping={setPeerIsTyping}
           />
         </Box>
-
-        {!hasChatEnded ? (
-          <SendMessages
-            socket={socket}
-            chat={chat}
-            setChat={setChat}
-            setPeerIsTyping={setPeerIsTyping}
-          />
-        ) : (
-          <ChatEndedSection
-            isConnected={isConnected}
-            chatEndedMsg={chatEndedMsg}
-          />
-        )}
       </Box>
+      {!hasChatEnded ? (
+        <SendMessages
+          socket={socket}
+          chat={chat}
+          setChat={setChat}
+          setPeerIsTyping={setPeerIsTyping}
+        />
+      ) : (
+        <ChatEndedSection
+          isConnected={isConnected}
+          chatEndedMsg={chatEndedMsg}
+        />
+      )}
     </Box>
   );
 }
