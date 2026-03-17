@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { Box } from '@mui/material';
+import { Box, Paper } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
@@ -62,9 +62,9 @@ export default function Chatbox({
   const chatboxConversationContainer = useRef(null);
 
   return (
-    <Box
+    <Paper
+      elevation={6}
       sx={{
-        boxShadow: '0 20px 24px -4px rgba(10, 13, 18, 0.08)',
         border: '1px solid silver',
         borderRadius: '12px',
         paddingBottom: '16px',
@@ -111,6 +111,6 @@ export default function Chatbox({
           chatEndedMsg={chatEndedMsg}
         />
       )}
-    </Box>
+    </Paper>
   );
 }
