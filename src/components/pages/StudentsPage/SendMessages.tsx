@@ -87,6 +87,9 @@ export default function SendMessages({
           <InputBase
             value={message}
             placeholder={`Talk as ${chat.characters.you}...`}
+            multiline
+            minRows={1}
+            maxRows={6}
             inputProps={{
               maxLength: chat.mode === PAIRED ? 75 : 120,
             }}
@@ -96,11 +99,12 @@ export default function SendMessages({
             sx={{
               borderRadius: '24px',
               border: '2px solid lightgrey',
-              height: '50px',
+              minHeight: '50px',
               mt: 1,
               width: '84%',
               fontSize: '17px',
-              pl: 2.5,
+              px: 2.5,
+              py: 1,
               '&.Mui-focused': {
                 border: '3px solid deepskyblue',
               },
