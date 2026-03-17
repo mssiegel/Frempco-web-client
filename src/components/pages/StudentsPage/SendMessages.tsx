@@ -83,7 +83,20 @@ export default function SendMessages({
   return (
     <Box>
       <form onSubmit={sendMessage}>
-        <Box sx={{ textAlign: 'center' }}>
+        <Box
+          sx={{
+            borderRadius: '24px',
+            border: '2px solid lightgrey',
+            minHeight: '50px',
+            mt: 1,
+            px: 0.5,
+            py: 0.5,
+            display: 'flex',
+            '&:focus-within': {
+              border: '3px solid deepskyblue',
+            },
+          }}
+        >
           <InputBase
             value={message}
             placeholder={`Talk as ${chat.characters.you}...`}
@@ -97,17 +110,9 @@ export default function SendMessages({
             autoFocus
             inputRef={typeMessageInput}
             sx={{
-              borderRadius: '24px',
-              border: '2px solid lightgrey',
-              minHeight: '50px',
-              mt: 1,
-              width: '84%',
+              flex: 1,
               fontSize: '17px',
-              px: 2.5,
-              py: 1,
-              '&.Mui-focused': {
-                border: '3px solid deepskyblue',
-              },
+              px: 1,
             }}
           />
 
@@ -115,7 +120,7 @@ export default function SendMessages({
             size='small'
             type='submit'
             color='primary'
-            style={{ marginLeft: '10px' }}
+            sx={{ alignSelf: 'flex-end' }}
           >
             <Icon sx={{ fontSize: 24 }}>send</Icon>
           </Fab>
