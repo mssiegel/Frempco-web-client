@@ -1,8 +1,9 @@
-import { Box, Fab, Icon, InputBase } from '@mui/material';
+import { Box, Fab, Icon, InputBase, useMediaQuery } from '@mui/material';
 import {
   ChangeEvent,
   Dispatch,
   FormEvent,
+  KeyboardEvent,
   SetStateAction,
   useRef,
   useState,
@@ -27,6 +28,7 @@ export default function SendMessages({
 }: SendMessagesProps) {
   const typeMessageInput = useRef<HTMLInputElement | null>(null);
   const [message, setMessage] = useState('');
+  const isDesktop = useMediaQuery('(hover: hover) and (pointer: fine)');
 
   function sendMessage(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -80,6 +82,17 @@ export default function SendMessages({
     socket.emit('student typing');
   }
 
+  function sendWithEnterOnDesktop(
+    e: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) {
+    if (!isDesktop) return;
+
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      e.currentTarget.form?.requestSubmit();
+    }
+  }
+
   return (
     <Box>
       <form onSubmit={sendMessage}>
@@ -110,6 +123,7 @@ export default function SendMessages({
               maxLength: chat.mode === PAIRED ? 75 : 120,
             }}
             onChange={sendUserIsTyping}
+            onKeyDown={sendWithEnterOnDesktop}
             autoFocus
             inputRef={typeMessageInput}
             sx={{
