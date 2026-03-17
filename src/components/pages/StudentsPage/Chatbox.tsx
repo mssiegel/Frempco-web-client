@@ -7,7 +7,7 @@ import { Socket } from 'socket.io-client';
 import { scrollToBottomOfElement } from '@utils/classrooms';
 import { useStudentInClassroom } from '@hooks/useStudentInClassroom';
 import Conversation from './Chatbox/Conversation';
-import SendMessages from './SendMessages';
+import SendMessageSection from './Chatbox/SendMessageSection';
 import { StudentPairedChat, StudentSoloChat } from './index';
 import Header from './Chatbox/Header';
 import ChatEndedSection from './Chatbox/ChatEndedSection';
@@ -99,7 +99,7 @@ export default function Chatbox({
         </Box>
       </Box>
       {!hasChatEnded ? (
-        <SendMessages
+        <SendMessageSection
           socket={socket}
           chat={chat}
           setChat={setChat}
