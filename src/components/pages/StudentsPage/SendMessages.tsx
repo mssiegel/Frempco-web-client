@@ -1,8 +1,9 @@
-import { Box, Fab, Icon, InputBase } from '@mui/material';
+import { Box, Fab, Icon, InputBase, useMediaQuery } from '@mui/material';
 import {
   ChangeEvent,
   Dispatch,
   FormEvent,
+  KeyboardEvent,
   SetStateAction,
   useRef,
   useState,
@@ -27,6 +28,7 @@ export default function SendMessages({
 }: SendMessagesProps) {
   const typeMessageInput = useRef<HTMLInputElement | null>(null);
   const [message, setMessage] = useState('');
+  const isDesktop = useMediaQuery('(hover: hover) and (pointer: fine)');
 
   function sendMessage(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -80,47 +82,67 @@ export default function SendMessages({
     socket.emit('student typing');
   }
 
-  return (
-    <Box>
-      <form onSubmit={sendMessage}>
-        <Box sx={{ textAlign: 'center' }}>
-          <InputBase
-            value={message}
-            placeholder={`Talk as ${chat.characters.you}...`}
-            multiline
-            minRows={1}
-            maxRows={6}
-            inputProps={{
-              maxLength: chat.mode === PAIRED ? 75 : 120,
-            }}
-            onChange={sendUserIsTyping}
-            autoFocus
-            inputRef={typeMessageInput}
-            sx={{
-              borderRadius: '24px',
-              border: '2px solid lightgrey',
-              minHeight: '50px',
-              mt: 1,
-              width: '84%',
-              fontSize: '17px',
-              px: 2.5,
-              py: 1,
-              '&.Mui-focused': {
-                border: '3px solid deepskyblue',
-              },
-            }}
-          />
+  function sendWithEnterOnDesktop(
+    e: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) {
+    if (!isDesktop) return;
 
-          <Fab
-            size='small'
-            type='submit'
-            color='primary'
-            style={{ marginLeft: '10px' }}
-          >
-            <Icon sx={{ fontSize: 24 }}>send</Icon>
-          </Fab>
-        </Box>
-      </form>
-    </Box>
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      e.currentTarget.form?.requestSubmit();
+    }
+  }
+
+  return (
+    <>
+      <Box
+        component='form'
+        onSubmit={sendMessage}
+        sx={{
+          borderRadius: '24px',
+          border: '1px solid',
+          borderColor: 'neutrals.200',
+          minHeight: '50px',
+          mt: 1,
+          mx: 1,
+          px: 0.5,
+          py: 0.5,
+          display: 'flex',
+          '&:focus-within': {
+            border: '1px solid',
+            borderColor: 'primary.500',
+          },
+        }}
+      >
+        <InputBase
+          value={message}
+          placeholder={`Talk as ${chat.characters.you}...`}
+          multiline
+          minRows={1}
+          maxRows={6}
+          inputProps={{
+            maxLength: chat.mode === PAIRED ? 75 : 120,
+          }}
+          onChange={sendUserIsTyping}
+          onKeyDown={sendWithEnterOnDesktop}
+          autoFocus
+          inputRef={typeMessageInput}
+          sx={{
+            flex: 1,
+            fontSize: '18px',
+            px: 1,
+          }}
+        />
+
+        <Fab
+          size='small'
+          type='submit'
+          color='primary'
+          sx={{ alignSelf: 'flex-end' }}
+        >
+          <Icon sx={{ fontSize: 24 }}>send</Icon>
+        </Fab>
+      </Box>
+    </>
   );
 }
