@@ -1,14 +1,16 @@
 /** @jsxImportSource @emotion/react */
 
-import { Box } from '@mui/material';
+import { Box, Paper } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
 import { scrollToBottomOfElement } from '@utils/classrooms';
+import { useStudentInClassroom } from '@hooks/useStudentInClassroom';
 import Conversation from './Chatbox/Conversation';
-import SendMessages from './SendMessages';
+import SendMessageSection from './Chatbox/SendMessageSection';
 import { StudentPairedChat, StudentSoloChat } from './index';
 import Header from './Chatbox/Header';
+import ChatEndedSection from './Chatbox/ChatEndedSection';
 
 interface ChatboxProps {
   socket: Socket;
@@ -28,6 +30,8 @@ export default function Chatbox({
   socketId,
 }: ChatboxProps) {
   const [peerIsTyping, setPeerIsTyping] = useState(false);
+  const isConnected = useStudentInClassroom(classroomName, socketId);
+  const hasChatEnded = !isConnected || Boolean(chatEndedMsg);
 
   function addChatMessage(sender, message) {
     setChat((chat) => ({
@@ -58,9 +62,9 @@ export default function Chatbox({
   const chatboxConversationContainer = useRef(null);
 
   return (
-    <Box
+    <Paper
+      elevation={6}
       sx={{
-        boxShadow: '0 20px 24px -4px rgba(10, 13, 18, 0.08)',
         border: '1px solid silver',
         borderRadius: '12px',
         paddingBottom: '16px',
@@ -93,17 +97,20 @@ export default function Chatbox({
             setPeerIsTyping={setPeerIsTyping}
           />
         </Box>
-
-        <SendMessages
+      </Box>
+      {!hasChatEnded ? (
+        <SendMessageSection
           socket={socket}
           chat={chat}
           setChat={setChat}
-          chatEndedMsg={chatEndedMsg}
           setPeerIsTyping={setPeerIsTyping}
-          classroomName={classroomName}
-          socketId={socketId}
         />
-      </Box>
-    </Box>
+      ) : (
+        <ChatEndedSection
+          isConnected={isConnected}
+          chatEndedMsg={chatEndedMsg}
+        />
+      )}
+    </Paper>
   );
 }
