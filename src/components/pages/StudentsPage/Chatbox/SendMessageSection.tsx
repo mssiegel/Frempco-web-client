@@ -11,21 +11,21 @@ import {
 import { Socket } from 'socket.io-client';
 
 import { PAIRED } from '@utils/classrooms';
-import { StudentPairedChat, StudentSoloChat } from './index';
+import { StudentPairedChat, StudentSoloChat } from '../index';
 
-interface SendMessagesProps {
+interface SendMessageSectionProps {
   socket: Socket;
   chat: StudentPairedChat | StudentSoloChat;
   setChat: Dispatch<SetStateAction<StudentPairedChat | StudentSoloChat>>;
   setPeerIsTyping: Dispatch<SetStateAction<boolean>>;
 }
 
-export default function SendMessages({
+export default function SendMessageSection({
   socket,
   chat,
   setChat,
   setPeerIsTyping,
-}: SendMessagesProps) {
+}: SendMessageSectionProps) {
   const typeMessageInput = useRef<HTMLInputElement | null>(null);
   const [message, setMessage] = useState('');
   const isDesktop = useMediaQuery('(hover: hover) and (pointer: fine)');
