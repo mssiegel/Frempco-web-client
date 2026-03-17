@@ -94,55 +94,55 @@ export default function SendMessages({
   }
 
   return (
-    <Box>
-      <form onSubmit={sendMessage}>
-        <Box
-          sx={{
-            borderRadius: '24px',
+    <>
+      <Box
+        component='form'
+        onSubmit={sendMessage}
+        sx={{
+          borderRadius: '24px',
+          border: '1px solid',
+          borderColor: 'neutrals.200',
+          minHeight: '50px',
+          mt: 1,
+          mx: 1,
+          px: 0.5,
+          py: 0.5,
+          display: 'flex',
+          '&:focus-within': {
             border: '1px solid',
-            borderColor: 'neutrals.200',
-            minHeight: '50px',
-            mt: 1,
-            mx: 1,
-            px: 0.5,
-            py: 0.5,
-            display: 'flex',
-            '&:focus-within': {
-              border: '1px solid',
-              borderColor: 'primary.500',
-            },
+            borderColor: 'primary.500',
+          },
+        }}
+      >
+        <InputBase
+          value={message}
+          placeholder={`Talk as ${chat.characters.you}...`}
+          multiline
+          minRows={1}
+          maxRows={6}
+          inputProps={{
+            maxLength: chat.mode === PAIRED ? 75 : 120,
           }}
-        >
-          <InputBase
-            value={message}
-            placeholder={`Talk as ${chat.characters.you}...`}
-            multiline
-            minRows={1}
-            maxRows={6}
-            inputProps={{
-              maxLength: chat.mode === PAIRED ? 75 : 120,
-            }}
-            onChange={sendUserIsTyping}
-            onKeyDown={sendWithEnterOnDesktop}
-            autoFocus
-            inputRef={typeMessageInput}
-            sx={{
-              flex: 1,
-              fontSize: '18px',
-              px: 1,
-            }}
-          />
+          onChange={sendUserIsTyping}
+          onKeyDown={sendWithEnterOnDesktop}
+          autoFocus
+          inputRef={typeMessageInput}
+          sx={{
+            flex: 1,
+            fontSize: '18px',
+            px: 1,
+          }}
+        />
 
-          <Fab
-            size='small'
-            type='submit'
-            color='primary'
-            sx={{ alignSelf: 'flex-end' }}
-          >
-            <Icon sx={{ fontSize: 24 }}>send</Icon>
-          </Fab>
-        </Box>
-      </form>
-    </Box>
+        <Fab
+          size='small'
+          type='submit'
+          color='primary'
+          sx={{ alignSelf: 'flex-end' }}
+        >
+          <Icon sx={{ fontSize: 24 }}>send</Icon>
+        </Fab>
+      </Box>
+    </>
   );
 }
