@@ -4,9 +4,13 @@ import { Box, Typography } from '@mui/material';
 
 interface HeaderProps {
   isMobile: boolean;
+  statusText: string;
 }
 
-export default function Header({ isMobile }: HeaderProps): JSX.Element {
+export default function Header({
+  isMobile,
+  statusText,
+}: HeaderProps): JSX.Element {
   return (
     <Box
       sx={{
@@ -32,9 +36,9 @@ export default function Header({ isMobile }: HeaderProps): JSX.Element {
           style={{ height: 24, width: 'auto' }}
         />
       </Box>
-      {!isMobile && (
+      {!isMobile && statusText && (
         <Typography variant='h4' sx={{ color: 'neutrals.white' }}>
-          Join a Game
+          {statusText}
         </Typography>
       )}
     </Box>

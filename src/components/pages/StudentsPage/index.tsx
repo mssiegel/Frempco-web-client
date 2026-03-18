@@ -63,6 +63,11 @@ export default function StudentsPage(): JSX.Element {
   // }
   const [chatEndedMsg, setChatEndedMsg] = useState<null | string>(null);
   const router = useRouter();
+  const headerStatusText = chatInSession
+    ? 'Chatting with Someone'
+    : studentName
+    ? 'Waiting in Lobby'
+    : 'Join a Game';
 
   function addStudentToGameroom(studentName: string, pin: string) {
     socket.emit('new student entered', {
@@ -177,7 +182,7 @@ export default function StudentsPage(): JSX.Element {
       }}
     >
       <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
-        <Header isMobile={isMobile} />
+        <Header isMobile={isMobile} statusText={headerStatusText} />
       </Box>
       {!studentName ? (
         <LoginFlow
