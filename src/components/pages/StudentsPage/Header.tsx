@@ -1,12 +1,16 @@
 /** @jsxImportSource @emotion/react */
 
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
 
 interface HeaderProps {
   isMobile: boolean;
+  statusText: string;
 }
 
-export default function Header({ isMobile }: HeaderProps): JSX.Element {
+export default function Header({
+  isMobile,
+  statusText,
+}: HeaderProps): JSX.Element {
   return (
     <Box
       sx={{
@@ -15,6 +19,9 @@ export default function Header({ isMobile }: HeaderProps): JSX.Element {
         py: '10px',
         px: isMobile ? '40px' : '80px',
         borderBottom: '2px solid neutrals.200',
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center',
       }}
     >
       <Box display='flex' gap={2} alignItems='flex-end'>
@@ -29,6 +36,11 @@ export default function Header({ isMobile }: HeaderProps): JSX.Element {
           style={{ height: 24, width: 'auto' }}
         />
       </Box>
+      {!isMobile && statusText && (
+        <Typography variant='h4' sx={{ color: 'neutrals.white' }}>
+          {statusText}
+        </Typography>
+      )}
     </Box>
   );
 }
