@@ -63,8 +63,10 @@ export default function StudentsPage(): JSX.Element {
   // }
   const [chatEndedMsg, setChatEndedMsg] = useState<null | string>(null);
   const router = useRouter();
-  const headerStatusText = chatInSession
-    ? 'Chatting with Someone'
+  const headerStatusText = chatEndedMsg
+    ? 'Chat ended'
+    : chatInSession
+    ? 'Chatting with someone'
     : studentName
     ? 'Waiting in Lobby'
     : 'Join a Game';
