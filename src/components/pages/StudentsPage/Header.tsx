@@ -17,10 +17,11 @@ export default function Header({
     <Box
       sx={{
         backgroundColor: 'primary.500',
-        color: 'neutrals.200',
+        color: 'neutrals.white',
         py: '10px',
         px: isMobile ? '40px' : '80px',
-        borderBottom: '2px solid neutrals.200',
+        borderBottom: '2px solid',
+        borderBottomColor: 'neutrals.200',
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
@@ -28,7 +29,7 @@ export default function Header({
     >
       <Box display='flex' gap={2} alignItems='flex-end'>
         {studentName ? (
-          <Typography variant='h4' sx={{ color: 'neutrals.white' }}>
+          <Typography variant='h4' fontWeight='bold'>
             {studentName}
           </Typography>
         ) : (
@@ -47,9 +48,7 @@ export default function Header({
         )}
       </Box>
       {!isMobile && statusText && (
-        <Typography variant='h4' sx={{ color: 'neutrals.white' }}>
-          {statusText}
-        </Typography>
+        <Typography variant='h4'>{statusText}</Typography>
       )}
     </Box>
   );
