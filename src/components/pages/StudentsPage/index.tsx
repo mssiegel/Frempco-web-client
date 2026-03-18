@@ -37,6 +37,21 @@ export interface StudentSoloChat {
   conversation: SoloChatMessage[];
 }
 
+export type Stage =
+  | 'joining'
+  | 'lobby'
+  | 'chatting'
+  | 'chatEnded'
+  | 'removedByTeacher';
+
+export const STAGE = {
+  joining: 'joining',
+  lobby: 'lobby',
+  chatting: 'chatting',
+  chatEnded: 'chatEnded',
+  removedByTeacher: 'removedByTeacher',
+} as const;
+
 const DEV_TEST_USER_SESSION_FLAG = 'wasDevTestUserSet';
 
 export default function StudentsPage(): JSX.Element {
@@ -47,8 +62,7 @@ export default function StudentsPage(): JSX.Element {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [studentName, setStudentName] = useState('');
   const [pin, setPin] = useState('');
-  const [chatInSession, setChatInSession] = useState(false);
-  const [removedFromClass, setRemovedFromClass] = useState(false);
+  const [stage, setStage] = useState<Stage>(STAGE.joining);
   const [chat, setChat] = useState<StudentPairedChat | StudentSoloChat>();
   // { Example chat object:
   //   mode: 'PAIRED',
@@ -63,19 +77,21 @@ export default function StudentsPage(): JSX.Element {
   // }
   const [chatEndedMsg, setChatEndedMsg] = useState<null | string>(null);
   const router = useRouter();
-  const headerStatusText = chatEndedMsg
-    ? 'Chat ended'
-    : chatInSession
-    ? 'Chatting with someone'
-    : studentName
-    ? 'Waiting in Lobby'
-    : 'Join a Game';
+  const headerStatusTextMap: Record<Stage, string> = {
+    [STAGE.joining]: 'Join a Game',
+    [STAGE.lobby]: 'Waiting in Lobby',
+    [STAGE.chatting]: 'Chatting with someone',
+    [STAGE.chatEnded]: 'Chat ended',
+    [STAGE.removedByTeacher]: 'Removed by teacher',
+  };
+  const headerStatusText = headerStatusTextMap[stage];
 
   function addStudentToGameroom(studentName: string, pin: string) {
     socket.emit('new student entered', {
       student: studentName,
       classroom: pin,
     });
+    setStage(STAGE.lobby);
   }
 
   function initializeDevTestUser() {
@@ -124,7 +140,7 @@ export default function StudentsPage(): JSX.Element {
           },
           conversation: [],
         });
-        setChatInSession(true);
+        setStage(STAGE.chatting);
         setChatEndedMsg(null);
       });
 
@@ -137,24 +153,26 @@ export default function StudentsPage(): JSX.Element {
           },
           conversation: messages,
         });
-        setChatInSession(true);
+        setStage(STAGE.chatting);
         setChatEndedMsg(null);
       });
 
       socket.on('remove student from classroom', () => {
-        setRemovedFromClass(true);
-        setChatInSession(false);
+        setStage(STAGE.removedByTeacher);
       });
 
       socket.on('peer left chat', () => {
+        setStage(STAGE.chatEnded);
         setChatEndedMsg('Your peer left the chat');
       });
 
       socket.on('teacher ended chat', () => {
+        setStage(STAGE.chatEnded);
         setChatEndedMsg('Your teacher ended your chat');
       });
 
       socket.on('solo mode: teacher ended chat', () => {
+        setStage(STAGE.chatEnded);
         setChatEndedMsg('Your teacher ended your chat');
       });
     }
@@ -190,7 +208,7 @@ export default function StudentsPage(): JSX.Element {
           studentName={studentName || undefined}
         />
       </Box>
-      {!studentName ? (
+      {stage === STAGE.joining ? (
         <LoginFlow
           pin={pin}
           setPin={setPin}
@@ -200,7 +218,7 @@ export default function StudentsPage(): JSX.Element {
         />
       ) : (
         <>
-          {chatInSession ? (
+          {stage === STAGE.chatting || stage === STAGE.chatEnded ? (
             <Chatbox
               socket={socket}
               chat={chat}
@@ -212,7 +230,7 @@ export default function StudentsPage(): JSX.Element {
           ) : (
             <WelcomeMessage
               pin={pin}
-              removedFromClass={removedFromClass}
+              removedFromClass={stage === STAGE.removedByTeacher}
               socketId={socket.id}
               studentName={studentName}
               isMobile={isMobile}
