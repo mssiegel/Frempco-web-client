@@ -1,6 +1,7 @@
 /** @jsxImportSource @emotion/react */
 
 import { Box, Typography } from '@mui/material';
+import Link from '../../shared/Link';
 
 interface HeaderProps {
   isMobile: boolean;
@@ -27,11 +28,11 @@ export default function Header({
         alignItems: 'center',
       }}
     >
-      <Box display='flex' gap={2} alignItems='flex-end'>
-        {studentName ? (
-          <Typography variant='h4'>{studentName}</Typography>
-        ) : (
-          <>
+      {studentName ? (
+        <Typography variant='h4'>{studentName}</Typography>
+      ) : (
+        <Link href='/' noLinkStyle>
+          <Box display='flex' gap={2} alignItems='flex-end'>
             <img
               src='/StudentsPage/frempco-logo-icon.svg'
               alt='Frempco logo icon'
@@ -42,9 +43,9 @@ export default function Header({
               alt='Frempco logo text'
               style={{ height: 24, width: 'auto' }}
             />
-          </>
-        )}
-      </Box>
+          </Box>
+        </Link>
+      )}
       {!isMobile && statusText && (
         <Typography variant='h4'>{statusText}</Typography>
       )}
