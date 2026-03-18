@@ -29,9 +29,7 @@ export default function Header({
     >
       <Box display='flex' gap={2} alignItems='flex-end'>
         {studentName ? (
-          <Typography variant='h4' fontWeight='bold'>
-            {studentName}
-          </Typography>
+          <Typography variant='h4'>{studentName}</Typography>
         ) : (
           <>
             <img
