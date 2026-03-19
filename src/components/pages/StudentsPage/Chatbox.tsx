@@ -8,7 +8,7 @@ import { scrollToBottomOfElement } from '@utils/classrooms';
 import { useStudentInClassroom } from '@hooks/useStudentInClassroom';
 import Conversation from './Chatbox/Conversation';
 import SendMessageSection from './Chatbox/SendMessageSection';
-import { StudentPairedChat, StudentSoloChat } from './index';
+import { StudentPairedChat, StudentSoloChat } from './types';
 import Header from './Chatbox/Header';
 import ChatEndedSection from './Chatbox/ChatEndedSection';
 

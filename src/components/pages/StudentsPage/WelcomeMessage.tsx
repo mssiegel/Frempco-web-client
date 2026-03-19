@@ -22,9 +22,10 @@ export default function WelcomeMessage({
   isMobile,
 }: WelcomeMessageProps) {
   const isConnected = useStudentInClassroom(pin, socketId);
+  const showReconnectingMessage = !removedFromClass && !isConnected;
 
   return (
-    <Box>
+    <Box textAlign='center'>
       <Image
         src='/StudentsPage/waiting-in-lobby.png'
         alt='Waiting in lobby'
@@ -35,22 +36,23 @@ export default function WelcomeMessage({
       <Typography
         variant={isMobile ? 'h4' : 'h1'}
         sx={{ py: 4 }}
-        align='center'
       >{`Hello ${studentName}`}</Typography>
-      {removedFromClass || !isConnected ? (
+      {removedFromClass ? (
         <>
-          <Typography variant='h4' sx={{ mb: 4 }} align='center'>
-            {removedFromClass
-              ? 'Your teacher removed you.'
-              : 'You were logged out.'}
+          <Typography variant='h4' sx={{ mb: 4 }}>
+            Your teacher removed you.
           </Typography>
-          <Typography variant='h4' align='center'>
+          <Typography variant='h4'>
             Return to the <Link href='/'>Frempco homepage</Link> and login
             again.
           </Typography>
         </>
+      ) : showReconnectingMessage ? (
+        <Typography variant='body1'>
+          Connection lost. Reconnecting you to the game room...
+        </Typography>
       ) : (
-        <Typography variant='body1' align='center'>
+        <Typography variant='body1'>
           Welcome to the game room! Your teacher will pair you soon...
         </Typography>
       )}

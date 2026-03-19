@@ -1,42 +1,19 @@
-import { Box, Typography, useMediaQuery } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import {
-  currentTime,
   DEV_TEST_USER_QUERY_PARAM,
-  PAIRED,
-  SOLO,
   TEST_CLASSROOM_NAME,
 } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
+import { useStudentSocketHandlers } from './hooks/useStudentSocketHandlers';
 import Chatbox from './Chatbox';
 import WelcomeMessage from './WelcomeMessage';
 import Header from './Header';
 import LoginFlow from './LoginFlow';
-
-export type ChatMessage = ['you' | 'peer', string];
-
-export type SoloChatMessage = ['you' | 'chatbot', string];
-
-export interface StudentPairedChat {
-  mode: typeof PAIRED;
-  characters: {
-    you: string;
-    peer: string;
-  };
-  conversation: ChatMessage[];
-}
-
-export interface StudentSoloChat {
-  mode: typeof SOLO;
-  characters: {
-    you: string;
-    peer: string;
-  };
-  conversation: SoloChatMessage[];
-}
+import { STAGE, Stage, StudentPairedChat, StudentSoloChat } from './types';
 
 const DEV_TEST_USER_SESSION_FLAG = 'wasDevTestUserSet';
 
@@ -48,8 +25,7 @@ export default function StudentsPage(): JSX.Element {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [studentName, setStudentName] = useState('');
   const [pin, setPin] = useState('');
-  const [chatInSession, setChatInSession] = useState(false);
-  const [removedFromClass, setRemovedFromClass] = useState(false);
+  const [stage, setStage] = useState<Stage>(STAGE.joining);
   const [chat, setChat] = useState<StudentPairedChat | StudentSoloChat>();
   // { Example chat object:
   //   mode: 'PAIRED',
@@ -64,12 +40,21 @@ export default function StudentsPage(): JSX.Element {
   // }
   const [chatEndedMsg, setChatEndedMsg] = useState<null | string>(null);
   const router = useRouter();
+  const headerStatusTextMap: Record<Stage, string> = {
+    [STAGE.joining]: 'Join a Game',
+    [STAGE.lobby]: 'Waiting in Lobby',
+    [STAGE.chatting]: 'Chatting with someone',
+    [STAGE.chatEnded]: 'Chat ended',
+    [STAGE.removedByTeacher]: 'Removed by teacher',
+  };
+  const headerStatusText = headerStatusTextMap[stage];
 
   function addStudentToGameroom(studentName: string, pin: string) {
     socket.emit('new student entered', {
       student: studentName,
       classroom: pin,
     });
+    setStage(STAGE.lobby);
   }
 
   function initializeDevTestUser() {
@@ -102,69 +87,17 @@ export default function StudentsPage(): JSX.Element {
     }
   }, []);
 
-  useEffect(() => {
-    const handleRouteChange = (url, { shallow }) => {
-      socket.emit('user disconnected');
-    };
-    router.events.on('routeChangeStart', handleRouteChange);
-
-    if (socket) {
-      socket.on('chat start', ({ yourCharacter, peersCharacter }) => {
-        setChat({
-          mode: PAIRED,
-          characters: {
-            you: yourCharacter,
-            peer: peersCharacter,
-          },
-          conversation: [],
-        });
-        setChatInSession(true);
-        setChatEndedMsg(null);
-      });
-
-      socket.on('solo mode: chat started', ({ character, messages }) => {
-        setChat({
-          mode: SOLO,
-          characters: {
-            you: character,
-            peer: 'chatbot',
-          },
-          conversation: messages,
-        });
-        setChatInSession(true);
-        setChatEndedMsg(null);
-      });
-
-      socket.on('remove student from classroom', () => {
-        setRemovedFromClass(true);
-        setChatInSession(false);
-      });
-
-      socket.on('peer left chat', () => {
-        setChatEndedMsg('Your peer left the chat');
-      });
-
-      socket.on('teacher ended chat', () => {
-        setChatEndedMsg('Your teacher ended your chat');
-      });
-
-      socket.on('solo mode: teacher ended chat', () => {
-        setChatEndedMsg('Your teacher ended your chat');
-      });
-    }
-
-    return () => {
-      if (socket) {
-        socket.off('chat start');
-        socket.off('solo mode: chat started');
-        socket.off('remove student from classroom');
-        socket.off('peer left chat');
-        socket.off('teacher ended chat');
-        socket.off('solo mode: teacher ended chat');
-        router.events.off('routeChangeStart', handleRouteChange);
-      }
-    };
-  }, [router.events, socket]);
+  useStudentSocketHandlers({
+    socket,
+    router,
+    stage,
+    studentName,
+    pin,
+    addStudentToGameroom,
+    setChat,
+    setStage,
+    setChatEndedMsg,
+  });
 
   return (
     <main
@@ -178,9 +111,13 @@ export default function StudentsPage(): JSX.Element {
       }}
     >
       <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
-        <Header isMobile={isMobile} />
+        <Header
+          isMobile={isMobile}
+          statusText={headerStatusText}
+          studentName={studentName || undefined}
+        />
       </Box>
-      {!studentName ? (
+      {stage === STAGE.joining ? (
         <LoginFlow
           pin={pin}
           setPin={setPin}
@@ -190,7 +127,7 @@ export default function StudentsPage(): JSX.Element {
         />
       ) : (
         <>
-          {chatInSession ? (
+          {stage === STAGE.chatting || stage === STAGE.chatEnded ? (
             <Chatbox
               socket={socket}
               chat={chat}
@@ -202,7 +139,7 @@ export default function StudentsPage(): JSX.Element {
           ) : (
             <WelcomeMessage
               pin={pin}
-              removedFromClass={removedFromClass}
+              removedFromClass={stage === STAGE.removedByTeacher}
               socketId={socket.id}
               studentName={studentName}
               isMobile={isMobile}
