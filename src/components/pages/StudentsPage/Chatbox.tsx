@@ -5,7 +5,7 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
 import { scrollToBottomOfElement } from '@utils/classrooms';
-import { useStudentInClassroom } from '@hooks/useStudentInClassroom';
+import { useStudentInClassroom } from './hooks/useStudentInClassroom';
 import Conversation from './Chatbox/Conversation';
 import SendMessageSection from './Chatbox/SendMessageSection';
 import { StudentPairedChat, StudentSoloChat } from './types';
