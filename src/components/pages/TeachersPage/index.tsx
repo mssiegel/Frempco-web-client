@@ -1,19 +1,15 @@
 import { useContext, useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 
-import {
-  ClassroomProps,
-  Student,
-  currentTime,
-  PAIRED,
-  SOLO,
-} from '@utils/classrooms';
+import { ClassroomProps, PAIRED } from '@utils/classrooms';
+import { Student } from './types';
 import { SocketContext } from '@contexts/SocketContext';
 import { useRouter } from 'next/router';
 import UnpairedStudentsAccordion from './UnpairedStudentsAccordion';
 import SetupClassroomAccordion from './SetupClassroomAccordion';
 import ChatsInProgressAccordion from './ChatsInProgressAccordion';
 import Link from '@components/shared/Link';
+import { ChatMessage, SoloChat, StudentChat } from './types';
 
 const CHARACTERS = [
   'Perfectionist dentist',
@@ -23,26 +19,6 @@ const CHARACTERS = [
   'Forgetful surgeon',
   'Party planner',
 ];
-
-type StudentPair = [Student, Student];
-
-export type ChatMessage = ['student1' | 'student2' | 'teacher', string];
-
-export type SoloChatMessage = ['student' | 'chatbot' | 'teacher', string];
-
-export interface StudentChat {
-  mode: typeof PAIRED;
-  chatId: string;
-  studentPair: StudentPair;
-  conversation: ChatMessage[];
-}
-
-export interface SoloChat {
-  mode: typeof SOLO;
-  chatId: string;
-  student: Student;
-  conversation: SoloChatMessage[];
-}
 
 export default function TeachersPage({ classroomName }: ClassroomProps) {
   const router = useRouter();
@@ -227,7 +203,6 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           unpairedStudents={unpairedStudents}
           setUnpairedStudents={setUnpairedStudents}
           setStudentChats={setStudentChats}
-          studentChats={studentChats}
           characters={characters}
         />
         <ChatsInProgressAccordion

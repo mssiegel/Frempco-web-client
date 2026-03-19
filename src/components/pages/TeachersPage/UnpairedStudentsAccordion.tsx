@@ -11,8 +11,7 @@ import {
   ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
 import { Socket } from 'socket.io-client';
-import { Student } from '@utils/classrooms';
-import { StudentChat, SoloChat } from './index';
+import { Student, StudentChat, SoloChat } from './types';
 import UnpairedStudentsList from './UnpairedStudentsList';
 
 interface UnpairedStudentsAccordionProps {
@@ -20,7 +19,6 @@ interface UnpairedStudentsAccordionProps {
   unpairedStudents: Student[];
   setUnpairedStudents: Dispatch<SetStateAction<Student[]>>;
   setStudentChats: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
-  studentChats: (StudentChat | SoloChat)[];
   characters: string[];
 }
 
@@ -29,7 +27,6 @@ const UnpairedStudentsAccordion = ({
   unpairedStudents,
   setUnpairedStudents,
   setStudentChats,
-  studentChats,
   characters,
 }: UnpairedStudentsAccordionProps) => (
   <Accordion disableGutters sx={{ boxShadow: 'none', mb: 3 }}>
@@ -68,7 +65,6 @@ const UnpairedStudentsAccordion = ({
         unpairedStudents={unpairedStudents}
         setUnpairedStudents={setUnpairedStudents}
         setStudentChats={setStudentChats}
-        studentChats={studentChats}
         characters={characters}
       />
     </AccordionDetails>

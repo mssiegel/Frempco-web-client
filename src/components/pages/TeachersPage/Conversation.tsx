@@ -2,8 +2,8 @@
 import { Box, Typography } from '@mui/material';
 
 import conversationCSS from './Conversation.css';
-import { filterWords, PAIRED, Student } from '@utils/classrooms';
-import { StudentChat, SoloChat } from './index';
+import { filterWords, PAIRED } from '@utils/classrooms';
+import { StudentChat, SoloChat, Student } from './types';
 
 interface ConversationProps {
   chat: StudentChat | SoloChat;
