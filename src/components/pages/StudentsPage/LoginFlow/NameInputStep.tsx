@@ -11,6 +11,7 @@ interface NameInputStepProps {
   buttonHeight: number;
   inputSx: SxProps<Theme>;
   pin: string;
+  isMobile: boolean;
   addStudentToGameroom: (studentName: string, pin: string) => void;
 }
 
@@ -19,6 +20,7 @@ export default function NameInputStep({
   buttonHeight,
   inputSx,
   pin,
+  isMobile,
   addStudentToGameroom,
 }: NameInputStepProps): JSX.Element {
   const [nameInput, setNameInput] = useState('');
@@ -57,7 +59,7 @@ export default function NameInputStep({
           sx={{ display: 'flex', gap: 2, mt: '32px' }}
         >
           <TextField
-            autoFocus
+            autoFocus={!isMobile}
             autoComplete='off'
             placeholder='Name'
             variant='outlined'
