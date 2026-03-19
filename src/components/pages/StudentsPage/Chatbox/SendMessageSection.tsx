@@ -11,7 +11,7 @@ import {
 import { Socket } from 'socket.io-client';
 
 import { PAIRED } from '@utils/classrooms';
-import { StudentPairedChat, StudentSoloChat } from '../index';
+import { StudentPairedChat, StudentSoloChat } from '../types';
 
 interface SendMessageSectionProps {
   socket: Socket;

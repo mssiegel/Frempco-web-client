@@ -4,7 +4,7 @@ import { Box, Typography } from '@mui/material';
 import { useEffect, useRef, Dispatch, SetStateAction } from 'react';
 import { Socket } from 'socket.io-client';
 import { PAIRED } from '@utils/classrooms';
-import { StudentPairedChat, StudentSoloChat } from '../index';
+import { StudentPairedChat, StudentSoloChat } from '../types';
 
 interface PeerIsTypingProps {
   chat: StudentPairedChat | StudentSoloChat;

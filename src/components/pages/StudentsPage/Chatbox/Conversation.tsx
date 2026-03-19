@@ -5,7 +5,7 @@ import { Box, Typography } from '@mui/material';
 import { Socket } from 'socket.io-client';
 
 import { filterWords } from '@utils/classrooms';
-import { StudentPairedChat, StudentSoloChat } from '../index';
+import { StudentPairedChat, StudentSoloChat } from '../types';
 import PeerIsTyping from './PeerIsTyping';
 
 interface ConversationProps {
