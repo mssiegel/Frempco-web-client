@@ -1,56 +1,19 @@
-import { Box, Typography, useMediaQuery } from '@mui/material';
+import { Box, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 
 import {
   DEV_TEST_USER_QUERY_PARAM,
-  PAIRED,
-  SOLO,
   TEST_CLASSROOM_NAME,
 } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
+import { useStudentSocketHandlers } from './hooks/useStudentSocketHandlers';
 import Chatbox from './Chatbox';
 import WelcomeMessage from './WelcomeMessage';
 import Header from './Header';
 import LoginFlow from './LoginFlow';
-
-export type ChatMessage = ['you' | 'peer', string];
-
-export type SoloChatMessage = ['you' | 'chatbot', string];
-
-export interface StudentPairedChat {
-  mode: typeof PAIRED;
-  characters: {
-    you: string;
-    peer: string;
-  };
-  conversation: ChatMessage[];
-}
-
-export interface StudentSoloChat {
-  mode: typeof SOLO;
-  characters: {
-    you: string;
-    peer: string;
-  };
-  conversation: SoloChatMessage[];
-}
-
-export type Stage =
-  | 'joining'
-  | 'lobby'
-  | 'chatting'
-  | 'chatEnded'
-  | 'removedByTeacher';
-
-export const STAGE = {
-  joining: 'joining',
-  lobby: 'lobby',
-  chatting: 'chatting',
-  chatEnded: 'chatEnded',
-  removedByTeacher: 'removedByTeacher',
-} as const;
+import { STAGE, Stage, StudentPairedChat, StudentSoloChat } from './types';
 
 const DEV_TEST_USER_SESSION_FLAG = 'wasDevTestUserSet';
 
@@ -124,80 +87,17 @@ export default function StudentsPage(): JSX.Element {
     }
   }, []);
 
-  useEffect(() => {
-    if (!socket) return;
-
-    const handleRouteChange = (url, { shallow }) => {
-      socket.emit('user disconnected');
-    };
-    router.events.on('routeChangeStart', handleRouteChange);
-
-    function reconnectToGameroom() {
-      if (stage === STAGE.lobby && studentName && pin) {
-        addStudentToGameroom(studentName, pin);
-      }
-    }
-
-    // If a student in the lobby stage briefly loses internet, auto-rejoining
-    // keeps them in the same classroom without forcing a fresh login.
-    socket.on('connect', reconnectToGameroom);
-
-    socket.on('chat start', ({ yourCharacter, peersCharacter }) => {
-      setChat({
-        mode: PAIRED,
-        characters: {
-          you: yourCharacter,
-          peer: peersCharacter,
-        },
-        conversation: [],
-      });
-      setStage(STAGE.chatting);
-      setChatEndedMsg(null);
-    });
-
-    socket.on('solo mode: chat started', ({ character, messages }) => {
-      setChat({
-        mode: SOLO,
-        characters: {
-          you: character,
-          peer: 'chatbot',
-        },
-        conversation: messages,
-      });
-      setStage(STAGE.chatting);
-      setChatEndedMsg(null);
-    });
-
-    socket.on('remove student from classroom', () => {
-      setStage(STAGE.removedByTeacher);
-    });
-
-    socket.on('peer left chat', () => {
-      setStage(STAGE.chatEnded);
-      setChatEndedMsg('Your peer left the chat');
-    });
-
-    socket.on('teacher ended chat', () => {
-      setStage(STAGE.chatEnded);
-      setChatEndedMsg('Your teacher ended your chat');
-    });
-
-    socket.on('solo mode: teacher ended chat', () => {
-      setStage(STAGE.chatEnded);
-      setChatEndedMsg('Your teacher ended your chat');
-    });
-
-    return () => {
-      socket.off('connect', reconnectToGameroom);
-      socket.off('chat start');
-      socket.off('solo mode: chat started');
-      socket.off('remove student from classroom');
-      socket.off('peer left chat');
-      socket.off('teacher ended chat');
-      socket.off('solo mode: teacher ended chat');
-      router.events.off('routeChangeStart', handleRouteChange);
-    };
-  }, [pin, router.events, socket, stage, studentName]);
+  useStudentSocketHandlers({
+    socket,
+    router,
+    stage,
+    studentName,
+    pin,
+    addStudentToGameroom,
+    setChat,
+    setStage,
+    setChatEndedMsg,
+  });
 
   return (
     <main
