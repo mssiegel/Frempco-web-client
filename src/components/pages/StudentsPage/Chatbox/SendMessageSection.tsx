@@ -125,7 +125,6 @@ export default function SendMessageSection({
           }}
           onChange={sendUserIsTyping}
           onKeyDown={sendWithEnterOnDesktop}
-          autoFocus
           inputRef={typeMessageInput}
           sx={{
             flex: 1,

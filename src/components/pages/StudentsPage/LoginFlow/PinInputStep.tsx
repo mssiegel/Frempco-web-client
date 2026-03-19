@@ -10,12 +10,14 @@ interface PinInputStepProps {
   setPin: Dispatch<SetStateAction<string>>;
   buttonHeight: number;
   inputSx: SxProps<Theme>;
+  isMobile: boolean;
 }
 
 export default function PinInputStep({
   setPin,
   buttonHeight,
   inputSx,
+  isMobile,
 }: PinInputStepProps): JSX.Element {
   const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
   const [pinInput, setPinInput] = useState('');
@@ -56,7 +58,7 @@ export default function PinInputStep({
         sx={{ display: 'flex', gap: 2, mt: '32px' }}
       >
         <TextField
-          autoFocus
+          autoFocus={!isMobile}
           autoComplete='off'
           placeholder='Game PIN'
           variant='outlined'
