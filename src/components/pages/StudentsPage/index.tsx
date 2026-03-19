@@ -125,70 +125,79 @@ export default function StudentsPage(): JSX.Element {
   }, []);
 
   useEffect(() => {
+    if (!socket) return;
+
     const handleRouteChange = (url, { shallow }) => {
       socket.emit('user disconnected');
     };
     router.events.on('routeChangeStart', handleRouteChange);
 
-    if (socket) {
-      socket.on('chat start', ({ yourCharacter, peersCharacter }) => {
-        setChat({
-          mode: PAIRED,
-          characters: {
-            you: yourCharacter,
-            peer: peersCharacter,
-          },
-          conversation: [],
-        });
-        setStage(STAGE.chatting);
-        setChatEndedMsg(null);
-      });
-
-      socket.on('solo mode: chat started', ({ character, messages }) => {
-        setChat({
-          mode: SOLO,
-          characters: {
-            you: character,
-            peer: 'chatbot',
-          },
-          conversation: messages,
-        });
-        setStage(STAGE.chatting);
-        setChatEndedMsg(null);
-      });
-
-      socket.on('remove student from classroom', () => {
-        setStage(STAGE.removedByTeacher);
-      });
-
-      socket.on('peer left chat', () => {
-        setStage(STAGE.chatEnded);
-        setChatEndedMsg('Your peer left the chat');
-      });
-
-      socket.on('teacher ended chat', () => {
-        setStage(STAGE.chatEnded);
-        setChatEndedMsg('Your teacher ended your chat');
-      });
-
-      socket.on('solo mode: teacher ended chat', () => {
-        setStage(STAGE.chatEnded);
-        setChatEndedMsg('Your teacher ended your chat');
-      });
+    function reconnectToGameroom() {
+      if (stage === STAGE.lobby && studentName && pin) {
+        addStudentToGameroom(studentName, pin);
+      }
     }
 
+    // If a student in the lobby stage briefly loses internet, auto-rejoining
+    // keeps them in the same classroom without forcing a fresh login.
+    socket.on('connect', reconnectToGameroom);
+
+    socket.on('chat start', ({ yourCharacter, peersCharacter }) => {
+      setChat({
+        mode: PAIRED,
+        characters: {
+          you: yourCharacter,
+          peer: peersCharacter,
+        },
+        conversation: [],
+      });
+      setStage(STAGE.chatting);
+      setChatEndedMsg(null);
+    });
+
+    socket.on('solo mode: chat started', ({ character, messages }) => {
+      setChat({
+        mode: SOLO,
+        characters: {
+          you: character,
+          peer: 'chatbot',
+        },
+        conversation: messages,
+      });
+      setStage(STAGE.chatting);
+      setChatEndedMsg(null);
+    });
+
+    socket.on('remove student from classroom', () => {
+      setStage(STAGE.removedByTeacher);
+    });
+
+    socket.on('peer left chat', () => {
+      setStage(STAGE.chatEnded);
+      setChatEndedMsg('Your peer left the chat');
+    });
+
+    socket.on('teacher ended chat', () => {
+      setStage(STAGE.chatEnded);
+      setChatEndedMsg('Your teacher ended your chat');
+    });
+
+    socket.on('solo mode: teacher ended chat', () => {
+      setStage(STAGE.chatEnded);
+      setChatEndedMsg('Your teacher ended your chat');
+    });
+
     return () => {
-      if (socket) {
-        socket.off('chat start');
-        socket.off('solo mode: chat started');
-        socket.off('remove student from classroom');
-        socket.off('peer left chat');
-        socket.off('teacher ended chat');
-        socket.off('solo mode: teacher ended chat');
-        router.events.off('routeChangeStart', handleRouteChange);
-      }
+      socket.off('connect', reconnectToGameroom);
+      socket.off('chat start');
+      socket.off('solo mode: chat started');
+      socket.off('remove student from classroom');
+      socket.off('peer left chat');
+      socket.off('teacher ended chat');
+      socket.off('solo mode: teacher ended chat');
+      router.events.off('routeChangeStart', handleRouteChange);
     };
-  }, [router.events, socket]);
+  }, [pin, router.events, socket, stage, studentName]);
 
   return (
     <main
