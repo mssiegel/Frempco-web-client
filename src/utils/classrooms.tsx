@@ -15,13 +15,6 @@ export function swap<T>(arr: Array<T>, i1: number, i2: number) {
   arr[i1] = temp;
 }
 
-export function currentTime() {
-  return new Date().toLocaleString('en-US', {
-    hour: 'numeric',
-    minute: 'numeric',
-  });
-}
-
 export function filterWords(words: string) {
   const filter = new Filter();
   try {
@@ -40,10 +33,4 @@ export function scrollToBottomOfElement(refObject) {
 
 export interface ClassroomProps {
   classroomName: string;
-}
-
-export interface Student {
-  socketId: string;
-  realName: string;
-  character?: string;
 }

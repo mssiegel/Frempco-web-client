@@ -11,8 +11,7 @@ import {
   ExpandMore as ExpandMoreIcon,
 } from '@mui/icons-material';
 import { Socket } from 'socket.io-client';
-import { Student } from '@utils/classrooms';
-import { StudentChat, SoloChat } from './index';
+import { Student, StudentChat, SoloChat } from './types';
 import UnpairedStudentsList from './UnpairedStudentsList';
 
 interface UnpairedStudentsAccordionProps {

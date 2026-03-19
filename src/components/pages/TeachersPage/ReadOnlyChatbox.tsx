@@ -15,9 +15,10 @@ import {
   Stop as StopIcon,
 } from '@mui/icons-material';
 
-import { scrollToBottomOfElement, SOLO, Student } from '@utils/classrooms';
+import { scrollToBottomOfElement, SOLO } from '@utils/classrooms';
+import { Student } from './types';
 import { SocketContext } from '@contexts/SocketContext';
-import { StudentChat, SoloChat } from './index';
+import { StudentChat, SoloChat } from './types';
 import chatboxCSS from './ReadOnlyChatbox.css';
 import Conversation from './Conversation';
 import CopyButton from '@components/shared/CopyButton';
