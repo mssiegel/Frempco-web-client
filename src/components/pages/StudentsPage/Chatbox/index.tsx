@@ -1,16 +1,14 @@
-/** @jsxImportSource @emotion/react */
-
 import { Box, Paper } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
 import { scrollToBottomOfElement } from '@utils/classrooms';
-import { useStudentInClassroom } from './hooks/useStudentInClassroom';
-import Conversation from './Chatbox/Conversation';
-import SendMessageSection from './Chatbox/SendMessageSection';
-import { StudentPairedChat, StudentSoloChat } from './types';
-import Header from './Chatbox/Header';
-import ChatEndedSection from './Chatbox/ChatEndedSection';
+import { useStudentInClassroom } from '../hooks/useStudentInClassroom';
+import Conversation from './Conversation';
+import SendMessageSection from './SendMessageSection';
+import { StudentPairedChat, StudentSoloChat } from '../types';
+import Header from './Header';
+import ChatEndedSection from './ChatEndedSection';
 
 interface ChatboxProps {
   socket: Socket;
@@ -33,7 +31,7 @@ export default function Chatbox({
   const isConnected = useStudentInClassroom(classroomName, socketId);
   const hasChatEnded = !isConnected || Boolean(chatEndedMsg);
 
-  function addChatMessage(sender, message) {
+  function addChatMessage(sender, message: string) {
     setChat((chat) => ({
       ...chat,
       conversation: [...chat.conversation, [sender, message]],
