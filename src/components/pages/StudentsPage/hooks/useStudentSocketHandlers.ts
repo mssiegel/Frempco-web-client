@@ -50,9 +50,23 @@ export function useStudentSocketHandlers({
   useEffect(() => {
     if (!socket) return;
 
-    function reconnectToGameroom() {
+    async function reconnectToGameroom() {
       if (stage === STAGE.lobby && studentName && pin) {
-        addStudentToGameroom(studentName, pin);
+        const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
+
+        try {
+          const getResponse = await fetch(
+            `${apiUrl}/classrooms/${pin}/studentSockets/${socket.id}`,
+            { method: 'GET' },
+          );
+          const { isStudentInsideClassroom } = await getResponse.json();
+
+          if (!isStudentInsideClassroom) {
+            addStudentToGameroom(studentName, pin);
+          }
+        } catch (e) {
+          console.log(e);
+        }
       }
     }
 

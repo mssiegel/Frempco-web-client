@@ -7,7 +7,7 @@ import {
   PersonOutline as PersonOutlineIcon,
 } from '@mui/icons-material';
 import { Button, Box, IconButton } from '@mui/material';
-import { currentTime, getRandom, swap, SOLO } from '@utils/classrooms';
+import { getRandom, swap, SOLO } from '@utils/classrooms';
 
 export default function UnpairedStudentItem({
   i,
@@ -16,7 +16,6 @@ export default function UnpairedStudentItem({
   setUnpairedStudents,
   characters,
   setStudentChats,
-  studentChats,
 }) {
   function swapStudents(student1Index: number, student2Index: number) {
     setUnpairedStudents((unpairedStudents) => {

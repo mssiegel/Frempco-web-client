@@ -4,7 +4,6 @@ import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 
 import Link from '@components/shared/Link';
-import { useStudentInClassroom } from '@hooks/useStudentInClassroom';
 
 interface WelcomeMessageProps {
   pin: string;
@@ -15,15 +14,10 @@ interface WelcomeMessageProps {
 }
 
 export default function WelcomeMessage({
-  pin,
   removedFromClass,
-  socketId,
   studentName,
   isMobile,
 }: WelcomeMessageProps) {
-  const isConnected = useStudentInClassroom(pin, socketId);
-  const showReconnectingMessage = !removedFromClass && !isConnected;
-
   return (
     <Box textAlign='center'>
       <Image
@@ -47,10 +41,6 @@ export default function WelcomeMessage({
             again.
           </Typography>
         </>
-      ) : showReconnectingMessage ? (
-        <Typography variant='body1'>
-          Connection lost. Reconnecting you to the game room...
-        </Typography>
       ) : (
         <Typography variant='body1'>
           Welcome to the game room! Your teacher will pair you soon...

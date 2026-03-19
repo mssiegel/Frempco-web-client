@@ -5,7 +5,7 @@ import { Box } from '@mui/material';
 import StudentsButton from './StudentsButton';
 import TeachersButton from './TeachersButton';
 import { useRef } from 'react';
-import { useHeaderButtonsVisibility } from '@hooks/HomePage/useHeaderButtonsVisibility';
+import { useHeaderButtonsVisibility } from './hooks/useHeaderButtonsVisibility';
 
 interface HeaderProps {
   visitStudentsPage: (isDevTestUser?: boolean) => void;

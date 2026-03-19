@@ -13,7 +13,6 @@ export default function UnpairedStudentsList({
   unpairedStudents,
   setUnpairedStudents,
   setStudentChats,
-  studentChats,
   characters,
 }) {
   useEffect(() => {
@@ -108,7 +107,6 @@ export default function UnpairedStudentsList({
                 setUnpairedStudents={setUnpairedStudents}
                 characters={characters}
                 setStudentChats={setStudentChats}
-                studentChats={studentChats}
               />
               {student2 && (
                 <UnpairedStudentItem
@@ -118,7 +116,6 @@ export default function UnpairedStudentsList({
                   setUnpairedStudents={setUnpairedStudents}
                   characters={characters}
                   setStudentChats={setStudentChats}
-                  studentChats={studentChats}
                 />
               )}
             </Grid>
