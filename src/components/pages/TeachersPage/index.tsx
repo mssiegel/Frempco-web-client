@@ -203,7 +203,6 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           unpairedStudents={unpairedStudents}
           setUnpairedStudents={setUnpairedStudents}
           setStudentChats={setStudentChats}
-          studentChats={studentChats}
           characters={characters}
         />
         <ChatsInProgressAccordion

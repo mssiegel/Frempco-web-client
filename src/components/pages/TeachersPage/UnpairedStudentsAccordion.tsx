@@ -19,7 +19,6 @@ interface UnpairedStudentsAccordionProps {
   unpairedStudents: Student[];
   setUnpairedStudents: Dispatch<SetStateAction<Student[]>>;
   setStudentChats: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
-  studentChats: (StudentChat | SoloChat)[];
   characters: string[];
 }
 
@@ -28,7 +27,6 @@ const UnpairedStudentsAccordion = ({
   unpairedStudents,
   setUnpairedStudents,
   setStudentChats,
-  studentChats,
   characters,
 }: UnpairedStudentsAccordionProps) => (
   <Accordion disableGutters sx={{ boxShadow: 'none', mb: 3 }}>
@@ -67,7 +65,6 @@ const UnpairedStudentsAccordion = ({
         unpairedStudents={unpairedStudents}
         setUnpairedStudents={setUnpairedStudents}
         setStudentChats={setStudentChats}
-        studentChats={studentChats}
         characters={characters}
       />
     </AccordionDetails>
