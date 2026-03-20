@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
 import type { Socket } from 'socket.io-client';
@@ -10,6 +10,7 @@ import Link from '@components/shared/Link';
 interface WelcomeMessageProps {
   pin: string;
   removedFromClass: boolean;
+  isLobbyStage: boolean;
   socketId: string;
   socket: Socket;
   studentName: string;
@@ -24,12 +25,19 @@ interface WelcomeMessageProps {
 export default function WelcomeMessage({
   pin,
   removedFromClass,
+  isLobbyStage,
   socket,
   socketId,
   studentName,
   isMobile,
   addStudentToGameroom,
 }: WelcomeMessageProps) {
+  const isLobbyStageRef = useRef(isLobbyStage);
+
+  useEffect(() => {
+    isLobbyStageRef.current = isLobbyStage;
+  }, [isLobbyStage]);
+
   useEffect(() => {
     if (!socket || removedFromClass || !studentName || !pin) return;
 
@@ -43,7 +51,8 @@ export default function WelcomeMessage({
         );
         const { isStudentInsideClassroom } = await getResponse.json();
 
-        if (!isStudentInsideClassroom) {
+        // Use a ref so this async callback reads the latest stage, not a stale closure value.
+        if (!isStudentInsideClassroom && isLobbyStageRef.current) {
           const updateStageToLobby = false;
           addStudentToGameroom(studentName, pin, updateStageToLobby);
         }
