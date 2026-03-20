@@ -13,10 +13,6 @@ import {
 interface UseStudentSocketHandlersProps {
   socket: Socket;
   router: NextRouter;
-  stage: Stage;
-  studentName: string;
-  pin: string;
-  addStudentToGameroom: (studentName: string, pin: string) => void;
   setChat: Dispatch<SetStateAction<StudentPairedChat | StudentSoloChat>>;
   setStage: Dispatch<SetStateAction<Stage>>;
   setChatEndedMsg: (message: string | null) => void;
@@ -25,10 +21,6 @@ interface UseStudentSocketHandlersProps {
 export function useStudentSocketHandlers({
   socket,
   router,
-  stage,
-  studentName,
-  pin,
-  addStudentToGameroom,
   setChat,
   setStage,
   setChatEndedMsg,
@@ -46,38 +38,6 @@ export function useStudentSocketHandlers({
       router.events.off('routeChangeStart', handleRouteChange);
     };
   }, [router.events, socket]);
-
-  useEffect(() => {
-    if (!socket) return;
-
-    async function reconnectToGameroom() {
-      if (stage === STAGE.lobby && studentName && pin) {
-        const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
-
-        try {
-          const getResponse = await fetch(
-            `${apiUrl}/classrooms/${pin}/studentSockets/${socket.id}`,
-            { method: 'GET' },
-          );
-          const { isStudentInsideClassroom } = await getResponse.json();
-
-          if (!isStudentInsideClassroom) {
-            addStudentToGameroom(studentName, pin);
-          }
-        } catch (e) {
-          console.log(e);
-        }
-      }
-    }
-
-    // If a student in the lobby stage briefly loses internet, auto-rejoining
-    // keeps them in the same classroom without forcing a fresh login.
-    socket.on('connect', reconnectToGameroom);
-
-    return () => {
-      socket.off('connect', reconnectToGameroom);
-    };
-  }, [addStudentToGameroom, pin, socket, stage, studentName]);
 
   useEffect(() => {
     if (!socket) return;

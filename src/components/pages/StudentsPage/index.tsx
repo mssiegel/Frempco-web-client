@@ -54,12 +54,18 @@ export default function StudentsPage(): JSX.Element {
   // when the on-screen keyboard opens and reduces the available viewport height.
   const shouldAnchorContentToBottom = isMobile && isChatboxStage;
 
-  function addStudentToGameroom(studentName: string, pin: string) {
+  function addStudentToGameroom(
+    studentName: string,
+    pin: string,
+    updateStageToLobby = true,
+  ) {
     socket.emit('new student entered', {
       student: studentName,
       classroom: pin,
     });
-    setStage(STAGE.lobby);
+    if (updateStageToLobby) {
+      setStage(STAGE.lobby);
+    }
   }
 
   function initializeDevTestUser() {
@@ -95,10 +101,6 @@ export default function StudentsPage(): JSX.Element {
   useStudentSocketHandlers({
     socket,
     router,
-    stage,
-    studentName,
-    pin,
-    addStudentToGameroom,
     setChat,
     setStage,
     setChatEndedMsg,
@@ -126,9 +128,11 @@ export default function StudentsPage(): JSX.Element {
       <WelcomeMessage
         pin={pin}
         removedFromClass={stage === STAGE.removedByTeacher}
+        socket={socket}
         socketId={socket.id}
         studentName={studentName}
         isMobile={isMobile}
+        addStudentToGameroom={addStudentToGameroom}
       />
     );
 
