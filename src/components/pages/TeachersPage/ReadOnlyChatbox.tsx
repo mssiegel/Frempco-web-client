@@ -16,10 +16,11 @@ import {
 } from '@mui/icons-material';
 
 import { scrollToBottomOfElement, SOLO } from '@utils/classrooms';
-import { Student } from './types';
+import { ChatParticipants, Student } from './types';
 import { SocketContext } from '@contexts/SocketContext';
 import { StudentChat, SoloChat } from './types';
 import chatboxCSS from './ReadOnlyChatbox.css';
+import Header from './Chatbox/Header';
 import Conversation from './Conversation';
 
 interface ReadOnlyChatboxProps {
@@ -81,12 +82,19 @@ export default function ReadOnlyChatbox({
   const student1 = chat.mode === SOLO ? chat.student : chat.studentPair[0];
   const student2 =
     chat.mode === SOLO ? { realName: 'chatbot' } : chat.studentPair[1];
+  const participants: ChatParticipants = {
+    student1,
+    student2: chat.mode === SOLO ? undefined : chat.studentPair[1],
+  };
 
   return (
     <Box css={[chatboxCSS.chatboxContainer]}>
+      <Header participants={participants} />
+
       <Conversation
         containerRef={chatboxConversationContainer}
         chat={chat}
+        participants={participants}
         isExpanded={isExpanded}
       />
       <Box

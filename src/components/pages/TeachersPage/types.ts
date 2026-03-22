@@ -6,6 +6,11 @@ export interface Student {
   character?: string;
 }
 
+export interface ChatParticipants {
+  student1: Student;
+  student2?: Student;
+}
+
 export type StudentPair = [Student, Student];
 
 export type ChatMessage = ['student1' | 'student2', string];

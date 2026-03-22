@@ -1,15 +1,10 @@
 import { RefObject } from 'react';
 import { Box, Typography } from '@mui/material';
 
-import { filterWords, PAIRED } from '@utils/classrooms';
-import { StudentChat, SoloChat, Student } from './types';
+import { filterWords } from '@utils/classrooms';
+import { ChatParticipants, StudentChat, SoloChat } from './types';
 
 const conversationSx = {
-  introText: {
-    fontStyle: 'italic',
-    color: 'gray',
-    mb: '5px',
-  },
   student1: {
     color: 'primary.500',
   },
@@ -24,20 +19,18 @@ const conversationSx = {
 
 interface ConversationProps {
   chat: StudentChat | SoloChat;
+  participants: ChatParticipants;
   containerRef: RefObject<HTMLDivElement>;
   isExpanded: boolean;
 }
 
 export default function Conversation({
   chat,
+  participants,
   containerRef,
   isExpanded,
 }: ConversationProps) {
-  let student1: Student;
-  let student2: Student;
-  if (chat.mode === PAIRED) [student1, student2] = chat.studentPair;
-  else student1 = chat.student;
-
+  const { student1, student2 } = participants;
   const displayedConversation = isExpanded
     ? chat.conversation
     : chat.conversation.slice(-5);
@@ -55,24 +48,6 @@ export default function Conversation({
         transition: 'all 0.3s ease-in-out',
       }}
     >
-      <Box sx={conversationSx.introText}>
-        <Box component='span' mr={2}>
-          ({student1.realName})
-        </Box>
-        <Box component='span' sx={conversationSx.student1}>
-          {student1.character}
-        </Box>
-        <br />
-        {chat.mode === PAIRED && (
-          <Box component='span' mr={2}>
-            {student2.realName}
-          </Box>
-        )}
-        <Box component='span' sx={conversationSx.student2}>
-          {chat.mode === PAIRED ? student2.character : 'chatbot'}
-        </Box>
-        <Box>------</Box>
-      </Box>
       {displayedConversation.map(([messageAuthor, message], i) => {
         // Solo chats use "student"; normalize it to student1 so display logic has 3 cases.
         const author = messageAuthor === 'student' ? 'student1' : messageAuthor;
