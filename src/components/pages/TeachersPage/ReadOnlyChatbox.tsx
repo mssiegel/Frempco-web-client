@@ -19,7 +19,6 @@ import { scrollToBottomOfElement, SOLO } from '@utils/classrooms';
 import { ChatParticipants, Student } from './types';
 import { SocketContext } from '@contexts/SocketContext';
 import { StudentChat, SoloChat } from './types';
-import chatboxCSS from './ReadOnlyChatbox.css';
 import Header from './Chatbox/Header';
 import Conversation from './Conversation';
 
@@ -88,7 +87,13 @@ export default function ReadOnlyChatbox({
   };
 
   return (
-    <Box css={[chatboxCSS.chatboxContainer]}>
+    <Box
+      sx={{
+        maxWidth: 600,
+        borderRadius: '10px',
+        overflow: 'hidden',
+      }}
+    >
       <Header participants={participants} />
 
       <Conversation
@@ -98,7 +103,12 @@ export default function ReadOnlyChatbox({
         isExpanded={isExpanded}
       />
       <Box
-        css={chatboxCSS.buttonsContainer}
+        sx={{
+          background: '#ffdd9a',
+          padding: '10px',
+          display: 'flex',
+          justifyContent: 'space-around',
+        }}
         onClick={(e) => e.stopPropagation()}
         ref={buttonsContainerRef}
       >
