@@ -6,7 +6,7 @@ import {
   Close as CloseIcon,
   PersonOutline as PersonOutlineIcon,
 } from '@mui/icons-material';
-import { Button, Box, IconButton } from '@mui/material';
+import { Button, Box, IconButton, Typography } from '@mui/material';
 import { getRandom, swap, SOLO } from '@utils/classrooms';
 
 export default function UnpairedStudentItem({
@@ -90,7 +90,9 @@ export default function UnpairedStudentItem({
           <ArrowDownwardIcon fontSize='small' />
         </IconButton>
 
-        {student.realName}
+        <Typography component='span' variant='body1'>
+          {student.realName}
+        </Typography>
 
         <IconButton
           aria-label='remove student'
@@ -105,7 +107,14 @@ export default function UnpairedStudentItem({
         </IconButton>
         <Button
           size='small'
-          sx={{ marginLeft: '10px' }}
+          variant='outlined'
+          color='primary'
+          sx={{
+            marginLeft: '10px',
+            height: '25px',
+            boxShadow: 'none',
+            '&:hover': { boxShadow: 'none' },
+          }}
           onClick={startSoloChat}
         >
           Solo <PersonOutlineIcon />
