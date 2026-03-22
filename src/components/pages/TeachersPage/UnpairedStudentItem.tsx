@@ -65,35 +65,7 @@ export default function UnpairedStudentItem({
 
   return (
     <>
-      <Box sx={{ fontSize: '18px' }}>
-        <IconButton
-          aria-label='move up'
-          size='small'
-          sx={{
-            color: 'green',
-            ':hover': { color: 'white', bgcolor: 'green' },
-          }}
-          onClick={() => swapStudents(i, i - 1)}
-        >
-          <ArrowUpwardIcon fontSize='small' />
-        </IconButton>
-
-        <IconButton
-          aria-label='move down'
-          size='small'
-          sx={{
-            color: 'green',
-            ':hover': { color: 'white', bgcolor: 'green' },
-          }}
-          onClick={() => swapStudents(i, i + 1)}
-        >
-          <ArrowDownwardIcon fontSize='small' />
-        </IconButton>
-
-        <Typography component='span' variant='body1' fontSize='18px'>
-          {student.realName}
-        </Typography>
-
+      <Box sx={{ fontSize: '18px', display: 'flex' }}>
         <IconButton
           aria-label='remove student'
           size='small'
@@ -119,6 +91,35 @@ export default function UnpairedStudentItem({
         >
           Solo <PersonOutlineIcon />
         </Button>
+
+        <Typography component='span' variant='body1' fontSize='18px' ml={2}>
+          {student.realName}
+        </Typography>
+
+        <IconButton
+          aria-label='move up'
+          size='small'
+          sx={{
+            marginLeft: 'auto',
+            color: 'green',
+            ':hover': { color: 'white', bgcolor: 'green' },
+          }}
+          onClick={() => swapStudents(i, i - 1)}
+        >
+          <ArrowUpwardIcon fontSize='small' />
+        </IconButton>
+
+        <IconButton
+          aria-label='move down'
+          size='small'
+          sx={{
+            color: 'green',
+            ':hover': { color: 'white', bgcolor: 'green' },
+          }}
+          onClick={() => swapStudents(i, i + 1)}
+        >
+          <ArrowDownwardIcon fontSize='small' />
+        </IconButton>
       </Box>
     </>
   );
