@@ -65,7 +65,7 @@ export default function Chatbox({
       sx={{
         border: '1px solid silver',
         borderRadius: '12px',
-        paddingBottom: '16px',
+        paddingBottom: '8px',
         backgroundColor: 'white',
         width: '500px',
         '@media (max-width: 500px)': {
