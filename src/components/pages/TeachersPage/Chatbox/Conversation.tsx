@@ -4,19 +4,6 @@ import { Box, Typography } from '@mui/material';
 import { filterWords } from '@utils/classrooms';
 import { ChatParticipants, StudentChat, SoloChat } from '../types';
 
-const conversationSx = {
-  student1: {
-    color: 'primary.500',
-  },
-  student2: {
-    color: 'secondary.600',
-  },
-  studentRealName: {
-    fontStyle: 'italic',
-    color: 'gray',
-  },
-};
-
 interface ConversationProps {
   chat: StudentChat | SoloChat;
   participants: ChatParticipants;
@@ -66,24 +53,37 @@ export default function Conversation({
             : author === 'student2'
             ? student2.realName
             : '';
-        const color =
-          author === 'student1'
-            ? conversationSx.student1.color
-            : conversationSx.student2.color;
+        const characterNameColor =
+          author === 'student1' ? 'primary.500' : 'secondary.600';
 
         return (
           <Typography key={i}>
             {realName && (
-              <Box component='span' sx={conversationSx.studentRealName} mr={2}>
-                {realName}
-              </Box>
+              <Typography
+                component='span'
+                variant='body2'
+                fontStyle='italic'
+                color='neutrals.400'
+                pr={1}
+              >
+                ({realName})
+              </Typography>
             )}
-            <Box component='span' sx={{ color }} fontWeight='bold' mr={1}>
+            <Typography
+              component='span'
+              variant='body2'
+              sx={{ color: characterNameColor, fontWeight: 'bold', pr: 0.5 }}
+            >
               {character}:
-            </Box>
-            <Box component='span' sx={{ overflowWrap: 'break-word' }}>
+            </Typography>
+            <Typography
+              component='span'
+              variant='body2'
+              color='neutrals.600'
+              sx={{ overflowWrap: 'break-word' }}
+            >
               {filterWords(message)}
-            </Box>
+            </Typography>
           </Typography>
         );
       })}
