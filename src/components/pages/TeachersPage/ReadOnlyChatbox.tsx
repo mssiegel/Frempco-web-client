@@ -21,7 +21,6 @@ import { SocketContext } from '@contexts/SocketContext';
 import { StudentChat, SoloChat } from './types';
 import chatboxCSS from './ReadOnlyChatbox.css';
 import Conversation from './Conversation';
-import CopyButton from '@components/shared/CopyButton';
 
 interface ReadOnlyChatboxProps {
   chat: StudentChat | SoloChat;
@@ -115,17 +114,14 @@ export default function ReadOnlyChatbox({
         ref={buttonsContainerRef}
       >
         <Button
-          size='medium'
           color='primary'
-          variant='contained'
+          variant='outlined'
           startIcon={isExpanded ? <UnfoldLessIcon /> : <UnfoldMoreIcon />}
           onClick={expandChat}
         >
           {isExpanded ? 'Collapse' : 'Expand'}
         </Button>
-        <CopyButton elementId={`chat-${chat.chatId}`} isTeachersPage />
         <Button
-          size='medium'
           color='error'
           variant='contained'
           startIcon={<StopIcon />}

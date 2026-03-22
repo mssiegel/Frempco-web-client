@@ -17,7 +17,7 @@ export default function Conversation({ chat, elementId }: ConversationProps) {
   else student1 = chat.student;
 
   return (
-    <Box id={elementId}>
+    <Box>
       <Box css={conversationCSS.introText}>
         ({student1.realName})&nbsp;&nbsp;
         <span css={conversationCSS.student1}>{student1.character}</span>
