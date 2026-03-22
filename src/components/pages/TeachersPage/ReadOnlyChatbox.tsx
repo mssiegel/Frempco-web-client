@@ -105,7 +105,6 @@ export default function ReadOnlyChatbox({
                   conversation: [...chat.conversation].slice(-5),
                 } as StudentChat | SoloChat)
           }
-          elementId={`chat-${chat.chatId}`}
         />
       </Box>
       <Box
