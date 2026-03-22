@@ -66,14 +66,14 @@ const SetupClassroomAccordion = ({
         </Box>
       </AccordionSummary>
       <AccordionDetails>
+        <SetCharacterList
+          characters={characters}
+          setCharacters={setCharacters}
+        />
         <SetTeacherEmailButton
           classroomName={classroomName}
           email={email}
           setEmail={setEmail}
-        />
-        <SetCharacterList
-          characters={characters}
-          setCharacters={setCharacters}
         />
       </AccordionDetails>
     </Accordion>
