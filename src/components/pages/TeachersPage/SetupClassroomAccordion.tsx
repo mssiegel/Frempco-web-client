@@ -49,7 +49,7 @@ const SetupClassroomAccordion = ({
         expandIcon={<ExpandMoreIcon />}
         sx={{ borderRadius: '15px', border: '1px solid black', gap: 2 }}
       >
-        <Typography fontFamily='Lora' fontSize='26px'>
+        <Typography variant='h5' fontWeight={400}>
           Step 1: Setup Your Classroom
         </Typography>
         <Box
@@ -60,9 +60,7 @@ const SetupClassroomAccordion = ({
           justifyContent='flex-end'
         >
           {hasRemainingSetupOptions && <ErrorOutlineIcon />}
-          <Typography fontFamily='Lora' fontSize='16px'>
-            {remainingSetupOptionsText}
-          </Typography>
+          <Typography variant='body2'>{remainingSetupOptionsText}</Typography>
         </Box>
       </AccordionSummary>
       <AccordionDetails>

@@ -34,7 +34,7 @@ const UnpairedStudentsAccordion = ({
       expandIcon={<ExpandMoreIcon />}
       sx={{ borderRadius: '15px', border: '1px solid black', gap: 2 }}
     >
-      <Typography fontFamily='Lora' fontSize='26px'>
+      <Typography variant='h5' fontWeight={400}>
         Step 2: Pair Your Students ({unpairedStudents.length})
       </Typography>
       <Box
@@ -45,7 +45,7 @@ const UnpairedStudentsAccordion = ({
         justifyContent='flex-end'
       >
         {unpairedStudents.length > 0 && <NotificationIcon />}
-        <Typography fontFamily='Lora' fontSize='16px'>
+        <Typography variant='body2'>
           {unpairedStudents.length === 1 ? (
             <>
               There is <strong>1 student</strong> waiting to start

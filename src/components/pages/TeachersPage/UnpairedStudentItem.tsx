@@ -90,7 +90,7 @@ export default function UnpairedStudentItem({
           <ArrowDownwardIcon fontSize='small' />
         </IconButton>
 
-        <Typography component='span' variant='body1'>
+        <Typography component='span' variant='body1' fontSize='18px'>
           {student.realName}
         </Typography>
 
