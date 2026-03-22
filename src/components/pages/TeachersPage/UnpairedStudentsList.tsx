@@ -98,7 +98,9 @@ export default function UnpairedStudentsList({
             container
             key={i}
             sx={{
-              background: `${i % 2 === 0 ? '#f8e5e0' : ''}`,
+              backgroundColor: `${i % 2 === 0 ? 'secondary.400' : ''}`,
+              borderLeft: '1px dotted silver',
+              borderRight: '1px dotted silver',
             }}
           >
             <Grid item xs={9}>
