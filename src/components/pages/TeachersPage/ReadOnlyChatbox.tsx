@@ -56,11 +56,6 @@ export default function ReadOnlyChatbox({
     }
   }, [isExpanded]);
 
-  function expandChat(e: React.MouseEvent) {
-    e.stopPropagation();
-    setIsExpanded((prev) => !prev);
-  }
-
   function endChat(chatId, chatMode, student1, student2) {
     const endChatConfirmed = confirm(
       `Are you sure you want to end the ${
@@ -89,24 +84,11 @@ export default function ReadOnlyChatbox({
 
   return (
     <Box css={[chatboxCSS.chatboxContainer]}>
-      <Box
-        css={[
-          chatboxCSS.chatboxTop,
-          isExpanded && chatboxCSS.expandedChatboxTop,
-        ]}
-        ref={chatboxConversationContainer}
-      >
-        <Conversation
-          chat={
-            isExpanded
-              ? chat
-              : ({
-                  ...chat,
-                  conversation: [...chat.conversation].slice(-5),
-                } as StudentChat | SoloChat)
-          }
-        />
-      </Box>
+      <Conversation
+        containerRef={chatboxConversationContainer}
+        chat={chat}
+        isExpanded={isExpanded}
+      />
       <Box
         css={chatboxCSS.buttonsContainer}
         onClick={(e) => e.stopPropagation()}
@@ -116,7 +98,7 @@ export default function ReadOnlyChatbox({
           color='primary'
           variant='outlined'
           startIcon={isExpanded ? <UnfoldLessIcon /> : <UnfoldMoreIcon />}
-          onClick={expandChat}
+          onClick={() => setIsExpanded((prev) => !prev)}
         >
           {isExpanded ? 'Collapse' : 'Expand'}
         </Button>

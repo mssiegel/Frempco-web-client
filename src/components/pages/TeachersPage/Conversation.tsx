@@ -1,3 +1,4 @@
+import { RefObject } from 'react';
 import { Box, Typography } from '@mui/material';
 
 import { filterWords, PAIRED } from '@utils/classrooms';
@@ -23,16 +24,37 @@ const conversationSx = {
 
 interface ConversationProps {
   chat: StudentChat | SoloChat;
+  containerRef: RefObject<HTMLDivElement>;
+  isExpanded: boolean;
 }
 
-export default function Conversation({ chat }: ConversationProps) {
+export default function Conversation({
+  chat,
+  containerRef,
+  isExpanded,
+}: ConversationProps) {
   let student1: Student;
   let student2: Student;
   if (chat.mode === PAIRED) [student1, student2] = chat.studentPair;
   else student1 = chat.student;
 
+  const displayedConversation = isExpanded
+    ? chat.conversation
+    : chat.conversation.slice(-5);
+
   return (
-    <Box>
+    <Box
+      ref={containerRef}
+      sx={{
+        background: '#f8e5e0',
+        minHeight: isExpanded ? '500px' : '280px',
+        padding: '10px',
+        maxHeight: isExpanded ? '600px' : '280px',
+        overflowY: 'overlay',
+        scrollBehavior: 'smooth',
+        transition: 'all 0.3s ease-in-out',
+      }}
+    >
       <Box sx={conversationSx.introText}>
         <Box component='span' mr={2}>
           ({student1.realName})
@@ -51,7 +73,7 @@ export default function Conversation({ chat }: ConversationProps) {
         </Box>
         <Box>------</Box>
       </Box>
-      {chat.conversation.map(([messageAuthor, message], i) => {
+      {displayedConversation.map(([messageAuthor, message], i) => {
         // Solo chats use "student"; normalize it to student1 so display logic has 3 cases.
         const author = messageAuthor === 'student' ? 'student1' : messageAuthor;
 
