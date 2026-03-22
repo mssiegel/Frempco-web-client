@@ -10,19 +10,14 @@ const conversationSx = {
     mb: '5px',
   },
   student1: {
-    fontWeight: 'bold',
-    color: '#0070ff',
+    color: 'primary.500',
   },
   student2: {
-    fontWeight: 'bold',
-    color: 'red',
+    color: 'secondary.600',
   },
-  lessImportantText: {
+  studentRealName: {
     fontStyle: 'italic',
     color: 'gray',
-  },
-  msg: {
-    wordBreak: 'break-word',
   },
 };
 
@@ -39,55 +34,57 @@ export default function Conversation({ chat }: ConversationProps) {
   return (
     <Box>
       <Box sx={conversationSx.introText}>
-        ({student1.realName})&nbsp;&nbsp;
+        <Box component='span' mr={2}>
+          ({student1.realName})
+        </Box>
         <Box component='span' sx={conversationSx.student1}>
           {student1.character}
         </Box>
         <br />
-        {chat.mode === PAIRED && <>{student2.realName}&nbsp;&nbsp;</>}
+        {chat.mode === PAIRED && (
+          <Box component='span' mr={2}>
+            {student2.realName}
+          </Box>
+        )}
         <Box component='span' sx={conversationSx.student2}>
           {chat.mode === PAIRED ? student2.character : 'chatbot'}
         </Box>
         <Box>------</Box>
       </Box>
       {chat.conversation.map(([messageAuthor, message], i) => {
-        let character = '';
-        let realName = '';
-        let fontSx = conversationSx.student1;
-        switch (messageAuthor) {
-          case 'student1':
-            character = student1.character;
-            realName = student1.realName;
-            fontSx = conversationSx.student1;
-            break;
-          case 'student2':
-            character = student2.character;
-            realName = student2.realName;
-            fontSx = conversationSx.student2;
-            break;
-          case 'student':
-            character = student1.character;
-            realName = student1.realName;
-            fontSx = conversationSx.student1;
-            break;
-          case 'chatbot':
-            character = 'chatbot';
-            fontSx = conversationSx.student2;
-            break;
-        }
+        // Solo chats use "student"; normalize it to student1 so display logic has 3 cases.
+        const author = messageAuthor === 'student' ? 'student1' : messageAuthor;
+
+        const character =
+          author === 'student1'
+            ? student1.character
+            : author === 'student2'
+            ? student2.character
+            : 'chatbot';
+
+        // Only students have real names; chatbots do not
+        const realName =
+          author === 'student1'
+            ? student1.realName
+            : author === 'student2'
+            ? student2.realName
+            : '';
+        const color =
+          author === 'student1'
+            ? conversationSx.student1.color
+            : conversationSx.student2.color;
 
         return (
           <Typography key={i}>
-            {/* Only students have real names; teacher does not */}
             {realName && (
-              <Box component='span' sx={conversationSx.lessImportantText}>
-                {realName}&nbsp;&nbsp;
+              <Box component='span' sx={conversationSx.studentRealName} mr={2}>
+                {realName}
               </Box>
             )}
-            <Box component='span' sx={fontSx}>
-              {character}:{' '}
+            <Box component='span' sx={{ color }} fontWeight='bold' mr={1}>
+              {character}:
             </Box>
-            <Box component='span' sx={conversationSx.msg}>
+            <Box component='span' sx={{ overflowWrap: 'break-word' }}>
               {filterWords(message)}
             </Box>
           </Typography>
