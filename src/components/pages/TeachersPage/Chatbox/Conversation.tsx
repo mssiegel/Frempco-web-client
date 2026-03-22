@@ -2,7 +2,7 @@ import { RefObject } from 'react';
 import { Box, Typography } from '@mui/material';
 
 import { filterWords } from '@utils/classrooms';
-import { ChatParticipants, StudentChat, SoloChat } from './types';
+import { ChatParticipants, StudentChat, SoloChat } from '../types';
 
 const conversationSx = {
   student1: {

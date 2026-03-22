@@ -16,11 +16,10 @@ import {
 } from '@mui/icons-material';
 
 import { scrollToBottomOfElement, SOLO } from '@utils/classrooms';
-import { ChatParticipants, Student } from './types';
+import { ChatParticipants, Student, StudentChat, SoloChat } from '../types';
 import { SocketContext } from '@contexts/SocketContext';
-import { StudentChat, SoloChat } from './types';
-import Header from './Chatbox/Header';
-import Conversation from './Chatbox/Conversation';
+import Header from './Header';
+import Conversation from './Conversation';
 
 interface ReadOnlyChatboxProps {
   chat: StudentChat | SoloChat;
