@@ -17,6 +17,7 @@ interface ChatboxProps {
   chatEndedMsg: null | string;
   classroomName: string;
   socketId: string;
+  isMobile: boolean;
 }
 
 export default function Chatbox({
@@ -26,6 +27,7 @@ export default function Chatbox({
   chatEndedMsg,
   classroomName,
   socketId,
+  isMobile,
 }: ChatboxProps) {
   const [peerIsTyping, setPeerIsTyping] = useState(false);
   const isConnected = useStudentInClassroom(classroomName, socketId);
@@ -77,25 +79,14 @@ export default function Chatbox({
         yourCharacter={chat.characters.you}
         peerCharacter={chat.characters.peer}
       />
-      <Box sx={{ px: '16px' }}>
-        <Box
-          ref={chatboxConversationContainer}
-          sx={{
-            minHeight: '280px',
-            maxHeight: '350px',
-            overflowY: 'overlay',
-            scrollBehavior: 'smooth',
-            my: '10px',
-          }}
-        >
-          <Conversation
-            chat={chat}
-            socket={socket}
-            peerIsTyping={peerIsTyping}
-            setPeerIsTyping={setPeerIsTyping}
-          />
-        </Box>
-      </Box>
+      <Conversation
+        chat={chat}
+        socket={socket}
+        peerIsTyping={peerIsTyping}
+        setPeerIsTyping={setPeerIsTyping}
+        containerRef={chatboxConversationContainer}
+        isMobile={isMobile}
+      />
       {!hasChatEnded ? (
         <SendMessageSection
           socket={socket}

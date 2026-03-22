@@ -117,6 +117,7 @@ export default function SendMessageSection({
         <InputBase
           value={message}
           placeholder={`Talk as ${chat.characters.you}...`}
+          autoFocus
           multiline
           minRows={1}
           maxRows={6}

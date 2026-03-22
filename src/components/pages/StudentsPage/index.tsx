@@ -123,6 +123,7 @@ export default function StudentsPage(): JSX.Element {
         chatEndedMsg={chatEndedMsg}
         classroomName={pin}
         socketId={socket.id}
+        isMobile={isMobile}
       />
     ) : (
       <WelcomeMessage
