@@ -5,5 +5,5 @@ interface LayoutProps {
 }
 
 export default function Layout({ children }: LayoutProps) {
-  return <Box sx={{ minHeight: '100vh' }}>{children}</Box>;
+  return <Box sx={{ minHeight: '100dvh' }}>{children}</Box>;
 }
