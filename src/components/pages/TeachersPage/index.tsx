@@ -178,18 +178,18 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     <main>
       <Box mx={2}>
         <Box mb={3}>
-          <Typography fontSize={26} fontFamily='Lora'>
+          <Typography variant='h5' mb={1}>
             Student Instructions
           </Typography>
-          <Typography fontSize={17} fontFamily='Lora' mb={2}>
+          <Typography variant='body2' mb={1}>
             Write the following on your blackboard or another highly visible
             spot for all students to see.
           </Typography>
-          <Typography fontSize={21} fontFamily='Lora' fontWeight='bold' mb={1}>
-            {'1)'} Join at www.frempco.com
+          <Typography variant='body1' mb={1}>
+            {'1)'} Join at <strong>www.frempco.com</strong>
           </Typography>
-          <Typography fontSize={21} fontFamily='Lora' fontWeight='bold' mb={1}>
-            {'2)'} Enter Game Pin: {classroomName}
+          <Typography variant='body1' mb={1}>
+            {'2)'} Enter Game Pin: <strong>{classroomName}</strong>
           </Typography>
         </Box>
         <SetupClassroomAccordion

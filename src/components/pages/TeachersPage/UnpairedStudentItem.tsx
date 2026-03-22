@@ -6,7 +6,7 @@ import {
   Close as CloseIcon,
   PersonOutline as PersonOutlineIcon,
 } from '@mui/icons-material';
-import { Button, Box, IconButton } from '@mui/material';
+import { Button, Box, IconButton, Typography } from '@mui/material';
 import { getRandom, swap, SOLO } from '@utils/classrooms';
 
 export default function UnpairedStudentItem({
@@ -65,11 +65,42 @@ export default function UnpairedStudentItem({
 
   return (
     <>
-      <Box sx={{ fontSize: '18px' }}>
+      <Box sx={{ fontSize: '18px', display: 'flex' }}>
+        <IconButton
+          aria-label='remove student'
+          size='small'
+          sx={{
+            color: 'red',
+            ':hover': { color: 'white', bgcolor: '#ff0000ad' },
+          }}
+          onClick={() => removeStudent(student)}
+        >
+          <CloseIcon fontSize='small' />
+        </IconButton>
+        <Button
+          size='small'
+          variant='outlined'
+          color='primary'
+          sx={{
+            marginLeft: '10px',
+            height: '25px',
+            boxShadow: 'none',
+            '&:hover': { boxShadow: 'none' },
+          }}
+          onClick={startSoloChat}
+        >
+          Solo <PersonOutlineIcon />
+        </Button>
+
+        <Typography component='span' variant='body1' fontSize='18px' ml={2}>
+          {student.realName}
+        </Typography>
+
         <IconButton
           aria-label='move up'
           size='small'
           sx={{
+            marginLeft: 'auto',
             color: 'green',
             ':hover': { color: 'white', bgcolor: 'green' },
           }}
@@ -89,27 +120,6 @@ export default function UnpairedStudentItem({
         >
           <ArrowDownwardIcon fontSize='small' />
         </IconButton>
-
-        {student.realName}
-
-        <IconButton
-          aria-label='remove student'
-          size='small'
-          sx={{
-            color: 'red',
-            ':hover': { color: 'white', bgcolor: '#ff0000ad' },
-          }}
-          onClick={() => removeStudent(student)}
-        >
-          <CloseIcon fontSize='small' />
-        </IconButton>
-        <Button
-          size='small'
-          sx={{ marginLeft: '10px' }}
-          onClick={startSoloChat}
-        >
-          Solo <PersonOutlineIcon />
-        </Button>
       </Box>
     </>
   );

@@ -34,26 +34,24 @@ export default function SetTeacherEmailButton({
 
   return (
     <>
-      <Typography fontFamily='Lora' fontSize='20px' sx={{ mb: 1 }}>
+      <Typography fontFamily='Lora' fontSize='20px' sx={{ mt: 3, mb: 1 }}>
         Email: {email}
       </Typography>
       <Button
-        variant='contained'
-        size='large'
-        color='secondary'
-        sx={{ mb: 3 }}
+        variant='outlined'
+        color='primary'
         startIcon={<EmailIcon />}
         onClick={() => setOpen(true)}
       >
-        Set teacher email
+        Set Teacher Email
       </Button>
 
       <BasicModal open={open} onClose={() => setOpen(false)}>
         <form onSubmit={updateTeacherEmail}>
-          <Typography variant='h6' sx={{ mb: 1 }}>
+          <Typography variant='h5' sx={{ mb: 1 }}>
             {"Teacher's email address"}
           </Typography>
-          <Typography variant='subtitle1'>
+          <Typography variant='body2'>
             Enter your email below to get emailed all the chats from this
             classroom.
           </Typography>
@@ -67,7 +65,12 @@ export default function SetTeacherEmailButton({
             defaultValue={email}
             required
           />
-          <Button variant='contained' size='large' type='submit' sx={{ mt: 1 }}>
+          <Button
+            variant='contained'
+            color='primary'
+            type='submit'
+            sx={{ mt: 1 }}
+          >
             Save
           </Button>
         </form>
