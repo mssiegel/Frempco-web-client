@@ -15,10 +15,10 @@ import {
   Stop as StopIcon,
 } from '@mui/icons-material';
 
+import ChatboxHeader from '@components/shared/ChatboxHeader';
 import { scrollToBottomOfElement, SOLO } from '@utils/classrooms';
-import { ChatParticipants, Student, StudentChat, SoloChat } from '../types';
+import { Student, StudentChat, SoloChat } from '../types';
 import { SocketContext } from '@contexts/SocketContext';
-import Header from './Header';
 import Conversation from './Conversation';
 
 interface ReadOnlyChatboxProps {
@@ -104,7 +104,7 @@ export default function ReadOnlyChatbox({
         overflow: 'hidden',
       }}
     >
-      <Header characterRows={characterRows} />
+      <ChatboxHeader characterRows={characterRows} />
 
       <Conversation
         containerRef={chatboxConversationContainer}

@@ -2,12 +2,12 @@ import { Box, Paper } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
+import ChatboxHeader from '@components/shared/ChatboxHeader';
 import { scrollToBottomOfElement } from '@utils/classrooms';
 import { useStudentInClassroom } from '../hooks/useStudentInClassroom';
 import Conversation from './Conversation';
 import SendMessageSection from './SendMessageSection';
 import { StudentPairedChat, StudentSoloChat } from '../types';
-import Header from './Header';
 import ChatEndedSection from './ChatEndedSection';
 
 interface ChatboxProps {
@@ -75,7 +75,7 @@ export default function Chatbox({
         },
       }}
     >
-      <Header
+      <ChatboxHeader
         characterRows={[
           { label: "You're:", value: chat.characters.you },
           { label: 'With:', value: chat.characters.peer },

@@ -4,13 +4,13 @@ interface CharacterRow {
   label: string;
   value: string;
 }
-
-interface HeaderProps {
+interface ChatboxHeaderProps {
   characterRows: CharacterRow[];
 }
 
-export default function Header({ characterRows }: HeaderProps) {
-
+export default function ChatboxHeader({
+  characterRows,
+}: ChatboxHeaderProps): JSX.Element {
   return (
     <Box
       sx={{
@@ -27,12 +27,13 @@ export default function Header({ characterRows }: HeaderProps) {
   );
 }
 
-interface CharacterRowProps {
+function CharacterRow({
+  label,
+  value,
+}: {
   label: string;
   value: string;
-}
-
-function CharacterRow({ label, value }: CharacterRowProps) {
+}): JSX.Element {
   return (
     <Box sx={{ display: 'flex', gap: 0.5 }}>
       <Typography variant='body2' sx={{ color: 'neutrals.200' }}>
