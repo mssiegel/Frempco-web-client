@@ -20,14 +20,14 @@ export default function Conversation({
   const { student1, student2 } = participants;
   const displayedConversation = isExpanded
     ? chat.conversation
-    : chat.conversation.slice(-5);
+    : chat.conversation.slice(-7); // Show only the last 7 messages when not expanded
 
   return (
     <Box
       ref={containerRef}
       sx={{
         background: '#f8e5e0',
-        minHeight: isExpanded ? '500px' : '280px',
+        minHeight: isExpanded ? '500px' : '250px',
         padding: '10px',
         maxHeight: isExpanded ? '600px' : '280px',
         overflowY: 'overlay',
