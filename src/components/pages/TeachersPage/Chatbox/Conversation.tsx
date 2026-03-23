@@ -26,10 +26,10 @@ export default function Conversation({
     <Box
       ref={containerRef}
       sx={{
-        background: '#f8e5e0',
+        backgroundColor: 'neutrals.white',
         minHeight: isExpanded ? '500px' : '250px',
         padding: '10px',
-        maxHeight: isExpanded ? '600px' : '280px',
+        maxHeight: isExpanded ? '550px' : '280px',
         overflowY: 'overlay',
         scrollBehavior: 'smooth',
         transition: 'all 0.3s ease-in-out',

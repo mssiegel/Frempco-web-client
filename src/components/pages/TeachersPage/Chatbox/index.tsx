@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { Box, Button } from '@mui/material';
+import { Box, Button, Paper } from '@mui/material';
 import {
   Dispatch,
   SetStateAction,
@@ -86,10 +86,13 @@ export default function ReadOnlyChatbox({
   };
 
   return (
-    <Box
+    <Paper
+      elevation={6}
       sx={{
         maxWidth: 600,
-        borderRadius: '10px',
+        border: '1px solid silver',
+        borderRadius: '12px',
+        backgroundColor: 'white',
         overflow: 'hidden',
       }}
     >
@@ -103,7 +106,7 @@ export default function ReadOnlyChatbox({
       />
       <Box
         sx={{
-          background: '#ffdd9a',
+          backgroundColor: 'secondary.400',
           padding: '10px',
           display: 'flex',
           justifyContent: 'space-around',
@@ -128,6 +131,6 @@ export default function ReadOnlyChatbox({
           {chat.mode === SOLO ? 'End solo' : 'End pair'}
         </Button>
       </Box>
-    </Box>
+    </Paper>
   );
 }
