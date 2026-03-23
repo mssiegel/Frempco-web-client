@@ -14,7 +14,7 @@ export default function Header({ participants }: HeaderProps) {
       value: student1.character,
     },
     {
-      label: student2?.realName ? student2.realName + ':' : '',
+      label: student2?.realName ? student2.realName + ':' : 'Chatting with:',
       value: student2?.character ?? 'chatbot',
     },
   ];
