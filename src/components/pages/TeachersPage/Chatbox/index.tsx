@@ -59,7 +59,9 @@ export default function ReadOnlyChatbox({
     const endChatConfirmed = confirm(
       `Are you sure you want to end the ${
         chatMode === SOLO ? 'solo ' : ''
-      }chat for ${student1.realName} & ${student2.realName}?`,
+      }chat for ${student1.realName} and ${
+        chatMode === SOLO ? 'Chatbot' : student2.realName
+      }?`,
     );
     if (!endChatConfirmed) return;
     if (chatMode === SOLO) {
@@ -78,12 +80,18 @@ export default function ReadOnlyChatbox({
   }
 
   const student1 = chat.mode === SOLO ? chat.student : chat.studentPair[0];
-  const student2 =
-    chat.mode === SOLO ? { realName: 'chatbot' } : chat.studentPair[1];
-  const participants: ChatParticipants = {
-    student1,
-    student2: chat.mode === SOLO ? undefined : chat.studentPair[1],
-  };
+  const student2 = chat.mode === SOLO ? undefined : chat.studentPair[1];
+
+  const characterRows = [
+    {
+      label: student1.realName + ':',
+      value: student1.character,
+    },
+    {
+      label: chat.mode === SOLO ? 'Chatting with:' : student2.realName + ':',
+      value: chat.mode === SOLO ? 'chatbot' : student2.character,
+    },
+  ];
 
   return (
     <Paper
@@ -96,12 +104,12 @@ export default function ReadOnlyChatbox({
         overflow: 'hidden',
       }}
     >
-      <Header participants={participants} />
+      <Header characterRows={characterRows} />
 
       <Conversation
         containerRef={chatboxConversationContainer}
         chat={chat}
-        participants={participants}
+        participants={{ student1, student2 }}
         isExpanded={isExpanded}
       />
       <Box

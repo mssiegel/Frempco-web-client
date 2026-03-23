@@ -1,23 +1,15 @@
 import { Box, Typography } from '@mui/material';
 
-import { ChatParticipants } from '../types';
-
-interface HeaderProps {
-  participants: ChatParticipants;
+interface CharacterRow {
+  label: string;
+  value: string;
 }
 
-export default function Header({ participants }: HeaderProps) {
-  const { student1, student2 } = participants;
-  const characterRows = [
-    {
-      label: student1.realName + ':',
-      value: student1.character,
-    },
-    {
-      label: student2?.realName ? student2.realName + ':' : 'Chatting with:',
-      value: student2?.character ?? 'chatbot',
-    },
-  ];
+interface HeaderProps {
+  characterRows: CharacterRow[];
+}
+
+export default function Header({ characterRows }: HeaderProps) {
 
   return (
     <Box

@@ -2,19 +2,16 @@
 
 import { Box, Typography } from '@mui/material';
 
-interface HeaderProps {
-  yourCharacter: string;
-  peerCharacter: string;
+interface CharacterRow {
+  label: string;
+  value: string;
 }
 
-export default function Header({
-  yourCharacter,
-  peerCharacter,
-}: HeaderProps): JSX.Element {
-  const characterRows = [
-    { label: "You're:", value: yourCharacter },
-    { label: 'With:', value: peerCharacter },
-  ];
+interface HeaderProps {
+  characterRows: CharacterRow[];
+}
+
+export default function Header({ characterRows }: HeaderProps): JSX.Element {
 
   return (
     <Box
