@@ -36,35 +36,35 @@ export default function Conversation({
       }}
     >
       {displayedConversation.map(([messageAuthor, message], i) => {
-        // Solo chats use "student"; normalize it to student1 so display logic has 3 cases.
-        const author = messageAuthor === 'student' ? 'student1' : messageAuthor;
+        // For first student: Paired chats use "student1" and Solo chats use "student".
+        const isStudent1 = ['student1', 'student'].includes(messageAuthor);
+        let verticalMargin = '0px';
+        if (i > 0 && displayedConversation[i - 1][0] !== messageAuthor) {
+          // The 4px margin visually separates the different speakers.
+          verticalMargin = '4px';
+        }
 
-        const character =
-          author === 'student1'
-            ? student1.character
-            : author === 'student2'
-            ? student2.character
-            : 'chatbot';
+        const character = isStudent1
+          ? student1.character
+          : messageAuthor === 'student2'
+          ? student2.character
+          : 'chatbot';
 
         // Only students have real names; chatbots do not
-        const realName =
-          author === 'student1'
-            ? student1.realName
-            : author === 'student2'
-            ? student2.realName
-            : '';
-        const characterNameColor =
-          author === 'student1' ? 'primary.500' : 'secondary.600';
+        const realName = isStudent1
+          ? student1.realName
+          : messageAuthor === 'student2'
+          ? student2.realName
+          : '';
+        const characterNameColor = isStudent1 ? 'primary.500' : 'secondary.600';
 
         return (
-          <Typography key={i}>
+          <Box key={i} sx={{ mt: verticalMargin, lineHeight: 1.25 }}>
             {realName && (
               <Typography
                 component='span'
                 variant='body2'
-                fontStyle='italic'
-                color='neutrals.400'
-                pr={1}
+                sx={{ fontStyle: 'italic', color: 'neutrals.400', pr: 1 }}
               >
                 ({realName})
               </Typography>
@@ -79,12 +79,11 @@ export default function Conversation({
             <Typography
               component='span'
               variant='body2'
-              color='neutrals.600'
-              sx={{ overflowWrap: 'break-word' }}
+              sx={{ color: 'neutrals.600', overflowWrap: 'break-word' }}
             >
               {filterWords(message)}
             </Typography>
-          </Typography>
+          </Box>
         );
       })}
     </Box>
