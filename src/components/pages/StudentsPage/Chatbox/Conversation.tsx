@@ -1,6 +1,6 @@
 /** @jsxImportSource @emotion/react */
 
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, RefObject, SetStateAction } from 'react';
 import { Box, Typography } from '@mui/material';
 import { Socket } from 'socket.io-client';
 
@@ -13,6 +13,8 @@ interface ConversationProps {
   socket: Socket;
   peerIsTyping: boolean;
   setPeerIsTyping: Dispatch<SetStateAction<boolean>>;
+  containerRef: RefObject<HTMLDivElement>;
+  isMobile: boolean;
 }
 
 export default function Conversation({
@@ -20,9 +22,21 @@ export default function Conversation({
   socket,
   peerIsTyping,
   setPeerIsTyping,
+  containerRef,
+  isMobile,
 }: ConversationProps): JSX.Element {
   return (
-    <Box>
+    <Box
+      ref={containerRef}
+      sx={{
+        minHeight: isMobile ? '120px' : '280px',
+        maxHeight: '350px',
+        overflowY: 'overlay',
+        scrollBehavior: 'smooth',
+        my: '10px',
+        px: '16px',
+      }}
+    >
       {chat.conversation.map(([messageAuthor, message], i) => {
         const characterName =
           messageAuthor === 'you' ? chat.characters.you : chat.characters.peer;

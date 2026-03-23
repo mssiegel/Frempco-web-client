@@ -123,6 +123,7 @@ export default function StudentsPage(): JSX.Element {
         chatEndedMsg={chatEndedMsg}
         classroomName={pin}
         socketId={socket.id}
+        isMobile={isMobile}
       />
     ) : (
       <WelcomeMessage
@@ -138,9 +139,10 @@ export default function StudentsPage(): JSX.Element {
     );
 
   return (
-    <main
-      style={{
-        minHeight: '100vh',
+    <Box
+      component='main'
+      sx={{
+        minHeight: '100dvh',
         display: 'flex',
         flexDirection: 'column',
         background:
@@ -162,6 +164,6 @@ export default function StudentsPage(): JSX.Element {
       >
         {pageContent}
       </Box>
-    </main>
+    </Box>
   );
 }
