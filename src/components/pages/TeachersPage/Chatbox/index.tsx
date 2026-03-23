@@ -82,7 +82,7 @@ export default function ReadOnlyChatbox({
   const student1 = chat.mode === SOLO ? chat.student : chat.studentPair[0];
   const student2 = chat.mode === SOLO ? undefined : chat.studentPair[1];
 
-  const characterRows = [
+  const headerRows = [
     {
       label: student1.realName + ':',
       value: student1.character,
@@ -104,7 +104,7 @@ export default function ReadOnlyChatbox({
         overflow: 'hidden',
       }}
     >
-      <ChatboxHeader characterRows={characterRows} />
+      <ChatboxHeader headerRows={headerRows} />
 
       <Conversation
         containerRef={chatboxConversationContainer}

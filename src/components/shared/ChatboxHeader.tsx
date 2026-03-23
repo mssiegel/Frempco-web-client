@@ -1,15 +1,15 @@
 import { Box, Typography } from '@mui/material';
 
-interface CharacterRow {
+interface HeaderRow {
   label: string;
   value: string;
 }
 interface ChatboxHeaderProps {
-  characterRows: CharacterRow[];
+  headerRows: HeaderRow[];
 }
 
 export default function ChatboxHeader({
-  characterRows,
+  headerRows,
 }: ChatboxHeaderProps): JSX.Element {
   return (
     <Box
@@ -20,20 +20,14 @@ export default function ChatboxHeader({
         px: '16px',
       }}
     >
-      {characterRows.map(({ label, value }) => (
-        <CharacterRow key={label} label={label} value={value} />
+      {headerRows.map(({ label, value }) => (
+        <RowForHeader key={label} label={label} value={value} />
       ))}
     </Box>
   );
 }
 
-function CharacterRow({
-  label,
-  value,
-}: {
-  label: string;
-  value: string;
-}): JSX.Element {
+function RowForHeader({ label, value }: HeaderRow): JSX.Element {
   return (
     <Box sx={{ display: 'flex', gap: 0.5 }}>
       <Typography variant='body2' sx={{ color: 'neutrals.200' }}>

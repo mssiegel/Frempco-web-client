@@ -76,7 +76,7 @@ export default function Chatbox({
       }}
     >
       <ChatboxHeader
-        characterRows={[
+        headerRows={[
           { label: "You're:", value: chat.characters.you },
           { label: 'With:', value: chat.characters.peer },
         ]}
