@@ -191,6 +191,10 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           <Typography variant='body1' mb={1}>
             {'2)'} Enter Game Pin: <strong>{classroomName}</strong>
           </Typography>
+          <Typography variant='body2' sx={{ mt: 2 }}>
+            Note: Your students on smartphones will be logged out of Frempco if
+            their smartphone screen goes dark.
+          </Typography>
         </Box>
         <SetupClassroomAccordion
           classroomName={classroomName}
