@@ -111,6 +111,7 @@ export default function UnpairedStudentsList({
                 setUnpairedStudents={setUnpairedStudents}
                 characters={characters}
                 setStudentChats={setStudentChats}
+                totalUnpairedStudents={unpairedStudents.length}
               />
               {student2 && (
                 <UnpairedStudentItem
@@ -120,6 +121,7 @@ export default function UnpairedStudentsList({
                   setUnpairedStudents={setUnpairedStudents}
                   characters={characters}
                   setStudentChats={setStudentChats}
+                  totalUnpairedStudents={unpairedStudents.length}
                 />
               )}
             </Grid>

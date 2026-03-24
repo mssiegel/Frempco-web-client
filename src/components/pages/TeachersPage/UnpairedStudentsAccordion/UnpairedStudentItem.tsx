@@ -16,6 +16,7 @@ export default function UnpairedStudentItem({
   setUnpairedStudents,
   characters,
   setStudentChats,
+  totalUnpairedStudents,
 }) {
   function swapStudents(student1Index: number, student2Index: number) {
     setUnpairedStudents((unpairedStudents) => {
@@ -96,30 +97,34 @@ export default function UnpairedStudentItem({
           {student.realName}
         </Typography>
 
-        <IconButton
-          aria-label='move up'
-          size='small'
-          sx={{
-            marginLeft: 'auto',
-            color: 'green',
-            ':hover': { color: 'white', bgcolor: 'green' },
-          }}
-          onClick={() => swapStudents(i, i - 1)}
-        >
-          <ArrowUpwardIcon fontSize='small' />
-        </IconButton>
+        {totalUnpairedStudents > 2 && (
+          <>
+            <IconButton
+              aria-label='move up'
+              size='small'
+              sx={{
+                marginLeft: 'auto',
+                color: 'green',
+                ':hover': { color: 'white', bgcolor: 'green' },
+              }}
+              onClick={() => swapStudents(i, i - 1)}
+            >
+              <ArrowUpwardIcon fontSize='small' />
+            </IconButton>
 
-        <IconButton
-          aria-label='move down'
-          size='small'
-          sx={{
-            color: 'green',
-            ':hover': { color: 'white', bgcolor: 'green' },
-          }}
-          onClick={() => swapStudents(i, i + 1)}
-        >
-          <ArrowDownwardIcon fontSize='small' />
-        </IconButton>
+            <IconButton
+              aria-label='move down'
+              size='small'
+              sx={{
+                color: 'green',
+                ':hover': { color: 'white', bgcolor: 'green' },
+              }}
+              onClick={() => swapStudents(i, i + 1)}
+            >
+              <ArrowDownwardIcon fontSize='small' />
+            </IconButton>
+          </>
+        )}
       </Box>
     </>
   );
