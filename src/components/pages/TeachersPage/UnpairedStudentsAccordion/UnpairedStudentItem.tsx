@@ -115,8 +115,8 @@ export default function UnpairedStudentItem({
               size='small'
               sx={{
                 marginLeft: 'auto',
-                color: 'green',
-                ':hover': { color: 'white', bgcolor: 'green' },
+                color: 'secondary.600',
+                ':hover': { color: 'neutrals.white', bgcolor: 'secondary.600' },
               }}
               onClick={() => swapStudents(i, i - 1)}
             >
@@ -127,8 +127,8 @@ export default function UnpairedStudentItem({
               aria-label='move down'
               size='small'
               sx={{
-                color: 'green',
-                ':hover': { color: 'white', bgcolor: 'green' },
+                color: 'secondary.600',
+                ':hover': { color: 'neutrals.white', bgcolor: 'secondary.600' },
               }}
               onClick={() => swapStudents(i, i + 1)}
             >
