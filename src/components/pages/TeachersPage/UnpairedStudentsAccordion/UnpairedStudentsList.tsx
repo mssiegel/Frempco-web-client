@@ -1,20 +1,12 @@
-import { Dispatch, SetStateAction, useEffect } from 'react';
+/** @jsxImportSource @emotion/react */
+
+import { useEffect } from 'react';
 import { Box, Button, Grid, Typography } from '@mui/material';
 import { Chat as ChatIcon, Group as GroupIcon } from '@mui/icons-material';
 import { chunk } from 'lodash-es';
-import { Socket } from 'socket.io-client';
 
 import { getRandom } from '@utils/classrooms';
-import { SoloChat, Student, StudentChat } from '../types';
 import UnpairedStudentItem from './UnpairedStudentItem';
-
-interface UnpairedStudentsListProps {
-  socket: Socket;
-  unpairedStudents: Student[];
-  setUnpairedStudents: Dispatch<SetStateAction<Student[]>>;
-  setStudentChats: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
-  characters: string[];
-}
 
 export default function UnpairedStudentsList({
   socket,
@@ -22,7 +14,7 @@ export default function UnpairedStudentsList({
   setUnpairedStudents,
   setStudentChats,
   characters,
-}: UnpairedStudentsListProps) {
+}) {
   useEffect(() => {
     if (socket) {
       socket.on('new student joined', (student) => {
@@ -119,7 +111,6 @@ export default function UnpairedStudentsList({
                 setUnpairedStudents={setUnpairedStudents}
                 characters={characters}
                 setStudentChats={setStudentChats}
-                totalUnpairedStudents={unpairedStudents.length}
               />
               {student2 && (
                 <UnpairedStudentItem
@@ -129,7 +120,6 @@ export default function UnpairedStudentsList({
                   setUnpairedStudents={setUnpairedStudents}
                   characters={characters}
                   setStudentChats={setStudentChats}
-                  totalUnpairedStudents={unpairedStudents.length}
                 />
               )}
             </Grid>
