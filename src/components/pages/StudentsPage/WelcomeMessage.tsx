@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 import { useEffect, useRef } from 'react';
 import { Box, Typography } from '@mui/material';
 import Image from 'next/image';
@@ -100,9 +98,17 @@ export default function WelcomeMessage({
           </Typography>
         </>
       ) : (
-        <Typography variant='body1'>
-          Welcome to the game room! Your teacher will pair you soon...
-        </Typography>
+        <>
+          <Typography variant='body1' sx={{ mx: 1 }}>
+            Welcome to the game room! Your teacher will pair you soon...
+          </Typography>
+          {isMobile && (
+            <Typography variant='body2' sx={{ mt: 2, mx: 1 }}>
+              Note: You will be logged out of Frempco if your smartphone screen
+              goes dark.
+            </Typography>
+          )}
+        </>
       )}
     </Box>
   );
