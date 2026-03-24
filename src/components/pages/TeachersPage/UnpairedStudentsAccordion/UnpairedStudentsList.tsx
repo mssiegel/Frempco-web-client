@@ -1,21 +1,28 @@
-/** @jsxImportSource @emotion/react */
-
-import { useEffect } from 'react';
-import { Box, Button, Grid } from '@mui/material';
+import { Dispatch, SetStateAction, useEffect } from 'react';
+import { Box, Button, Grid, Typography } from '@mui/material';
 import { Chat as ChatIcon, Group as GroupIcon } from '@mui/icons-material';
 import { chunk } from 'lodash-es';
+import { Socket } from 'socket.io-client';
 
 import { getRandom } from '@utils/classrooms';
+import { SoloChat, Student, StudentChat } from '../types';
 import UnpairedStudentItem from './UnpairedStudentItem';
+
+interface UnpairedStudentsListProps {
+  socket: Socket;
+  unpairedStudents: Student[];
+  setUnpairedStudents: Dispatch<SetStateAction<Student[]>>;
+  setStudentChats: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
+  characters: string[];
+}
 
 export default function UnpairedStudentsList({
   socket,
   unpairedStudents,
   setUnpairedStudents,
   setStudentChats,
-  studentChats,
   characters,
-}) {
+}: UnpairedStudentsListProps) {
   useEffect(() => {
     if (socket) {
       socket.on('new student joined', (student) => {
@@ -84,20 +91,24 @@ export default function UnpairedStudentsList({
     <>
       <Box
         sx={{
-          maxWidth: '500px',
+          maxWidth: '550px',
           bgcolor: 'white',
           border: '1px solid black',
           p: '5px',
           pb: '15px',
         }}
       >
-        Total unpaired students: <strong>{unpairedStudents.length}</strong>
+        <Typography variant='body1'>
+          Total unpaired students: <strong>{unpairedStudents.length}</strong>
+        </Typography>
         {chunk(unpairedStudents, 2).map(([student1, student2], i) => (
           <Grid
             container
             key={i}
             sx={{
-              background: `${i % 2 === 0 ? '#f8e5e0' : ''}`,
+              backgroundColor: `${i % 2 === 0 ? 'secondary.400' : ''}`,
+              borderLeft: '1px dotted silver',
+              borderRight: '1px dotted silver',
             }}
           >
             <Grid item xs={9}>
@@ -108,7 +119,7 @@ export default function UnpairedStudentsList({
                 setUnpairedStudents={setUnpairedStudents}
                 characters={characters}
                 setStudentChats={setStudentChats}
-                studentChats={studentChats}
+                totalUnpairedStudents={unpairedStudents.length}
               />
               {student2 && (
                 <UnpairedStudentItem
@@ -118,19 +129,29 @@ export default function UnpairedStudentsList({
                   setUnpairedStudents={setUnpairedStudents}
                   characters={characters}
                   setStudentChats={setStudentChats}
-                  studentChats={studentChats}
+                  totalUnpairedStudents={unpairedStudents.length}
                 />
               )}
             </Grid>
 
             {student2 && (
-              <Grid item xs={3} sx={{ textAlign: 'center' }}>
+              <Grid
+                item
+                xs={3}
+                sx={{ textAlign: 'center', alignSelf: 'center' }}
+              >
                 <Button
-                  size='small'
-                  sx={{ top: '25%' }}
+                  variant='contained'
+                  color='primary'
                   onClick={() => pairStudents(i * 2)}
+                  sx={{
+                    boxShadow: 'none',
+                    marginRight: '8px',
+                    '&:hover': { boxShadow: 'none' },
+                  }}
                 >
-                  Pair up <GroupIcon />
+                  Pair up &nbsp;
+                  <GroupIcon />
                 </Button>
               </Grid>
             )}
@@ -139,8 +160,7 @@ export default function UnpairedStudentsList({
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Button
             variant='contained'
-            size='large'
-            color='success'
+            color='primary'
             sx={{ mt: 2 }}
             startIcon={<ChatIcon />}
             onClick={() => pairStudents()}

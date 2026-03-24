@@ -41,17 +41,16 @@ export default function SetCharacterList({
 
   return (
     <>
-      <Typography fontFamily='Lora' fontSize='20px' sx={{ mb: 1 }}>
+      <Typography fontFamily='Lora' fontSize='20px' sx={{ mb: 1, mt: 1.5 }}>
         Characters: {characters.join(', ')}
       </Typography>
       <Button
         variant='contained'
-        size='large'
-        color='success'
+        color='primary'
         startIcon={<PersonOutlineIcon />}
         onClick={() => setOpen(true)}
       >
-        Set Character List
+        Edit Character List
       </Button>
 
       <BasicModal open={open} onClose={handleClose}>
@@ -66,13 +65,21 @@ export default function SetCharacterList({
         />
 
         {error && (
-          <Typography color='error' sx={{ mt: 2, textAlign: 'center' }}>
+          <Typography
+            variant='body1'
+            color='error'
+            sx={{ mt: 2, textAlign: 'center' }}
+          >
             {error}
           </Typography>
         )}
 
         <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
-          <Button variant='contained' size='large' onClick={setCharacterList}>
+          <Button
+            variant='contained'
+            color='primary'
+            onClick={setCharacterList}
+          >
             Save
           </Button>
         </Box>

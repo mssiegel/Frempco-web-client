@@ -1,19 +1,15 @@
 import { useContext, useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 
-import {
-  ClassroomProps,
-  Student,
-  currentTime,
-  PAIRED,
-  SOLO,
-} from '@utils/classrooms';
+import { ClassroomProps, PAIRED } from '@utils/classrooms';
+import { Student } from './types';
 import { SocketContext } from '@contexts/SocketContext';
 import { useRouter } from 'next/router';
 import UnpairedStudentsAccordion from './UnpairedStudentsAccordion';
 import SetupClassroomAccordion from './SetupClassroomAccordion';
 import ChatsInProgressAccordion from './ChatsInProgressAccordion';
 import Link from '@components/shared/Link';
+import { ChatMessage, SoloChat, StudentChat } from './types';
 
 const CHARACTERS = [
   'Perfectionist dentist',
@@ -23,26 +19,6 @@ const CHARACTERS = [
   'Forgetful surgeon',
   'Party planner',
 ];
-
-type StudentPair = [Student, Student];
-
-export type ChatMessage = ['student1' | 'student2' | 'teacher', string];
-
-export type SoloChatMessage = ['student' | 'chatbot' | 'teacher', string];
-
-export interface StudentChat {
-  mode: typeof PAIRED;
-  chatId: string;
-  studentPair: StudentPair;
-  conversation: ChatMessage[];
-}
-
-export interface SoloChat {
-  mode: typeof SOLO;
-  chatId: string;
-  student: Student;
-  conversation: SoloChatMessage[];
-}
 
 export default function TeachersPage({ classroomName }: ClassroomProps) {
   const router = useRouter();
@@ -202,18 +178,18 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     <main>
       <Box mx={2}>
         <Box mb={3}>
-          <Typography fontSize={26} fontFamily='Lora'>
+          <Typography variant='h5' mb={1}>
             Student Instructions
           </Typography>
-          <Typography fontSize={17} fontFamily='Lora' mb={2}>
+          <Typography variant='body2' mb={1}>
             Write the following on your blackboard or another highly visible
             spot for all students to see.
           </Typography>
-          <Typography fontSize={21} fontFamily='Lora' fontWeight='bold' mb={1}>
-            {'1)'} Join at www.frempco.com
+          <Typography variant='body1' mb={1}>
+            {'1)'} Join at <strong>www.frempco.com</strong>
           </Typography>
-          <Typography fontSize={21} fontFamily='Lora' fontWeight='bold' mb={1}>
-            {'2)'} Enter Game Pin: {classroomName}
+          <Typography variant='body1' mb={1}>
+            {'2)'} Enter Game Pin: <strong>{classroomName}</strong>
           </Typography>
         </Box>
         <SetupClassroomAccordion
@@ -227,7 +203,6 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           unpairedStudents={unpairedStudents}
           setUnpairedStudents={setUnpairedStudents}
           setStudentChats={setStudentChats}
-          studentChats={studentChats}
           characters={characters}
         />
         <ChatsInProgressAccordion

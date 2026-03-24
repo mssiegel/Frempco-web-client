@@ -69,6 +69,7 @@ export default function LoginFlow({
           setPin={setPin}
           buttonHeight={BUTTON_HEIGHT}
           inputSx={inputSx}
+          isMobile={isMobile}
         />
       ) : (
         <NameInputStep
@@ -76,6 +77,7 @@ export default function LoginFlow({
           buttonHeight={BUTTON_HEIGHT}
           inputSx={inputSx}
           pin={pin}
+          isMobile={isMobile}
           addStudentToGameroom={addStudentToGameroom}
         />
       )}

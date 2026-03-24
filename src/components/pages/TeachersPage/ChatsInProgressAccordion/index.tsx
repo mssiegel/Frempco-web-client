@@ -7,7 +7,7 @@ import {
   Button,
 } from '@mui/material';
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
-import { StudentChat, SoloChat } from './index';
+import { StudentChat, SoloChat } from '../types';
 import { PAIRED, SOLO } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
 import DisplayOfChats from './DisplayOfChats';
@@ -67,12 +67,12 @@ const ChatsInProgressAccordion = ({
         expandIcon={<ExpandMoreIcon />}
         sx={{ borderRadius: '15px', border: '1px solid black', gap: 2 }}
       >
-        <Typography fontFamily='Lora' fontSize='26px'>
+        <Typography variant='h5' fontWeight={400}>
           Step 3: View Chats In Progress ({totalStudents})
         </Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <Typography fontFamily='Lora' fontSize='16px'>
+        <Typography variant='body2'>
           There {verb}{' '}
           <strong>
             {pairCount} student {pairText}
@@ -87,7 +87,7 @@ const ChatsInProgressAccordion = ({
           sx={{ my: 2 }}
           variant='contained'
           size='medium'
-          color='warning'
+          color='error'
           onClick={() => endAllChats()}
         >
           End all chats

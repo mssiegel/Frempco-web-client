@@ -1,16 +1,14 @@
-/** @jsxImportSource @emotion/react */
-
 import { Box, Paper } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
+import ChatboxHeader from '@components/shared/ChatboxHeader';
 import { scrollToBottomOfElement } from '@utils/classrooms';
-import { useStudentInClassroom } from '@hooks/useStudentInClassroom';
-import Conversation from './Chatbox/Conversation';
-import SendMessageSection from './Chatbox/SendMessageSection';
-import { StudentPairedChat, StudentSoloChat } from './types';
-import Header from './Chatbox/Header';
-import ChatEndedSection from './Chatbox/ChatEndedSection';
+import { useStudentInClassroom } from '../hooks/useStudentInClassroom';
+import Conversation from './Conversation';
+import SendMessageSection from './SendMessageSection';
+import { StudentPairedChat, StudentSoloChat } from '../types';
+import ChatEndedSection from './ChatEndedSection';
 
 interface ChatboxProps {
   socket: Socket;
@@ -19,6 +17,7 @@ interface ChatboxProps {
   chatEndedMsg: null | string;
   classroomName: string;
   socketId: string;
+  isMobile: boolean;
 }
 
 export default function Chatbox({
@@ -28,12 +27,13 @@ export default function Chatbox({
   chatEndedMsg,
   classroomName,
   socketId,
+  isMobile,
 }: ChatboxProps) {
   const [peerIsTyping, setPeerIsTyping] = useState(false);
   const isConnected = useStudentInClassroom(classroomName, socketId);
   const hasChatEnded = !isConnected || Boolean(chatEndedMsg);
 
-  function addChatMessage(sender, message) {
+  function addChatMessage(sender, message: string) {
     setChat((chat) => ({
       ...chat,
       conversation: [...chat.conversation, [sender, message]],
@@ -67,7 +67,7 @@ export default function Chatbox({
       sx={{
         border: '1px solid silver',
         borderRadius: '12px',
-        paddingBottom: '16px',
+        paddingBottom: '8px',
         backgroundColor: 'white',
         width: '500px',
         '@media (max-width: 500px)': {
@@ -75,29 +75,20 @@ export default function Chatbox({
         },
       }}
     >
-      <Header
-        yourCharacter={chat.characters.you}
-        peerCharacter={chat.characters.peer}
+      <ChatboxHeader
+        headerRows={[
+          { label: "You're:", value: chat.characters.you },
+          { label: 'With:', value: chat.characters.peer },
+        ]}
       />
-      <Box sx={{ px: '16px' }}>
-        <Box
-          ref={chatboxConversationContainer}
-          sx={{
-            minHeight: '280px',
-            maxHeight: '350px',
-            overflowY: 'overlay',
-            scrollBehavior: 'smooth',
-            my: '10px',
-          }}
-        >
-          <Conversation
-            chat={chat}
-            socket={socket}
-            peerIsTyping={peerIsTyping}
-            setPeerIsTyping={setPeerIsTyping}
-          />
-        </Box>
-      </Box>
+      <Conversation
+        chat={chat}
+        socket={socket}
+        peerIsTyping={peerIsTyping}
+        setPeerIsTyping={setPeerIsTyping}
+        containerRef={chatboxConversationContainer}
+        isMobile={isMobile}
+      />
       {!hasChatEnded ? (
         <SendMessageSection
           socket={socket}

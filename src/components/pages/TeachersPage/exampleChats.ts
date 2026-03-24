@@ -1,4 +1,4 @@
-import { StudentChat } from '.';
+import { StudentChat } from './types';
 import { PAIRED } from '@utils/classrooms';
 
 /**

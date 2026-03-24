@@ -1,13 +1,24 @@
-/** @jsxImportSource @emotion/react */
-
+import { Dispatch, SetStateAction } from 'react';
 import {
   ArrowUpward as ArrowUpwardIcon,
   ArrowDownward as ArrowDownwardIcon,
   Close as CloseIcon,
   PersonOutline as PersonOutlineIcon,
 } from '@mui/icons-material';
-import { Button, Box, IconButton } from '@mui/material';
-import { currentTime, getRandom, swap, SOLO } from '@utils/classrooms';
+import { Button, Box, IconButton, Typography } from '@mui/material';
+import { Socket } from 'socket.io-client';
+import { getRandom, swap, SOLO } from '@utils/classrooms';
+import { SoloChat, Student, StudentChat } from '../types';
+
+interface UnpairedStudentItemProps {
+  i: number;
+  student: Student;
+  socket: Socket;
+  setUnpairedStudents: Dispatch<SetStateAction<Student[]>>;
+  characters: string[];
+  setStudentChats: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
+  totalUnpairedStudents: number;
+}
 
 export default function UnpairedStudentItem({
   i,
@@ -16,8 +27,8 @@ export default function UnpairedStudentItem({
   setUnpairedStudents,
   characters,
   setStudentChats,
-  studentChats,
-}) {
+  totalUnpairedStudents,
+}: UnpairedStudentItemProps) {
   function swapStudents(student1Index: number, student2Index: number) {
     setUnpairedStudents((unpairedStudents) => {
       const unpaired = [...unpairedStudents];
@@ -30,7 +41,7 @@ export default function UnpairedStudentItem({
     });
   }
 
-  function removeStudent(student) {
+  function removeStudent(student: Student) {
     const confirmation = confirm(
       `Are you sure you want to remove ${student.realName}?`,
     );
@@ -66,33 +77,7 @@ export default function UnpairedStudentItem({
 
   return (
     <>
-      <Box sx={{ fontSize: '18px' }}>
-        <IconButton
-          aria-label='move up'
-          size='small'
-          sx={{
-            color: 'green',
-            ':hover': { color: 'white', bgcolor: 'green' },
-          }}
-          onClick={() => swapStudents(i, i - 1)}
-        >
-          <ArrowUpwardIcon fontSize='small' />
-        </IconButton>
-
-        <IconButton
-          aria-label='move down'
-          size='small'
-          sx={{
-            color: 'green',
-            ':hover': { color: 'white', bgcolor: 'green' },
-          }}
-          onClick={() => swapStudents(i, i + 1)}
-        >
-          <ArrowDownwardIcon fontSize='small' />
-        </IconButton>
-
-        {student.realName}
-
+      <Box sx={{ fontSize: '18px', display: 'flex' }}>
         <IconButton
           aria-label='remove student'
           size='small'
@@ -106,11 +91,51 @@ export default function UnpairedStudentItem({
         </IconButton>
         <Button
           size='small'
-          sx={{ marginLeft: '10px' }}
+          variant='outlined'
+          color='primary'
+          sx={{
+            marginLeft: '10px',
+            height: '25px',
+            boxShadow: 'none',
+            '&:hover': { boxShadow: 'none' },
+          }}
           onClick={startSoloChat}
         >
           Solo <PersonOutlineIcon />
         </Button>
+
+        <Typography component='span' variant='body1' fontSize='18px' ml={2}>
+          {student.realName}
+        </Typography>
+
+        {totalUnpairedStudents > 2 && (
+          <>
+            <IconButton
+              aria-label='move up'
+              size='small'
+              sx={{
+                marginLeft: 'auto',
+                color: 'secondary.600',
+                ':hover': { color: 'neutrals.white', bgcolor: 'secondary.600' },
+              }}
+              onClick={() => swapStudents(i, i - 1)}
+            >
+              <ArrowUpwardIcon fontSize='small' />
+            </IconButton>
+
+            <IconButton
+              aria-label='move down'
+              size='small'
+              sx={{
+                color: 'secondary.600',
+                ':hover': { color: 'neutrals.white', bgcolor: 'secondary.600' },
+              }}
+              onClick={() => swapStudents(i, i + 1)}
+            >
+              <ArrowDownwardIcon fontSize='small' />
+            </IconButton>
+          </>
+        )}
       </Box>
     </>
   );

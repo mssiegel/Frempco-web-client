@@ -117,6 +117,7 @@ export default function SendMessageSection({
         <InputBase
           value={message}
           placeholder={`Talk as ${chat.characters.you}...`}
+          autoFocus
           multiline
           minRows={1}
           maxRows={6}
@@ -125,7 +126,6 @@ export default function SendMessageSection({
           }}
           onChange={sendUserIsTyping}
           onKeyDown={sendWithEnterOnDesktop}
-          autoFocus
           inputRef={typeMessageInput}
           sx={{
             flex: 1,

@@ -48,13 +48,24 @@ export default function StudentsPage(): JSX.Element {
     [STAGE.removedByTeacher]: 'Removed by teacher',
   };
   const headerStatusText = headerStatusTextMap[stage];
+  const isChatboxStage = stage === STAGE.chatting || stage === STAGE.chatEnded;
 
-  function addStudentToGameroom(studentName: string, pin: string) {
+  // Keep chat anchored to the bottom on mobile so more of it remains visible
+  // when the on-screen keyboard opens and reduces the available viewport height.
+  const shouldAnchorContentToBottom = isMobile && isChatboxStage;
+
+  function addStudentToGameroom(
+    studentName: string,
+    pin: string,
+    updateStageToLobby = true,
+  ) {
     socket.emit('new student entered', {
       student: studentName,
       classroom: pin,
     });
-    setStage(STAGE.lobby);
+    if (updateStageToLobby) {
+      setStage(STAGE.lobby);
+    }
   }
 
   function initializeDevTestUser() {
@@ -90,63 +101,69 @@ export default function StudentsPage(): JSX.Element {
   useStudentSocketHandlers({
     socket,
     router,
-    stage,
-    studentName,
-    pin,
-    addStudentToGameroom,
     setChat,
     setStage,
     setChatEndedMsg,
   });
 
+  const pageContent =
+    stage === STAGE.joining ? (
+      <LoginFlow
+        pin={pin}
+        setPin={setPin}
+        setStudentName={setStudentName}
+        isMobile={isMobile}
+        addStudentToGameroom={addStudentToGameroom}
+      />
+    ) : isChatboxStage ? (
+      <Chatbox
+        socket={socket}
+        chat={chat}
+        setChat={setChat}
+        chatEndedMsg={chatEndedMsg}
+        classroomName={pin}
+        socketId={socket.id}
+        isMobile={isMobile}
+      />
+    ) : (
+      <WelcomeMessage
+        pin={pin}
+        removedFromClass={stage === STAGE.removedByTeacher}
+        isLobbyStage={stage === STAGE.lobby}
+        socket={socket}
+        socketId={socket.id}
+        studentName={studentName}
+        isMobile={isMobile}
+        addStudentToGameroom={addStudentToGameroom}
+      />
+    );
+
   return (
-    <main
-      style={{
-        minHeight: '100vh',
-        position: 'relative',
-        display: 'grid',
-        placeItems: 'center',
+    <Box
+      component='main'
+      sx={{
+        minHeight: '100dvh',
+        display: 'flex',
+        flexDirection: 'column',
         background:
           'var(--Gradients, linear-gradient(180deg, #FFF 0%, #EBECFE 100%))',
       }}
     >
-      <Box sx={{ position: 'absolute', top: 0, left: 0, right: 0 }}>
-        <Header
-          isMobile={isMobile}
-          statusText={headerStatusText}
-          studentName={studentName || undefined}
-        />
+      <Header
+        isMobile={isMobile}
+        statusText={headerStatusText}
+        studentName={studentName || undefined}
+      />
+      <Box
+        sx={{
+          flex: 1,
+          display: 'flex',
+          justifyContent: 'center',
+          alignItems: shouldAnchorContentToBottom ? 'flex-end' : 'center',
+        }}
+      >
+        {pageContent}
       </Box>
-      {stage === STAGE.joining ? (
-        <LoginFlow
-          pin={pin}
-          setPin={setPin}
-          setStudentName={setStudentName}
-          isMobile={isMobile}
-          addStudentToGameroom={addStudentToGameroom}
-        />
-      ) : (
-        <>
-          {stage === STAGE.chatting || stage === STAGE.chatEnded ? (
-            <Chatbox
-              socket={socket}
-              chat={chat}
-              setChat={setChat}
-              chatEndedMsg={chatEndedMsg}
-              classroomName={pin}
-              socketId={socket.id}
-            />
-          ) : (
-            <WelcomeMessage
-              pin={pin}
-              removedFromClass={stage === STAGE.removedByTeacher}
-              socketId={socket.id}
-              studentName={studentName}
-              isMobile={isMobile}
-            />
-          )}
-        </>
-      )}
-    </main>
+    </Box>
   );
 }
