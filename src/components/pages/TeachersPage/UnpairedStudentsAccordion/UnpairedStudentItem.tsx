@@ -1,5 +1,4 @@
-/** @jsxImportSource @emotion/react */
-
+import { Dispatch, SetStateAction } from 'react';
 import {
   ArrowUpward as ArrowUpwardIcon,
   ArrowDownward as ArrowDownwardIcon,
@@ -7,7 +6,19 @@ import {
   PersonOutline as PersonOutlineIcon,
 } from '@mui/icons-material';
 import { Button, Box, IconButton, Typography } from '@mui/material';
+import { Socket } from 'socket.io-client';
 import { getRandom, swap, SOLO } from '@utils/classrooms';
+import { SoloChat, Student, StudentChat } from '../types';
+
+interface UnpairedStudentItemProps {
+  i: number;
+  student: Student;
+  socket: Socket;
+  setUnpairedStudents: Dispatch<SetStateAction<Student[]>>;
+  characters: string[];
+  setStudentChats: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
+  totalUnpairedStudents: number;
+}
 
 export default function UnpairedStudentItem({
   i,
@@ -16,7 +27,8 @@ export default function UnpairedStudentItem({
   setUnpairedStudents,
   characters,
   setStudentChats,
-}) {
+  totalUnpairedStudents,
+}: UnpairedStudentItemProps) {
   function swapStudents(student1Index: number, student2Index: number) {
     setUnpairedStudents((unpairedStudents) => {
       const unpaired = [...unpairedStudents];
@@ -29,7 +41,7 @@ export default function UnpairedStudentItem({
     });
   }
 
-  function removeStudent(student) {
+  function removeStudent(student: Student) {
     const confirmation = confirm(
       `Are you sure you want to remove ${student.realName}?`,
     );
@@ -96,30 +108,34 @@ export default function UnpairedStudentItem({
           {student.realName}
         </Typography>
 
-        <IconButton
-          aria-label='move up'
-          size='small'
-          sx={{
-            marginLeft: 'auto',
-            color: 'green',
-            ':hover': { color: 'white', bgcolor: 'green' },
-          }}
-          onClick={() => swapStudents(i, i - 1)}
-        >
-          <ArrowUpwardIcon fontSize='small' />
-        </IconButton>
+        {totalUnpairedStudents > 2 && (
+          <>
+            <IconButton
+              aria-label='move up'
+              size='small'
+              sx={{
+                marginLeft: 'auto',
+                color: 'secondary.600',
+                ':hover': { color: 'neutrals.white', bgcolor: 'secondary.600' },
+              }}
+              onClick={() => swapStudents(i, i - 1)}
+            >
+              <ArrowUpwardIcon fontSize='small' />
+            </IconButton>
 
-        <IconButton
-          aria-label='move down'
-          size='small'
-          sx={{
-            color: 'green',
-            ':hover': { color: 'white', bgcolor: 'green' },
-          }}
-          onClick={() => swapStudents(i, i + 1)}
-        >
-          <ArrowDownwardIcon fontSize='small' />
-        </IconButton>
+            <IconButton
+              aria-label='move down'
+              size='small'
+              sx={{
+                color: 'secondary.600',
+                ':hover': { color: 'neutrals.white', bgcolor: 'secondary.600' },
+              }}
+              onClick={() => swapStudents(i, i + 1)}
+            >
+              <ArrowDownwardIcon fontSize='small' />
+            </IconButton>
+          </>
+        )}
       </Box>
     </>
   );
