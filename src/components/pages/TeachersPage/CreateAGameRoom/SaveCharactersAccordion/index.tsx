@@ -5,21 +5,19 @@ import {
   AccordionSummary,
   Typography,
 } from '@mui/material';
-import { SyntheticEvent, useState } from 'react';
+import { Dispatch, SetStateAction, SyntheticEvent, useState } from 'react';
 
 import CharactersEditor from './CharactersEditor';
 
-const CHARACTERS = [
-  'Perfectionist dentist',
-  'Pirate captain',
-  'Tiny warlord',
-  'Dance teacher',
-  'Forgetful surgeon',
-  'Party planner',
-];
+interface SaveCharactersAccordionProps {
+  characters: string[];
+  setCharacters: Dispatch<SetStateAction<string[]>>;
+}
 
-const SaveCharactersAccordion = (): JSX.Element => {
-  const [characters, setCharacters] = useState<string[]>(CHARACTERS);
+const SaveCharactersAccordion = ({
+  characters,
+  setCharacters,
+}: SaveCharactersAccordionProps): JSX.Element => {
   const [isCharactersAccordionOpen, setIsCharactersAccordionOpen] =
     useState(true);
 
@@ -41,7 +39,7 @@ const SaveCharactersAccordion = (): JSX.Element => {
         expandIcon={<ExpandMoreIcon />}
         sx={{ borderRadius: '15px', border: '1px solid black', mb: 1 }}
       >
-        <Typography variant='h6'>Save Characters</Typography>
+        <Typography variant='h6'>Edit Characters List</Typography>
       </AccordionSummary>
 
       <AccordionDetails>
