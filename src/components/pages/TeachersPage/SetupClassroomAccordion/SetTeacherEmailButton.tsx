@@ -34,7 +34,7 @@ export default function SetTeacherEmailButton({
 
   return (
     <>
-      <Typography fontFamily='Lora' fontSize='20px' sx={{ mt: 3, mb: 1 }}>
+      <Typography variant='body1' sx={{ mt: 3, mb: 1 }}>
         Email: {email}
       </Typography>
       <Button

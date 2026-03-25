@@ -1,29 +1,23 @@
-/** @jsxImportSource @emotion/react */
-
-import { useState, useRef, Dispatch, SetStateAction } from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
-import { PersonOutline as PersonOutlineIcon } from '@mui/icons-material';
+import { Dispatch, SetStateAction, useRef, useState } from 'react';
 
-import BasicModal from '@components/shared/Modal';
-
-interface SetCharacterListProps {
+type CharactersEditorProps = {
   characters: string[];
   setCharacters: Dispatch<SetStateAction<string[]>>;
-}
+};
 
-export default function SetCharacterList({
+export default function CharactersEditor({
   characters,
   setCharacters,
-}: SetCharacterListProps) {
-  const [open, setOpen] = useState(false);
+}: CharactersEditorProps): JSX.Element {
   const [error, setError] = useState<string | null>(null);
-  const characterListTextArea = useRef<HTMLTextAreaElement>();
+  const characterListTextArea = useRef<HTMLTextAreaElement | null>(null);
 
-  const setCharacterList = () => {
-    const characters = characterListTextArea.current.value.split('\n');
-    const trimmedCharacters = characters
-      .map((ch) => ch.trim())
-      .filter((ch) => ch);
+  const saveCharacterList = () => {
+    const nextCharacters = characterListTextArea.current?.value.split('\n') ?? [];
+    const trimmedCharacters = nextCharacters
+      .map((character) => character.trim())
+      .filter((character) => character);
 
     if (trimmedCharacters.length === 0) {
       setError('Enter at least one character name.');
@@ -32,30 +26,15 @@ export default function SetCharacterList({
 
     setCharacters(trimmedCharacters);
     setError(null);
-    setOpen(false);
   };
-
-  function handleClose() {
-    setOpen(false);
-    setError(null);
-  }
 
   return (
     <>
-      <Typography variant='body1' sx={{ mb: 1, mt: 1.5 }}>
+      <Typography variant='body1' sx={{ mb: 2, mt: 3 }}>
         Characters: {characters.join(', ')}
       </Typography>
 
-      <Button
-        variant='contained'
-        color='primary'
-        startIcon={<PersonOutlineIcon />}
-        onClick={() => setOpen(true)}
-      >
-        Edit Character List
-      </Button>
-
-      <BasicModal open={open} onClose={handleClose}>
+      <Box sx={{ maxWidth: 400 }}>
         <TextField
           label='Character List'
           multiline
@@ -80,12 +59,12 @@ export default function SetCharacterList({
           <Button
             variant='contained'
             color='primary'
-            onClick={setCharacterList}
+            onClick={saveCharacterList}
           >
             Save
           </Button>
         </Box>
-      </BasicModal>
+      </Box>
     </>
   );
 }
