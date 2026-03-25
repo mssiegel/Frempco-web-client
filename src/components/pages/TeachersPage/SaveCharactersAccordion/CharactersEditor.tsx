@@ -4,17 +4,19 @@ import { Dispatch, SetStateAction, useRef, useState } from 'react';
 type CharactersEditorProps = {
   characters: string[];
   setCharacters: Dispatch<SetStateAction<string[]>>;
+  onSave: () => void;
 };
 
 export default function CharactersEditor({
   characters,
   setCharacters,
+  onSave,
 }: CharactersEditorProps): JSX.Element {
   const [error, setError] = useState<string | null>(null);
   const characterListTextArea = useRef<HTMLTextAreaElement | null>(null);
 
   const saveCharacterList = () => {
-    const nextCharacters = characterListTextArea.current?.value.split('\n') ?? [];
+    const nextCharacters = characterListTextArea.current.value.split('\n');
     const trimmedCharacters = nextCharacters
       .map((character) => character.trim())
       .filter((character) => character);
@@ -26,17 +28,18 @@ export default function CharactersEditor({
 
     setCharacters(trimmedCharacters);
     setError(null);
+    onSave();
   };
 
   return (
     <>
-      <Typography variant='body1' sx={{ mb: 2, mt: 3 }}>
-        Characters: {characters.join(', ')}
+      <Typography variant='body2' sx={{ mb: 2 }}>
+        <strong>Characters:</strong> {characters.join(', ')}
       </Typography>
 
       <Box sx={{ maxWidth: 400 }}>
         <TextField
-          label='Character List'
+          label='Edit Character List'
           multiline
           fullWidth
           rows={8}
