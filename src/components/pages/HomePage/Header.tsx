@@ -9,7 +9,7 @@ import { useHeaderButtonsVisibility } from './hooks/useHeaderButtonsVisibility';
 
 interface HeaderProps {
   visitStudentsPage: (isDevTestUser?: boolean) => void;
-  visitTeachersPage: (classroom: string) => void;
+  visitTeachersPage: () => void;
   gameButtonsRef: React.RefObject<HTMLElement>;
   isMobile: boolean;
 }

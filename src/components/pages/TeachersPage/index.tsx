@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 
-import { ClassroomProps, PAIRED } from '@utils/classrooms';
+import { PAIRED } from '@utils/classrooms';
 import { Student } from './types';
 import { SocketContext } from '@contexts/SocketContext';
 import { useRouter } from 'next/router';
@@ -20,7 +20,7 @@ const CHARACTERS = [
   'Party planner',
 ];
 
-export default function TeachersPage({ classroomName }: ClassroomProps) {
+export default function TeachersPage(): JSX.Element {
   const router = useRouter();
   const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
   const TEN_SECONDS = 10000;

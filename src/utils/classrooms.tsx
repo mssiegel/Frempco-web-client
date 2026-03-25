@@ -31,6 +31,7 @@ export function scrollToBottomOfElement(refObject) {
   refObject.current.scrollTop = refObject.current.scrollHeight;
 }
 
-export interface ClassroomProps {
-  classroomName: string;
+export function getRandomPin(pinLength: number) {
+  const randomPin = Math.random().toString();
+  return randomPin.slice(2, pinLength + 2);
 }
