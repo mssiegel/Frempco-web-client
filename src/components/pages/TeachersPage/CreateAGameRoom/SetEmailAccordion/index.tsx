@@ -5,11 +5,20 @@ import {
   AccordionSummary,
   Typography,
 } from '@mui/material';
+import { Dispatch, SetStateAction } from 'react';
 import { SyntheticEvent, useState } from 'react';
 
 import EmailEditor from './EmailEditor';
 
-export default function SetEmailAccordion(): JSX.Element {
+interface SetEmailAccordionProps {
+  email: string;
+  setEmail: Dispatch<SetStateAction<string>>;
+}
+
+export default function SetEmailAccordion({
+  email,
+  setEmail,
+}: SetEmailAccordionProps): JSX.Element {
   const [isEmailAccordionOpen, setIsEmailAccordionOpen] = useState(false);
 
   const handleEmailAccordionChange = (
@@ -34,7 +43,7 @@ export default function SetEmailAccordion(): JSX.Element {
       </AccordionSummary>
 
       <AccordionDetails>
-        <EmailEditor />
+        <EmailEditor email={email} setEmail={setEmail} />
       </AccordionDetails>
     </Accordion>
   );

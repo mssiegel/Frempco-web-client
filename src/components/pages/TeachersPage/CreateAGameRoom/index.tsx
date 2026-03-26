@@ -1,5 +1,6 @@
 import { Box, Typography } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
+import { useState } from 'react';
 
 import SaveCharactersAccordion from './SaveCharactersAccordion';
 import SetEmailAccordion from './SetEmailAccordion';
@@ -13,6 +14,8 @@ export default function CreateAGameRoom({
   characters,
   setCharacters,
 }: CreateAGameRoomProps): JSX.Element {
+  const [email, setEmail] = useState('');
+
   return (
     <Box sx={{ my: 3, mx: 3 }}>
       <Typography variant='h3' mb={3}>
@@ -24,7 +27,7 @@ export default function CreateAGameRoom({
         setCharacters={setCharacters}
       />
 
-      <SetEmailAccordion />
+      <SetEmailAccordion email={email} setEmail={setEmail} />
     </Box>
   );
 }
