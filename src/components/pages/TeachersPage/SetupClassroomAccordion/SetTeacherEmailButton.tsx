@@ -34,8 +34,8 @@ export default function SetTeacherEmailButton({
 
   return (
     <>
-      <Typography fontFamily='Lora' fontSize='20px' sx={{ mt: 3, mb: 1 }}>
-        Email: {email}
+      <Typography variant='body1' sx={{ mt: 3, mb: 1 }}>
+        Email: {email || 'Not set'}
       </Typography>
       <Button
         variant='outlined'
@@ -63,7 +63,6 @@ export default function SetTeacherEmailButton({
             autoFocus={true}
             maxLength={50}
             defaultValue={email}
-            required
           />
           <Button
             variant='contained'

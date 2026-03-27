@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 
-import { ClassroomProps, PAIRED } from '@utils/classrooms';
+import { EMPTY_EMAIL, ClassroomProps, PAIRED } from '@utils/classrooms';
 import { Student } from './types';
 import { SocketContext } from '@contexts/SocketContext';
 import { useRouter } from 'next/router';
@@ -36,6 +36,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
 
   const [unpairedStudents, setUnpairedStudents] = useState<Student[]>([]);
   const [characters, setCharacters] = useState(CHARACTERS);
+  const [email, setEmail] = useState(EMPTY_EMAIL);
   const [studentChats, setStudentChats] = useState<(StudentChat | SoloChat)[]>([
     // {
     //   mode: PAIRED,
@@ -179,7 +180,16 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     );
   }
 
-  if (!wasGameRoomCreated) return <CreateGameRoom />;
+  if (!wasGameRoomCreated) {
+    return (
+      <CreateGameRoom
+        characters={characters}
+        setCharacters={setCharacters}
+        email={email}
+        setEmail={setEmail}
+      />
+    );
+  }
 
   return (
     <main>
@@ -208,6 +218,8 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
           characters={characters}
           setCharacters={setCharacters}
           wasCharactersUpdated={wasCharactersUpdated}
+          email={email}
+          setEmail={setEmail}
         />
         <UnpairedStudentsAccordion
           socket={socket}
