@@ -95,7 +95,7 @@ function StepCard({ icon, title, isMobile }: StepCardProps): JSX.Element {
         textAlign: 'center',
         gap: 2,
         px: isMobile ? 4 : 8,
-        my: isMobile && 1,
+        my: isMobile ? 1 : 0,
         borderRadius: '12px',
         border: '1px solid',
         borderColor: 'primary.100',
@@ -107,9 +107,8 @@ function StepCard({ icon, title, isMobile }: StepCardProps): JSX.Element {
         sx={{
           width: '72px',
           height: '72px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
+          display: 'grid',
+          placeItems: 'center',
           backgroundColor: 'primary.200',
           borderRadius: '12px',
         }}
