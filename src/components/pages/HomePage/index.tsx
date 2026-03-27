@@ -74,7 +74,7 @@ export default function HomePage() {
         <ProductBenefits isMobile={isMobile} />
 
         {/* Section Three */}
-        <HowItWorks />
+        <HowItWorks isMobile={isMobile} />
 
         {/* Section Four */}
         <CoreValues />

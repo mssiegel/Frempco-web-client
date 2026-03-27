@@ -1,18 +1,16 @@
 /** @jsxImportSource @emotion/react */
 
-import {
-  Box,
-  Grid,
-  Typography,
-  useMediaQuery,
-  Icon,
-  Paper,
-} from '@mui/material';
+import { Box, Grid, Typography, Icon, Paper } from '@mui/material';
 import { useTheme, Theme } from '@mui/material/styles';
+
+interface HowItWorksProps {
+  isMobile: boolean;
+}
 
 interface StepCardProps {
   icon: string;
   title: string;
+  isMobile: boolean;
 }
 
 const CARD_INFO = [
@@ -34,16 +32,14 @@ const CARD_INFO = [
   },
 ];
 
-export default function HowItWorks(): JSX.Element {
+export default function HowItWorks({ isMobile }: HowItWorksProps): JSX.Element {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
   return (
     <Grid
       container
       sx={{
-        pt: { xs: 7, md: 15 },
-        pb: { xs: 7, md: 15 },
+        py: isMobile ? 7 : 15,
         background: `linear-gradient(to bottom, ${theme.palette.neutrals.white}, ${theme.palette.primary[100]})`,
       }}
     >
@@ -62,37 +58,21 @@ export default function HowItWorks(): JSX.Element {
         </Box>
 
         {/* Title and subtitle */}
-        <Box
-          sx={{
-            display: 'flex',
-            flexDirection: 'column',
-            alignItems: 'center',
-            gap: '16px',
-            mb: { xs: 6, md: 10 },
-          }}
-        >
-          <Typography
-            sx={{
-              typography: isMobile ? 'h4' : 'h3',
-              textAlign: 'center',
-            }}
-          >
-            How it Works
-          </Typography>
-          <Typography
-            sx={{
-              color: 'text.secondary',
-              textAlign: 'center',
-            }}
-          >
-            From setup to engagement in under a minute
-          </Typography>
-        </Box>
+        <Typography variant={isMobile ? 'h4' : 'h3'} align='center' pb={2}>
+          How it Works
+        </Typography>
+        <Typography align='center' pb={isMobile ? 6 : 10}>
+          From setup to engagement in under a minute
+        </Typography>
 
         <Grid container spacing={{ xs: 2, md: 4 }}>
           {CARD_INFO.map((step, index) => (
             <Grid item xs={12} sm={6} md={3} key={index}>
-              <StepCard icon={step.icon} title={step.title} />
+              <StepCard
+                icon={step.icon}
+                title={step.title}
+                isMobile={isMobile}
+              />
             </Grid>
           ))}
         </Grid>
@@ -103,7 +83,7 @@ export default function HowItWorks(): JSX.Element {
   );
 }
 
-function StepCard({ icon, title }: StepCardProps): JSX.Element {
+function StepCard({ icon, title, isMobile }: StepCardProps): JSX.Element {
   return (
     <Paper
       elevation={1}
@@ -111,7 +91,11 @@ function StepCard({ icon, title }: StepCardProps): JSX.Element {
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
-        my: { xs: 1, md: 0 },
+        alignItems: 'center',
+        textAlign: 'center',
+        gap: 2,
+        px: isMobile ? 4 : 8,
+        my: isMobile && 1,
         borderRadius: '12px',
         border: '1px solid',
         borderColor: 'primary.100',
@@ -121,30 +105,18 @@ function StepCard({ icon, title }: StepCardProps): JSX.Element {
     >
       <Box
         sx={{
+          width: '72px',
+          height: '72px',
           display: 'flex',
-          flexDirection: 'column',
-          gap: 2,
           alignItems: 'center',
-          textAlign: 'center',
+          justifyContent: 'center',
+          backgroundColor: 'primary.200',
+          borderRadius: '12px',
         }}
       >
-        <Box
-          sx={{
-            width: '72px',
-            height: '72px',
-            display: 'flex',
-            alignItems: 'center',
-            justifyContent: 'center',
-            backgroundColor: 'primary.200',
-            borderRadius: '12px',
-          }}
-        >
-          <Icon sx={{ fontSize: 32, color: 'primary.main' }}>{icon}</Icon>
-        </Box>
-        <Typography sx={{ maxWidth: { xs: '80%', md: '65%' } }}>
-          {title}
-        </Typography>
+        <Icon sx={{ fontSize: 32, color: 'primary.main' }}>{icon}</Icon>
       </Box>
+      <Typography>{title}</Typography>
     </Paper>
   );
 }
