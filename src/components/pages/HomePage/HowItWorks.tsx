@@ -9,26 +9,26 @@ interface HowItWorksProps {
 
 interface StepCardProps {
   icon: string;
-  title: string;
+  text: string;
   isMobile: boolean;
 }
 
 const CARD_INFO = [
   {
-    title: 'Teacher Creates a Game & Sets Roles',
     icon: 'person_add', // Name of Google Material Font Icon
+    text: 'Teacher Creates a Game Room',
   },
   {
-    title: 'Students Join with a Simple Link',
     icon: 'add_link',
+    text: 'Students Join With a Code',
   },
   {
-    title: 'Students are Assigned Roles & Paired',
     icon: 'social_distance',
+    text: 'Teacher Pairs up the Students',
   },
   {
-    title: 'Learning Happens Through Conversation',
     icon: 'conversation',
+    text: 'Students Chat as Their Characters',
   },
 ];
 
@@ -68,11 +68,7 @@ export default function HowItWorks({ isMobile }: HowItWorksProps): JSX.Element {
         <Grid container spacing={{ xs: 2, md: 4 }}>
           {CARD_INFO.map((step, index) => (
             <Grid item xs={12} sm={6} md={3} key={index}>
-              <StepCard
-                icon={step.icon}
-                title={step.title}
-                isMobile={isMobile}
-              />
+              <StepCard icon={step.icon} text={step.text} isMobile={isMobile} />
             </Grid>
           ))}
         </Grid>
@@ -83,7 +79,7 @@ export default function HowItWorks({ isMobile }: HowItWorksProps): JSX.Element {
   );
 }
 
-function StepCard({ icon, title, isMobile }: StepCardProps): JSX.Element {
+function StepCard({ icon, text, isMobile }: StepCardProps): JSX.Element {
   return (
     <Paper
       elevation={1}
@@ -94,13 +90,13 @@ function StepCard({ icon, title, isMobile }: StepCardProps): JSX.Element {
         alignItems: 'center',
         textAlign: 'center',
         gap: 2,
-        px: isMobile ? 4 : 8,
+        px: 2,
         my: isMobile ? 1 : 0,
         borderRadius: '12px',
         border: '1px solid',
         borderColor: 'primary.100',
         backgroundColor: 'neutrals.white',
-        height: '246px',
+        height: '230px',
       }}
     >
       <Box
@@ -115,7 +111,7 @@ function StepCard({ icon, title, isMobile }: StepCardProps): JSX.Element {
       >
         <Icon sx={{ fontSize: 32, color: 'primary.main' }}>{icon}</Icon>
       </Box>
-      <Typography>{title}</Typography>
+      <Typography>{text}</Typography>
     </Paper>
   );
 }
