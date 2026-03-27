@@ -10,6 +10,8 @@ import SetupClassroomAccordion from './SetupClassroomAccordion';
 import ChatsInProgressAccordion from './ChatsInProgressAccordion';
 import Link from '@components/shared/Link';
 import { ChatMessage, SoloChat, StudentChat } from './types';
+import featureFlags from '@config/featureFlags';
+import CreateGameRoom from './CreateGameRoom';
 
 const CHARACTERS = [
   'Perfectionist dentist',
@@ -25,6 +27,9 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
   const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
   const TEN_SECONDS = 10000;
   const [isConnected, setIsConnected] = useState(true);
+  const [wasGameRoomCreated, setWasGameRoomCreated] = useState(
+    !featureFlags.isChooseGameRoomSettingsBeforeGettingPinLaunched.enabled,
+  );
 
   const socket = useContext(SocketContext);
   console.log('Teacher socketId:', socket?.id ?? 'No socket found');
@@ -173,6 +178,8 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
       </Box>
     );
   }
+
+  if (!wasGameRoomCreated) return <CreateGameRoom />;
 
   return (
     <main>
