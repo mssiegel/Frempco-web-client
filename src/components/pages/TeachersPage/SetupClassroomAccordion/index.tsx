@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import {
   Accordion,
   AccordionSummary,
@@ -11,6 +11,7 @@ import {
   ErrorOutline as ErrorOutlineIcon,
 } from '@mui/icons-material';
 
+import { EMPTY_EMAIL } from '@utils/classrooms';
 import SetTeacherEmailButton from './SetTeacherEmailButton';
 import SetCharacterList from './SetCharacterList';
 
@@ -19,18 +20,18 @@ interface SetupClassroomAccordionProps {
   characters: string[];
   setCharacters: Dispatch<SetStateAction<string[]>>;
   wasCharactersUpdated: boolean;
+  email: string;
+  setEmail: Dispatch<SetStateAction<string>>;
 }
-
-const EMPTY_EMAIL = '';
 
 const SetupClassroomAccordion = ({
   classroomName,
   characters,
   setCharacters,
   wasCharactersUpdated,
+  email,
+  setEmail,
 }: SetupClassroomAccordionProps) => {
-  const [email, setEmail] = useState(EMPTY_EMAIL);
-
   const wasEmailUpdated = email !== EMPTY_EMAIL;
   const hasRemainingSetupOptions = !wasEmailUpdated || !wasCharactersUpdated;
 

@@ -4,6 +4,7 @@ export const TEST_CLASSROOM_NAME = '0000';
 export const PAIRED = 'PAIRED';
 export const SOLO = 'SOLO';
 export const DEV_TEST_USER_QUERY_PARAM = 'isDevTestUser';
+export const EMPTY_EMAIL = '';
 
 export function getRandom<T>(arr: Array<T>): T {
   return arr[Math.floor(Math.random() * arr.length)];

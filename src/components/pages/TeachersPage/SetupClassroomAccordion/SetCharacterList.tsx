@@ -31,6 +31,7 @@ export default function SetCharacterList({
     }
 
     setCharacters(trimmedCharacters);
+    setError(null);
     setOpen(false);
   };
 
@@ -41,7 +42,7 @@ export default function SetCharacterList({
 
   return (
     <>
-      <Typography fontFamily='Lora' fontSize='20px' sx={{ mb: 1, mt: 1.5 }}>
+      <Typography variant='body1' sx={{ mb: 1, mt: 1.5 }}>
         Characters: {characters.join(', ')}
       </Typography>
       <Button

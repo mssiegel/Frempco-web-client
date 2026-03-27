@@ -1,5 +1,34 @@
-import { Box } from '@mui/material';
+import { Box, Typography } from '@mui/material';
+import { Dispatch, SetStateAction } from 'react';
 
-export default function CreateGameRoom(): JSX.Element {
-  return <Box>Placeholder for Creating a Game Room settings</Box>;
+import SaveCharactersAccordion from './SaveCharactersAccordion';
+import SetEmailAccordion from './SetEmailAccordion';
+
+interface CreateAGameRoomProps {
+  characters: string[];
+  setCharacters: Dispatch<SetStateAction<string[]>>;
+  email: string;
+  setEmail: Dispatch<SetStateAction<string>>;
+}
+
+export default function CreateGameRoom({
+  characters,
+  setCharacters,
+  email,
+  setEmail,
+}: CreateAGameRoomProps): JSX.Element {
+  return (
+    <Box sx={{ my: 3, mx: 3 }}>
+      <Typography variant='h3' mb={3}>
+        Create a Game Room
+      </Typography>
+
+      <SaveCharactersAccordion
+        characters={characters}
+        setCharacters={setCharacters}
+      />
+
+      <SetEmailAccordion email={email} setEmail={setEmail} />
+    </Box>
+  );
 }
