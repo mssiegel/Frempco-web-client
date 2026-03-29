@@ -43,7 +43,11 @@ export default function SetEmailAccordion({
       </AccordionSummary>
 
       <AccordionDetails>
-        <EmailEditor email={email} setEmail={setEmail} />
+        <EmailEditor
+          email={email}
+          setEmail={setEmail}
+          onSave={() => setIsEmailAccordionOpen(false)}
+        />
       </AccordionDetails>
     </Accordion>
   );

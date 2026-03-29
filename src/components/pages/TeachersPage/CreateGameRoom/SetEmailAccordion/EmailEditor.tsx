@@ -4,11 +4,13 @@ import { Box, Button, TextField, Typography } from '@mui/material';
 interface EmailEditorProps {
   email: string;
   setEmail: Dispatch<SetStateAction<string>>;
+  onSave: () => void;
 }
 
 export default function EmailEditor({
   email,
   setEmail,
+  onSave,
 }: EmailEditorProps): JSX.Element {
   const emailInput = useRef<HTMLInputElement>(null);
 
@@ -17,14 +19,11 @@ export default function EmailEditor({
 
     const emailAddress = emailInput.current?.value.trim() ?? '';
     if (emailAddress !== email) setEmail(emailAddress);
+    onSave();
   }
 
   return (
     <Box component='form' onSubmit={updateTeacherEmail}>
-      <Typography variant='body1' sx={{ mb: 1 }}>
-        Email: {email || 'Not set'}
-      </Typography>
-
       <TextField
         label='Email address'
         type='email'
@@ -34,9 +33,8 @@ export default function EmailEditor({
         defaultValue={email}
         fullWidth
       />
-
-      <Button variant='contained' color='primary' type='submit' sx={{ mt: 1 }}>
-        Save
+      <Button variant='contained' color='primary' type='submit' sx={{ m: 2 }}>
+        Save email
       </Button>
     </Box>
   );

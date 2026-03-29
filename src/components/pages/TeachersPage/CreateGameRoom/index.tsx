@@ -32,6 +32,14 @@ export default function CreateGameRoom({
 
       <SetEmailAccordion email={email} setEmail={setEmail} />
 
+      <Typography variant='body2' sx={{ m: 1 }}>
+        <strong>Characters:</strong> {characters.join(', ')}
+      </Typography>
+
+      <Typography variant='body2' sx={{ m: 1 }}>
+        <strong>Email:</strong> {email || 'Not set'}
+      </Typography>
+
       <Box mt={3}>
         <Button
           variant='contained'

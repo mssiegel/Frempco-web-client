@@ -34,16 +34,12 @@ export default function CharactersEditor({
 
   return (
     <>
-      <Typography variant='body2' sx={{ mb: 2 }}>
-        <strong>Characters:</strong> {characters.join(', ')}
-      </Typography>
-
       <Box sx={{ maxWidth: 400 }}>
         <TextField
           label='Edit Character List'
           multiline
           fullWidth
-          rows={8}
+          rows={6}
           autoFocus
           defaultValue={characters.join('\n')}
           inputRef={characterListTextArea}
@@ -59,15 +55,14 @@ export default function CharactersEditor({
           </Typography>
         )}
 
-        <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
-          <Button
-            variant='contained'
-            color='primary'
-            onClick={saveCharacterList}
-          >
-            Save
-          </Button>
-        </Box>
+        <Button
+          variant='contained'
+          color='primary'
+          onClick={saveCharacterList}
+          sx={{ m: 2 }}
+        >
+          Save characters
+        </Button>
       </Box>
     </>
   );
