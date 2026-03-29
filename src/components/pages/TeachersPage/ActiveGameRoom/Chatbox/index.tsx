@@ -17,7 +17,7 @@ import {
 
 import ChatboxHeader from '@components/shared/ChatboxHeader';
 import { scrollToBottomOfElement, SOLO } from '@utils/classrooms';
-import { Student, StudentChat, SoloChat } from '../types';
+import { Student, StudentChat, SoloChat } from '../../types';
 import { SocketContext } from '@contexts/SocketContext';
 import Conversation from './Conversation';
 
