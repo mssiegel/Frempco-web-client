@@ -5,7 +5,7 @@ import { chunk } from 'lodash-es';
 import { Socket } from 'socket.io-client';
 
 import { getRandom } from '@utils/classrooms';
-import { SoloChat, Student, StudentChat } from '../types';
+import { SoloChat, Student, StudentChat } from '../../types';
 import UnpairedStudentItem from './UnpairedStudentItem';
 
 interface UnpairedStudentsListProps {

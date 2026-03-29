@@ -1,14 +1,15 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
 import SaveCharactersAccordion from './SaveCharactersAccordion';
 import SetEmailAccordion from './SetEmailAccordion';
 
-interface CreateAGameRoomProps {
+interface CreateGameRoomProps {
   characters: string[];
   setCharacters: Dispatch<SetStateAction<string[]>>;
   email: string;
   setEmail: Dispatch<SetStateAction<string>>;
+  setWasGameRoomCreated: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function CreateGameRoom({
@@ -16,11 +17,12 @@ export default function CreateGameRoom({
   setCharacters,
   email,
   setEmail,
-}: CreateAGameRoomProps): JSX.Element {
+  setWasGameRoomCreated,
+}: CreateGameRoomProps): JSX.Element {
   return (
     <Box sx={{ my: 3, mx: 3 }}>
       <Typography variant='h3' mb={3}>
-        Create a Game Room
+        Host a Game Room
       </Typography>
 
       <SaveCharactersAccordion
@@ -29,6 +31,17 @@ export default function CreateGameRoom({
       />
 
       <SetEmailAccordion email={email} setEmail={setEmail} />
+
+      <Box mt={3}>
+        <Button
+          variant='contained'
+          color='primary'
+          type='submit'
+          onClick={() => setWasGameRoomCreated(true)}
+        >
+          Host Game Room
+        </Button>
+      </Box>
     </Box>
   );
 }
