@@ -47,7 +47,7 @@ export default function CreateGameRoom({
           type='submit'
           onClick={() => setWasGameRoomCreated(true)}
         >
-          Host Game Room
+          Host Game Room Now
         </Button>
       </Box>
     </Box>

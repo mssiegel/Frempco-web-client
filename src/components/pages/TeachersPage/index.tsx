@@ -8,7 +8,6 @@ import CreateGameRoom from './CreateGameRoom';
 import ActiveGameRoom from './ActiveGameRoom/index';
 
 const CHARACTERS = [
-  'Perfectionist dentist',
   'Pirate captain',
   'Tiny warlord',
   'Dance teacher',

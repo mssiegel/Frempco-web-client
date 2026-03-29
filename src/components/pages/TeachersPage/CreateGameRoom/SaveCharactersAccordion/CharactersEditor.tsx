@@ -35,6 +35,9 @@ export default function CharactersEditor({
   return (
     <>
       <Box sx={{ maxWidth: 400 }}>
+        <Typography variant='body2' mb={2}>
+          Update the characters which your students can get assigned to.
+        </Typography>
         <TextField
           label='Edit Character List'
           multiline

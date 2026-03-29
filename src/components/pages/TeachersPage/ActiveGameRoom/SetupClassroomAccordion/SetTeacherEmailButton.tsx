@@ -52,8 +52,7 @@ export default function SetTeacherEmailButton({
             {"Teacher's email address"}
           </Typography>
           <Typography variant='body2'>
-            Enter your email below to get emailed all the chats from this
-            classroom.
+            Provide your email to get emailed all the chats from your game room.
           </Typography>
 
           <ModalTextField

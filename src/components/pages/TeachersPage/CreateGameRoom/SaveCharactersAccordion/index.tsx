@@ -19,7 +19,7 @@ const SaveCharactersAccordion = ({
   setCharacters,
 }: SaveCharactersAccordionProps): JSX.Element => {
   const [isCharactersAccordionOpen, setIsCharactersAccordionOpen] =
-    useState(true);
+    useState(false);
 
   const handleCharactersAccordionChange = (
     _event: SyntheticEvent,

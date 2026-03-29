@@ -24,6 +24,9 @@ export default function EmailEditor({
 
   return (
     <Box component='form' onSubmit={updateTeacherEmail}>
+      <Typography variant='body2' mb={1}>
+        Provide your email to get emailed all the chats from your game room.
+      </Typography>
       <TextField
         label='Email address'
         type='email'
