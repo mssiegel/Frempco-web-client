@@ -15,8 +15,8 @@ import { EMPTY_EMAIL } from '@utils/classrooms';
 import SetTeacherEmailButton from './SetTeacherEmailButton';
 import SetCharacterList from './SetCharacterList';
 
-interface SetupClassroomAccordionProps {
-  classroomName: string;
+interface SetupGameRoomAccordionProps {
+  gameRoomPIN: string;
   characters: string[];
   setCharacters: Dispatch<SetStateAction<string[]>>;
   wasCharactersUpdated: boolean;
@@ -24,14 +24,14 @@ interface SetupClassroomAccordionProps {
   setEmail: Dispatch<SetStateAction<string>>;
 }
 
-const SetupClassroomAccordion = ({
-  classroomName,
+const SetupGameRoomAccordion = ({
+  gameRoomPIN,
   characters,
   setCharacters,
   wasCharactersUpdated,
   email,
   setEmail,
-}: SetupClassroomAccordionProps) => {
+}: SetupGameRoomAccordionProps) => {
   const wasEmailUpdated = email !== EMPTY_EMAIL;
   const hasRemainingSetupOptions = !wasEmailUpdated || !wasCharactersUpdated;
 
@@ -51,7 +51,7 @@ const SetupClassroomAccordion = ({
         sx={{ borderRadius: '15px', border: '1px solid black', gap: 2 }}
       >
         <Typography variant='h5' fontWeight={400}>
-          Step 1: Setup Your Classroom
+          Step 1: Setup Your Game Room
         </Typography>
         <Box
           display='flex'
@@ -70,7 +70,7 @@ const SetupClassroomAccordion = ({
           setCharacters={setCharacters}
         />
         <SetTeacherEmailButton
-          classroomName={classroomName}
+          gameRoomPIN={gameRoomPIN}
           email={email}
           setEmail={setEmail}
         />
@@ -79,4 +79,4 @@ const SetupClassroomAccordion = ({
   );
 };
 
-export default SetupClassroomAccordion;
+export default SetupGameRoomAccordion;

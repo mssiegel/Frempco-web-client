@@ -31,7 +31,3 @@ export function scrollToBottomOfElement(refObject) {
      the bottom of a chatbox whenever a new message is received */
   refObject.current.scrollTop = refObject.current.scrollHeight;
 }
-
-export interface ClassroomProps {
-  classroomName: string;
-}

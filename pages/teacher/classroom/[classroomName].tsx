@@ -15,7 +15,7 @@ export default function TeacherDashboard() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <TeachersPage classroomName={classroomName} />
+      <TeachersPage />
     </Layout>
   );
 }

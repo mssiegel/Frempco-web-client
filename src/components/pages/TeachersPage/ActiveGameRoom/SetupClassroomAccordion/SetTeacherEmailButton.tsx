@@ -6,13 +6,13 @@ import BasicModal from '@components/shared/Modal';
 import ModalTextField from '@components/shared/ModalTextField';
 
 interface SetTeacherEmailButtonProps {
-  classroomName: string;
+  gameRoomPIN: string;
   email: string;
   setEmail: Dispatch<SetStateAction<string>>;
 }
 
 export default function SetTeacherEmailButton({
-  classroomName,
+  gameRoomPIN,
   email,
   setEmail,
 }: SetTeacherEmailButtonProps) {
@@ -20,12 +20,12 @@ export default function SetTeacherEmailButton({
   const [open, setOpen] = useState(false);
   const emailInput = useRef<HTMLInputElement>(null);
 
-  async function updateTeacherEmail(event) {
+  async function updateTeacherEmail(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const emailAddress = emailInput.current.value.trim();
+    const emailAddress = emailInput.current?.value.trim() || '';
 
-    await fetch(`${apiUrl}/classrooms/${classroomName}/email/${emailAddress}`, {
+    await fetch(`${apiUrl}/classrooms/${gameRoomPIN}/email/${emailAddress}`, {
       method: 'PATCH',
     });
     setEmail(emailAddress);

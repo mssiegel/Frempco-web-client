@@ -6,12 +6,13 @@ import { PAIRED } from '@utils/classrooms';
 import { ChatMessage, SoloChat, Student, StudentChat } from '../types';
 import { SocketContext } from '@contexts/SocketContext';
 import { useRouter } from 'next/router';
+import Link from '@components/shared/Link';
 import UnpairedStudentsAccordion from './UnpairedStudentsAccordion';
 import SetupClassroomAccordion from './SetupClassroomAccordion';
 import ChatsInProgressAccordion from './ChatsInProgressAccordion';
 
 interface ActiveGameRoomProps {
-  classroomName: string;
+  gameRoomPIN: string;
   characters: string[];
   setCharacters: Dispatch<SetStateAction<string[]>>;
   email: string;
@@ -20,22 +21,47 @@ interface ActiveGameRoomProps {
 }
 
 export default function ActiveGameRoom({
-  classroomName,
+  gameRoomPIN,
   characters,
   setCharacters,
   email,
   setEmail,
   wasCharactersUpdated,
 }: ActiveGameRoomProps): JSX.Element {
+  const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
+  const TEN_SECONDS = 10000;
   const router = useRouter();
   const socket = useContext(SocketContext);
 
   console.log('Teacher socketId:', socket?.id ?? 'No socket found');
 
+  const [isConnected, setIsConnected] = useState(true);
   const [unpairedStudents, setUnpairedStudents] = useState<Student[]>([]);
   const [studentChats, setStudentChats] = useState<(StudentChat | SoloChat)[]>(
     [],
   );
+
+  useEffect(() => {
+    // Check if the teacher is still connected to the game room every 10 seconds.
+    const connectionCheckInterval = setInterval(async () => {
+      try {
+        const getResponse = await fetch(`${apiUrl}/classrooms/${gameRoomPIN}`, {
+          method: 'GET',
+        });
+        const { isActive } = await getResponse.json();
+        if (!isActive) {
+          setIsConnected(false);
+          clearInterval(connectionCheckInterval);
+        }
+      } catch (error) {
+        // If the request fails, assume the connection was lost.
+        setIsConnected(false);
+        clearInterval(connectionCheckInterval);
+      }
+    }, TEN_SECONDS);
+
+    return () => clearInterval(connectionCheckInterval);
+  }, [apiUrl, gameRoomPIN]);
 
   useEffect(() => {
     if (socket) {
@@ -126,6 +152,18 @@ export default function ActiveGameRoom({
     };
   }, [router.events, socket]);
 
+  if (!isConnected) {
+    return (
+      <Box my={10}>
+        <Typography variant='h4' textAlign='center'>
+          You are no longer connected to this game room on Frempco. Return to
+          the <Link href='/'>Frempco homepage</Link> and start another game
+          room.
+        </Typography>
+      </Box>
+    );
+  }
+
   return (
     <main>
       <Box mx={2}>
@@ -141,7 +179,7 @@ export default function ActiveGameRoom({
             {'1)'} Join at <strong>www.frempco.com</strong>
           </Typography>
           <Typography variant='body1' mb={1}>
-            {'2)'} Enter Game Pin: <strong>{classroomName}</strong>
+            {'2)'} Enter Game Pin: <strong>{gameRoomPIN}</strong>
           </Typography>
           <Typography variant='body2' sx={{ mt: 2 }}>
             Note: Your students on smartphones will be logged out of Frempco if
@@ -149,7 +187,7 @@ export default function ActiveGameRoom({
           </Typography>
         </Box>
         <SetupClassroomAccordion
-          classroomName={classroomName}
+          gameRoomPIN={gameRoomPIN}
           characters={characters}
           setCharacters={setCharacters}
           wasCharactersUpdated={wasCharactersUpdated}
