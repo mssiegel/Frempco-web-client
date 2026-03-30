@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
-import { Student, StudentChat, SoloChat } from '../types';
+import { Student, StudentChat, SoloChat } from '../../types';
 import ReadOnlyChatbox from '../Chatbox';
 
 interface DisplayOfChatsProps {

@@ -4,6 +4,8 @@ export const TEST_CLASSROOM_NAME = '0000';
 export const PAIRED = 'PAIRED';
 export const SOLO = 'SOLO';
 export const DEV_TEST_USER_QUERY_PARAM = 'isDevTestUser';
+export const DEV_TEST_USER_SESSION_FLAG = 'wasDevTestUserSet';
+export const EMPTY_EMAIL = '';
 
 export function getRandom<T>(arr: Array<T>): T {
   return arr[Math.floor(Math.random() * arr.length)];
@@ -29,8 +31,4 @@ export function scrollToBottomOfElement(refObject) {
   /* used to ensure the user always sees the latest chat messages by automatically scrolling to
      the bottom of a chatbox whenever a new message is received */
   refObject.current.scrollTop = refObject.current.scrollHeight;
-}
-
-export interface ClassroomProps {
-  classroomName: string;
 }

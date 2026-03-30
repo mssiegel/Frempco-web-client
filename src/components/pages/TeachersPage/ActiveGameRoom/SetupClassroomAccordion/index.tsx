@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import {
   Accordion,
   AccordionSummary,
@@ -11,26 +11,27 @@ import {
   ErrorOutline as ErrorOutlineIcon,
 } from '@mui/icons-material';
 
+import { EMPTY_EMAIL } from '@utils/classrooms';
 import SetTeacherEmailButton from './SetTeacherEmailButton';
 import SetCharacterList from './SetCharacterList';
 
-interface SetupClassroomAccordionProps {
-  classroomName: string;
+interface SetupGameRoomAccordionProps {
+  gameRoomPIN: string;
   characters: string[];
   setCharacters: Dispatch<SetStateAction<string[]>>;
   wasCharactersUpdated: boolean;
+  email: string;
+  setEmail: Dispatch<SetStateAction<string>>;
 }
 
-const EMPTY_EMAIL = '';
-
-const SetupClassroomAccordion = ({
-  classroomName,
+const SetupGameRoomAccordion = ({
+  gameRoomPIN,
   characters,
   setCharacters,
   wasCharactersUpdated,
-}: SetupClassroomAccordionProps) => {
-  const [email, setEmail] = useState(EMPTY_EMAIL);
-
+  email,
+  setEmail,
+}: SetupGameRoomAccordionProps) => {
   const wasEmailUpdated = email !== EMPTY_EMAIL;
   const hasRemainingSetupOptions = !wasEmailUpdated || !wasCharactersUpdated;
 
@@ -50,7 +51,7 @@ const SetupClassroomAccordion = ({
         sx={{ borderRadius: '15px', border: '1px solid black', gap: 2 }}
       >
         <Typography variant='h5' fontWeight={400}>
-          Step 1: Setup Your Classroom
+          Step 1: Setup Your Game Room
         </Typography>
         <Box
           display='flex'
@@ -69,7 +70,7 @@ const SetupClassroomAccordion = ({
           setCharacters={setCharacters}
         />
         <SetTeacherEmailButton
-          classroomName={classroomName}
+          gameRoomPIN={gameRoomPIN}
           email={email}
           setEmail={setEmail}
         />
@@ -78,4 +79,4 @@ const SetupClassroomAccordion = ({
   );
 };
 
-export default SetupClassroomAccordion;
+export default SetupGameRoomAccordion;

@@ -8,7 +8,7 @@ import {
 import { Button, Box, IconButton, Typography } from '@mui/material';
 import { Socket } from 'socket.io-client';
 import { getRandom, swap, SOLO } from '@utils/classrooms';
-import { SoloChat, Student, StudentChat } from '../types';
+import { SoloChat, Student, StudentChat } from '../../types';
 
 interface UnpairedStudentItemProps {
   i: number;

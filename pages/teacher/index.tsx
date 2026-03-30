@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 
 export default function TeacherDashboard() {
   const router = useRouter();
-  const classroomName = router.query.classroomName as string;
 
   return (
     <Layout>
@@ -15,7 +14,7 @@ export default function TeacherDashboard() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <TeachersPage classroomName={classroomName} />
+      <TeachersPage />
     </Layout>
   );
 }
