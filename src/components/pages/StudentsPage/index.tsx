@@ -6,6 +6,7 @@ import { useRouter } from 'next/router';
 import {
   DEV_TEST_USER_QUERY_PARAM,
   TEST_CLASSROOM_NAME,
+  DEV_TEST_USER_SESSION_FLAG,
 } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
 import { useStudentSocketHandlers } from './hooks/useStudentSocketHandlers';
@@ -14,8 +15,6 @@ import WelcomeMessage from './WelcomeMessage';
 import Header from './Header';
 import LoginFlow from './LoginFlow';
 import { STAGE, Stage, StudentPairedChat, StudentSoloChat } from './types';
-
-const DEV_TEST_USER_SESSION_FLAG = 'wasDevTestUserSet';
 
 export default function StudentsPage(): JSX.Element {
   const socket = useContext(SocketContext);

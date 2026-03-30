@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 import { Box } from '@mui/material';
 
 import StudentsButton from './StudentsButton';
@@ -9,7 +7,7 @@ import { useHeaderButtonsVisibility } from './hooks/useHeaderButtonsVisibility';
 
 interface HeaderProps {
   visitStudentsPage: (isDevTestUser?: boolean) => void;
-  visitTeachersPage: (classroom: string) => void;
+  visitTeachersPage: (isDevTestUser?: boolean) => void;
   gameButtonsRef: React.RefObject<HTMLElement>;
   isMobile: boolean;
 }

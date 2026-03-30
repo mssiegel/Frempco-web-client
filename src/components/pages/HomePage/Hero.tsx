@@ -10,7 +10,7 @@ interface HeroProps {
   isMobile: boolean;
   gameButtonsRef: React.RefObject<HTMLDivElement>;
   visitStudentsPage: (isDevTestUser?: boolean) => void;
-  visitTeachersPage: (classroom: string) => void;
+  visitTeachersPage: (isDevTestUser?: boolean) => void;
 }
 
 export default function Hero({

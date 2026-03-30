@@ -1,8 +1,6 @@
 import { Box, Button, Typography } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
-import { useContext } from 'react';
-import { SocketContext } from '@contexts/SocketContext';
 import SaveCharactersAccordion from './SaveCharactersAccordion';
 import SetEmailAccordion from './SetEmailAccordion';
 
@@ -11,7 +9,7 @@ interface CreateGameRoomProps {
   setCharacters: Dispatch<SetStateAction<string[]>>;
   email: string;
   setEmail: Dispatch<SetStateAction<string>>;
-  setGameRoomPIN: Dispatch<SetStateAction<string>>;
+  handleCreateGameRoom: () => void;
 }
 
 export default function CreateGameRoom({
@@ -19,20 +17,8 @@ export default function CreateGameRoom({
   setCharacters,
   email,
   setEmail,
-  setGameRoomPIN,
+  handleCreateGameRoom,
 }: CreateGameRoomProps): JSX.Element {
-  const socket = useContext(SocketContext);
-  const create4DigitPin = (): string =>
-    Math.floor(Math.random() * 10000)
-      .toString()
-      .padStart(4, '0');
-
-  const handleCreateGameRoom = (): void => {
-    const newGameRoomPIN = create4DigitPin();
-    setGameRoomPIN(newGameRoomPIN);
-    socket.emit('activate classroom', { classroomName: newGameRoomPIN });
-  };
-
   return (
     <Box sx={{ my: 3, mx: 3 }}>
       <Typography variant='h3' mb={3}>

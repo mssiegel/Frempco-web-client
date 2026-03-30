@@ -38,10 +38,19 @@ export default function HomePage() {
     router.push(studentUrl);
   }
 
-  function visitTeachersPage(classroom: string) {
+  function visitTeachersPage(isDevTestUser: boolean = false) {
     // TODO: delete the userContext as its no longer used.
     setUser({ isLoggedIn: true });
-    router.push(`/teacher/classroom`);
+
+    const teacherUrl = isDevTestUser
+      ? `/teacher?${DEV_TEST_USER_QUERY_PARAM}=true`
+      : '/teacher';
+
+    // Deletes any prior dev test user session flags. A new one gets saved into
+    // session storage when visiting the students page.
+    if (isDevTestUser) sessionStorage.removeItem(DEV_TEST_USER_SESSION_FLAG);
+
+    router.push(teacherUrl);
   }
 
   return (
