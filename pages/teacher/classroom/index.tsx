@@ -6,7 +6,6 @@ import { useRouter } from 'next/router';
 
 export default function TeacherDashboard() {
   const router = useRouter();
-  const classroomName = router.query.classroomName as string;
 
   return (
     <Layout>

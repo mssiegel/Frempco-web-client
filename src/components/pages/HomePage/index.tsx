@@ -21,7 +21,6 @@ const DEV_TEST_USER_SESSION_FLAG = 'wasDevTestUserSet';
 
 export default function HomePage() {
   const router = useRouter();
-  const socket = useContext(SocketContext);
   const { setUser } = useContext(UserContext);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -40,9 +39,9 @@ export default function HomePage() {
   }
 
   function visitTeachersPage(classroom: string) {
-    socket.emit('activate classroom', { classroomName: classroom });
+    // TODO: delete the userContext as its no longer used.
     setUser({ isLoggedIn: true });
-    router.push(`/teacher/classroom/${classroom}`);
+    router.push(`/teacher/classroom`);
   }
 
   return (
