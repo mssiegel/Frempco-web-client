@@ -8,7 +8,7 @@ import {
 import { Dispatch, SetStateAction } from 'react';
 import { SyntheticEvent, useState } from 'react';
 
-import EmailEditor from './EmailEditor';
+import EmailEditor from '@TeachersPage/shared/EmailEditor';
 
 interface SetEmailAccordionProps {
   email: string;
@@ -43,7 +43,13 @@ export default function SetEmailAccordion({
       </AccordionSummary>
 
       <AccordionDetails>
-        <EmailEditor email={email} setEmail={setEmail} />
+        <EmailEditor
+          email={email}
+          onSave={(emailAddress) => {
+            if (emailAddress !== email) setEmail(emailAddress);
+            setIsEmailAccordionOpen(false);
+          }}
+        />
       </AccordionDetails>
     </Accordion>
   );

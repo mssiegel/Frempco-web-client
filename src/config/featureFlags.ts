@@ -5,12 +5,6 @@ interface FeatureFlag {
   description?: string;
 }
 
-const featureFlags: Record<string, FeatureFlag> = {
-  isChooseGameRoomSettingsBeforeGettingPinLaunched: {
-    enabled: false,
-    description:
-      'This feature will let Teachers choose their Game Room settings such as characters and email etc. before getting a Game Room PIN.',
-  },
-};
+const featureFlags: Record<string, FeatureFlag> = {};
 
 export default featureFlags;

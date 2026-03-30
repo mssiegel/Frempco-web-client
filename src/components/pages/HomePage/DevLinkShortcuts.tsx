@@ -1,19 +1,16 @@
-/** @jsxImportSource @emotion/react */
-
 import { Typography } from '@mui/material';
 
 import Link from '@components/shared/Link';
-import { TEST_CLASSROOM_NAME } from '@utils/classrooms';
 
 interface DevLinkShortcutsProps {
-  visitTeachersPage: (classroom: string) => void;
+  visitTeachersPage: (isDevTestUser?: boolean) => void;
   visitStudentsPage: (isDevTestUser?: boolean) => void;
 }
 
 export default function DevLinkShortcuts({
   visitTeachersPage,
   visitStudentsPage,
-}) {
+}: DevLinkShortcutsProps) {
   const isDevTestUser = true;
 
   return (
@@ -22,7 +19,7 @@ export default function DevLinkShortcuts({
         These link shortcuts only appear in the development environment:
       </Typography>
       <Typography variant='h5' sx={{ m: 3 }}>
-        <Link href='#' onClick={() => visitTeachersPage(TEST_CLASSROOM_NAME)}>
+        <Link href='#' onClick={() => visitTeachersPage(isDevTestUser)}>
           Visit Teachers admin page
         </Link>
       </Typography>

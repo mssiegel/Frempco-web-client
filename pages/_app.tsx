@@ -10,8 +10,6 @@ import 'material-symbols';
 import theme from '@theme/muiTheme';
 import { createEmotionCache } from '@config/emotion';
 import { SocketProvider } from 'src/contexts/SocketContext';
-import { UserProvider } from 'src/contexts/UserContext';
-import CheckAuthentication from 'src/routes/CheckAuthentication';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();
@@ -33,12 +31,8 @@ export default function MyApp(props: MyAppProps) {
         {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
         <CssBaseline />
         <SocketProvider>
-          <UserProvider>
-            <CheckAuthentication>
-              <Component {...pageProps} />
-              <VercelAnalytics />
-            </CheckAuthentication>
-          </UserProvider>
+          <Component {...pageProps} />
+          <VercelAnalytics />
         </SocketProvider>
       </ThemeProvider>
     </CacheProvider>

@@ -1,12 +1,8 @@
-/** @jsxImportSource @emotion/react */
-
 import { Box, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useContext, useRef } from 'react';
+import { useRef } from 'react';
 import { useRouter } from 'next/router';
 
-import { SocketContext } from '@contexts/SocketContext';
-import { UserContext } from '@contexts/UserContext';
 import CoreValues from './CoreValues';
 import DevLinkShortcuts from './DevLinkShortcuts';
 import ForWhom from './ForWhom';
@@ -21,8 +17,6 @@ const DEV_TEST_USER_SESSION_FLAG = 'wasDevTestUserSet';
 
 export default function HomePage() {
   const router = useRouter();
-  const socket = useContext(SocketContext);
-  const { setUser } = useContext(UserContext);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const gameButtonsRef = useRef<HTMLDivElement>(null);
@@ -39,10 +33,16 @@ export default function HomePage() {
     router.push(studentUrl);
   }
 
-  function visitTeachersPage(classroom: string) {
-    socket.emit('activate classroom', { classroomName: classroom });
-    setUser({ isLoggedIn: true });
-    router.push(`/teacher/classroom/${classroom}`);
+  function visitTeachersPage(isDevTestUser: boolean = false) {
+    const teacherUrl = isDevTestUser
+      ? `/teacher?${DEV_TEST_USER_QUERY_PARAM}=true`
+      : '/teacher';
+
+    // Deletes any prior dev test user session flags. A new one gets saved into
+    // session storage when visiting the students page.
+    if (isDevTestUser) sessionStorage.removeItem(DEV_TEST_USER_SESSION_FLAG);
+
+    router.push(teacherUrl);
   }
 
   return (

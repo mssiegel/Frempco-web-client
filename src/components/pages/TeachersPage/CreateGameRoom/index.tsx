@@ -9,7 +9,7 @@ interface CreateGameRoomProps {
   setCharacters: Dispatch<SetStateAction<string[]>>;
   email: string;
   setEmail: Dispatch<SetStateAction<string>>;
-  setWasGameRoomCreated: Dispatch<SetStateAction<boolean>>;
+  handleCreateGameRoom: () => void;
 }
 
 export default function CreateGameRoom({
@@ -17,7 +17,7 @@ export default function CreateGameRoom({
   setCharacters,
   email,
   setEmail,
-  setWasGameRoomCreated,
+  handleCreateGameRoom,
 }: CreateGameRoomProps): JSX.Element {
   return (
     <Box sx={{ my: 3, mx: 3 }}>
@@ -32,14 +32,22 @@ export default function CreateGameRoom({
 
       <SetEmailAccordion email={email} setEmail={setEmail} />
 
+      <Typography variant='body2' sx={{ m: 1 }}>
+        <strong>Characters:</strong> {characters.join(', ')}
+      </Typography>
+
+      <Typography variant='body2' sx={{ m: 1 }}>
+        <strong>Email:</strong> {email || 'Not set'}
+      </Typography>
+
       <Box mt={3}>
         <Button
           variant='contained'
           color='primary'
           type='submit'
-          onClick={() => setWasGameRoomCreated(true)}
+          onClick={() => handleCreateGameRoom()}
         >
-          Host Game Room
+          Host Game Room Now
         </Button>
       </Box>
     </Box>
