@@ -1,25 +1,25 @@
-import { Dispatch, SetStateAction, useRef } from 'react';
 import { Box, Button, TextField, Typography } from '@mui/material';
+import { FormEvent } from 'react';
 
-interface EmailEditorProps {
+interface SharedEmailEditorProps {
   email: string;
-  setEmail: Dispatch<SetStateAction<string>>;
-  onSave: () => void;
+  onSave: (emailAddress: string) => void | Promise<void>;
+  autoFocus?: boolean;
 }
 
-export default function EmailEditor({
+export default function SharedEmailEditor({
   email,
-  setEmail,
   onSave,
-}: EmailEditorProps): JSX.Element {
-  const emailInput = useRef<HTMLInputElement>(null);
-
-  function updateTeacherEmail(event: React.FormEvent<HTMLFormElement>) {
+  autoFocus = false,
+}: SharedEmailEditorProps): JSX.Element {
+  async function updateTeacherEmail(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const emailAddress = emailInput.current?.value.trim() ?? '';
-    if (emailAddress !== email) setEmail(emailAddress);
-    onSave();
+    const formData = new FormData(event.currentTarget);
+    const emailAddress = (
+      formData.get('teacherEmail')?.toString() ?? ''
+    ).trim();
+    await onSave(emailAddress);
   }
 
   return (
@@ -30,8 +30,8 @@ export default function EmailEditor({
       <TextField
         label='Email address'
         type='email'
-        inputRef={emailInput}
-        autoFocus={false}
+        name='teacherEmail'
+        autoFocus={autoFocus}
         inputProps={{ maxLength: 50 }}
         defaultValue={email}
         fullWidth

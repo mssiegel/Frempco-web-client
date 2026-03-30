@@ -53,7 +53,7 @@ export default function SharedCharactersEditor({
 
       <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
         <Button variant='contained' color='primary' onClick={handleSave}>
-          Save
+          Save characters
         </Button>
       </Box>
     </Box>
