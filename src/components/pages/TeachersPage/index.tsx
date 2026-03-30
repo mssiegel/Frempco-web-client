@@ -31,10 +31,10 @@ export default function TeachersPage(): JSX.Element {
       .toString()
       .padStart(4, '0');
 
-  const handleCreateGameRoom = (nextGameRoomPIN = create4DigitPin()): void => {
-    setGameRoomPIN(nextGameRoomPIN);
+  const handleCreateGameRoom = (newGameRoomPIN = create4DigitPin()): void => {
+    setGameRoomPIN(newGameRoomPIN);
     socket.emit('create gameroom', {
-      classroomName: nextGameRoomPIN,
+      classroomName: newGameRoomPIN,
       email,
     });
   };
