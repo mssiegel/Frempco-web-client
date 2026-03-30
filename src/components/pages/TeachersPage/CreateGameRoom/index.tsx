@@ -45,7 +45,7 @@ export default function CreateGameRoom({
           variant='contained'
           color='primary'
           type='submit'
-          onClick={handleCreateGameRoom}
+          onClick={() => handleCreateGameRoom()}
         >
           Host Game Room Now
         </Button>
