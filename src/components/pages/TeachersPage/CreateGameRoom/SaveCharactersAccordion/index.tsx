@@ -3,12 +3,12 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
+  Box,
   Typography,
 } from '@mui/material';
 import { Dispatch, SetStateAction, SyntheticEvent, useState } from 'react';
 
-import CharactersEditor from './CharactersEditor';
-
+import SharedCharactersEditor from '@TeachersPage/shared/CharactersEditor';
 interface SaveCharactersAccordionProps {
   characters: string[];
   setCharacters: Dispatch<SetStateAction<string[]>>;
@@ -43,11 +43,16 @@ const SaveCharactersAccordion = ({
       </AccordionSummary>
 
       <AccordionDetails>
-        <CharactersEditor
-          characters={characters}
-          setCharacters={setCharacters}
-          onSave={() => setIsCharactersAccordionOpen(false)}
-        />
+        <Box sx={{ maxWidth: 400 }}>
+          <Typography variant='body2' mb={2}>
+            Update the characters which your students can get assigned to.
+          </Typography>
+          <SharedCharactersEditor
+            characters={characters}
+            setCharacters={setCharacters}
+            onSave={() => setIsCharactersAccordionOpen(false)}
+          />
+        </Box>
       </AccordionDetails>
     </Accordion>
   );

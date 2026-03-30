@@ -33,7 +33,6 @@ export default function TeachersPage(): JSX.Element {
 
   const handleCreateGameRoom = (nextGameRoomPIN = create4DigitPin()): void => {
     setGameRoomPIN(nextGameRoomPIN);
-    console.log('ran handleCreateGameRoom with pin:', nextGameRoomPIN);
     socket.emit('activate classroom', { classroomName: nextGameRoomPIN });
   };
 

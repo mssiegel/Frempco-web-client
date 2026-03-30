@@ -20,7 +20,8 @@
       "@utils/*": ["src/utils/*"],
       "@theme/*": ["src/theme/*"],
       "@config/*": ["src/config/*"],
-      "@contexts/*": ["src/contexts/*"]
+      "@contexts/*": ["src/contexts/*"],
+      "@TeachersPage/shared/*": ["src/components/pages/TeachersPage/shared/*"],
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
