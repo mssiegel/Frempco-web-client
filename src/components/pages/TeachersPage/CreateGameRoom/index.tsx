@@ -9,6 +9,7 @@ interface CreateGameRoomProps {
   setCharacters: Dispatch<SetStateAction<string[]>>;
   email: string;
   setEmail: Dispatch<SetStateAction<string>>;
+  setGameRoomPIN: Dispatch<SetStateAction<string>>;
   setWasGameRoomCreated: Dispatch<SetStateAction<boolean>>;
 }
 
@@ -17,8 +18,19 @@ export default function CreateGameRoom({
   setCharacters,
   email,
   setEmail,
+  setGameRoomPIN,
   setWasGameRoomCreated,
 }: CreateGameRoomProps): JSX.Element {
+  const create4DigitPin = (): string =>
+    Math.floor(Math.random() * 10000)
+      .toString()
+      .padStart(4, '0');
+
+  const handleCreateGameRoom = (): void => {
+    setGameRoomPIN(create4DigitPin());
+    setWasGameRoomCreated(true);
+  };
+
   return (
     <Box sx={{ my: 3, mx: 3 }}>
       <Typography variant='h3' mb={3}>
@@ -45,7 +57,7 @@ export default function CreateGameRoom({
           variant='contained'
           color='primary'
           type='submit'
-          onClick={() => setWasGameRoomCreated(true)}
+          onClick={handleCreateGameRoom}
         >
           Host Game Room Now
         </Button>

@@ -22,6 +22,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
   const [wasGameRoomCreated, setWasGameRoomCreated] = useState(
     !featureFlags.isChooseGameRoomSettingsBeforeGettingPinLaunched.enabled,
   );
+  const [gameRoomPIN, setGameRoomPIN] = useState(classroomName || '');
   const [characters, setCharacters] = useState(CHARACTERS);
   const [email, setEmail] = useState(EMPTY_EMAIL);
   const wasCharactersUpdated =
@@ -76,6 +77,7 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
       setCharacters={setCharacters}
       email={email}
       setEmail={setEmail}
+      setGameRoomPIN={setGameRoomPIN}
       setWasGameRoomCreated={setWasGameRoomCreated}
     />
   );
