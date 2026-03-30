@@ -1,12 +1,8 @@
-/** @jsxImportSource @emotion/react */
-
 import { Box, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useContext, useRef } from 'react';
+import { useRef } from 'react';
 import { useRouter } from 'next/router';
 
-import { SocketContext } from '@contexts/SocketContext';
-import { UserContext } from '@contexts/UserContext';
 import CoreValues from './CoreValues';
 import DevLinkShortcuts from './DevLinkShortcuts';
 import ForWhom from './ForWhom';
@@ -21,7 +17,6 @@ const DEV_TEST_USER_SESSION_FLAG = 'wasDevTestUserSet';
 
 export default function HomePage() {
   const router = useRouter();
-  const { setUser } = useContext(UserContext);
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const gameButtonsRef = useRef<HTMLDivElement>(null);
@@ -39,9 +34,6 @@ export default function HomePage() {
   }
 
   function visitTeachersPage(isDevTestUser: boolean = false) {
-    // TODO: delete the userContext as its no longer used.
-    setUser({ isLoggedIn: true });
-
     const teacherUrl = isDevTestUser
       ? `/teacher?${DEV_TEST_USER_QUERY_PARAM}=true`
       : '/teacher';
