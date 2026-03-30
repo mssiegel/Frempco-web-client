@@ -3,7 +3,6 @@ import { Box, Typography } from '@mui/material';
 
 import { ClassroomProps, EMPTY_EMAIL } from '@utils/classrooms';
 import Link from '@components/shared/Link';
-import featureFlags from '@config/featureFlags';
 import CreateGameRoom from './CreateGameRoom';
 import ActiveGameRoom from './ActiveGameRoom/index';
 
@@ -19,9 +18,6 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
   const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
   const TEN_SECONDS = 10000;
   const [isConnected, setIsConnected] = useState(true);
-  const [wasGameRoomCreated, setWasGameRoomCreated] = useState(
-    !featureFlags.isChooseGameRoomSettingsBeforeGettingPinLaunched.enabled,
-  );
   const [gameRoomPIN, setGameRoomPIN] = useState(classroomName || '');
   const [characters, setCharacters] = useState(CHARACTERS);
   const [email, setEmail] = useState(EMPTY_EMAIL);
@@ -62,9 +58,9 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
     );
   }
 
-  return wasGameRoomCreated ? (
+  return gameRoomPIN ? (
     <ActiveGameRoom
-      classroomName={classroomName}
+      classroomName={gameRoomPIN}
       characters={characters}
       setCharacters={setCharacters}
       email={email}
@@ -78,7 +74,6 @@ export default function TeachersPage({ classroomName }: ClassroomProps) {
       email={email}
       setEmail={setEmail}
       setGameRoomPIN={setGameRoomPIN}
-      setWasGameRoomCreated={setWasGameRoomCreated}
     />
   );
 }

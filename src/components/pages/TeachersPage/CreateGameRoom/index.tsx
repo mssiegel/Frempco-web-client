@@ -10,7 +10,6 @@ interface CreateGameRoomProps {
   email: string;
   setEmail: Dispatch<SetStateAction<string>>;
   setGameRoomPIN: Dispatch<SetStateAction<string>>;
-  setWasGameRoomCreated: Dispatch<SetStateAction<boolean>>;
 }
 
 export default function CreateGameRoom({
@@ -19,7 +18,6 @@ export default function CreateGameRoom({
   email,
   setEmail,
   setGameRoomPIN,
-  setWasGameRoomCreated,
 }: CreateGameRoomProps): JSX.Element {
   const create4DigitPin = (): string =>
     Math.floor(Math.random() * 10000)
@@ -28,7 +26,6 @@ export default function CreateGameRoom({
 
   const handleCreateGameRoom = (): void => {
     setGameRoomPIN(create4DigitPin());
-    setWasGameRoomCreated(true);
   };
 
   return (
