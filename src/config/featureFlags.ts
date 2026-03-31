@@ -5,6 +5,11 @@ interface FeatureFlag {
   description?: string;
 }
 
-const featureFlags: Record<string, FeatureFlag> = {};
+const featureFlags: Record<string, FeatureFlag> = {
+  isCompletedChatsSectionLaunched: {
+    enabled: false,
+    description: 'Teachers page completed chats section',
+  },
+};
 
 export default featureFlags;

@@ -10,6 +10,7 @@ import Link from '@components/shared/Link';
 import UnpairedStudentsAccordion from './UnpairedStudentsAccordion';
 import SetupClassroomAccordion from './SetupClassroomAccordion';
 import ChatsInProgressAccordion from './ChatsInProgressAccordion';
+import featureFlags from '@config/featureFlags';
 
 interface ActiveGameRoomProps {
   gameRoomPIN: string;
@@ -19,8 +20,6 @@ interface ActiveGameRoomProps {
   setEmail: Dispatch<SetStateAction<string>>;
   wasCharactersUpdated: boolean;
 }
-
-const isCompletedChatsSectionLaunched = false; // feature flag
 
 export default function ActiveGameRoom({
   gameRoomPIN,
@@ -208,6 +207,9 @@ export default function ActiveGameRoom({
           setStudentChats={setStudentChats}
           setUnpairedStudents={setUnpairedStudents}
         />
+        {featureFlags.isCompletedChatsSectionLaunched.enabled && (
+          <div>Completed chats section</div>
+        )}
       </Box>
     </main>
   );
