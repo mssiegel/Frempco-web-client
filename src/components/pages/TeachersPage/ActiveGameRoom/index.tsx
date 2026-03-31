@@ -20,6 +20,8 @@ interface ActiveGameRoomProps {
   wasCharactersUpdated: boolean;
 }
 
+const isCompletedChatsSectionLaunched = false; // feature flag
+
 export default function ActiveGameRoom({
   gameRoomPIN,
   characters,
