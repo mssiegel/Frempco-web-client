@@ -10,6 +10,7 @@ import Link from '@components/shared/Link';
 import UnpairedStudentsAccordion from './UnpairedStudentsAccordion';
 import SetupClassroomAccordion from './SetupClassroomAccordion';
 import ChatsInProgressAccordion from './ChatsInProgressAccordion';
+import CompletedChatsAccordion from './CompletedChatsAccordion';
 import featureFlags from '@config/featureFlags';
 
 interface ActiveGameRoomProps {
@@ -208,7 +209,7 @@ export default function ActiveGameRoom({
           setUnpairedStudents={setUnpairedStudents}
         />
         {featureFlags.isCompletedChatsSectionLaunched.enabled && (
-          <div>Completed chats section</div>
+          <CompletedChatsAccordion studentChats={[]} />
         )}
       </Box>
     </main>
