@@ -20,6 +20,7 @@ import { scrollToBottomOfElement, SOLO } from '@utils/classrooms';
 import { Student, StudentChat, SoloChat } from '../../types';
 import { SocketContext } from '@contexts/SocketContext';
 import Conversation from './Conversation';
+import featureFlags from '@config/featureFlags';
 
 interface ReadOnlyChatboxProps {
   chat: StudentChat | SoloChat;
@@ -93,6 +94,10 @@ export default function ReadOnlyChatbox({
     },
   ];
 
+  const showEndChatButton = featureFlags.isCompletedChatsSectionLaunched.enabled
+    ? !chat.isCompleted // show if chat is not completed
+    : true; // always show if feature flag is off
+
   return (
     <Paper
       elevation={6}
@@ -130,14 +135,16 @@ export default function ReadOnlyChatbox({
         >
           {isExpanded ? 'Collapse' : 'Expand'}
         </Button>
-        <Button
-          color='error'
-          variant='contained'
-          startIcon={<StopIcon />}
-          onClick={() => endChat(chat.chatId, chat.mode, student1, student2)}
-        >
-          {chat.mode === SOLO ? 'End solo' : 'End pair'}
-        </Button>
+        {showEndChatButton && (
+          <Button
+            color='error'
+            variant='contained'
+            startIcon={<StopIcon />}
+            onClick={() => endChat(chat.chatId, chat.mode, student1, student2)}
+          >
+            {chat.mode === SOLO ? 'End solo' : 'End pair'}
+          </Button>
+        )}
       </Box>
     </Paper>
   );

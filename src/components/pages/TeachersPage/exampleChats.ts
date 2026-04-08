@@ -9,6 +9,7 @@ import { PAIRED } from '@utils/classrooms';
 export const EXAMPLE_CHATS: StudentChat[] = [
   {
     mode: PAIRED,
+    isCompleted: true,
     chatId: '8DmBxTmt0Q_iUbbxAAAn#Ua_hGB2pSD-6CGvdAAAP',
     studentPair: [
       {
@@ -37,6 +38,7 @@ export const EXAMPLE_CHATS: StudentChat[] = [
   },
   {
     mode: PAIRED,
+    isCompleted: true,
     chatId: 'bMHZDSrQ_Oj-XukgAABF#PauZMgihsO1fIaG0AABJ',
     studentPair: [
       {
@@ -57,6 +59,7 @@ export const EXAMPLE_CHATS: StudentChat[] = [
   },
   {
     mode: PAIRED,
+    isCompleted: true,
     chatId: 'NGAuHeC2kJgGf6voAAAl#-vIO1Gi-LTkR3u2HAAAx',
     studentPair: [
       {
@@ -77,6 +80,7 @@ export const EXAMPLE_CHATS: StudentChat[] = [
   },
   {
     mode: PAIRED,
+    isCompleted: true,
     chatId: '5XFUQ0oJWQiDaQlkAABN#N6C2lemQD7-xNWp0AABR',
     studentPair: [
       {
@@ -97,6 +101,7 @@ export const EXAMPLE_CHATS: StudentChat[] = [
   },
   {
     mode: PAIRED,
+    isCompleted: true,
     chatId: 'V8XB9Bngez89zaBWAABV#oqNvcYw0MLfU_HAtAABZ',
     studentPair: [
       {
@@ -117,6 +122,7 @@ export const EXAMPLE_CHATS: StudentChat[] = [
   },
   {
     mode: PAIRED,
+    isCompleted: true,
     chatId: 'mmO7LO7b1aMp4SwkAABd#sqL6DHyk0WWCfwJ_AABh',
     studentPair: [
       {
@@ -135,6 +141,7 @@ export const EXAMPLE_CHATS: StudentChat[] = [
 
   {
     mode: PAIRED,
+    isCompleted: true,
     chatId: '8DmBxTmt0Q_iUbbxAAAn#Ua_hGB2pSD-6CGvdAAAP12',
     studentPair: [
       {
@@ -155,6 +162,7 @@ export const EXAMPLE_CHATS: StudentChat[] = [
   },
   {
     mode: PAIRED,
+    isCompleted: true,
     chatId: 'bMHZDSrQ_Oj-XukgAABF#PauZMgihsO1fIaG0AABJ12',
     studentPair: [
       {
@@ -175,6 +183,7 @@ export const EXAMPLE_CHATS: StudentChat[] = [
   },
   {
     mode: PAIRED,
+    isCompleted: true,
     chatId: 'NGAuHeC2kJgGf6voAAAl#-vIO1Gi-LTkR3u2HAAAx12',
     studentPair: [
       {
@@ -195,6 +204,7 @@ export const EXAMPLE_CHATS: StudentChat[] = [
   },
   {
     mode: PAIRED,
+    isCompleted: true,
     chatId: '5XFUQ0oJWQiDaQlkAABN#N6C2lemQD7-xNWp0AABR12',
     studentPair: [
       {
