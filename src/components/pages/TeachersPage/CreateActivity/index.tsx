@@ -26,6 +26,7 @@ export default function CreateActivity({
       <PageHeader
         statusText='Set up Activity'
         leftElement={<FrempcoBranding />}
+        isSticky={true}
       />
       <Box sx={{ my: 3, mx: 3 }}>
         <Typography variant='h3' mb={3}>

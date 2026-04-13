@@ -159,6 +159,8 @@ export default function StudentsPage(): JSX.Element {
       <PageHeader
         statusText={headerStatusText}
         leftElement={pageHeaderLeftElement}
+        // Header is not sticky as we don't want the header to cover the chatbox when the keyboard is open.
+        isSticky={false}
       />
       <Box
         sx={{
