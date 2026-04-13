@@ -9,7 +9,7 @@ import 'material-symbols';
 
 import theme from '@theme/muiTheme';
 import { createEmotionCache } from '@config/emotion';
-import { SocketProvider } from 'src/contexts/SocketContext';
+import { SocketProvider } from '@contexts/SocketContext';
 
 // Client-side cache, shared for the whole session of the user in the browser.
 const clientSideEmotionCache = createEmotionCache();

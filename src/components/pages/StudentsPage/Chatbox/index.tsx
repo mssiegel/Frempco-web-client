@@ -3,8 +3,8 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
 import ChatboxHeader from '@components/shared/ChatboxHeader';
-import { scrollToBottomOfElement } from '@utils/classrooms';
-import { useStudentInClassroom } from '../hooks/useStudentInClassroom';
+import { scrollToBottomOfElement } from '@utils/activities';
+import { useStudentInActivity } from '../hooks/useStudentInActivity';
 import Conversation from './Conversation';
 import SendMessageSection from './SendMessageSection';
 import { StudentPairedChat, StudentSoloChat } from '../types';
@@ -15,7 +15,7 @@ interface ChatboxProps {
   chat: StudentPairedChat | StudentSoloChat;
   setChat: Dispatch<SetStateAction<StudentPairedChat | StudentSoloChat>>;
   chatEndedMsg: null | string;
-  classroomName: string;
+  activityPin: string;
   socketId: string;
   isMobile: boolean;
 }
@@ -25,12 +25,12 @@ export default function Chatbox({
   chat,
   setChat,
   chatEndedMsg,
-  classroomName,
+  activityPin,
   socketId,
   isMobile,
 }: ChatboxProps) {
   const [peerIsTyping, setPeerIsTyping] = useState(false);
-  const isConnected = useStudentInClassroom(classroomName, socketId);
+  const isConnected = useStudentInActivity(activityPin, socketId);
   const hasChatEnded = !isConnected || Boolean(chatEndedMsg);
 
   function addChatMessage(sender, message: string) {

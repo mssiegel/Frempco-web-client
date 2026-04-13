@@ -11,12 +11,12 @@ import {
   ErrorOutline as ErrorOutlineIcon,
 } from '@mui/icons-material';
 
-import { EMPTY_EMAIL } from '@utils/classrooms';
+import { EMPTY_EMAIL } from '@utils/activities';
 import SetTeacherEmailButton from './SetTeacherEmailButton';
 import SetCharacterList from './SetCharacterList';
 
-interface SetupGameRoomAccordionProps {
-  gameRoomPIN: string;
+interface SetupActivityAccordionProps {
+  activityPin: string;
   characters: string[];
   setCharacters: Dispatch<SetStateAction<string[]>>;
   wasCharactersUpdated: boolean;
@@ -24,14 +24,14 @@ interface SetupGameRoomAccordionProps {
   setEmail: Dispatch<SetStateAction<string>>;
 }
 
-const SetupGameRoomAccordion = ({
-  gameRoomPIN,
+const SetupActivityAccordion = ({
+  activityPin,
   characters,
   setCharacters,
   wasCharactersUpdated,
   email,
   setEmail,
-}: SetupGameRoomAccordionProps) => {
+}: SetupActivityAccordionProps) => {
   const wasEmailUpdated = email !== EMPTY_EMAIL;
   const hasRemainingSetupOptions = !wasEmailUpdated || !wasCharactersUpdated;
 
@@ -51,7 +51,7 @@ const SetupGameRoomAccordion = ({
         sx={{ borderRadius: '15px', border: '1px solid black', gap: 2 }}
       >
         <Typography variant='h5' fontWeight={400}>
-          Step 1: Setup Your Game Room
+          Step 1: Set Up Your Activity
         </Typography>
         <Box
           display='flex'
@@ -70,7 +70,7 @@ const SetupGameRoomAccordion = ({
           setCharacters={setCharacters}
         />
         <SetTeacherEmailButton
-          gameRoomPIN={gameRoomPIN}
+          activityPin={activityPin}
           email={email}
           setEmail={setEmail}
         />
@@ -79,4 +79,4 @@ const SetupGameRoomAccordion = ({
   );
 };
 
-export default SetupGameRoomAccordion;
+export default SetupActivityAccordion;

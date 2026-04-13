@@ -28,22 +28,22 @@ export default function PinInputStep({
   async function submitPIN(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     if (isInvalidFormatForPIN(pinInput)) {
-      setPinError('A Game PIN is 4 digits');
+      setPinError('An Activity PIN is 4 digits');
       return;
     }
 
     try {
-      const response = await fetch(`${apiUrl}/classrooms/${pinInput}`);
+      const response = await fetch(`${apiUrl}/activities/${pinInput}`);
       const { isActive } = await response.json();
       if (!isActive) {
-        setPinError('Classroom not found. Check your Game PIN.');
+        setPinError('Activity not found. Check your Activity PIN.');
         return;
       }
 
       setPinError('');
       setPin(pinInput);
     } catch {
-      setPinError('Unable to verify Game PIN. Please try again.');
+      setPinError('Unable to verify Activity PIN. Please try again.');
     }
   }
 
@@ -60,7 +60,7 @@ export default function PinInputStep({
         <TextField
           autoFocus={!isMobile}
           autoComplete='off'
-          placeholder='Game PIN'
+          placeholder='Activity PIN'
           variant='outlined'
           value={pinInput}
           onChange={(e) => setPinInput(e.target.value)}

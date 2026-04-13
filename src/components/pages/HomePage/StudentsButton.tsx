@@ -19,7 +19,7 @@ export default function StudentsButton({
         onClick={() => visitStudentsPage()}
         fullWidth={fullWidth}
       >
-        Join a Game
+        Join an Activity
       </Button>
     </>
   );

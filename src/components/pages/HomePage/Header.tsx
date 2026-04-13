@@ -8,19 +8,19 @@ import { useHeaderButtonsVisibility } from './hooks/useHeaderButtonsVisibility';
 interface HeaderProps {
   visitStudentsPage: (isDevTestUser?: boolean) => void;
   visitTeachersPage: (isDevTestUser?: boolean) => void;
-  gameButtonsRef: React.RefObject<HTMLElement>;
+  activityButtonsRef: React.RefObject<HTMLElement>;
   isMobile: boolean;
 }
 
 export default function Header({
   visitStudentsPage,
   visitTeachersPage,
-  gameButtonsRef,
+  activityButtonsRef,
   isMobile,
 }: HeaderProps): JSX.Element {
   const headerRef = useRef<HTMLDivElement>(null);
   const shouldShowHeaderButtons = useHeaderButtonsVisibility({
-    gameButtonsRef,
+    activityButtonsRef,
     headerRef,
   });
 

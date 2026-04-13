@@ -7,7 +7,7 @@ import {
 } from '@mui/icons-material';
 import { Button, Box, IconButton, Typography } from '@mui/material';
 import { Socket } from 'socket.io-client';
-import { getRandom, swap, SOLO } from '@utils/classrooms';
+import { getRandom, swap, SOLO } from '@utils/activities';
 import { SoloChat, Student, StudentChat } from '../../types';
 
 interface UnpairedStudentItemProps {
@@ -45,7 +45,7 @@ export default function UnpairedStudentItem({
     const confirmation = confirm(
       `Are you sure you want to remove ${student.realName}?`,
     );
-    if (confirmation) socket.emit('remove student from classroom', student);
+    if (confirmation) socket.emit('remove student from activity', student);
   }
 
   function startSoloChat() {

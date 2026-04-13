@@ -13,7 +13,7 @@ interface WelcomeMessageProps {
   socket: Socket;
   studentName: string;
   isMobile: boolean;
-  addStudentToGameroom: (
+  addStudentToActivity: (
     studentName: string,
     pin: string,
     updateStageToLobby?: boolean,
@@ -28,7 +28,7 @@ export default function WelcomeMessage({
   socketId,
   studentName,
   isMobile,
-  addStudentToGameroom,
+  addStudentToActivity,
 }: WelcomeMessageProps) {
   const isLobbyStageRef = useRef(isLobbyStage);
 
@@ -39,34 +39,34 @@ export default function WelcomeMessage({
   useEffect(() => {
     if (!socket || removedFromClass || !studentName || !pin) return;
 
-    async function reconnectToGameroom() {
+    async function reconnectToActivity() {
       const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
 
       try {
         const getResponse = await fetch(
-          `${apiUrl}/classrooms/${pin}/studentSockets/${socketId}`,
+          `${apiUrl}/activities/${pin}/studentSockets/${socketId}`,
           { method: 'GET' },
         );
-        const { isStudentInsideClassroom } = await getResponse.json();
+        const { isStudentInsideActivity } = await getResponse.json();
 
         // Use a ref so this async callback reads the latest stage, not a stale closure value.
-        if (!isStudentInsideClassroom && isLobbyStageRef.current) {
+        if (!isStudentInsideActivity && isLobbyStageRef.current) {
           const updateStageToLobby = false;
-          addStudentToGameroom(studentName, pin, updateStageToLobby);
+          addStudentToActivity(studentName, pin, updateStageToLobby);
         }
       } catch (e) {
         console.log(e);
       }
     }
 
-    // Keep students in the same classroom after a brief reconnect while in lobby.
-    socket.on('connect', reconnectToGameroom);
+    // Keep students in the same activity after a brief reconnect while in lobby.
+    socket.on('connect', reconnectToActivity);
 
     return () => {
-      socket.off('connect', reconnectToGameroom);
+      socket.off('connect', reconnectToActivity);
     };
   }, [
-    addStudentToGameroom,
+    addStudentToActivity,
     pin,
     removedFromClass,
     socket,
@@ -100,7 +100,7 @@ export default function WelcomeMessage({
       ) : (
         <>
           <Typography variant='body1' sx={{ mx: 1 }}>
-            Welcome to the game room! Your teacher will pair you soon...
+            Welcome to the activity! Your teacher will pair you soon...
           </Typography>
           {isMobile && (
             <Typography variant='body2' sx={{ mt: 2, mx: 1 }}>

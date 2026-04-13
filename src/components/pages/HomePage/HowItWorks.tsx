@@ -16,7 +16,7 @@ interface StepCardProps {
 const CARD_INFO = [
   {
     icon: 'person_add', // Name of Google Material Font Icon
-    text: 'Teacher Creates a Game Room',
+    text: 'Teacher Creates an Activity',
   },
   {
     icon: 'add_link',

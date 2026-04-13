@@ -2,20 +2,20 @@ import { useContext, useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
-import { PAIRED } from '@utils/classrooms';
+import { PAIRED } from '@utils/activities';
 import { ChatMessage, SoloChat, Student, StudentChat } from '../types';
 import { SocketContext } from '@contexts/SocketContext';
 import { useRouter } from 'next/router';
 import Link from '@components/shared/Link';
 import UnpairedStudentsAccordion from './UnpairedStudentsAccordion';
-import SetupClassroomAccordion from './SetupClassroomAccordion';
+import SetupActivityAccordion from './SetupActivityAccordion';
 import ChatsInProgressAccordion from './ChatsInProgressAccordion';
 import CompletedChatsAccordion from './CompletedChatsAccordion';
 import featureFlags from '@config/featureFlags';
 import { EXAMPLE_CHATS } from '../exampleChats';
 
-interface ActiveGameRoomProps {
-  gameRoomPIN: string;
+interface InProgressActivityProps {
+  activityPin: string;
   characters: string[];
   setCharacters: Dispatch<SetStateAction<string[]>>;
   email: string;
@@ -23,14 +23,14 @@ interface ActiveGameRoomProps {
   wasCharactersUpdated: boolean;
 }
 
-export default function ActiveGameRoom({
-  gameRoomPIN,
+export default function InProgressActivity({
+  activityPin,
   characters,
   setCharacters,
   email,
   setEmail,
   wasCharactersUpdated,
-}: ActiveGameRoomProps): JSX.Element {
+}: InProgressActivityProps): JSX.Element {
   const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
   const TEN_SECONDS = 10000;
   const router = useRouter();
@@ -45,10 +45,10 @@ export default function ActiveGameRoom({
   );
 
   useEffect(() => {
-    // Check if the teacher is still connected to the game room every 10 seconds.
+    // Check if the teacher is still connected to the activity every 10 seconds.
     const connectionCheckInterval = setInterval(async () => {
       try {
-        const getResponse = await fetch(`${apiUrl}/classrooms/${gameRoomPIN}`, {
+        const getResponse = await fetch(`${apiUrl}/activities/${activityPin}`, {
           method: 'GET',
         });
         const { isActive } = await getResponse.json();
@@ -64,7 +64,7 @@ export default function ActiveGameRoom({
     }, TEN_SECONDS);
 
     return () => clearInterval(connectionCheckInterval);
-  }, [apiUrl, gameRoomPIN]);
+  }, [apiUrl, activityPin]);
 
   useEffect(() => {
     if (socket) {
@@ -159,9 +159,9 @@ export default function ActiveGameRoom({
     return (
       <Box my={10}>
         <Typography variant='h4' textAlign='center'>
-          You are no longer connected to this game room on Frempco. Return to
-          the <Link href='/'>Frempco homepage</Link> and start another game
-          room.
+          You are no longer connected to this activity on Frempco. Return to
+          the <Link href='/'>Frempco homepage</Link> and start another
+          activity.
         </Typography>
       </Box>
     );
@@ -182,15 +182,15 @@ export default function ActiveGameRoom({
             {'1)'} Join at <strong>www.frempco.com</strong>
           </Typography>
           <Typography variant='body1' mb={1}>
-            {'2)'} Enter Game Pin: <strong>{gameRoomPIN}</strong>
+            {'2)'} Enter Activity PIN: <strong>{activityPin}</strong>
           </Typography>
           <Typography variant='body2' sx={{ mt: 2 }}>
             Note: Your students on smartphones will be logged out of Frempco if
             their smartphone screen goes dark.
           </Typography>
         </Box>
-        <SetupClassroomAccordion
-          gameRoomPIN={gameRoomPIN}
+        <SetupActivityAccordion
+          activityPin={activityPin}
           characters={characters}
           setCharacters={setCharacters}
           wasCharactersUpdated={wasCharactersUpdated}

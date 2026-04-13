@@ -16,7 +16,7 @@ import {
 } from '@mui/icons-material';
 
 import ChatboxHeader from '@components/shared/ChatboxHeader';
-import { scrollToBottomOfElement, SOLO } from '@utils/classrooms';
+import { scrollToBottomOfElement, SOLO } from '@utils/activities';
 import { Student, StudentChat, SoloChat } from '../../types';
 import { SocketContext } from '@contexts/SocketContext';
 import Conversation from './Conversation';

@@ -1,5 +1,5 @@
 import { StudentChat } from './types';
-import { PAIRED } from '@utils/classrooms';
+import { PAIRED } from '@utils/activities';
 
 /**
  * Not meant to be used in production.

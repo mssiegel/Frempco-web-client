@@ -25,7 +25,7 @@ export default function DevLinkShortcuts({
       </Typography>
       <Typography variant='h5' sx={{ m: 3 }}>
         <Link href='#' onClick={() => visitStudentsPage(isDevTestUser)}>
-          Visit Students classroom page
+          Visit Students activity page
         </Link>
       </Typography>
     </>

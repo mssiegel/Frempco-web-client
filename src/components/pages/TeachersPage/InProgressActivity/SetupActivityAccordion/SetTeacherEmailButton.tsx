@@ -6,13 +6,13 @@ import BasicModal from '@components/shared/Modal';
 import EmailEditor from '@TeachersPage/shared/EmailEditor';
 
 interface SetTeacherEmailButtonProps {
-  gameRoomPIN: string;
+  activityPin: string;
   email: string;
   setEmail: Dispatch<SetStateAction<string>>;
 }
 
 export default function SetTeacherEmailButton({
-  gameRoomPIN,
+  activityPin,
   email,
   setEmail,
 }: SetTeacherEmailButtonProps) {
@@ -20,7 +20,7 @@ export default function SetTeacherEmailButton({
   const [open, setOpen] = useState(false);
 
   async function updateTeacherEmail(emailAddress: string) {
-    await fetch(`${apiUrl}/classrooms/${gameRoomPIN}/email/${emailAddress}`, {
+    await fetch(`${apiUrl}/activities/${activityPin}/email/${emailAddress}`, {
       method: 'PATCH',
     });
     setEmail(emailAddress);

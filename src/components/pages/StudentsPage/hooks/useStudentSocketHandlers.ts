@@ -2,7 +2,7 @@ import { Dispatch, SetStateAction, useEffect } from 'react';
 import type { NextRouter } from 'next/router';
 import type { Socket } from 'socket.io-client';
 
-import { PAIRED, SOLO } from '@utils/classrooms';
+import { PAIRED, SOLO } from '@utils/activities';
 import {
   STAGE,
   Stage,
@@ -68,7 +68,7 @@ export function useStudentSocketHandlers({
       setChatEndedMsg(null);
     }
 
-    function handleRemoveStudentFromClassroom() {
+    function handleRemoveStudentFromActivity() {
       setStage(STAGE.removedByTeacher);
     }
 
@@ -89,10 +89,7 @@ export function useStudentSocketHandlers({
 
     socket.on('chat start', handleChatStart);
     socket.on('solo mode: chat started', handleSoloChatStarted);
-    socket.on(
-      'remove student from classroom',
-      handleRemoveStudentFromClassroom,
-    );
+    socket.on('student removed from activity', handleRemoveStudentFromActivity);
     socket.on('peer left chat', handlePeerLeftChat);
     socket.on('teacher ended chat', handleTeacherEndedChat);
     socket.on('solo mode: teacher ended chat', handleSoloModeTeacherEndedChat);
@@ -101,8 +98,8 @@ export function useStudentSocketHandlers({
       socket.off('chat start', handleChatStart);
       socket.off('solo mode: chat started', handleSoloChatStarted);
       socket.off(
-        'remove student from classroom',
-        handleRemoveStudentFromClassroom,
+        'student removed from activity',
+        handleRemoveStudentFromActivity,
       );
       socket.off('peer left chat', handlePeerLeftChat);
       socket.off('teacher ended chat', handleTeacherEndedChat);
