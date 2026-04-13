@@ -1,4 +1,4 @@
-import { Box, useMediaQuery } from '@mui/material';
+import { Box, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useContext, useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -9,10 +9,11 @@ import {
   DEV_TEST_USER_SESSION_FLAG,
 } from '@utils/activities';
 import { SocketContext } from '@contexts/SocketContext';
+import PageHeader from '@components/shared/PageHeader';
+import FrempcoBranding from '@components/shared/PageHeader/FrempcoBranding';
 import { useStudentSocketHandlers } from './hooks/useStudentSocketHandlers';
 import Chatbox from './Chatbox';
 import WelcomeMessage from './WelcomeMessage';
-import Header from './Header';
 import LoginFlow from './LoginFlow';
 import { STAGE, Stage, StudentPairedChat, StudentSoloChat } from './types';
 
@@ -48,6 +49,13 @@ export default function StudentsPage(): JSX.Element {
   };
   const headerStatusText = headerStatusTextMap[stage];
   const isChatboxStage = stage === STAGE.chatting || stage === STAGE.chatEnded;
+
+  const pageHeaderLeftElement =
+    stage === STAGE.joining ? (
+      <FrempcoBranding />
+    ) : (
+      <Typography variant='h4'>{studentName}</Typography>
+    );
 
   // Keep chat anchored to the bottom on mobile so more of it remains visible
   // when the on-screen keyboard opens and reduces the available viewport height.
@@ -148,10 +156,9 @@ export default function StudentsPage(): JSX.Element {
           'var(--Gradients, linear-gradient(180deg, #FFF 0%, #EBECFE 100%))',
       }}
     >
-      <Header
-        isMobile={isMobile}
+      <PageHeader
         statusText={headerStatusText}
-        studentName={studentName || undefined}
+        leftElement={pageHeaderLeftElement}
       />
       <Box
         sx={{
