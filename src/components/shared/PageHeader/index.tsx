@@ -4,11 +4,13 @@ import { useTheme } from '@mui/material/styles';
 interface PageHeaderProps {
   leftElement: JSX.Element;
   statusText: string;
+  isSticky: boolean;
 }
 
 export default function PageHeader({
   leftElement,
   statusText,
+  isSticky,
 }: PageHeaderProps): JSX.Element {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -25,6 +27,7 @@ export default function PageHeader({
         display: 'flex',
         justifyContent: 'space-between',
         alignItems: 'center',
+        ...(isSticky && { position: 'sticky', top: 0, zIndex: 1 }),
       }}
     >
       {leftElement}
