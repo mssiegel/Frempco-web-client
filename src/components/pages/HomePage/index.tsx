@@ -11,7 +11,7 @@ import Header from './Header';
 import HowItWorks from './HowItWorks';
 import Hero from './Hero';
 import ProductBenefits from './ProductBenefits';
-import { DEV_TEST_USER_QUERY_PARAM } from '@utils/classrooms';
+import { DEV_TEST_USER_QUERY_PARAM } from '@utils/activities';
 
 const DEV_TEST_USER_SESSION_FLAG = 'wasDevTestUserSet';
 
@@ -19,7 +19,7 @@ export default function HomePage() {
   const router = useRouter();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
-  const gameButtonsRef = useRef<HTMLDivElement>(null);
+  const activityButtonsRef = useRef<HTMLDivElement>(null);
 
   function visitStudentsPage(isDevTestUser: boolean = false) {
     const studentUrl = isDevTestUser
@@ -57,7 +57,7 @@ export default function HomePage() {
       <Header
         visitStudentsPage={visitStudentsPage}
         visitTeachersPage={visitTeachersPage}
-        gameButtonsRef={gameButtonsRef}
+        activityButtonsRef={activityButtonsRef}
         isMobile={isMobile}
       />
 
@@ -65,7 +65,7 @@ export default function HomePage() {
         {/* Section One */}
         <Hero
           isMobile={isMobile}
-          gameButtonsRef={gameButtonsRef}
+          activityButtonsRef={activityButtonsRef}
           visitStudentsPage={visitStudentsPage}
           visitTeachersPage={visitTeachersPage}
         />

@@ -10,7 +10,7 @@ import {
 } from 'react';
 import { Socket } from 'socket.io-client';
 
-import { PAIRED } from '@utils/classrooms';
+import { PAIRED } from '@utils/activities';
 import { StudentPairedChat, StudentSoloChat } from '../types';
 
 interface SendMessageSectionProps {

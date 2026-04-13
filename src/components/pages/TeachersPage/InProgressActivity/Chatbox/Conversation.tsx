@@ -1,7 +1,7 @@
 import { RefObject } from 'react';
 import { Box, Typography } from '@mui/material';
 
-import { filterWords } from '@utils/classrooms';
+import { filterWords } from '@utils/activities';
 import { ChatParticipants, StudentChat, SoloChat } from '../../types';
 
 interface ConversationProps {

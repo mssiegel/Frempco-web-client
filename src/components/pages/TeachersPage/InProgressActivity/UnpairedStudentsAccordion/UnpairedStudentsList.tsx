@@ -4,7 +4,7 @@ import { Chat as ChatIcon, Group as GroupIcon } from '@mui/icons-material';
 import { chunk } from 'lodash-es';
 import { Socket } from 'socket.io-client';
 
-import { getRandom } from '@utils/classrooms';
+import { getRandom } from '@utils/activities';
 import { SoloChat, Student, StudentChat } from '../../types';
 import UnpairedStudentItem from './UnpairedStudentItem';
 

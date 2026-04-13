@@ -17,7 +17,7 @@ export default function TeachersButton({
         onClick={() => visitTeachersPage()}
         fullWidth={fullWidth}
       >
-        Start a Game
+        Host an Activity
       </Button>
     </>
   );

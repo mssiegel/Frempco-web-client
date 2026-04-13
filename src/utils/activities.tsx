@@ -1,6 +1,6 @@
 import Filter from 'bad-words';
 
-export const TEST_CLASSROOM_NAME = '0000';
+export const TEST_ACTIVITY_PIN = '0000';
 export const PAIRED = 'PAIRED';
 export const SOLO = 'SOLO';
 export const DEV_TEST_USER_QUERY_PARAM = 'isDevTestUser';

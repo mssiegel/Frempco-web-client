@@ -5,9 +5,9 @@ import { useRouter } from 'next/router';
 
 import {
   DEV_TEST_USER_QUERY_PARAM,
-  TEST_CLASSROOM_NAME,
+  TEST_ACTIVITY_PIN,
   DEV_TEST_USER_SESSION_FLAG,
-} from '@utils/classrooms';
+} from '@utils/activities';
 import { SocketContext } from '@contexts/SocketContext';
 import { useStudentSocketHandlers } from './hooks/useStudentSocketHandlers';
 import Chatbox from './Chatbox';
@@ -40,7 +40,7 @@ export default function StudentsPage(): JSX.Element {
   const [chatEndedMsg, setChatEndedMsg] = useState<null | string>(null);
   const router = useRouter();
   const headerStatusTextMap: Record<Stage, string> = {
-    [STAGE.joining]: 'Join a Game',
+    [STAGE.joining]: 'Join an Activity',
     [STAGE.lobby]: 'Waiting in Lobby',
     [STAGE.chatting]: 'Chatting with someone',
     [STAGE.chatEnded]: 'Chat ended',
@@ -53,14 +53,14 @@ export default function StudentsPage(): JSX.Element {
   // when the on-screen keyboard opens and reduces the available viewport height.
   const shouldAnchorContentToBottom = isMobile && isChatboxStage;
 
-  function addStudentToGameroom(
+  function addStudentToActivity(
     studentName: string,
     pin: string,
     updateStageToLobby = true,
   ) {
     socket.emit('new student entered', {
       student: studentName,
-      classroom: pin,
+      activityPin: pin,
     });
     if (updateStageToLobby) {
       setStage(STAGE.lobby);
@@ -73,8 +73,8 @@ export default function StudentsPage(): JSX.Element {
     ).toString()}`;
 
     setStudentName(randomStudentName);
-    setPin(TEST_CLASSROOM_NAME);
-    addStudentToGameroom(randomStudentName, TEST_CLASSROOM_NAME);
+    setPin(TEST_ACTIVITY_PIN);
+    addStudentToActivity(randomStudentName, TEST_ACTIVITY_PIN);
     sessionStorage.setItem(DEV_TEST_USER_SESSION_FLAG, 'true');
   }
 
@@ -112,7 +112,7 @@ export default function StudentsPage(): JSX.Element {
         setPin={setPin}
         setStudentName={setStudentName}
         isMobile={isMobile}
-        addStudentToGameroom={addStudentToGameroom}
+        addStudentToActivity={addStudentToActivity}
       />
     ) : isChatboxStage ? (
       <Chatbox
@@ -120,7 +120,7 @@ export default function StudentsPage(): JSX.Element {
         chat={chat}
         setChat={setChat}
         chatEndedMsg={chatEndedMsg}
-        classroomName={pin}
+        activityPin={pin}
         socketId={socket.id}
         isMobile={isMobile}
       />
@@ -133,7 +133,7 @@ export default function StudentsPage(): JSX.Element {
         socketId={socket.id}
         studentName={studentName}
         isMobile={isMobile}
-        addStudentToGameroom={addStudentToGameroom}
+        addStudentToActivity={addStudentToActivity}
       />
     );
 

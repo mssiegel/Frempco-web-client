@@ -8,14 +8,14 @@ import exampleRoleplayImage from '../../../../public/HomePage/homepage-example-r
 
 interface HeroProps {
   isMobile: boolean;
-  gameButtonsRef: React.RefObject<HTMLDivElement>;
+  activityButtonsRef: React.RefObject<HTMLDivElement>;
   visitStudentsPage: (isDevTestUser?: boolean) => void;
   visitTeachersPage: (isDevTestUser?: boolean) => void;
 }
 
 export default function Hero({
   isMobile,
-  gameButtonsRef,
+  activityButtonsRef,
   visitStudentsPage,
   visitTeachersPage,
 }: HeroProps) {
@@ -40,13 +40,13 @@ export default function Hero({
             </Box>
           </Typography>
           <Typography variant='body1' color='neutrals.400'>
-            A <strong>classroom game</strong> that excites both{' '}
+            A <strong>classroom activity</strong> that excites both{' '}
             <strong>teachers</strong> and <strong>students</strong>. No
             accounts, fast setup, <strong>100% free</strong>.
           </Typography>
 
           <Box
-            ref={gameButtonsRef}
+            ref={activityButtonsRef}
             my={6}
             display='flex'
             flexDirection={isMobile ? 'column' : 'row'}

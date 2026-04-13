@@ -1,6 +1,6 @@
 # Frempco - Frontend code
 
-Frempco lets teachers pair up classmates for text-based improvised chats. Students build up real-world friendships through collaboration and storytelling. The word "Frempco" stands for "Friendships + Empowerment = Community," the equation that powers what we do.
+Frempco lets teachers create classroom activities for text-based improvised chats. Each activity contains multiple chats between classmates. Students build up real-world friendships through collaboration and storytelling. The word "Frempco" stands for "Friendships + Empowerment = Community," the equation that powers what we do.
 
 ## Hosting
 

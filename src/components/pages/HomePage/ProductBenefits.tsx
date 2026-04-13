@@ -31,7 +31,7 @@ export default function ProductBenefits({
               Where Learning Feels Like Play (and Still Counts)
             </Typography>
             <Typography>
-              A conversation game that is loved by <strong>schools</strong>,{' '}
+              A conversation activity that is loved by <strong>schools</strong>,{' '}
               <strong>teachers</strong>, and <strong>students</strong>.
             </Typography>
           </Box>

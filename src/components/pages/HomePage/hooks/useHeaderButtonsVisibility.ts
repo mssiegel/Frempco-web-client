@@ -2,7 +2,7 @@ import { throttle } from 'lodash-es';
 import { RefObject, useEffect, useState } from 'react';
 
 interface UseHeaderButtonsVisibilityProps {
-  gameButtonsRef: RefObject<HTMLElement>;
+  activityButtonsRef: RefObject<HTMLElement>;
   headerRef: RefObject<HTMLDivElement>;
 }
 
@@ -11,7 +11,7 @@ interface UseHeaderButtonsVisibilityProps {
  * the header area.
  */
 export function useHeaderButtonsVisibility({
-  gameButtonsRef,
+  activityButtonsRef,
   headerRef,
 }: UseHeaderButtonsVisibilityProps): boolean {
   const [shouldShowHeaderButtons, setShouldShowHeaderButtons] = useState(false);
@@ -19,14 +19,14 @@ export function useHeaderButtonsVisibility({
   useEffect(() => {
     const handleScroll = throttle(
       () => {
-        if (!headerRef.current || !gameButtonsRef.current) return;
+        if (!headerRef.current || !activityButtonsRef.current) return;
 
         const headerPosition = headerRef.current.getBoundingClientRect();
-        const gameButtonsPosition =
-          gameButtonsRef.current.getBoundingClientRect();
+        const activityButtonsPosition =
+          activityButtonsRef.current.getBoundingClientRect();
 
         setShouldShowHeaderButtons(
-          headerPosition.bottom > gameButtonsPosition.bottom,
+          headerPosition.bottom > activityButtonsPosition.bottom,
         );
       },
       60,
@@ -43,7 +43,7 @@ export function useHeaderButtonsVisibility({
       window.removeEventListener('scroll', handleScroll);
       handleScroll.cancel();
     };
-  }, [gameButtonsRef, headerRef]);
+  }, [activityButtonsRef, headerRef]);
 
   return shouldShowHeaderButtons;
 }

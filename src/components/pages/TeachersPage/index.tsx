@@ -3,12 +3,12 @@ import { useContext, useEffect, useState } from 'react';
 import { SocketContext } from '@contexts/SocketContext';
 import {
   DEV_TEST_USER_QUERY_PARAM,
-  TEST_CLASSROOM_NAME,
+  TEST_ACTIVITY_PIN,
   DEV_TEST_USER_SESSION_FLAG,
   EMPTY_EMAIL,
-} from '@utils/classrooms';
-import CreateGameRoom from './CreateGameRoom';
-import ActiveGameRoom from './ActiveGameRoom/index';
+} from '@utils/activities';
+import CreateActivity from './CreateActivity';
+import InProgressActivity from './InProgressActivity/index';
 
 const CHARACTERS = [
   'Pirate captain',
@@ -20,7 +20,7 @@ const CHARACTERS = [
 
 export default function TeachersPage(): JSX.Element {
   const socket = useContext(SocketContext);
-  const [gameRoomPIN, setGameRoomPIN] = useState('');
+  const [activityPin, setActivityPin] = useState('');
   const [characters, setCharacters] = useState(CHARACTERS);
   const [email, setEmail] = useState(EMPTY_EMAIL);
   const wasCharactersUpdated =
@@ -31,10 +31,10 @@ export default function TeachersPage(): JSX.Element {
       .toString()
       .padStart(4, '0');
 
-  const handleCreateGameRoom = (newGameRoomPIN = create4DigitPin()): void => {
-    setGameRoomPIN(newGameRoomPIN);
-    socket.emit('create game room', {
-      classroomName: newGameRoomPIN,
+  const handleCreateActivity = (newActivityPin = create4DigitPin()): void => {
+    setActivityPin(newActivityPin);
+    socket.emit('create activity', {
+      activityPin: newActivityPin,
       email,
     });
   };
@@ -48,20 +48,20 @@ export default function TeachersPage(): JSX.Element {
       ) === 'true';
     // Persist this flag in sessionStorage (instead of React state) so
     // Next.js Fast Refresh after local saves does not create a new dev test
-    // game room. sessionStorage survives within the current tab session, so
+    // activity. sessionStorage survives within the current tab session, so
     // we initialize only one dev test user per session.
     const hasInitializedDevTestUser =
       sessionStorage.getItem(DEV_TEST_USER_SESSION_FLAG) === 'true';
 
     if (isDevTestUserRequested && !hasInitializedDevTestUser) {
-      handleCreateGameRoom(TEST_CLASSROOM_NAME);
+      handleCreateActivity(TEST_ACTIVITY_PIN);
       sessionStorage.setItem(DEV_TEST_USER_SESSION_FLAG, 'true');
     }
   }, []);
 
-  return gameRoomPIN ? (
-    <ActiveGameRoom
-      gameRoomPIN={gameRoomPIN}
+  return activityPin ? (
+    <InProgressActivity
+      activityPin={activityPin}
       characters={characters}
       setCharacters={setCharacters}
       email={email}
@@ -69,12 +69,12 @@ export default function TeachersPage(): JSX.Element {
       wasCharactersUpdated={wasCharactersUpdated}
     />
   ) : (
-    <CreateGameRoom
+    <CreateActivity
       characters={characters}
       setCharacters={setCharacters}
       email={email}
       setEmail={setEmail}
-      handleCreateGameRoom={handleCreateGameRoom}
+      handleCreateActivity={handleCreateActivity}
     />
   );
 }
