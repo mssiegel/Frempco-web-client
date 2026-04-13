@@ -168,7 +168,7 @@ export default function InProgressActivity({
   }
 
   const importantStudentTotalsText = (
-    <Typography component='span' variant='h4'>
+    <Typography variant='h4'>
       Students waiting to chat: <strong>{unpairedStudents.length}</strong>
     </Typography>
   );
