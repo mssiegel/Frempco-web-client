@@ -6,8 +6,8 @@ import ReadOnlyChatbox from '../Chatbox';
 
 interface DisplayOfChatsProps {
   studentChats: (StudentChat | SoloChat)[];
-  setStudentChats: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
-  setUnpairedStudents: Dispatch<SetStateAction<Student[]>>;
+  setStudentChats?: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
+  setUnpairedStudents?: Dispatch<SetStateAction<Student[]>>;
 }
 
 export default function DisplayOfChats({

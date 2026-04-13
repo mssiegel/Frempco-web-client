@@ -10,7 +10,7 @@ import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import { StudentChat, SoloChat } from '../../types';
 import { PAIRED, SOLO } from '@utils/classrooms';
 import { SocketContext } from '@contexts/SocketContext';
-import DisplayOfChats from './DisplayOfChats';
+import DisplayOfChats from '../shared/DisplayOfChats';
 
 interface ChatsInProgressAccordionProps {
   studentChats: (StudentChat | SoloChat)[];

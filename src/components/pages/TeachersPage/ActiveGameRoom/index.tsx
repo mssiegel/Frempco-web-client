@@ -12,6 +12,7 @@ import SetupClassroomAccordion from './SetupClassroomAccordion';
 import ChatsInProgressAccordion from './ChatsInProgressAccordion';
 import CompletedChatsAccordion from './CompletedChatsAccordion';
 import featureFlags from '@config/featureFlags';
+import { EXAMPLE_CHATS } from '../exampleChats';
 
 interface ActiveGameRoomProps {
   gameRoomPIN: string;
@@ -209,7 +210,7 @@ export default function ActiveGameRoom({
           setUnpairedStudents={setUnpairedStudents}
         />
         {featureFlags.isCompletedChatsSectionLaunched.enabled && (
-          <CompletedChatsAccordion studentChats={[]} />
+          <CompletedChatsAccordion studentChats={EXAMPLE_CHATS} />
         )}
       </Box>
     </main>
