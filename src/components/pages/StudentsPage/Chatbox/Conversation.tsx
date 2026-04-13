@@ -4,7 +4,7 @@ import { Dispatch, RefObject, SetStateAction } from 'react';
 import { Box, Typography } from '@mui/material';
 import { Socket } from 'socket.io-client';
 
-import { filterWords } from '@utils/classrooms';
+import { filterWords } from '@utils/activities';
 import { StudentPairedChat, StudentSoloChat } from '../types';
 import PeerIsTyping from './PeerIsTyping';
 

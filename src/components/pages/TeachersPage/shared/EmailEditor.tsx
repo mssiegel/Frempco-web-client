@@ -25,7 +25,7 @@ export default function SharedEmailEditor({
   return (
     <Box component='form' onSubmit={updateTeacherEmail}>
       <Typography variant='body2' mb={1}>
-        Provide your email to get emailed all the chats from your game room.
+        Provide your email to get emailed all the chats from your activity.
       </Typography>
       <TextField
         label='Email address'

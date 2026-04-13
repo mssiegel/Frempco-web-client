@@ -1,4 +1,4 @@
-import { PAIRED, SOLO } from '@utils/classrooms';
+import { PAIRED, SOLO } from '@utils/activities';
 
 export type ChatMessage = ['you' | 'peer', string];
 

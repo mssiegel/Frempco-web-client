@@ -12,7 +12,7 @@ interface NameInputStepProps {
   inputSx: SxProps<Theme>;
   pin: string;
   isMobile: boolean;
-  addStudentToGameroom: (studentName: string, pin: string) => void;
+  addStudentToActivity: (studentName: string, pin: string) => void;
 }
 
 export default function NameInputStep({
@@ -21,7 +21,7 @@ export default function NameInputStep({
   inputSx,
   pin,
   isMobile,
-  addStudentToGameroom,
+  addStudentToActivity,
 }: NameInputStepProps): JSX.Element {
   const [nameInput, setNameInput] = useState('');
   const [nameError, setNameError] = useState('');
@@ -44,7 +44,7 @@ export default function NameInputStep({
 
     setNameError('');
     setStudentName(trimmedName);
-    addStudentToGameroom(trimmedName, pin);
+    addStudentToActivity(trimmedName, pin);
   }
 
   return (

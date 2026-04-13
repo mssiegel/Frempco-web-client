@@ -4,25 +4,25 @@ import { Dispatch, SetStateAction } from 'react';
 import SaveCharactersAccordion from './SaveCharactersAccordion';
 import SetEmailAccordion from './SetEmailAccordion';
 
-interface CreateGameRoomProps {
+interface CreateActivityProps {
   characters: string[];
   setCharacters: Dispatch<SetStateAction<string[]>>;
   email: string;
   setEmail: Dispatch<SetStateAction<string>>;
-  handleCreateGameRoom: () => void;
+  handleCreateActivity: () => void;
 }
 
-export default function CreateGameRoom({
+export default function CreateActivity({
   characters,
   setCharacters,
   email,
   setEmail,
-  handleCreateGameRoom,
-}: CreateGameRoomProps): JSX.Element {
+  handleCreateActivity,
+}: CreateActivityProps): JSX.Element {
   return (
     <Box sx={{ my: 3, mx: 3 }}>
       <Typography variant='h3' mb={3}>
-        Host a Game Room
+        Host an Activity
       </Typography>
 
       <SaveCharactersAccordion
@@ -45,9 +45,9 @@ export default function CreateGameRoom({
           variant='contained'
           color='primary'
           type='submit'
-          onClick={() => handleCreateGameRoom()}
+          onClick={() => handleCreateActivity()}
         >
-          Host Game Room Now
+          Host Activity Now
         </Button>
       </Box>
     </Box>

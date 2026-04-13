@@ -8,7 +8,7 @@ import {
 } from '@mui/material';
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import { StudentChat, SoloChat } from '../../types';
-import { PAIRED, SOLO } from '@utils/classrooms';
+import { PAIRED, SOLO } from '@utils/activities';
 import { SocketContext } from '@contexts/SocketContext';
 import DisplayOfChats from '../shared/DisplayOfChats';
 
