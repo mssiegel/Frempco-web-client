@@ -13,6 +13,7 @@ import ChatsInProgressAccordion from './ChatsInProgressAccordion';
 import CompletedChatsAccordion from './CompletedChatsAccordion';
 import featureFlags from '@config/featureFlags';
 import { EXAMPLE_CHATS } from '../exampleChats';
+import PageHeader from '@components/shared/PageHeader';
 
 interface InProgressActivityProps {
   activityPin: string;
@@ -159,16 +160,27 @@ export default function InProgressActivity({
     return (
       <Box my={10}>
         <Typography variant='h4' textAlign='center'>
-          You are no longer connected to this activity on Frempco. Return to
-          the <Link href='/'>Frempco homepage</Link> and start another
-          activity.
+          You are no longer connected to this activity on Frempco. Return to the{' '}
+          <Link href='/'>Frempco homepage</Link> and start another activity.
         </Typography>
       </Box>
     );
   }
 
+  const importantStudentTotalsText = (
+    <Typography component='span' variant='h4'>
+      Students waiting to chat: <strong>{unpairedStudents.length}</strong>
+    </Typography>
+  );
+
   return (
     <main>
+      <PageHeader
+        leftElement={importantStudentTotalsText}
+        statusText={'Activity in Progress'}
+        isSticky={true}
+      />
+
       <Box mx={2}>
         <Box mb={3}>
           <Typography variant='h5' mb={1}>
