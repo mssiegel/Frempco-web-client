@@ -181,7 +181,7 @@ export default function InProgressActivity({
         isSticky={true}
       />
 
-      <Box mx={2}>
+      <Box mx={2} mt={2}>
         <Box mb={3}>
           <Typography variant='h5' mb={1}>
             Student Instructions
