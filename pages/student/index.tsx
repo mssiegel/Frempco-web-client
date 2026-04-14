@@ -2,6 +2,7 @@ import Head from 'next/head';
 
 import Layout from '@components/shared/Layout';
 import StudentsPage from '@components/pages/StudentsPage';
+import { SocketProvider } from '@contexts/SocketContext';
 
 export default function StudentPage() {
   return (
@@ -11,7 +12,9 @@ export default function StudentPage() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <StudentsPage />
+      <SocketProvider>
+        <StudentsPage />
+      </SocketProvider>
     </Layout>
   );
 }
