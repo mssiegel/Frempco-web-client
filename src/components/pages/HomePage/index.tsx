@@ -79,7 +79,10 @@ export default function HomePage() {
         <HowItWorks isMobile={isMobile} />
 
         {/* Section Four */}
-        <FounderStory />
+        <FounderStory isMobile={isMobile} />
+
+        {/* Bottom padding  */}
+        <Box sx={{ py: isMobile ? 2 : 4 }}></Box>
       </Box>
     </main>
   );

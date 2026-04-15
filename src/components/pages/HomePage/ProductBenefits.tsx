@@ -69,6 +69,7 @@ export default function ProductBenefits({
           priority={true}
           style={{
             maxWidth: isMobile ? '100%' : '500px',
+            width: '100%',
             height: 'auto',
             border: '1px solid silver',
             borderRadius: '18px',

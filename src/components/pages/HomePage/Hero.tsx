@@ -80,6 +80,7 @@ export default function Hero({
           priority={true}
           style={{
             maxWidth: isMobile ? '100%' : '470px',
+            width: '100%',
             height: 'auto',
             border: '1px solid silver',
             borderRadius: '18px',
