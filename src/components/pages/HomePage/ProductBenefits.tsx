@@ -62,18 +62,25 @@ export default function ProductBenefits({
       <Grid item md={1} />
 
       {/* Image - 4 columns */}
-      <Grid item md={4} sx={{ margin: 'auto' }}>
+      <Grid item md={4} sx={{ margin: 'auto', mt: isMobile ? 4 : 0 }}>
         <Image
           src={teacherViewImage}
           alt='Teacher view of a chat between two students'
           priority={true}
           style={{
-            maxWidth: '500px',
+            maxWidth: isMobile ? '100%' : '500px',
             height: 'auto',
             border: '1px solid silver',
             borderRadius: '18px',
           }}
         />
+        <Typography
+          variant='caption'
+          color='text.secondary'
+          sx={{ display: 'block', mt: 0.5, textAlign: 'center' }}
+        >
+          A teacher viewing a chat between two students.
+        </Typography>
       </Grid>
 
       {/* Right margin - 1 column */}

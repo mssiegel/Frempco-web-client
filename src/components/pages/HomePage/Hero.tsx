@@ -73,7 +73,7 @@ export default function Hero({
           alt='View of a student chatting as the ghost of Julius Caesar'
           priority={true}
           style={{
-            maxWidth: '450px',
+            maxWidth: isMobile ? '100%' : '480px',
             height: 'auto',
             border: '1px solid silver',
             borderRadius: '18px',
