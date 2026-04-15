@@ -134,14 +134,11 @@ export default function StudentsPage(): JSX.Element {
       />
     ) : (
       <WelcomeMessage
-        pin={pin}
-        removedFromClass={stage === STAGE.removedByTeacher}
-        isLobbyStage={stage === STAGE.lobby}
-        socket={socket}
+        activityPin={pin}
         socketId={socket.id}
+        removedFromClass={stage === STAGE.removedByTeacher}
         studentName={studentName}
         isMobile={isMobile}
-        addStudentToActivity={addStudentToActivity}
       />
     );
 
