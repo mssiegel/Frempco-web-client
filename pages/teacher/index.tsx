@@ -2,11 +2,9 @@ import Head from 'next/head';
 
 import Layout from '@components/shared/Layout';
 import TeachersPage from '@components/pages/TeachersPage';
-import { useRouter } from 'next/router';
+import { SocketProvider } from '@contexts/SocketContext';
 
 export default function TeacherDashboard() {
-  const router = useRouter();
-
   return (
     <Layout>
       <Head>
@@ -14,7 +12,9 @@ export default function TeacherDashboard() {
         <link rel='icon' href='/favicon.ico' />
       </Head>
 
-      <TeachersPage />
+      <SocketProvider>
+        <TeachersPage />
+      </SocketProvider>
     </Layout>
   );
 }

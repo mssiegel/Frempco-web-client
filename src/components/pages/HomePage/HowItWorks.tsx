@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 import { Box, Grid, Typography, Icon, Paper } from '@mui/material';
 import { useTheme, Theme } from '@mui/material/styles';
 
@@ -16,19 +14,19 @@ interface StepCardProps {
 const CARD_INFO = [
   {
     icon: 'person_add', // Name of Google Material Font Icon
-    text: 'Teacher Creates an Activity',
+    text: '1) Teacher Creates an Activity',
   },
   {
     icon: 'add_link',
-    text: 'Students Join With a Code',
+    text: '2) Students Join With a Code',
   },
   {
     icon: 'social_distance',
-    text: 'Teacher Pairs up the Students',
+    text: '3) Teacher Pairs up the Students',
   },
   {
     icon: 'conversation',
-    text: 'Students Chat as Their Characters',
+    text: '4) Students Chat as Characters',
   },
 ];
 
@@ -40,7 +38,6 @@ export default function HowItWorks({ isMobile }: HowItWorksProps): JSX.Element {
       container
       sx={{
         py: isMobile ? 7 : 15,
-        background: `linear-gradient(to bottom, ${theme.palette.neutrals.white}, ${theme.palette.primary[100]})`,
       }}
     >
       <Grid item md={1} />
@@ -61,7 +58,7 @@ export default function HowItWorks({ isMobile }: HowItWorksProps): JSX.Element {
         <Typography variant={isMobile ? 'h4' : 'h3'} align='center' pb={2}>
           How it Works
         </Typography>
-        <Typography align='center' pb={isMobile ? 6 : 10}>
+        <Typography align='center' pb={isMobile ? 4 : 6}>
           From setup to engagement in under a minute
         </Typography>
 
@@ -96,7 +93,7 @@ function StepCard({ icon, text, isMobile }: StepCardProps): JSX.Element {
         border: '1px solid',
         borderColor: 'primary.100',
         backgroundColor: 'neutrals.white',
-        height: '230px',
+        height: '200px',
       }}
     >
       <Box
