@@ -78,7 +78,7 @@ export default function Header({
             <Box
               display='flex'
               justifyContent='center'
-              gap={1}
+              gap={3}
               height='52px' // Prevent layout shift when buttons appear/disappear
               alignItems='center'
               sx={getHeaderButtonsSx(shouldShowHeaderButtons, isMobile)}
@@ -102,11 +102,7 @@ interface HeaderLogoProps {
   transition: string;
 }
 
-function HeaderLogo({
-  iconHeight,
-  showLogoText,
-  transition,
-}: HeaderLogoProps) {
+function HeaderLogo({ iconHeight, showLogoText, transition }: HeaderLogoProps) {
   return (
     <Box display='flex' gap={2} alignItems='flex-end'>
       <img
