@@ -1,5 +1,7 @@
 import { Box, Grid, Typography } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import Image from 'next/image';
+
 import StudentsButton from './StudentsButton';
 import TeachersButton from './TeachersButton';
 import studentViewDesktopImage from '../../../../public/HomePage/student-view-of-a-chat-desktop.png';
@@ -18,12 +20,16 @@ export default function Hero({
   visitStudentsPage,
   visitTeachersPage,
 }: HeroProps) {
+  const theme = useTheme();
+
   return (
     <Grid
       container
       sx={{
-        background: '#F8F8FF',
+        background: `linear-gradient(to bottom, ${theme.palette.neutrals.white}, ${theme.palette.primary[200]})`,
         pt: 6,
+        pb: 3,
+        px: isMobile ? 2 : 0,
       }}
     >
       {/* Left margin - 1 column */}
@@ -73,7 +79,7 @@ export default function Hero({
           alt='View of a student chatting as the ghost of Julius Caesar'
           priority={true}
           style={{
-            maxWidth: isMobile ? '100%' : '480px',
+            maxWidth: isMobile ? '100%' : '470px',
             height: 'auto',
             border: '1px solid silver',
             borderRadius: '18px',

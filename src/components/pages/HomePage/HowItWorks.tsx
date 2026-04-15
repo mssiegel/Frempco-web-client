@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 import { Box, Grid, Typography, Icon, Paper } from '@mui/material';
 import { useTheme, Theme } from '@mui/material/styles';
 
@@ -40,7 +38,6 @@ export default function HowItWorks({ isMobile }: HowItWorksProps): JSX.Element {
       container
       sx={{
         py: isMobile ? 7 : 15,
-        background: `linear-gradient(to bottom, ${theme.palette.neutrals.white}, ${theme.palette.primary[100]})`,
       }}
     >
       <Grid item md={1} />
