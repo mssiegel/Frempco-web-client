@@ -76,7 +76,7 @@ export default function Hero({
       <Grid item md={4} sx={{ margin: 'auto' }}>
         <Image
           src={isMobile ? studentViewMobileImage : studentViewDesktopImage}
-          alt='View of a student chatting as the ghost of Julius Caesar'
+          alt="View of a student chatting as Julius Caesar's ghost"
           priority={true}
           style={{
             maxWidth: isMobile ? '100%' : '470px',
@@ -85,6 +85,13 @@ export default function Hero({
             borderRadius: '18px',
           }}
         />
+        <Typography
+          variant='caption'
+          color='text.secondary'
+          sx={{ display: 'block', mt: 0.5, textAlign: 'center' }}
+        >
+          A student is chatting as Julius Caesar&apos;s ghost
+        </Typography>
       </Grid>
 
       {/* Right margin - 1 column */}
