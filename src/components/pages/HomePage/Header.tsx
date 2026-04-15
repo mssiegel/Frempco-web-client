@@ -1,4 +1,4 @@
-import { Box } from '@mui/material';
+import { Box, Grid } from '@mui/material';
 
 import StudentsButton from './StudentsButton';
 import TeachersButton from './TeachersButton';
@@ -31,38 +31,90 @@ export default function Header({
   return (
     <Box
       ref={headerRef}
-      display='flex'
-      justifyContent={isMobile ? 'space-between' : 'space-evenly'}
-      alignItems='center'
       borderBottom='2px solid'
       borderColor='neutrals.200'
       position='sticky'
       top={0}
       zIndex={1000}
       bgcolor='neutrals.white'
-      sx={{ padding: isMobile ? '10px 16px' : '12px 80px' }}
+      sx={{ px: isMobile ? 2 : 0, py: isMobile ? '10px' : '12px' }}
     >
-      <Box display='flex' gap={2} alignItems='flex-end'>
-        <img
-          src='/HomePage/frempco-logo-icon.svg'
-          alt='Frempco logo icon'
-          style={{ height: isMobile ? 50 : 36, width: 'auto' }}
-        />
-        <LogoText
-          showLogoText={showLogoText}
-          transition={HEADER_ANIMATION_TRANSITION}
-        />
-      </Box>
-      <Box
-        display='flex'
-        gap={isMobile ? 0 : 1}
-        height='52px' // Prevent layout shift when buttons appear/disappear
-        alignItems='center'
-        sx={getHeaderButtonsSx(shouldShowHeaderButtons, isMobile)}
-      >
-        <StudentsButton visitStudentsPage={visitStudentsPage} />
-        {!isMobile && <TeachersButton visitTeachersPage={visitTeachersPage} />}
-      </Box>
+      {isMobile ? (
+        <Box display='flex' justifyContent='space-between' alignItems='center'>
+          <HeaderLogo
+            iconHeight={50}
+            showLogoText={showLogoText}
+            transition={HEADER_ANIMATION_TRANSITION}
+          />
+          <Box
+            display='flex'
+            gap={0}
+            height='52px' // Prevent layout shift when buttons appear/disappear
+            alignItems='center'
+            sx={getHeaderButtonsSx(shouldShowHeaderButtons, isMobile)}
+          >
+            <StudentsButton visitStudentsPage={visitStudentsPage} />
+          </Box>
+        </Box>
+      ) : (
+        <Grid container alignItems='center'>
+          {/* Left margin - 1 column */}
+          <Grid item md={1} />
+
+          {/* Left content - 5 columns */}
+          <Grid item md={5}>
+            <HeaderLogo
+              iconHeight={36}
+              showLogoText={showLogoText}
+              transition={HEADER_ANIMATION_TRANSITION}
+            />
+          </Grid>
+
+          {/* Spacing - 1 column */}
+          <Grid item md={1} />
+
+          {/* Right content - 4 columns */}
+          <Grid item md={4}>
+            <Box
+              display='flex'
+              justifyContent='center'
+              gap={1}
+              height='52px' // Prevent layout shift when buttons appear/disappear
+              alignItems='center'
+              sx={getHeaderButtonsSx(shouldShowHeaderButtons, isMobile)}
+            >
+              <StudentsButton visitStudentsPage={visitStudentsPage} />
+              <TeachersButton visitTeachersPage={visitTeachersPage} />
+            </Box>
+          </Grid>
+
+          {/* Right margin - 1 column */}
+          <Grid item md={1} />
+        </Grid>
+      )}
+    </Box>
+  );
+}
+
+interface HeaderLogoProps {
+  iconHeight: number;
+  showLogoText: boolean;
+  transition: string;
+}
+
+function HeaderLogo({
+  iconHeight,
+  showLogoText,
+  transition,
+}: HeaderLogoProps) {
+  return (
+    <Box display='flex' gap={2} alignItems='flex-end'>
+      <img
+        src='/HomePage/frempco-logo-icon.svg'
+        alt='Frempco logo icon'
+        style={{ height: iconHeight, width: 'auto' }}
+      />
+      <LogoText showLogoText={showLogoText} transition={transition} />
     </Box>
   );
 }

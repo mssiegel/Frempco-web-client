@@ -149,8 +149,7 @@ export default function StudentsPage(): JSX.Element {
         minHeight: '100dvh',
         display: 'flex',
         flexDirection: 'column',
-        background:
-          'var(--Gradients, linear-gradient(180deg, #FFF 0%, #EBECFE 100%))',
+        background: `linear-gradient(to bottom, ${theme.palette.neutrals.white}, ${theme.palette.primary[200]})`,
       }}
     >
       <PageHeader

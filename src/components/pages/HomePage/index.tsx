@@ -3,9 +3,7 @@ import { useTheme } from '@mui/material/styles';
 import { useRef } from 'react';
 import { useRouter } from 'next/router';
 
-import CoreValues from './CoreValues';
 import DevLinkShortcuts from './DevLinkShortcuts';
-import ForWhom from './ForWhom';
 import FounderStory from './FounderStory';
 import Header from './Header';
 import HowItWorks from './HowItWorks';
@@ -60,16 +58,20 @@ export default function HomePage() {
         activityButtonsRef={activityButtonsRef}
         isMobile={isMobile}
       />
+      {/* Section One */}
+      <Hero
+        isMobile={isMobile}
+        activityButtonsRef={activityButtonsRef}
+        visitStudentsPage={visitStudentsPage}
+        visitTeachersPage={visitTeachersPage}
+      />
 
-      <Box sx={{ mx: isMobile ? 2 : 0 }}>
-        {/* Section One */}
-        <Hero
-          isMobile={isMobile}
-          activityButtonsRef={activityButtonsRef}
-          visitStudentsPage={visitStudentsPage}
-          visitTeachersPage={visitTeachersPage}
-        />
-
+      <Box
+        sx={{
+          background: `linear-gradient(to bottom, ${theme.palette.neutrals.white}, ${theme.palette.primary[200]})`,
+          px: isMobile ? 2 : 0,
+        }}
+      >
         {/* Section Two */}
         <ProductBenefits isMobile={isMobile} />
 
@@ -77,13 +79,10 @@ export default function HomePage() {
         <HowItWorks isMobile={isMobile} />
 
         {/* Section Four */}
-        <CoreValues />
+        <FounderStory isMobile={isMobile} />
 
-        {/* Section Five */}
-        <ForWhom />
-
-        {/* Section Six */}
-        <FounderStory />
+        {/* Bottom padding  */}
+        <Box sx={{ py: isMobile ? 2 : 4 }}></Box>
       </Box>
     </main>
   );

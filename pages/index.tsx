@@ -7,10 +7,10 @@ export default function Home() {
   return (
     <Layout>
       <Head>
-        <title>Frempco - A Learning Activity for the Classroom</title>
+        <title>Frempco: A Classroom Activity that Students Love</title>
         <meta
           name='description'
-          content='A classroom activity that excites both teachers and students. Classmates use role-playing to learn better.'
+          content='Make Learning come alive through Role Play. Loved by Teachers and Students alike.'
         />
         <link rel='icon' href='/favicon.ico' />
       </Head>
