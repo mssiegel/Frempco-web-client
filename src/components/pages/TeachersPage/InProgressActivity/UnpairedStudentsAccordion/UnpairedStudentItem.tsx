@@ -45,7 +45,11 @@ export default function UnpairedStudentItem({
     const confirmation = confirm(
       `Are you sure you want to remove ${student.realName}?`,
     );
-    if (confirmation) socket.emit('remove student from activity', student);
+    if (confirmation)
+      socket.emit('teacher:removed-unpaired-student-from-activity', student);
+    setUnpairedStudents((students) =>
+      students.filter((s) => s.socketId !== student.socketId),
+    );
   }
 
   function startSoloChat() {
