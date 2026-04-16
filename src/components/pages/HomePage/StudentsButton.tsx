@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 import { Button, Icon } from '@mui/material';
 interface StudentsButtonProps {
   visitStudentsPage: (isDevTestUser?: boolean) => void;

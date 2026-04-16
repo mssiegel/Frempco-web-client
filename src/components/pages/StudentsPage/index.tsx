@@ -61,18 +61,12 @@ export default function StudentsPage(): JSX.Element {
   // when the on-screen keyboard opens and reduces the available viewport height.
   const shouldAnchorContentToBottom = isMobile && isChatboxStage;
 
-  function addStudentToActivity(
-    studentName: string,
-    pin: string,
-    updateStageToLobby = true,
-  ) {
+  function addStudentToActivity(studentName: string, pin: string) {
     socket.emit('new student entered', {
       student: studentName,
       activityPin: pin,
     });
-    if (updateStageToLobby) {
-      setStage(STAGE.lobby);
-    }
+    setStage(STAGE.lobby);
   }
 
   function initializeDevTestUser() {
@@ -128,7 +122,9 @@ export default function StudentsPage(): JSX.Element {
         chat={chat}
         setChat={setChat}
         chatEndedMsg={chatEndedMsg}
+        studentName={studentName}
         activityPin={pin}
+        addStudentToActivity={addStudentToActivity}
         socketId={socket.id}
         isMobile={isMobile}
       />

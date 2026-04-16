@@ -15,13 +15,11 @@ import DisplayOfChats from '../shared/DisplayOfChats';
 interface ChatsInProgressAccordionProps {
   studentChats: (StudentChat | SoloChat)[];
   setStudentChats: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
-  setUnpairedStudents: Dispatch<SetStateAction<any[]>>;
 }
 
 const ChatsInProgressAccordion = ({
   studentChats,
   setStudentChats,
-  setUnpairedStudents,
 }: ChatsInProgressAccordionProps) => {
   const socket = useContext(SocketContext);
   const totalStudents = studentChats.length;
@@ -38,12 +36,9 @@ const ChatsInProgressAccordion = ({
     );
     if (!endAllChatsConfirmed) return;
 
-    const newUnpairedList = [];
-
     for (const chat of studentChats) {
       if (chat.mode === SOLO) {
         socket.emit('solo mode: end chat', { chatId: chat.chatId });
-        newUnpairedList.push(chat.student);
       } else {
         const [student1, student2] = chat.studentPair;
         socket.emit('unpair student chat', {
@@ -51,14 +46,9 @@ const ChatsInProgressAccordion = ({
           student1,
           student2,
         });
-        newUnpairedList.push(student1, student2);
       }
     }
     setStudentChats([]);
-
-    // We concat the 'newUnpairedList' to 'unpaired' in case a new student
-    // joined while this function was running.
-    setUnpairedStudents((unpaired) => [...unpaired, ...newUnpairedList]);
   }
 
   return (
@@ -95,7 +85,6 @@ const ChatsInProgressAccordion = ({
         <DisplayOfChats
           studentChats={studentChats}
           setStudentChats={setStudentChats}
-          setUnpairedStudents={setUnpairedStudents}
         />
       </AccordionDetails>
     </Accordion>

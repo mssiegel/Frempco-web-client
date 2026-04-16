@@ -89,7 +89,7 @@ export function useStudentSocketHandlers({
 
     socket.on('chat start', handleChatStart);
     socket.on('solo mode: chat started', handleSoloChatStarted);
-    socket.on('student removed from activity', handleRemoveStudentFromActivity);
+    socket.on('student:removed-from-activity', handleRemoveStudentFromActivity);
     socket.on('peer left chat', handlePeerLeftChat);
     socket.on('teacher ended chat', handleTeacherEndedChat);
     socket.on('solo mode: teacher ended chat', handleSoloModeTeacherEndedChat);
@@ -98,7 +98,7 @@ export function useStudentSocketHandlers({
       socket.off('chat start', handleChatStart);
       socket.off('solo mode: chat started', handleSoloChatStarted);
       socket.off(
-        'student removed from activity',
+        'student:removed-from-activity',
         handleRemoveStudentFromActivity,
       );
       socket.off('peer left chat', handlePeerLeftChat);
