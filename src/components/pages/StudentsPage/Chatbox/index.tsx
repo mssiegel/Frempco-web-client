@@ -15,7 +15,9 @@ interface ChatboxProps {
   chat: StudentPairedChat | StudentSoloChat;
   setChat: Dispatch<SetStateAction<StudentPairedChat | StudentSoloChat>>;
   chatEndedMsg: null | string;
+  studentName: string;
   activityPin: string;
+  addStudentToActivity: (studentName: string, pin: string) => void;
   socketId: string;
   isMobile: boolean;
 }
@@ -25,7 +27,9 @@ export default function Chatbox({
   chat,
   setChat,
   chatEndedMsg,
+  studentName,
   activityPin,
+  addStudentToActivity,
   socketId,
   isMobile,
 }: ChatboxProps) {
@@ -98,8 +102,11 @@ export default function Chatbox({
         />
       ) : (
         <ChatEndedSection
-          isConnected={isConnected}
           chatEndedMsg={chatEndedMsg}
+          isMobile={isMobile}
+          studentName={studentName}
+          activityPin={activityPin}
+          addStudentToActivity={addStudentToActivity}
         />
       )}
     </Paper>
