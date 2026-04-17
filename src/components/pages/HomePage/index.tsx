@@ -3,15 +3,11 @@ import { useTheme } from '@mui/material/styles';
 import { useRef } from 'react';
 import { useRouter } from 'next/router';
 
-import DevLinkShortcuts from './DevLinkShortcuts';
 import FounderStory from './FounderStory';
 import Header from './Header';
 import HowItWorks from './HowItWorks';
 import Hero from './Hero';
 import ProductBenefits from './ProductBenefits';
-import { DEV_TEST_USER_QUERY_PARAM } from '@utils/activities';
-
-const DEV_TEST_USER_SESSION_FLAG = 'wasDevTestUserSet';
 
 export default function HomePage() {
   const router = useRouter();
@@ -19,39 +15,16 @@ export default function HomePage() {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const activityButtonsRef = useRef<HTMLDivElement>(null);
 
-  function visitStudentsPage(isDevTestUser: boolean = false) {
-    const studentUrl = isDevTestUser
-      ? `/student?${DEV_TEST_USER_QUERY_PARAM}=true`
-      : '/student';
-
-    // Deletes any prior dev test user session flags. A new one gets saved into
-    // session storage when visiting the students page.
-    if (isDevTestUser) sessionStorage.removeItem(DEV_TEST_USER_SESSION_FLAG);
-
-    router.push(studentUrl);
+  function visitStudentsPage() {
+    router.push('/student');
   }
 
-  function visitTeachersPage(isDevTestUser: boolean = false) {
-    const teacherUrl = isDevTestUser
-      ? `/teacher?${DEV_TEST_USER_QUERY_PARAM}=true`
-      : '/teacher';
-
-    // Deletes any prior dev test user session flags. A new one gets saved into
-    // session storage when visiting the students page.
-    if (isDevTestUser) sessionStorage.removeItem(DEV_TEST_USER_SESSION_FLAG);
-
-    router.push(teacherUrl);
+  function visitTeachersPage() {
+    router.push('/teacher');
   }
 
   return (
     <main>
-      {process.env.NEXT_PUBLIC_NODE_ENV === 'development' && (
-        <DevLinkShortcuts
-          visitTeachersPage={visitTeachersPage}
-          visitStudentsPage={visitStudentsPage}
-        />
-      )}
-
       <Header
         visitStudentsPage={visitStudentsPage}
         visitTeachersPage={visitTeachersPage}

@@ -1,10 +1,9 @@
-/** @jsxImportSource @emotion/react */
-
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
 import NameInputStep from './NameInputStep';
 import PinInputStep from './PinInputStep';
+import { TEST_ACTIVITY_PIN } from '@utils/activities';
 
 const BUTTON_HEIGHT = 72;
 
@@ -23,6 +22,8 @@ export default function LoginFlow({
   isMobile,
   addStudentToActivity,
 }: LoginFlowProps): JSX.Element {
+  const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
+  const isDevelopment = process.env.NEXT_PUBLIC_NODE_ENV === 'development';
   const isPinStep = pin === '';
   const PIN_INPUT_WIDTH = 200;
   const NAME_INPUT_WIDTH_MOBILE = 250;
@@ -62,8 +63,38 @@ export default function LoginFlow({
     },
   };
 
+  async function handleCreateTestStudentButtonClicked() {
+    const response = await fetch(`${apiUrl}/activities/${TEST_ACTIVITY_PIN}`);
+    const { isActive } = await response.json();
+
+    if (!isActive) {
+      window.alert('Activity not found. Check your Activity PIN.');
+      return;
+    }
+
+    const randomStudentName = `Student ${Math.trunc(
+      Math.random() * 10000,
+    ).toString()}`;
+
+    setStudentName(randomStudentName);
+    setPin(TEST_ACTIVITY_PIN);
+    addStudentToActivity(randomStudentName, TEST_ACTIVITY_PIN);
+  }
+
   return (
     <Box>
+      {isDevelopment && (
+        <Box display='flex' justifyContent='center' mb={10}>
+          <Button
+            variant='outlined'
+            color='primary'
+            onClick={handleCreateTestStudentButtonClicked}
+          >
+            Login as dev test student
+          </Button>
+        </Box>
+      )}
+
       {isPinStep ? (
         <PinInputStep
           setPin={setPin}
