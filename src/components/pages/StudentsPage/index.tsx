@@ -135,6 +135,7 @@ export default function StudentsPage(): JSX.Element {
         removedFromClass={stage === STAGE.removedByTeacher}
         studentName={studentName}
         isMobile={isMobile}
+        addStudentToActivity={addStudentToActivity}
       />
     );
 

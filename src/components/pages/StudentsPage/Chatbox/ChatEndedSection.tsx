@@ -19,7 +19,7 @@ export default function ChatEndedSection({
 
   chatEndedInformationalMessage = chatEndedMsg
     ? chatEndedMsg
-    : 'You were logged out';
+    : 'You were disconnected when your device went dark.'; // A student gets logged out when their phone goes to sleep.
 
   return (
     <Box

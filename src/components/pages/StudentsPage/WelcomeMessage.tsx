@@ -1,6 +1,5 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Icon, Typography } from '@mui/material';
 import Image from 'next/image';
-import type { Socket } from 'socket.io-client';
 
 import Link from '@components/shared/Link';
 import { useStudentInActivity } from './hooks/useStudentInActivity';
@@ -11,6 +10,7 @@ interface WelcomeMessageProps {
   removedFromClass: boolean;
   studentName: string;
   isMobile: boolean;
+  addStudentToActivity: (studentName: string, pin: string) => void;
 }
 
 export default function WelcomeMessage({
@@ -19,6 +19,7 @@ export default function WelcomeMessage({
   removedFromClass,
   studentName,
   isMobile,
+  addStudentToActivity,
 }: WelcomeMessageProps) {
   const isStudentInActivity = useStudentInActivity(activityPin, socketId);
   const wasDisconnectedWhileWaiting = !isStudentInActivity;
@@ -32,20 +33,40 @@ export default function WelcomeMessage({
         style={{ display: 'block', margin: 'auto' }}
       />
       <Typography
-        variant={isMobile ? 'h4' : 'h1'}
+        variant={isMobile ? 'h3' : 'h1'}
         sx={{ py: 4 }}
       >{`Hello ${studentName}`}</Typography>
-      {removedFromClass || wasDisconnectedWhileWaiting ? (
+      {removedFromClass ? (
         <>
-          <Typography variant='h4' sx={{ mb: 4 }}>
-            {removedFromClass
-              ? 'Your teacher removed you.'
-              : 'You were disconnected when your device went dark.'}
+          <Typography
+            variant={isMobile ? 'h5' : 'h4'}
+            sx={{ mb: 4, fontWeight: 'normal' }}
+            color='error.light'
+          >
+            Your teacher removed you.
           </Typography>
-          <Typography variant='h4'>
+          <Typography variant={isMobile ? 'h5' : 'h4'}>
             Return to the <Link href='/'>Frempco homepage</Link> and login
             again.
           </Typography>
+        </>
+      ) : wasDisconnectedWhileWaiting ? (
+        <>
+          <Typography
+            variant={isMobile ? 'h5' : 'h4'}
+            sx={{ mb: 4, fontWeight: 'normal' }}
+            color='error.light'
+          >
+            You were disconnected when your device went dark.
+          </Typography>
+          <Button
+            variant='contained'
+            color='primary'
+            startIcon={<Icon sx={{ fontSize: 24 }}>play_arrow</Icon>}
+            onClick={() => addStudentToActivity(studentName, activityPin)}
+          >
+            Rejoin activity
+          </Button>
         </>
       ) : (
         <>
