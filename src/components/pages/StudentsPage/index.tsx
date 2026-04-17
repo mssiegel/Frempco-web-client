@@ -1,13 +1,8 @@
 import { Box, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import { useRouter } from 'next/router';
 
-import {
-  DEV_TEST_USER_QUERY_PARAM,
-  TEST_ACTIVITY_PIN,
-  DEV_TEST_USER_SESSION_FLAG,
-} from '@utils/activities';
 import { SocketContext } from '@contexts/SocketContext';
 import PageHeader from '@components/shared/PageHeader';
 import FrempcoBranding from '@components/shared/PageHeader/FrempcoBranding';
@@ -68,36 +63,6 @@ export default function StudentsPage(): JSX.Element {
     });
     setStage(STAGE.lobby);
   }
-
-  function initializeDevTestUser() {
-    const randomStudentName = `Student ${Math.trunc(
-      Math.random() * 10000,
-    ).toString()}`;
-
-    setStudentName(randomStudentName);
-    setPin(TEST_ACTIVITY_PIN);
-    addStudentToActivity(randomStudentName, TEST_ACTIVITY_PIN);
-    sessionStorage.setItem(DEV_TEST_USER_SESSION_FLAG, 'true');
-  }
-
-  useEffect(() => {
-    if (typeof window === 'undefined') return;
-
-    const isDevTestUserRequested =
-      new URLSearchParams(window.location.search).get(
-        DEV_TEST_USER_QUERY_PARAM,
-      ) === 'true';
-    // Persist this flag in sessionStorage (instead of React state) so
-    // Next.js Fast Refresh after local saves does not create a new dev test
-    // user. sessionStorage survives within the current tab session, so we
-    // initialize only one dev test user per session.
-    const hasInitializedDevTestUser =
-      sessionStorage.getItem(DEV_TEST_USER_SESSION_FLAG) === 'true';
-
-    if (isDevTestUserRequested && !hasInitializedDevTestUser) {
-      initializeDevTestUser();
-    }
-  }, []);
 
   useStudentSocketHandlers({
     socket,

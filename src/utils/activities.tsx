@@ -3,8 +3,6 @@ import Filter from 'bad-words';
 export const TEST_ACTIVITY_PIN = '0000';
 export const PAIRED = 'PAIRED';
 export const SOLO = 'SOLO';
-export const DEV_TEST_USER_QUERY_PARAM = 'isDevTestUser';
-export const DEV_TEST_USER_SESSION_FLAG = 'wasDevTestUserSet';
 export const EMPTY_EMAIL = '';
 
 export function getRandom<T>(arr: Array<T>): T {

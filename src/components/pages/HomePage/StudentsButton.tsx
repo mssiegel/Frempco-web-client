@@ -1,6 +1,6 @@
 import { Button, Icon } from '@mui/material';
 interface StudentsButtonProps {
-  visitStudentsPage: (isDevTestUser?: boolean) => void;
+  visitStudentsPage: () => void;
   fullWidth?: boolean;
 }
 
@@ -14,7 +14,7 @@ export default function StudentsButton({
         variant='contained'
         color='primary'
         startIcon={<Icon sx={{ fontSize: 24 }}>play_arrow</Icon>}
-        onClick={() => visitStudentsPage()}
+        onClick={visitStudentsPage}
         fullWidth={fullWidth}
       >
         Join an Activity

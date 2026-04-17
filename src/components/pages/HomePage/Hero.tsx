@@ -10,8 +10,8 @@ import studentViewMobileImage from '../../../../public/HomePage/student-view-of-
 interface HeroProps {
   isMobile: boolean;
   activityButtonsRef: React.RefObject<HTMLDivElement>;
-  visitStudentsPage: (isDevTestUser?: boolean) => void;
-  visitTeachersPage: (isDevTestUser?: boolean) => void;
+  visitStudentsPage: () => void;
+  visitTeachersPage: () => void;
 }
 
 export default function Hero({
