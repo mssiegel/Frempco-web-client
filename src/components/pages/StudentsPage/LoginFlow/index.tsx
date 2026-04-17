@@ -90,7 +90,7 @@ export default function LoginFlow({
             color='primary'
             onClick={handleCreateTestStudentButtonClicked}
           >
-            Login as dev test student
+            Login as test student
           </Button>
         </Box>
       )}

@@ -44,7 +44,7 @@ export default function CreateActivity({
               color='primary'
               onClick={() => handleCreateActivity(TEST_ACTIVITY_PIN)}
             >
-              Create Test Classroom
+              Create Test Activity
             </Button>
           </Box>
         )}
