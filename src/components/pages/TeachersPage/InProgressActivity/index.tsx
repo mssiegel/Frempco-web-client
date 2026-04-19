@@ -8,7 +8,7 @@ import { SocketContext } from '@contexts/SocketContext';
 import { useRouter } from 'next/router';
 import Link from '@components/shared/Link';
 import UnpairedStudentsAccordion from './UnpairedStudentsAccordion';
-import SetupActivityAccordion from './SetupActivityAccordion';
+import ActivitySettingsAccordion from './ActivitySettingsAccordion';
 import ChatsInProgressAccordion from './ChatsInProgressAccordion';
 import CompletedChatsAccordion from './CompletedChatsAccordion';
 import featureFlags from '@config/featureFlags';
@@ -199,7 +199,7 @@ export default function InProgressActivity({
             their smartphone screen goes dark.
           </Typography>
         </Box>
-        <SetupActivityAccordion
+        <ActivitySettingsAccordion
           activityPin={activityPin}
           characters={characters}
           setCharacters={setCharacters}

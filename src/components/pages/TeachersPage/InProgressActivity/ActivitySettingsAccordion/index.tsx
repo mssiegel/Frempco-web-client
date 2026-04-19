@@ -15,7 +15,7 @@ import { EMPTY_EMAIL } from '@utils/activities';
 import SetTeacherEmailButton from './SetTeacherEmailButton';
 import SetCharacterList from './SetCharacterList';
 
-interface SetupActivityAccordionProps {
+interface ActivitySettingsAccordionProps {
   activityPin: string;
   characters: string[];
   setCharacters: Dispatch<SetStateAction<string[]>>;
@@ -24,14 +24,14 @@ interface SetupActivityAccordionProps {
   setEmail: Dispatch<SetStateAction<string>>;
 }
 
-const SetupActivityAccordion = ({
+const ActivitySettingsAccordion = ({
   activityPin,
   characters,
   setCharacters,
   wasCharactersUpdated,
   email,
   setEmail,
-}: SetupActivityAccordionProps) => {
+}: ActivitySettingsAccordionProps) => {
   const wasEmailUpdated = email !== EMPTY_EMAIL;
   const hasRemainingSetupOptions = !wasEmailUpdated || !wasCharactersUpdated;
 
@@ -51,7 +51,7 @@ const SetupActivityAccordion = ({
         sx={{ borderRadius: '15px', border: '1px solid black', gap: 2 }}
       >
         <Typography variant='h5' fontWeight={400}>
-          Step 1: Set Up Your Activity
+          Activity Settings
         </Typography>
         <Box
           display='flex'
@@ -79,4 +79,4 @@ const SetupActivityAccordion = ({
   );
 };
 
-export default SetupActivityAccordion;
+export default ActivitySettingsAccordion;
