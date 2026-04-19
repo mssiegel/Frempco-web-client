@@ -13,9 +13,11 @@ export default function SharedCharactersEditor({
   onSave,
 }: SharedCharactersEditorProps): JSX.Element {
   const [error, setError] = useState<string | null>(null);
-  const characterListTextArea = useRef<HTMLTextAreaElement>();
+  const characterListTextArea = useRef<HTMLTextAreaElement | null>(null);
 
   const handleSave = () => {
+    if (!characterListTextArea.current) return;
+
     const chars = characterListTextArea.current.value.split('\n');
     const trimmedCharacters = chars.map((ch) => ch.trim()).filter((ch) => ch);
 
@@ -32,13 +34,20 @@ export default function SharedCharactersEditor({
   return (
     <Box>
       <TextField
-        label={'Edit Character List'}
         multiline
         fullWidth
-        rows={6}
+        minRows={5}
         autoFocus
+        placeholder='One character per line'
+        inputProps={{ 'aria-label': 'Edit characters' }}
         defaultValue={characters.join('\n')}
         inputRef={characterListTextArea}
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            alignItems: 'flex-start',
+            backgroundColor: 'neutrals.white',
+          },
+        }}
       />
 
       {error && (
@@ -51,9 +60,9 @@ export default function SharedCharactersEditor({
         </Typography>
       )}
 
-      <Box sx={{ display: 'flex', justifyContent: 'center', marginTop: 2 }}>
-        <Button variant='contained' color='primary' onClick={handleSave}>
-          Save characters
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+        <Button variant='outlined' color='primary' onClick={handleSave}>
+          Save Characters
         </Button>
       </Box>
     </Box>

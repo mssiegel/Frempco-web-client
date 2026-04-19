@@ -1,3 +1,5 @@
+import { useMediaQuery } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { useContext, useState } from 'react';
 
 import { SocketContext } from '@contexts/SocketContext';
@@ -5,16 +7,12 @@ import { EMPTY_EMAIL } from '@utils/activities';
 import CreateActivity from './CreateActivity';
 import InProgressActivity from './InProgressActivity/index';
 
-const CHARACTERS = [
-  'Pirate captain',
-  'Tiny warlord',
-  'Dance teacher',
-  'Forgetful surgeon',
-  'Party planner',
-];
+const CHARACTERS = ['Batman', 'Wonder Woman', 'Spiderman'];
 
 export default function TeachersPage(): JSX.Element {
   const socket = useContext(SocketContext);
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [activityPin, setActivityPin] = useState('');
   const [characters, setCharacters] = useState(CHARACTERS);
   const [email, setEmail] = useState(EMPTY_EMAIL);
@@ -45,6 +43,7 @@ export default function TeachersPage(): JSX.Element {
       email={email}
       setEmail={setEmail}
       handleCreateActivity={handleCreateActivity}
+      isMobile={isMobile}
     />
   );
 }
