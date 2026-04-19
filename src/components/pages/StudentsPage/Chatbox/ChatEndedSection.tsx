@@ -1,47 +1,54 @@
-/** @jsxImportSource @emotion/react */
-
-import { Typography } from '@mui/material';
-
-import Link from '@components/shared/Link';
+import { Box, Button, Icon, Typography } from '@mui/material';
 
 interface ChatEndedSectionProps {
-  isConnected: boolean;
   chatEndedMsg: null | string;
+  isMobile: boolean;
+  studentName: string;
+  activityPin: string;
+  addStudentToActivity: (studentName: string, pin: string) => void;
 }
 
 export default function ChatEndedSection({
-  isConnected,
   chatEndedMsg,
+  isMobile,
+  studentName,
+  activityPin,
+  addStudentToActivity,
 }: ChatEndedSectionProps): JSX.Element | null {
   let chatEndedInformationalMessage = null;
 
-  if (!isConnected) {
-    chatEndedInformationalMessage = (
-      <>
-        You were logged out. Return to the{' '}
-        <Link href='/'>Frempco homepage</Link> and login again.
-      </>
-    );
-  } else if (chatEndedMsg) {
-    chatEndedInformationalMessage = chatEndedMsg;
-  }
+  chatEndedInformationalMessage = chatEndedMsg
+    ? chatEndedMsg
+    : 'You were disconnected when your device went dark.'; // A student gets logged out when their phone goes to sleep.
 
   return (
-    <Typography
-      sx={{
-        borderTop: '1px dashed grey',
-        pt: '10px',
-        px: '10px',
-        fontSize: '32px',
-        color: '#87002a',
-        fontStyle: 'italic',
-        opacity: 0.7,
-        '@media (max-width: 500px)': {
-          fontSize: '24px',
-        },
-      }}
+    <Box
+      sx={(theme) => ({
+        borderTop: `1px dashed ${theme.palette.neutrals[200]}`,
+        py: '10px',
+      })}
     >
-      {chatEndedInformationalMessage}
-    </Typography>
+      <Typography
+        variant={isMobile ? 'h5' : 'h4'}
+        sx={{
+          color: 'error.dark',
+          textAlign: 'center',
+          mb: 1,
+          fontWeight: 'normal',
+        }}
+      >
+        {chatEndedInformationalMessage}
+      </Typography>
+      <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+        <Button
+          variant='contained'
+          color='primary'
+          startIcon={<Icon sx={{ fontSize: 24 }}>play_arrow</Icon>}
+          onClick={() => addStudentToActivity(studentName, activityPin)}
+        >
+          Get matched again
+        </Button>
+      </Box>
+    </Box>
   );
 }

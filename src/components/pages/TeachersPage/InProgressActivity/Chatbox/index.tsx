@@ -1,5 +1,3 @@
-/** @jsxImportSource @emotion/react */
-
 import { Box, Button, Paper } from '@mui/material';
 import {
   Dispatch,
@@ -17,22 +15,17 @@ import {
 
 import ChatboxHeader from '@components/shared/ChatboxHeader';
 import { scrollToBottomOfElement, SOLO } from '@utils/activities';
-import { Student, StudentChat, SoloChat } from '../../types';
+import { StudentChat, SoloChat } from '../../types';
 import { SocketContext } from '@contexts/SocketContext';
 import Conversation from './Conversation';
 import featureFlags from '@config/featureFlags';
 
-interface ReadOnlyChatboxProps {
+interface ChatboxProps {
   chat: StudentChat | SoloChat;
   setStudentChats: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
-  setUnpairedStudents: Dispatch<SetStateAction<Student[]>>;
 }
 
-export default function ReadOnlyChatbox({
-  chat,
-  setStudentChats,
-  setUnpairedStudents,
-}: ReadOnlyChatboxProps) {
+export default function Chatbox({ chat, setStudentChats }: ChatboxProps) {
   const socket = useContext(SocketContext);
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -70,13 +63,11 @@ export default function ReadOnlyChatbox({
       setStudentChats((chats) =>
         chats.filter((chat) => chat.chatId !== chatId),
       );
-      setUnpairedStudents((unpaired) => [...unpaired, student1]);
     } else {
       socket.emit('unpair student chat', { chatId, student1, student2 });
       setStudentChats((chats) =>
         chats.filter((chat) => chat.chatId !== chatId),
       );
-      setUnpairedStudents((unpaired) => [...unpaired, student1, student2]);
     }
   }
 

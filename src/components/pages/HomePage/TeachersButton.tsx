@@ -1,7 +1,7 @@
 import { Button } from '@mui/material';
 
 interface TeachersButtonProps {
-  visitTeachersPage: (isDevTestUser?: boolean) => void;
+  visitTeachersPage: () => void;
   fullWidth?: boolean;
 }
 
@@ -14,7 +14,7 @@ export default function TeachersButton({
       <Button
         variant='outlined'
         color='primary'
-        onClick={() => visitTeachersPage()}
+        onClick={visitTeachersPage}
         fullWidth={fullWidth}
       >
         Host an Activity

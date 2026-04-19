@@ -3,7 +3,6 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Box,
   Typography,
 } from '@mui/material';
 import { Dispatch, SetStateAction, SyntheticEvent, useState } from 'react';
@@ -19,7 +18,7 @@ const SaveCharactersAccordion = ({
   setCharacters,
 }: SaveCharactersAccordionProps): JSX.Element => {
   const [isCharactersAccordionOpen, setIsCharactersAccordionOpen] =
-    useState(false);
+    useState(true);
 
   const handleCharactersAccordionChange = (
     _event: SyntheticEvent,
@@ -33,26 +32,42 @@ const SaveCharactersAccordion = ({
       disableGutters
       expanded={isCharactersAccordionOpen}
       onChange={handleCharactersAccordionChange}
-      sx={{ maxWidth: 700, boxShadow: 'none' }}
+      sx={{
+        mb: 2,
+        boxShadow: 'none',
+        '&:before': { display: 'none' },
+        overflow: 'hidden',
+        borderRadius: '18px',
+      }}
     >
       <AccordionSummary
         expandIcon={<ExpandMoreIcon />}
-        sx={{ borderRadius: '15px', border: '1px solid black', mb: 1 }}
+        sx={{
+          px: 3,
+          minHeight: 64,
+          borderRadius: isCharactersAccordionOpen ? '18px 18px 0 0' : '18px',
+          backgroundColor: 'primary.500',
+          color: 'neutrals.white',
+          '& .MuiAccordionSummary-expandIconWrapper': {
+            color: 'neutrals.white',
+          },
+          '& .MuiAccordionSummary-content.Mui-expanded': {
+            my: 1.5,
+          },
+        }}
       >
-        <Typography variant='h6'>Edit Characters List</Typography>
+        <Typography variant='h6'>Edit Characters</Typography>
       </AccordionSummary>
 
-      <AccordionDetails>
-        <Box sx={{ maxWidth: 400 }}>
-          <Typography variant='body2' mb={2}>
-            Update the characters which your students can get assigned to.
-          </Typography>
-          <SharedCharactersEditor
-            characters={characters}
-            setCharacters={setCharacters}
-            onSave={() => setIsCharactersAccordionOpen(false)}
-          />
-        </Box>
+      <AccordionDetails sx={{ p: 3, backgroundColor: 'primary.300' }}>
+        <Typography variant='body2' mb={2}>
+          Update the characters which your students can get assigned to.
+        </Typography>
+        <SharedCharactersEditor
+          characters={characters}
+          setCharacters={setCharacters}
+          onSave={() => setIsCharactersAccordionOpen(false)}
+        />
       </AccordionDetails>
     </Accordion>
   );

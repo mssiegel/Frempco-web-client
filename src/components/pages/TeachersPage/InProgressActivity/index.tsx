@@ -98,12 +98,10 @@ export default function InProgressActivity({
 
   useEffect(() => {
     if (socket) {
-      socket.on('chat ended - two students', ({ chatId, student2 }) => {
+      socket.on('chat ended - two students', ({ chatId }) => {
         setStudentChats((chats) =>
           chats.filter((chat) => chat.chatId !== chatId),
         );
-
-        setUnpairedStudents((unpaired) => [...unpaired, student2]);
       });
 
       socket.on(
@@ -219,7 +217,6 @@ export default function InProgressActivity({
         <ChatsInProgressAccordion
           studentChats={studentChats}
           setStudentChats={setStudentChats}
-          setUnpairedStudents={setUnpairedStudents}
         />
         {featureFlags.isCompletedChatsSectionLaunched.enabled && (
           <CompletedChatsAccordion studentChats={EXAMPLE_CHATS} />
