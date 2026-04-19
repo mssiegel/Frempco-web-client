@@ -35,10 +35,17 @@ export default function SharedEmailEditor({
         inputProps={{ maxLength: 50 }}
         defaultValue={email}
         fullWidth
+        sx={{
+          '& .MuiOutlinedInput-root': {
+            backgroundColor: 'neutrals.white',
+          },
+        }}
       />
-      <Button variant='contained' color='primary' type='submit' sx={{ m: 2 }}>
-        Save email
-      </Button>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+        <Button variant='outlined' color='primary' type='submit'>
+          Save Email
+        </Button>
+      </Box>
     </Box>
   );
 }
