@@ -61,12 +61,16 @@ export default function Chatbox({ chat, setStudentChats }: ChatboxProps) {
     if (chatMode === SOLO) {
       socket.emit('solo mode: end chat', { chatId });
       setStudentChats((chats) =>
-        chats.filter((chat) => chat.chatId !== chatId),
+        chats.map((chat) =>
+          chat.chatId === chatId ? { ...chat, isCompleted: true } : chat,
+        ),
       );
     } else {
       socket.emit('unpair student chat', { chatId, student1, student2 });
       setStudentChats((chats) =>
-        chats.filter((chat) => chat.chatId !== chatId),
+        chats.map((chat) =>
+          chat.chatId === chatId ? { ...chat, isCompleted: true } : chat,
+        ),
       );
     }
   }

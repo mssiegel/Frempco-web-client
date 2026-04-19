@@ -1,4 +1,4 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -12,7 +12,6 @@ import SetupActivityAccordion from './SetupActivityAccordion';
 import ChatsInProgressAccordion from './ChatsInProgressAccordion';
 import CompletedChatsAccordion from './CompletedChatsAccordion';
 import featureFlags from '@config/featureFlags';
-import { EXAMPLE_CHATS } from '../exampleChats';
 import PageHeader from '@components/shared/PageHeader';
 
 interface InProgressActivityProps {
@@ -43,6 +42,16 @@ export default function InProgressActivity({
   const [unpairedStudents, setUnpairedStudents] = useState<Student[]>([]);
   const [studentChats, setStudentChats] = useState<(StudentChat | SoloChat)[]>(
     [],
+  );
+
+  const activeChats = useMemo(
+    () => studentChats.filter((chat) => !chat.isCompleted),
+    [studentChats],
+  );
+
+  const completedChats = useMemo(
+    () => studentChats.filter((chat) => chat.isCompleted),
+    [studentChats],
   );
 
   useEffect(() => {
@@ -77,6 +86,7 @@ export default function InProgressActivity({
             chatId,
             studentPair,
             conversation: [],
+            isCompleted: false,
           },
         ]);
       });
@@ -84,7 +94,9 @@ export default function InProgressActivity({
 
     socket.on('solo mode: student disconnected', ({ chatId }) => {
       setStudentChats((chats) =>
-        chats.filter((chat) => chat.chatId !== chatId),
+        chats.map((chat) =>
+          chat.chatId === chatId ? { ...chat, isCompleted: true } : chat,
+        ),
       );
     });
 
@@ -100,7 +112,9 @@ export default function InProgressActivity({
     if (socket) {
       socket.on('chat ended - two students', ({ chatId }) => {
         setStudentChats((chats) =>
-          chats.filter((chat) => chat.chatId !== chatId),
+          chats.map((chat) =>
+            chat.chatId === chatId ? { ...chat, isCompleted: true } : chat,
+          ),
         );
       });
 
@@ -215,11 +229,11 @@ export default function InProgressActivity({
           characters={characters}
         />
         <ChatsInProgressAccordion
-          studentChats={studentChats}
+          activeStudentChats={activeChats}
           setStudentChats={setStudentChats}
         />
         {featureFlags.isCompletedChatsSectionLaunched.enabled && (
-          <CompletedChatsAccordion studentChats={EXAMPLE_CHATS} />
+          <CompletedChatsAccordion completedStudentChats={completedChats} />
         )}
       </Box>
     </main>
