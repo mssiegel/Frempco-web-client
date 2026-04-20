@@ -37,7 +37,7 @@ export default function InProgressActivity({
   const { socket, sessionId } = useSocketConnection();
 
   console.log('Teacher sessionId:', sessionId);
-  console.log('Teacher socketId:', socket?.id ?? 'No socket found');
+  console.log('Teacher transport socket id:', socket?.id ?? 'No socket found');
 
   const [isConnected, setIsConnected] = useState(true);
   const [unpairedStudents, setUnpairedStudents] = useState<Student[]>([]);
@@ -121,13 +121,13 @@ export default function InProgressActivity({
 
       socket.on(
         'teacher listens to student message',
-        ({ message, socketId, chatId }) => {
+        ({ message, sessionId, chatId }) => {
           setStudentChats((studentChats) => {
             return studentChats.map((chat) => {
               if (chat.chatId === chatId && chat.mode === PAIRED) {
                 const student1 = chat.studentPair[0];
                 const messageAuthor =
-                  student1.socketId === socketId ? 'student1' : 'student2';
+                  student1.sessionId === sessionId ? 'student1' : 'student2';
                 const newMessage: ChatMessage = [messageAuthor, message];
                 return {
                   ...chat,

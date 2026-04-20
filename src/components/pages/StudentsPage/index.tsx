@@ -15,7 +15,7 @@ import { STAGE, Stage, StudentPairedChat, StudentSoloChat } from './types';
 export default function StudentsPage(): JSX.Element {
   const { socket, sessionId } = useSocketConnection();
   console.log('Student sessionId:', sessionId);
-  console.log('Student socketId:', socket.id ?? 'No socket found');
+  console.log('Student transport socket id:', socket.id ?? 'No socket found');
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));

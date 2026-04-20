@@ -14,12 +14,12 @@ export const EXAMPLE_CHATS: StudentChat[] = [
     studentPair: [
       {
         realName: 'Student 1797',
-        socketId: '8DmBxTmt0Q_iUbbxAAAn',
+        sessionId: '8DmBxTmt0Q_iUbbxAAAn',
         character: 'Tiny warlord',
       },
       {
         realName: 'Student 2958',
-        socketId: 'Ua_hGB2pSD-6CGvdAAAP',
+        sessionId: 'Ua_hGB2pSD-6CGvdAAAP',
         character: 'Forgetful surgeon',
       },
     ],
@@ -43,12 +43,12 @@ export const EXAMPLE_CHATS: StudentChat[] = [
     studentPair: [
       {
         realName: 'Student 4307',
-        socketId: 'bMHZDSrQ_Oj-XukgAABF',
+        sessionId: 'bMHZDSrQ_Oj-XukgAABF',
         character: 'Dance teacher',
       },
       {
         realName: 'Student 9654',
-        socketId: 'PauZMgihsO1fIaG0AABJ',
+        sessionId: 'PauZMgihsO1fIaG0AABJ',
         character: 'Perfectionist dentist',
       },
     ],
@@ -64,12 +64,12 @@ export const EXAMPLE_CHATS: StudentChat[] = [
     studentPair: [
       {
         realName: 'Student 5305',
-        socketId: 'NGAuHeC2kJgGf6voAAAl',
+        sessionId: 'NGAuHeC2kJgGf6voAAAl',
         character: 'Perfectionist dentist',
       },
       {
         realName: 'Student 1133',
-        socketId: '-vIO1Gi-LTkR3u2HAAAx',
+        sessionId: '-vIO1Gi-LTkR3u2HAAAx',
         character: 'Tiny warlord',
       },
     ],
@@ -85,12 +85,12 @@ export const EXAMPLE_CHATS: StudentChat[] = [
     studentPair: [
       {
         realName: 'Student 5296',
-        socketId: '5XFUQ0oJWQiDaQlkAABN',
+        sessionId: '5XFUQ0oJWQiDaQlkAABN',
         character: 'Tiny warlord',
       },
       {
         realName: 'Student 2434',
-        socketId: 'N6C2lemQD7-xNWp0AABR',
+        sessionId: 'N6C2lemQD7-xNWp0AABR',
         character: 'Perfectionist dentist',
       },
     ],
@@ -106,12 +106,12 @@ export const EXAMPLE_CHATS: StudentChat[] = [
     studentPair: [
       {
         realName: 'Student 7570',
-        socketId: 'V8XB9Bngez89zaBWAABV',
+        sessionId: 'V8XB9Bngez89zaBWAABV',
         character: 'Pirate captain',
       },
       {
         realName: 'Student 5072',
-        socketId: 'oqNvcYw0MLfU_HAtAABZ',
+        sessionId: 'oqNvcYw0MLfU_HAtAABZ',
         character: 'Dance teacher',
       },
     ],
@@ -127,12 +127,12 @@ export const EXAMPLE_CHATS: StudentChat[] = [
     studentPair: [
       {
         realName: 'Student 9997',
-        socketId: 'mmO7LO7b1aMp4SwkAABd',
+        sessionId: 'mmO7LO7b1aMp4SwkAABd',
         character: 'Dance teacher',
       },
       {
         realName: 'Student 2154',
-        socketId: 'sqL6DHyk0WWCfwJ_AABh',
+        sessionId: 'sqL6DHyk0WWCfwJ_AABh',
         character: 'Party planner',
       },
     ],
@@ -146,12 +146,12 @@ export const EXAMPLE_CHATS: StudentChat[] = [
     studentPair: [
       {
         realName: 'Student 1797',
-        socketId: '8DmBxTmt0Q_iUbbxAAAn',
+        sessionId: '8DmBxTmt0Q_iUbbxAAAn',
         character: 'Tiny warlord',
       },
       {
         realName: 'Student 2958',
-        socketId: 'Ua_hGB2pSD-6CGvdAAAP',
+        sessionId: 'Ua_hGB2pSD-6CGvdAAAP',
         character: 'Forgetful surgeon',
       },
     ],
@@ -167,12 +167,12 @@ export const EXAMPLE_CHATS: StudentChat[] = [
     studentPair: [
       {
         realName: 'Student 4307',
-        socketId: 'bMHZDSrQ_Oj-XukgAABF',
+        sessionId: 'bMHZDSrQ_Oj-XukgAABF',
         character: 'Dance teacher',
       },
       {
         realName: 'Student 9654',
-        socketId: 'PauZMgihsO1fIaG0AABJ',
+        sessionId: 'PauZMgihsO1fIaG0AABJ',
         character: 'Perfectionist dentist',
       },
     ],
@@ -188,12 +188,12 @@ export const EXAMPLE_CHATS: StudentChat[] = [
     studentPair: [
       {
         realName: 'Student 5305',
-        socketId: 'NGAuHeC2kJgGf6voAAAl',
+        sessionId: 'NGAuHeC2kJgGf6voAAAl',
         character: 'Perfectionist dentist',
       },
       {
         realName: 'Student 1133',
-        socketId: '-vIO1Gi-LTkR3u2HAAAx',
+        sessionId: '-vIO1Gi-LTkR3u2HAAAx',
         character: 'Tiny warlord',
       },
     ],
@@ -209,12 +209,12 @@ export const EXAMPLE_CHATS: StudentChat[] = [
     studentPair: [
       {
         realName: 'Student 5296',
-        socketId: '5XFUQ0oJWQiDaQlkAABN',
+        sessionId: '5XFUQ0oJWQiDaQlkAABN',
         character: 'Tiny warlord',
       },
       {
         realName: 'Student 2434',
-        socketId: 'N6C2lemQD7-xNWp0AABR',
+        sessionId: 'N6C2lemQD7-xNWp0AABR',
         character: 'Perfectionist dentist',
       },
     ],
