@@ -44,15 +44,15 @@ export default function InProgressActivity({
     [],
   );
 
-  const activeChats = useMemo(
-    () => studentChats.filter((chat) => !chat.isCompleted),
-    [studentChats],
-  );
-
-  const completedChats = useMemo(
-    () => studentChats.filter((chat) => chat.isCompleted),
-    [studentChats],
-  );
+  const { activeChats, completedChats } = useMemo(() => {
+    const activeChats = [];
+    const completedChats = [];
+    for (const chat of studentChats) {
+      if (chat.isCompleted) completedChats.push(chat);
+      else activeChats.push(chat);
+    }
+    return { activeChats, completedChats };
+  }, [studentChats]);
 
   useEffect(() => {
     // Check if the teacher is still connected to the activity every 10 seconds.
