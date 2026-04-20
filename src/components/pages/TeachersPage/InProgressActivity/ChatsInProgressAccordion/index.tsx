@@ -52,8 +52,14 @@ const ChatsInProgressAccordion = ({
         });
       }
     }
-    setStudentChats(
-      activeStudentChats.map((chat) => ({ ...chat, isCompleted: true })),
+    setStudentChats((studentChats) =>
+      studentChats.map((chat) =>
+        activeStudentChats.some(
+          (activeChat) => activeChat.chatId === chat.chatId,
+        )
+          ? { ...chat, isCompleted: true }
+          : chat,
+      ),
     );
   }
 
