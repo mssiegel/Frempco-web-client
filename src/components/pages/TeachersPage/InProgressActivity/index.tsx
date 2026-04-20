@@ -11,7 +11,6 @@ import UnpairedStudentsAccordion from './UnpairedStudentsAccordion';
 import SetupActivityAccordion from './SetupActivityAccordion';
 import ChatsInProgressAccordion from './ChatsInProgressAccordion';
 import CompletedChatsAccordion from './CompletedChatsAccordion';
-import featureFlags from '@config/featureFlags';
 import PageHeader from '@components/shared/PageHeader';
 
 interface InProgressActivityProps {
@@ -233,9 +232,7 @@ export default function InProgressActivity({
           activeStudentChats={activeChats}
           setStudentChats={setStudentChats}
         />
-        {featureFlags.isCompletedChatsSectionLaunched.enabled && (
-          <CompletedChatsAccordion completedStudentChats={completedChats} />
-        )}
+        <CompletedChatsAccordion completedStudentChats={completedChats} />
       </Box>
     </main>
   );
