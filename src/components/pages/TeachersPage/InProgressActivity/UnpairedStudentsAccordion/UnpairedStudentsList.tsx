@@ -32,9 +32,9 @@ export default function UnpairedStudentsList({
         setUnpairedStudents((unpaired) => [...unpaired, student]);
       });
 
-      socket.on('unpaired student left', ({ socketId }) => {
+      socket.on('unpaired student left', ({ sessionId }) => {
         setUnpairedStudents((students) =>
-          students.filter((student) => student.socketId !== socketId),
+          students.filter((student) => student.sessionId !== sessionId),
         );
       });
     }

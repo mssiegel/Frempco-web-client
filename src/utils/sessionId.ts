@@ -1,5 +1,13 @@
 const SESSION_ID_STORAGE_KEY = 'frempco-session-id';
 
+function getSessionStorage(): Storage {
+  if (typeof window === 'undefined') {
+    throw new Error('Session IDs can only be used in the browser.');
+  }
+
+  return window.sessionStorage;
+}
+
 function createSessionId(): string {
   if (
     typeof crypto === 'undefined' ||
@@ -14,20 +22,22 @@ function createSessionId(): string {
 }
 
 export function getOrCreateSessionId(): string {
-  if (typeof window === 'undefined') {
-    throw new Error('Session IDs can only be created in the browser.');
-  }
-
-  const existingSessionId = window.sessionStorage.getItem(
-    SESSION_ID_STORAGE_KEY,
-  );
+  const existingSessionId = getSessionId();
 
   if (existingSessionId) {
     return existingSessionId;
   }
 
   const sessionId = createSessionId();
-  window.sessionStorage.setItem(SESSION_ID_STORAGE_KEY, sessionId);
+  getSessionStorage().setItem(SESSION_ID_STORAGE_KEY, sessionId);
 
   return sessionId;
+}
+
+export function getSessionId(): string | null {
+  return getSessionStorage().getItem(SESSION_ID_STORAGE_KEY);
+}
+
+export function clearSessionId(): void {
+  getSessionStorage().removeItem(SESSION_ID_STORAGE_KEY);
 }

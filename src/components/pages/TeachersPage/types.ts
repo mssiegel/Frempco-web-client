@@ -1,7 +1,7 @@
 import { PAIRED, SOLO } from '@utils/activities';
 
 export interface Student {
-  socketId: string;
+  sessionId: string;
   realName: string;
   character?: string;
 }

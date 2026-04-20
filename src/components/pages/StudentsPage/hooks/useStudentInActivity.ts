@@ -22,7 +22,7 @@ export function useStudentInActivity(
     const connectionCheckInterval = setInterval(async () => {
       try {
         const getResponse = await fetch(
-          `${apiUrl}/activities/${activityPin}/studentSockets/${sessionId}`,
+          `${apiUrl}/activities/${activityPin}/students/${sessionId}`,
           { method: 'GET' },
         );
         const { isStudentInsideActivity } = await getResponse.json();
