@@ -4,7 +4,6 @@ import {
   SetStateAction,
   useRef,
   useEffect,
-  useContext,
   useState,
 } from 'react';
 import {
@@ -16,7 +15,7 @@ import {
 import ChatboxHeader from '@components/shared/ChatboxHeader';
 import { scrollToBottomOfElement, SOLO } from '@utils/activities';
 import { StudentChat, SoloChat } from '../../types';
-import { SocketContext } from '@contexts/SocketContext';
+import { useSocketConnection } from '@contexts/SocketContext';
 import Conversation from './Conversation';
 import featureFlags from '@config/featureFlags';
 
@@ -26,7 +25,7 @@ interface ChatboxProps {
 }
 
 export default function Chatbox({ chat, setStudentChats }: ChatboxProps) {
-  const socket = useContext(SocketContext);
+  const { socket } = useSocketConnection();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const chatboxConversationContainer = useRef<HTMLDivElement>(null);

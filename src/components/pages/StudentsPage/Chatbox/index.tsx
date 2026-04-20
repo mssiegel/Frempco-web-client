@@ -1,4 +1,4 @@
-import { Box, Paper } from '@mui/material';
+import { Paper } from '@mui/material';
 import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
@@ -18,7 +18,7 @@ interface ChatboxProps {
   studentName: string;
   activityPin: string;
   addStudentToActivity: (studentName: string, pin: string) => void;
-  socketId: string;
+  sessionId: string;
   isMobile: boolean;
 }
 
@@ -30,11 +30,11 @@ export default function Chatbox({
   studentName,
   activityPin,
   addStudentToActivity,
-  socketId,
+  sessionId,
   isMobile,
 }: ChatboxProps) {
   const [peerIsTyping, setPeerIsTyping] = useState(false);
-  const isConnected = useStudentInActivity(activityPin, socketId);
+  const isConnected = useStudentInActivity(activityPin, sessionId);
   const hasChatEnded = !isConnected || Boolean(chatEndedMsg);
 
   function addChatMessage(sender, message: string) {

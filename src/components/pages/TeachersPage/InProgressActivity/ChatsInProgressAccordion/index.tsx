@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useContext } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import {
   Accordion,
   AccordionSummary,
@@ -9,7 +9,7 @@ import {
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import { StudentChat, SoloChat } from '../../types';
 import { PAIRED, SOLO } from '@utils/activities';
-import { SocketContext } from '@contexts/SocketContext';
+import { useSocketConnection } from '@contexts/SocketContext';
 import DisplayOfChats from '../shared/DisplayOfChats';
 
 interface ChatsInProgressAccordionProps {
@@ -21,7 +21,7 @@ const ChatsInProgressAccordion = ({
   studentChats,
   setStudentChats,
 }: ChatsInProgressAccordionProps) => {
-  const socket = useContext(SocketContext);
+  const { socket } = useSocketConnection();
   const totalStudents = studentChats.length;
   const pairCount = studentChats.filter((chat) => chat.mode === PAIRED).length;
   const soloCount = studentChats.filter((chat) => chat.mode === SOLO).length;

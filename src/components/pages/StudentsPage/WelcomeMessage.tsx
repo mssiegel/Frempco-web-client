@@ -6,7 +6,7 @@ import { useStudentInActivity } from './hooks/useStudentInActivity';
 
 interface WelcomeMessageProps {
   activityPin: string;
-  socketId: string;
+  sessionId: string;
   removedFromClass: boolean;
   studentName: string;
   isMobile: boolean;
@@ -15,13 +15,13 @@ interface WelcomeMessageProps {
 
 export default function WelcomeMessage({
   activityPin,
-  socketId,
+  sessionId,
   removedFromClass,
   studentName,
   isMobile,
   addStudentToActivity,
 }: WelcomeMessageProps) {
-  const isStudentInActivity = useStudentInActivity(activityPin, socketId);
+  const isStudentInActivity = useStudentInActivity(activityPin, sessionId);
   const wasDisconnectedWhileWaiting = !isStudentInActivity;
   return (
     <Box textAlign='center'>

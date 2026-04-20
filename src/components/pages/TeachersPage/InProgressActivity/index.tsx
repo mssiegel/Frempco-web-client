@@ -1,10 +1,10 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
 import { PAIRED } from '@utils/activities';
 import { ChatMessage, SoloChat, Student, StudentChat } from '../types';
-import { SocketContext } from '@contexts/SocketContext';
+import { useSocketConnection } from '@contexts/SocketContext';
 import { useRouter } from 'next/router';
 import Link from '@components/shared/Link';
 import UnpairedStudentsAccordion from './UnpairedStudentsAccordion';
@@ -35,8 +35,9 @@ export default function InProgressActivity({
   const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
   const TEN_SECONDS = 10000;
   const router = useRouter();
-  const socket = useContext(SocketContext);
+  const { socket, sessionId } = useSocketConnection();
 
+  console.log('Teacher sessionId:', sessionId);
   console.log('Teacher socketId:', socket?.id ?? 'No socket found');
 
   const [isConnected, setIsConnected] = useState(true);
