@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -12,7 +12,6 @@ import SetupActivityAccordion from './SetupActivityAccordion';
 import ChatsInProgressAccordion from './ChatsInProgressAccordion';
 import CompletedChatsAccordion from './CompletedChatsAccordion';
 import featureFlags from '@config/featureFlags';
-import { EXAMPLE_CHATS } from '../exampleChats';
 import PageHeader from '@components/shared/PageHeader';
 
 interface InProgressActivityProps {
@@ -46,6 +45,16 @@ export default function InProgressActivity({
     [],
   );
 
+  const { activeChats, completedChats } = useMemo(() => {
+    const activeChats = [];
+    const completedChats = [];
+    for (const chat of studentChats) {
+      if (chat.isCompleted) completedChats.push(chat);
+      else activeChats.push(chat);
+    }
+    return { activeChats, completedChats };
+  }, [studentChats]);
+
   useEffect(() => {
     // Check if the teacher is still connected to the activity every 10 seconds.
     const connectionCheckInterval = setInterval(async () => {
@@ -78,6 +87,7 @@ export default function InProgressActivity({
             chatId,
             studentPair,
             conversation: [],
+            isCompleted: false,
           },
         ]);
       });
@@ -85,7 +95,9 @@ export default function InProgressActivity({
 
     socket.on('solo mode: student disconnected', ({ chatId }) => {
       setStudentChats((chats) =>
-        chats.filter((chat) => chat.chatId !== chatId),
+        chats.map((chat) =>
+          chat.chatId === chatId ? { ...chat, isCompleted: true } : chat,
+        ),
       );
     });
 
@@ -101,7 +113,9 @@ export default function InProgressActivity({
     if (socket) {
       socket.on('chat ended - two students', ({ chatId }) => {
         setStudentChats((chats) =>
-          chats.filter((chat) => chat.chatId !== chatId),
+          chats.map((chat) =>
+            chat.chatId === chatId ? { ...chat, isCompleted: true } : chat,
+          ),
         );
       });
 
@@ -216,11 +230,11 @@ export default function InProgressActivity({
           characters={characters}
         />
         <ChatsInProgressAccordion
-          studentChats={studentChats}
+          activeStudentChats={activeChats}
           setStudentChats={setStudentChats}
         />
         {featureFlags.isCompletedChatsSectionLaunched.enabled && (
-          <CompletedChatsAccordion studentChats={EXAMPLE_CHATS} />
+          <CompletedChatsAccordion completedStudentChats={completedChats} />
         )}
       </Box>
     </main>

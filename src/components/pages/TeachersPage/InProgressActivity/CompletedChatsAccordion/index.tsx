@@ -9,13 +9,13 @@ import { StudentChat, SoloChat } from '../../types';
 import DisplayOfChats from '../shared/DisplayOfChats';
 
 interface CompletedChatsAccordionProps {
-  studentChats: (StudentChat | SoloChat)[];
+  completedStudentChats: (StudentChat | SoloChat)[];
 }
 
 const CompletedChatsAccordion = ({
-  studentChats,
+  completedStudentChats,
 }: CompletedChatsAccordionProps): JSX.Element => {
-  const chatCount = studentChats.length;
+  const chatCount = completedStudentChats.length;
   const verb = chatCount === 1 ? 'was' : 'were';
   const chatText = chatCount === 1 ? 'chat' : 'chats';
 
@@ -26,7 +26,7 @@ const CompletedChatsAccordion = ({
         sx={{ borderRadius: '15px', border: '1px solid black', gap: 2 }}
       >
         <Typography variant='h5' fontWeight={400}>
-          Completed Chats
+          Completed Chats ({chatCount})
         </Typography>
       </AccordionSummary>
       <AccordionDetails>
@@ -37,7 +37,7 @@ const CompletedChatsAccordion = ({
           </strong>{' '}
           completed.
         </Typography>
-        <DisplayOfChats studentChats={studentChats} />
+        <DisplayOfChats studentChats={completedStudentChats} />
       </AccordionDetails>
     </Accordion>
   );

@@ -13,18 +13,22 @@ import { useSocketConnection } from '@contexts/SocketContext';
 import DisplayOfChats from '../shared/DisplayOfChats';
 
 interface ChatsInProgressAccordionProps {
-  studentChats: (StudentChat | SoloChat)[];
+  activeStudentChats: (StudentChat | SoloChat)[];
   setStudentChats: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
 }
 
 const ChatsInProgressAccordion = ({
-  studentChats,
+  activeStudentChats,
   setStudentChats,
 }: ChatsInProgressAccordionProps) => {
   const { socket } = useSocketConnection();
-  const totalStudents = studentChats.length;
-  const pairCount = studentChats.filter((chat) => chat.mode === PAIRED).length;
-  const soloCount = studentChats.filter((chat) => chat.mode === SOLO).length;
+  const totalStudents = activeStudentChats.length;
+  const pairCount = activeStudentChats.filter(
+    (chat) => chat.mode === PAIRED,
+  ).length;
+  const soloCount = activeStudentChats.filter(
+    (chat) => chat.mode === SOLO,
+  ).length;
 
   const verb = pairCount === 1 ? 'is' : 'are';
   const pairText = pairCount === 1 ? 'pair' : 'pairs';
@@ -36,7 +40,7 @@ const ChatsInProgressAccordion = ({
     );
     if (!endAllChatsConfirmed) return;
 
-    for (const chat of studentChats) {
+    for (const chat of activeStudentChats) {
       if (chat.mode === SOLO) {
         socket.emit('solo mode: end chat', { chatId: chat.chatId });
       } else {
@@ -48,7 +52,9 @@ const ChatsInProgressAccordion = ({
         });
       }
     }
-    setStudentChats([]);
+    setStudentChats(
+      activeStudentChats.map((chat) => ({ ...chat, isCompleted: true })),
+    );
   }
 
   return (
@@ -83,7 +89,7 @@ const ChatsInProgressAccordion = ({
           End all chats
         </Button>
         <DisplayOfChats
-          studentChats={studentChats}
+          studentChats={activeStudentChats}
           setStudentChats={setStudentChats}
         />
       </AccordionDetails>
