@@ -6,12 +6,12 @@ import { useEffect, useState } from 'react';
  * that happens, they should see a message to login again.
  *
  * @param activityPin - The activity PIN
- * @param socketId - The student's socket ID
+ * @param sessionId - The student's persistent session ID
  * @returns true while the student is in the activity, false once we detect they were logged out
  */
 export function useStudentInActivity(
   activityPin: string,
-  socketId: string,
+  sessionId: string,
 ): boolean {
   const [isStudentInActivity, setIsStudentInActivity] = useState(true);
 
@@ -22,7 +22,7 @@ export function useStudentInActivity(
     const connectionCheckInterval = setInterval(async () => {
       try {
         const getResponse = await fetch(
-          `${apiUrl}/activities/${activityPin}/studentSockets/${socketId}`,
+          `${apiUrl}/activities/${activityPin}/studentSockets/${sessionId}`,
           { method: 'GET' },
         );
         const { isStudentInsideActivity } = await getResponse.json();
@@ -38,7 +38,7 @@ export function useStudentInActivity(
     }, FIFTEEN_SECONDS);
 
     return () => clearInterval(connectionCheckInterval);
-  }, [activityPin, socketId]);
+  }, [activityPin, sessionId]);
 
   return isStudentInActivity;
 }

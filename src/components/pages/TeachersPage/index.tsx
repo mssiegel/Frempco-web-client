@@ -1,8 +1,8 @@
 import { useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
-import { SocketContext } from '@contexts/SocketContext';
+import { useSocketConnection } from '@contexts/SocketContext';
 import { EMPTY_EMAIL } from '@utils/activities';
 import CreateActivity from './CreateActivity';
 import InProgressActivity from './InProgressActivity/index';
@@ -10,7 +10,7 @@ import InProgressActivity from './InProgressActivity/index';
 const CHARACTERS = ['Batman', 'Wonder Woman', 'Spiderman'];
 
 export default function TeachersPage(): JSX.Element {
-  const socket = useContext(SocketContext);
+  const { socket } = useSocketConnection();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [activityPin, setActivityPin] = useState('');
