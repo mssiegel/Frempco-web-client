@@ -18,7 +18,6 @@ import { scrollToBottomOfElement, SOLO } from '@utils/activities';
 import { StudentChat, SoloChat } from '../../types';
 import { SocketContext } from '@contexts/SocketContext';
 import Conversation from './Conversation';
-import featureFlags from '@config/featureFlags';
 
 interface ChatboxProps {
   chat: StudentChat | SoloChat;
@@ -89,10 +88,6 @@ export default function Chatbox({ chat, setStudentChats }: ChatboxProps) {
     },
   ];
 
-  const showEndChatButton = featureFlags.isCompletedChatsSectionLaunched.enabled
-    ? !chat.isCompleted // show if chat is not completed
-    : true; // always show if feature flag is off
-
   return (
     <Paper
       elevation={6}
@@ -130,7 +125,7 @@ export default function Chatbox({ chat, setStudentChats }: ChatboxProps) {
         >
           {isExpanded ? 'Collapse' : 'Expand'}
         </Button>
-        {showEndChatButton && (
+        {!chat.isCompleted && (
           <Button
             color='error'
             variant='contained'
