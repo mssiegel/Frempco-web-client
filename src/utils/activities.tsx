@@ -4,6 +4,7 @@ export const TEST_ACTIVITY_PIN = '0000';
 export const PAIRED = 'PAIRED';
 export const SOLO = 'SOLO';
 export const EMPTY_EMAIL = '';
+export const STUDENT_CONNECTION_CHECK_INTERVAL = 15000;
 
 export function getRandom<T>(arr: Array<T>): T {
   return arr[Math.floor(Math.random() * arr.length)];

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { STUDENT_CONNECTION_CHECK_INTERVAL } from '@utils/activities';
 
 /**
  * Polls the server to detect if a student lost connection to the activity.
@@ -17,7 +18,6 @@ export function useStudentInActivity(
 
   useEffect(() => {
     const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
-    const FIFTEEN_SECONDS = 15000;
 
     const connectionCheckInterval = setInterval(async () => {
       try {
@@ -35,7 +35,7 @@ export function useStudentInActivity(
         setIsStudentInActivity(false);
         clearInterval(connectionCheckInterval);
       }
-    }, FIFTEEN_SECONDS);
+    }, STUDENT_CONNECTION_CHECK_INTERVAL);
 
     return () => clearInterval(connectionCheckInterval);
   }, [activityPin, sessionId]);
