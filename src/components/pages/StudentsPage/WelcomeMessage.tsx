@@ -1,8 +1,10 @@
 import { Box, Button, Icon, Typography } from '@mui/material';
 import Image from 'next/image';
+import { useState } from 'react';
 
 import Link from '@components/shared/Link';
 import { useStudentInActivity } from './hooks/useStudentInActivity';
+import { STUDENT_CONNECTION_CHECK_INTERVAL } from '@utils/activities';
 
 interface WelcomeMessageProps {
   activityPin: string;
@@ -21,8 +23,15 @@ export default function WelcomeMessage({
   isMobile,
   addStudentToActivity,
 }: WelcomeMessageProps) {
+  const [hasClickedRejoin, setHasClickedRejoin] = useState(false);
   const isStudentInActivity = useStudentInActivity(activityPin, sessionId);
-  const wasDisconnectedWhileWaiting = !isStudentInActivity;
+  const shouldShowDisconnectedState = !isStudentInActivity && !hasClickedRejoin;
+
+  function handleRejoinActivityButtonClicked() {
+    setHasClickedRejoin(true);
+    addStudentToActivity(studentName, activityPin);
+    setTimeout(() => setHasClickedRejoin(false), STUDENT_CONNECTION_CHECK_INTERVAL);
+  }
   return (
     <Box textAlign='center'>
       <Image
@@ -50,7 +59,7 @@ export default function WelcomeMessage({
             again.
           </Typography>
         </>
-      ) : wasDisconnectedWhileWaiting ? (
+      ) : shouldShowDisconnectedState ? (
         <>
           <Typography
             variant={isMobile ? 'h5' : 'h4'}
@@ -63,7 +72,7 @@ export default function WelcomeMessage({
             variant='contained'
             color='primary'
             startIcon={<Icon sx={{ fontSize: 24 }}>play_arrow</Icon>}
-            onClick={() => addStudentToActivity(studentName, activityPin)}
+            onClick={handleRejoinActivityButtonClicked}
           >
             Rejoin activity
           </Button>
