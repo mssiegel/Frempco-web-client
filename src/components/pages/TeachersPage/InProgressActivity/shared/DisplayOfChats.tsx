@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
-import { Student, StudentChat, SoloChat } from '../../types';
+import { StudentChat, SoloChat } from '../../types';
 import Chatbox from '../Chatbox';
 
 interface DisplayOfChatsProps {
@@ -15,9 +15,9 @@ export default function DisplayOfChats({
 }: DisplayOfChatsProps) {
   return (
     <Grid container spacing={2} mt={2} pb={2}>
-      {studentChats.map((chat, i) => {
+      {studentChats.map((chat) => {
         return (
-          <Grid key={i} item xs={12} md={6} lg={4}>
+          <Grid key={chat.chatId} item xs={12} md={6} lg={4}>
             <Chatbox chat={chat} setStudentChats={setStudentChats} />
           </Grid>
         );

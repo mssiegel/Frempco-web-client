@@ -22,6 +22,7 @@ const ChatsInProgressAccordion = ({
   setStudentChats,
 }: ChatsInProgressAccordionProps) => {
   const { socket } = useSocketConnection();
+
   const totalStudents = activeStudentChats.length;
   const pairCount = activeStudentChats.filter(
     (chat) => chat.mode === PAIRED,
