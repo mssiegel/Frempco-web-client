@@ -1,18 +1,16 @@
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
 import { PAIRED } from '@utils/activities';
 import { ChatMessage, SoloChat, Student, StudentChat } from '../types';
-import { SocketContext } from '@contexts/SocketContext';
+import { useSocketConnection } from '@contexts/SocketContext';
 import { useRouter } from 'next/router';
 import Link from '@components/shared/Link';
 import UnpairedStudentsAccordion from './UnpairedStudentsAccordion';
 import SetupActivityAccordion from './SetupActivityAccordion';
 import ChatsInProgressAccordion from './ChatsInProgressAccordion';
 import CompletedChatsAccordion from './CompletedChatsAccordion';
-import featureFlags from '@config/featureFlags';
-import { EXAMPLE_CHATS } from '../exampleChats';
 import PageHeader from '@components/shared/PageHeader';
 
 interface InProgressActivityProps {
@@ -35,15 +33,26 @@ export default function InProgressActivity({
   const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
   const TEN_SECONDS = 10000;
   const router = useRouter();
-  const socket = useContext(SocketContext);
+  const { socket, sessionId } = useSocketConnection();
 
-  console.log('Teacher socketId:', socket?.id ?? 'No socket found');
+  console.log('Teacher sessionId:', sessionId);
+  console.log('Teacher transport socket id:', socket?.id ?? 'No socket found');
 
   const [isConnected, setIsConnected] = useState(true);
   const [unpairedStudents, setUnpairedStudents] = useState<Student[]>([]);
   const [studentChats, setStudentChats] = useState<(StudentChat | SoloChat)[]>(
     [],
   );
+
+  const { activeChats, completedChats } = useMemo(() => {
+    const activeChats = [];
+    const completedChats = [];
+    for (const chat of studentChats) {
+      if (chat.isCompleted) completedChats.push(chat);
+      else activeChats.push(chat);
+    }
+    return { activeChats, completedChats };
+  }, [studentChats]);
 
   useEffect(() => {
     // Check if the teacher is still connected to the activity every 10 seconds.
@@ -77,6 +86,7 @@ export default function InProgressActivity({
             chatId,
             studentPair,
             conversation: [],
+            isCompleted: false,
           },
         ]);
       });
@@ -84,7 +94,9 @@ export default function InProgressActivity({
 
     socket.on('solo mode: student disconnected', ({ chatId }) => {
       setStudentChats((chats) =>
-        chats.filter((chat) => chat.chatId !== chatId),
+        chats.map((chat) =>
+          chat.chatId === chatId ? { ...chat, isCompleted: true } : chat,
+        ),
       );
     });
 
@@ -94,25 +106,27 @@ export default function InProgressActivity({
         socket.off('solo mode: student disconnected');
       }
     };
-  }, [socket, studentChats.length]);
+  }, [socket]);
 
   useEffect(() => {
     if (socket) {
       socket.on('chat ended - two students', ({ chatId }) => {
         setStudentChats((chats) =>
-          chats.filter((chat) => chat.chatId !== chatId),
+          chats.map((chat) =>
+            chat.chatId === chatId ? { ...chat, isCompleted: true } : chat,
+          ),
         );
       });
 
       socket.on(
         'teacher listens to student message',
-        ({ message, socketId, chatId }) => {
+        ({ message, sessionId, chatId }) => {
           setStudentChats((studentChats) => {
             return studentChats.map((chat) => {
               if (chat.chatId === chatId && chat.mode === PAIRED) {
                 const student1 = chat.studentPair[0];
                 const messageAuthor =
-                  student1.socketId === socketId ? 'student1' : 'student2';
+                  student1.sessionId === sessionId ? 'student1' : 'student2';
                 const newMessage: ChatMessage = [messageAuthor, message];
                 return {
                   ...chat,
@@ -215,12 +229,10 @@ export default function InProgressActivity({
           characters={characters}
         />
         <ChatsInProgressAccordion
-          studentChats={studentChats}
+          activeStudentChats={activeChats}
           setStudentChats={setStudentChats}
         />
-        {featureFlags.isCompletedChatsSectionLaunched.enabled && (
-          <CompletedChatsAccordion studentChats={EXAMPLE_CHATS} />
-        )}
+        <CompletedChatsAccordion completedStudentChats={completedChats} />
       </Box>
     </main>
   );

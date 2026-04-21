@@ -45,10 +45,13 @@ export default function UnpairedStudentItem({
     const confirmation = confirm(
       `Are you sure you want to remove ${student.realName}?`,
     );
-    if (confirmation)
-      socket.emit('teacher:removed-unpaired-student-from-activity', student);
+    if (confirmation) {
+      socket.emit('teacher:removed-unpaired-student-from-activity', {
+        sessionId: student.sessionId,
+      });
+    }
     setUnpairedStudents((students) =>
-      students.filter((s) => s.socketId !== student.socketId),
+      students.filter((s) => s.sessionId !== student.sessionId),
     );
   }
 
@@ -57,7 +60,7 @@ export default function UnpairedStudentItem({
     socket.emit(
       'solo mode: start chat',
       {
-        studentSocketId: student.socketId,
+        studentSessionId: student.sessionId,
         characterName: student.character,
       },
       ({ chatId, messages }) => {
@@ -68,6 +71,7 @@ export default function UnpairedStudentItem({
             chatId,
             student,
             conversation: messages,
+            isCompleted: false,
           },
         ]);
       },

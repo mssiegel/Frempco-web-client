@@ -1,9 +1,9 @@
 import { Box, Typography, useMediaQuery } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/router';
 
-import { SocketContext } from '@contexts/SocketContext';
+import { useSocketConnection } from '@contexts/SocketContext';
 import PageHeader from '@components/shared/PageHeader';
 import FrempcoBranding from '@components/shared/PageHeader/FrempcoBranding';
 import { useStudentSocketHandlers } from './hooks/useStudentSocketHandlers';
@@ -13,8 +13,9 @@ import LoginFlow from './LoginFlow';
 import { STAGE, Stage, StudentPairedChat, StudentSoloChat } from './types';
 
 export default function StudentsPage(): JSX.Element {
-  const socket = useContext(SocketContext);
-  console.log('Student socketId:', socket?.id ?? 'No socket found');
+  const { socket, sessionId } = useSocketConnection();
+  console.log('Student sessionId:', sessionId);
+  console.log('Student transport socket id:', socket.id ?? 'No socket found');
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -90,13 +91,13 @@ export default function StudentsPage(): JSX.Element {
         studentName={studentName}
         activityPin={pin}
         addStudentToActivity={addStudentToActivity}
-        socketId={socket.id}
+        sessionId={sessionId}
         isMobile={isMobile}
       />
     ) : (
       <WelcomeMessage
         activityPin={pin}
-        socketId={socket.id}
+        sessionId={sessionId}
         removedFromClass={stage === STAGE.removedByTeacher}
         studentName={studentName}
         isMobile={isMobile}

@@ -1,4 +1,4 @@
-import { Dispatch, SetStateAction, useContext } from 'react';
+import { Dispatch, SetStateAction } from 'react';
 import {
   Accordion,
   AccordionSummary,
@@ -9,22 +9,27 @@ import {
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import { StudentChat, SoloChat } from '../../types';
 import { PAIRED, SOLO } from '@utils/activities';
-import { SocketContext } from '@contexts/SocketContext';
+import { useSocketConnection } from '@contexts/SocketContext';
 import DisplayOfChats from '../shared/DisplayOfChats';
 
 interface ChatsInProgressAccordionProps {
-  studentChats: (StudentChat | SoloChat)[];
+  activeStudentChats: (StudentChat | SoloChat)[];
   setStudentChats: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
 }
 
 const ChatsInProgressAccordion = ({
-  studentChats,
+  activeStudentChats,
   setStudentChats,
 }: ChatsInProgressAccordionProps) => {
-  const socket = useContext(SocketContext);
-  const totalStudents = studentChats.length;
-  const pairCount = studentChats.filter((chat) => chat.mode === PAIRED).length;
-  const soloCount = studentChats.filter((chat) => chat.mode === SOLO).length;
+  const { socket } = useSocketConnection();
+
+  const totalStudents = activeStudentChats.length;
+  const pairCount = activeStudentChats.filter(
+    (chat) => chat.mode === PAIRED,
+  ).length;
+  const soloCount = activeStudentChats.filter(
+    (chat) => chat.mode === SOLO,
+  ).length;
 
   const verb = pairCount === 1 ? 'is' : 'are';
   const pairText = pairCount === 1 ? 'pair' : 'pairs';
@@ -36,7 +41,7 @@ const ChatsInProgressAccordion = ({
     );
     if (!endAllChatsConfirmed) return;
 
-    for (const chat of studentChats) {
+    for (const chat of activeStudentChats) {
       if (chat.mode === SOLO) {
         socket.emit('solo mode: end chat', { chatId: chat.chatId });
       } else {
@@ -48,7 +53,15 @@ const ChatsInProgressAccordion = ({
         });
       }
     }
-    setStudentChats([]);
+    setStudentChats((studentChats) =>
+      studentChats.map((chat) =>
+        activeStudentChats.some(
+          (activeChat) => activeChat.chatId === chat.chatId,
+        )
+          ? { ...chat, isCompleted: true }
+          : chat,
+      ),
+    );
   }
 
   return (
@@ -83,7 +96,7 @@ const ChatsInProgressAccordion = ({
           End all chats
         </Button>
         <DisplayOfChats
-          studentChats={studentChats}
+          studentChats={activeStudentChats}
           setStudentChats={setStudentChats}
         />
       </AccordionDetails>

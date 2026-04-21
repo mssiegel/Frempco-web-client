@@ -1,7 +1,7 @@
 import { PAIRED, SOLO } from '@utils/activities';
 
 export interface Student {
-  socketId: string;
+  sessionId: string;
   realName: string;
   character?: string;
 }
@@ -22,7 +22,7 @@ export interface StudentChat {
   chatId: string;
   studentPair: StudentPair;
   conversation: ChatMessage[];
-  isCompleted?: boolean;
+  isCompleted: boolean;
 }
 
 export interface SoloChat {
@@ -30,5 +30,5 @@ export interface SoloChat {
   chatId: string;
   student: Student;
   conversation: SoloChatMessage[];
-  isCompleted?: boolean;
+  isCompleted: boolean;
 }

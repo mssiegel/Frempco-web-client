@@ -1,10 +1,10 @@
 import { Box, Button, Paper } from '@mui/material';
 import {
   Dispatch,
+  memo,
   SetStateAction,
-  useRef,
   useEffect,
-  useContext,
+  useRef,
   useState,
 } from 'react';
 import {
@@ -15,18 +15,17 @@ import {
 
 import ChatboxHeader from '@components/shared/ChatboxHeader';
 import { scrollToBottomOfElement, SOLO } from '@utils/activities';
-import { StudentChat, SoloChat } from '../../types';
-import { SocketContext } from '@contexts/SocketContext';
+import { Student, StudentChat, SoloChat } from '../../types';
+import { useSocketConnection } from '@contexts/SocketContext';
 import Conversation from './Conversation';
-import featureFlags from '@config/featureFlags';
 
 interface ChatboxProps {
   chat: StudentChat | SoloChat;
-  setStudentChats: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
+  setStudentChats?: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
 }
 
-export default function Chatbox({ chat, setStudentChats }: ChatboxProps) {
-  const socket = useContext(SocketContext);
+function Chatbox({ chat, setStudentChats }: ChatboxProps) {
+  const { socket } = useSocketConnection();
   const [isExpanded, setIsExpanded] = useState(false);
 
   const chatboxConversationContainer = useRef<HTMLDivElement>(null);
@@ -41,7 +40,7 @@ export default function Chatbox({ chat, setStudentChats }: ChatboxProps) {
       // Scroll the buttons container into view when the chatbox's expand animation finishes
       const expansionAnimationInMilliseconds = 300;
       setTimeout(() => {
-        buttonsContainerRef.current.scrollIntoView({
+        buttonsContainerRef.current?.scrollIntoView({
           behavior: 'smooth',
           block: 'end',
         });
@@ -49,7 +48,14 @@ export default function Chatbox({ chat, setStudentChats }: ChatboxProps) {
     }
   }, [isExpanded]);
 
-  function endChat(chatId, chatMode, student1, student2) {
+  function endChat(
+    chatId: string,
+    chatMode: StudentChat['mode'] | SoloChat['mode'],
+    student1: Student,
+    student2?: Student,
+  ) {
+    if (!setStudentChats) return;
+
     const endChatConfirmed = confirm(
       `Are you sure you want to end the ${
         chatMode === SOLO ? 'solo ' : ''
@@ -61,12 +67,16 @@ export default function Chatbox({ chat, setStudentChats }: ChatboxProps) {
     if (chatMode === SOLO) {
       socket.emit('solo mode: end chat', { chatId });
       setStudentChats((chats) =>
-        chats.filter((chat) => chat.chatId !== chatId),
+        chats.map((chat) =>
+          chat.chatId === chatId ? { ...chat, isCompleted: true } : chat,
+        ),
       );
     } else {
       socket.emit('unpair student chat', { chatId, student1, student2 });
       setStudentChats((chats) =>
-        chats.filter((chat) => chat.chatId !== chatId),
+        chats.map((chat) =>
+          chat.chatId === chatId ? { ...chat, isCompleted: true } : chat,
+        ),
       );
     }
   }
@@ -84,10 +94,6 @@ export default function Chatbox({ chat, setStudentChats }: ChatboxProps) {
       value: chat.mode === SOLO ? 'chatbot' : student2.character,
     },
   ];
-
-  const showEndChatButton = featureFlags.isCompletedChatsSectionLaunched.enabled
-    ? !chat.isCompleted // show if chat is not completed
-    : true; // always show if feature flag is off
 
   return (
     <Paper
@@ -126,7 +132,7 @@ export default function Chatbox({ chat, setStudentChats }: ChatboxProps) {
         >
           {isExpanded ? 'Collapse' : 'Expand'}
         </Button>
-        {showEndChatButton && (
+        {!chat.isCompleted && Boolean(setStudentChats) && (
           <Button
             color='error'
             variant='contained'
@@ -140,3 +146,9 @@ export default function Chatbox({ chat, setStudentChats }: ChatboxProps) {
     </Paper>
   );
 }
+
+export default memo(Chatbox, (prev, next) => {
+  return (
+    prev.chat === next.chat && prev.setStudentChats === next.setStudentChats
+  );
+});
