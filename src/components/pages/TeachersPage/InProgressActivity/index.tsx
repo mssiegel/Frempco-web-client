@@ -1,4 +1,4 @@
-import { useContext, useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -106,7 +106,7 @@ export default function InProgressActivity({
         socket.off('solo mode: student disconnected');
       }
     };
-  }, [socket, studentChats.length]);
+  }, [socket]);
 
   useEffect(() => {
     if (socket) {
