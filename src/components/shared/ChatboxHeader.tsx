@@ -8,11 +8,13 @@ interface HeaderRow {
 interface ChatboxHeaderProps {
   headerRows: HeaderRow[];
   shouldShowEndChatButton: boolean;
+  onEndChat?: () => void;
 }
 
 export default function ChatboxHeader({
   headerRows,
   shouldShowEndChatButton,
+  onEndChat,
 }: ChatboxHeaderProps): JSX.Element {
   return (
     <Box
@@ -33,6 +35,7 @@ export default function ChatboxHeader({
           <Button
             variant='contained'
             disableElevation
+            onClick={onEndChat}
             sx={{
               alignSelf: 'center',
               minWidth: 'auto',

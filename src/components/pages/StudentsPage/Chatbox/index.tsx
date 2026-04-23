@@ -3,7 +3,7 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
 import ChatboxHeader from '@components/shared/ChatboxHeader';
-import { scrollToBottomOfElement } from '@utils/activities';
+import { scrollToBottomOfElement, PAIRED } from '@utils/activities';
 import { useStudentInActivity } from '../hooks/useStudentInActivity';
 import Conversation from './Conversation';
 import SendMessageSection from './SendMessageSection';
@@ -15,6 +15,7 @@ interface ChatboxProps {
   chat: StudentPairedChat | StudentSoloChat;
   setChat: Dispatch<SetStateAction<StudentPairedChat | StudentSoloChat>>;
   chatEndedMsg: null | string;
+  setChatEndedMsg: (message: string | null) => void;
   studentName: string;
   activityPin: string;
   addStudentToActivity: (studentName: string, pin: string) => void;
@@ -27,6 +28,7 @@ export default function Chatbox({
   chat,
   setChat,
   chatEndedMsg,
+  setChatEndedMsg,
   studentName,
   activityPin,
   addStudentToActivity,
@@ -42,6 +44,16 @@ export default function Chatbox({
       ...chat,
       conversation: [...chat.conversation, [sender, message]],
     }));
+  }
+
+  function handleEndChat() {
+    const endChatConfirmed = confirm('Are you sure you want to end this chat?');
+    if (!endChatConfirmed) return;
+
+    socket.emit('student:ended-paired-chat');
+
+    // Update local state immediately
+    setChatEndedMsg('You ended the chat');
   }
 
   useEffect(() => {
@@ -84,7 +96,8 @@ export default function Chatbox({
           { label: "You're:", value: chat.characters.you },
           { label: 'With:', value: chat.characters.peer },
         ]}
-        shouldShowEndChatButton={true}
+        shouldShowEndChatButton={chat.mode === PAIRED}
+        onEndChat={handleEndChat}
       />
       <Conversation
         chat={chat}
