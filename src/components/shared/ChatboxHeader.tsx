@@ -1,15 +1,18 @@
-import { Box, Typography } from '@mui/material';
+import { Box, Button, Typography } from '@mui/material';
 
 interface HeaderRow {
   label: string;
   value: string;
 }
+
 interface ChatboxHeaderProps {
   headerRows: HeaderRow[];
+  shouldShowEndChatButton: boolean;
 }
 
 export default function ChatboxHeader({
   headerRows,
+  shouldShowEndChatButton,
 }: ChatboxHeaderProps): JSX.Element {
   return (
     <Box
@@ -20,9 +23,32 @@ export default function ChatboxHeader({
         px: '16px',
       }}
     >
-      {headerRows.map(({ label, value }) => (
-        <RowForHeader key={label} label={label} value={value} />
-      ))}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 1 }}>
+        <Box>
+          {headerRows.map(({ label, value }) => (
+            <RowForHeader key={label} label={label} value={value} />
+          ))}
+        </Box>
+        {shouldShowEndChatButton && (
+          <Button
+            variant='contained'
+            disableElevation
+            sx={{
+              alignSelf: 'center',
+              minWidth: 'auto',
+              px: 1.75,
+              py: 0.75,
+              backgroundColor: 'rgba(255, 255, 255, 0.24)',
+              color: 'neutrals.white',
+              '&:hover': {
+                backgroundColor: 'rgba(255, 255, 255, 0.30)',
+              },
+            }}
+          >
+            End
+          </Button>
+        )}
+      </Box>
     </Box>
   );
 }

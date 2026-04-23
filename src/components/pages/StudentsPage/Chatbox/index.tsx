@@ -84,6 +84,7 @@ export default function Chatbox({
           { label: "You're:", value: chat.characters.you },
           { label: 'With:', value: chat.characters.peer },
         ]}
+        shouldShowEndChatButton={true}
       />
       <Conversation
         chat={chat}
