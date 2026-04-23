@@ -5,6 +5,16 @@ interface FeatureFlag {
   description?: string;
 }
 
-const featureFlags: Record<string, FeatureFlag> = {};
+interface FeatureFlags {
+  isStudentEndChatButtonLaunched: FeatureFlag;
+}
+
+const featureFlags: FeatureFlags = {
+  isStudentEndChatButtonLaunched: {
+    enabled: false,
+    description:
+      'Shows the student end-chat button on Students page and enables associated behavior.',
+  },
+};
 
 export default featureFlags;
