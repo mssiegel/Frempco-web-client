@@ -5,16 +5,8 @@ interface FeatureFlag {
   description?: string;
 }
 
-interface FeatureFlags {
-  isStudentEndChatButtonLaunched: FeatureFlag;
-}
+interface FeatureFlags {}
 
-const featureFlags: FeatureFlags = {
-  isStudentEndChatButtonLaunched: {
-    enabled: false,
-    description:
-      'Shows the student end-chat button on Students page and enables associated behavior.',
-  },
-};
+const featureFlags: FeatureFlags = {};
 
 export default featureFlags;

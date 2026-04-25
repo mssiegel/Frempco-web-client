@@ -3,7 +3,6 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
 import ChatboxHeader from '@components/shared/ChatboxHeader';
-import featureFlags from '@config/featureFlags';
 import { scrollToBottomOfElement, PAIRED } from '@utils/activities';
 import { useStudentInActivity } from '../hooks/useStudentInActivity';
 import Conversation from './Conversation';
@@ -97,10 +96,7 @@ export default function Chatbox({
           { label: "You're:", value: chat.characters.you },
           { label: 'With:', value: chat.characters.peer },
         ]}
-        shouldShowEndChatButton={
-          featureFlags.isStudentEndChatButtonLaunched.enabled &&
-          chat.mode === PAIRED
-        }
+        shouldShowEndChatButton={chat.mode === PAIRED}
         onEndChat={handleEndChat}
       />
       <Conversation
