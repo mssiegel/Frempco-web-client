@@ -54,6 +54,14 @@ export default function InProgressActivity({
     return { activeChats, completedChats };
   }, [studentChats]);
 
+  function markChatAsCompleted({ chatId }: { chatId: string }) {
+    setStudentChats((chats) =>
+      chats.map((chat) =>
+        chat.chatId === chatId ? { ...chat, isCompleted: true } : chat,
+      ),
+    );
+  }
+
   useEffect(() => {
     // Check if the teacher is still connected to the activity every 10 seconds.
     const connectionCheckInterval = setInterval(async () => {
@@ -110,13 +118,8 @@ export default function InProgressActivity({
 
   useEffect(() => {
     if (socket) {
-      socket.on('chat ended - two students', ({ chatId }) => {
-        setStudentChats((chats) =>
-          chats.map((chat) =>
-            chat.chatId === chatId ? { ...chat, isCompleted: true } : chat,
-          ),
-        );
-      });
+      socket.on('chat ended - two students', markChatAsCompleted);
+      socket.on('teacher:student-ended-chat', markChatAsCompleted);
 
       socket.on(
         'teacher listens to student message',
@@ -161,7 +164,8 @@ export default function InProgressActivity({
     router.events.on('routeChangeStart', handleRouteChange);
 
     return () => {
-      socket.off('chat ended - two students');
+      socket.off('chat ended - two students', markChatAsCompleted);
+      socket.off('teacher:student-ended-chat', markChatAsCompleted);
       socket.off('teacher listens to student message');
       socket.off('solo mode: teacher listens to new message');
       router.events.off('routeChangeStart', handleRouteChange);
