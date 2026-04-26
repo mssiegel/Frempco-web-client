@@ -9,6 +9,7 @@ import Conversation from './Conversation';
 import SendMessageSection from './SendMessageSection';
 import { STAGE, Stage, StudentPairedChat, StudentSoloChat } from '../types';
 import ChatEndedSection from './ChatEndedSection';
+import EndChatConfirmationModal from './EndChatConfirmationModal';
 
 interface ChatboxProps {
   socket: Socket;
@@ -40,6 +41,7 @@ export default function Chatbox({
   shouldShowEndChatButton,
 }: ChatboxProps) {
   const [peerIsTyping, setPeerIsTyping] = useState(false);
+  const [isEndChatModalOpen, setIsEndChatModalOpen] = useState(false);
   const isConnected = useStudentInActivity(activityPin, sessionId);
   const hasChatEnded = !isConnected || Boolean(chatEndedMsg);
 
@@ -50,9 +52,8 @@ export default function Chatbox({
     }));
   }
 
-  function handleEndChat() {
-    const endChatConfirmed = confirm('Are you sure you want to end this chat?');
-    if (!endChatConfirmed) return;
+  function confirmEndChat() {
+    setIsEndChatModalOpen(false);
 
     if (chat.mode === PAIRED) socket.emit('student:ended-paired-chat');
     else socket.emit('student:ended-solo-chat');
@@ -102,7 +103,12 @@ export default function Chatbox({
           { label: 'With:', value: chat.characters.peer },
         ]}
         shouldShowEndChatButton={shouldShowEndChatButton}
-        onEndChat={handleEndChat}
+        onEndChat={() => setIsEndChatModalOpen(true)}
+      />
+      <EndChatConfirmationModal
+        open={isEndChatModalOpen}
+        onClose={() => setIsEndChatModalOpen(false)}
+        onConfirm={confirmEndChat}
       />
       <Conversation
         chat={chat}
