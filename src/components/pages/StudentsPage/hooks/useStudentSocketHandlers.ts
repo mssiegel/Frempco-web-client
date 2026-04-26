@@ -87,12 +87,18 @@ export function useStudentSocketHandlers({
       setChatEndedMsg('Your teacher ended your chat');
     }
 
+    function handleStudentPeerEndedChat() {
+      setStage(STAGE.chatEnded);
+      setChatEndedMsg('Your peer ended the chat');
+    }
+
     socket.on('chat start', handleChatStart);
     socket.on('solo mode: chat started', handleSoloChatStarted);
     socket.on('student:removed-from-activity', handleRemoveStudentFromActivity);
     socket.on('peer left chat', handlePeerLeftChat);
     socket.on('teacher ended chat', handleTeacherEndedChat);
     socket.on('solo mode: teacher ended chat', handleSoloModeTeacherEndedChat);
+    socket.on('student:student-peer-ended-chat', handleStudentPeerEndedChat);
 
     return () => {
       socket.off('chat start', handleChatStart);
@@ -107,6 +113,7 @@ export function useStudentSocketHandlers({
         'solo mode: teacher ended chat',
         handleSoloModeTeacherEndedChat,
       );
+      socket.off('student:student-peer-ended-chat', handleStudentPeerEndedChat);
     };
   }, [setChat, setChatEndedMsg, setStage, socket]);
 }

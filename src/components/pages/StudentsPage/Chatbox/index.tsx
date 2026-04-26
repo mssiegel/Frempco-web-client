@@ -3,37 +3,45 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
 import ChatboxHeader from '@components/shared/ChatboxHeader';
-import { scrollToBottomOfElement } from '@utils/activities';
+import { scrollToBottomOfElement, PAIRED } from '@utils/activities';
 import { useStudentInActivity } from '../hooks/useStudentInActivity';
 import Conversation from './Conversation';
 import SendMessageSection from './SendMessageSection';
-import { StudentPairedChat, StudentSoloChat } from '../types';
+import { STAGE, Stage, StudentPairedChat, StudentSoloChat } from '../types';
 import ChatEndedSection from './ChatEndedSection';
+import EndChatConfirmationModal from './EndChatConfirmationModal';
 
 interface ChatboxProps {
   socket: Socket;
   chat: StudentPairedChat | StudentSoloChat;
   setChat: Dispatch<SetStateAction<StudentPairedChat | StudentSoloChat>>;
+  setStage: Dispatch<SetStateAction<Stage>>;
   chatEndedMsg: null | string;
+  setChatEndedMsg: (message: string | null) => void;
   studentName: string;
   activityPin: string;
   addStudentToActivity: (studentName: string, pin: string) => void;
   sessionId: string;
   isMobile: boolean;
+  shouldShowEndChatButton: boolean;
 }
 
 export default function Chatbox({
   socket,
   chat,
   setChat,
+  setStage,
   chatEndedMsg,
+  setChatEndedMsg,
   studentName,
   activityPin,
   addStudentToActivity,
   sessionId,
   isMobile,
+  shouldShowEndChatButton,
 }: ChatboxProps) {
   const [peerIsTyping, setPeerIsTyping] = useState(false);
+  const [isEndChatModalOpen, setIsEndChatModalOpen] = useState(false);
   const isConnected = useStudentInActivity(activityPin, sessionId);
   const hasChatEnded = !isConnected || Boolean(chatEndedMsg);
 
@@ -42,6 +50,16 @@ export default function Chatbox({
       ...chat,
       conversation: [...chat.conversation, [sender, message]],
     }));
+  }
+
+  function confirmEndChat() {
+    setIsEndChatModalOpen(false);
+
+    if (chat.mode === PAIRED) socket.emit('student:ended-paired-chat');
+    else socket.emit('student:ended-solo-chat');
+
+    setChatEndedMsg('You ended the chat');
+    setStage(STAGE.chatEnded);
   }
 
   useEffect(() => {
@@ -84,6 +102,13 @@ export default function Chatbox({
           { label: "You're:", value: chat.characters.you },
           { label: 'With:', value: chat.characters.peer },
         ]}
+        shouldShowEndChatButton={shouldShowEndChatButton}
+        onEndChat={() => setIsEndChatModalOpen(true)}
+      />
+      <EndChatConfirmationModal
+        open={isEndChatModalOpen}
+        onClose={() => setIsEndChatModalOpen(false)}
+        onConfirm={confirmEndChat}
       />
       <Conversation
         chat={chat}

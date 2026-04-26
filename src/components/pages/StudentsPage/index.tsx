@@ -87,12 +87,15 @@ export default function StudentsPage(): JSX.Element {
         socket={socket}
         chat={chat}
         setChat={setChat}
+        setStage={setStage}
         chatEndedMsg={chatEndedMsg}
+        setChatEndedMsg={setChatEndedMsg}
         studentName={studentName}
         activityPin={pin}
         addStudentToActivity={addStudentToActivity}
         sessionId={sessionId}
         isMobile={isMobile}
+        shouldShowEndChatButton={stage === STAGE.chatting}
       />
     ) : (
       <WelcomeMessage
