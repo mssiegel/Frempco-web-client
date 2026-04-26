@@ -50,9 +50,9 @@ export default function Chatbox({
     const endChatConfirmed = confirm('Are you sure you want to end this chat?');
     if (!endChatConfirmed) return;
 
-    socket.emit('student:ended-paired-chat');
+    if (chat.mode === PAIRED) socket.emit('student:ended-paired-chat');
+    else socket.emit('student:ended-solo-chat');
 
-    // Update local state immediately
     setChatEndedMsg('You ended the chat');
   }
 
@@ -96,7 +96,7 @@ export default function Chatbox({
           { label: "You're:", value: chat.characters.you },
           { label: 'With:', value: chat.characters.peer },
         ]}
-        shouldShowEndChatButton={chat.mode === PAIRED}
+        shouldShowEndChatButton={true}
         onEndChat={handleEndChat}
       />
       <Conversation
