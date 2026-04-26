@@ -7,13 +7,14 @@ import { scrollToBottomOfElement, PAIRED } from '@utils/activities';
 import { useStudentInActivity } from '../hooks/useStudentInActivity';
 import Conversation from './Conversation';
 import SendMessageSection from './SendMessageSection';
-import { StudentPairedChat, StudentSoloChat } from '../types';
+import { STAGE, Stage, StudentPairedChat, StudentSoloChat } from '../types';
 import ChatEndedSection from './ChatEndedSection';
 
 interface ChatboxProps {
   socket: Socket;
   chat: StudentPairedChat | StudentSoloChat;
   setChat: Dispatch<SetStateAction<StudentPairedChat | StudentSoloChat>>;
+  setStage: Dispatch<SetStateAction<Stage>>;
   chatEndedMsg: null | string;
   setChatEndedMsg: (message: string | null) => void;
   studentName: string;
@@ -21,12 +22,14 @@ interface ChatboxProps {
   addStudentToActivity: (studentName: string, pin: string) => void;
   sessionId: string;
   isMobile: boolean;
+  shouldShowEndChatButton: boolean;
 }
 
 export default function Chatbox({
   socket,
   chat,
   setChat,
+  setStage,
   chatEndedMsg,
   setChatEndedMsg,
   studentName,
@@ -34,6 +37,7 @@ export default function Chatbox({
   addStudentToActivity,
   sessionId,
   isMobile,
+  shouldShowEndChatButton,
 }: ChatboxProps) {
   const [peerIsTyping, setPeerIsTyping] = useState(false);
   const isConnected = useStudentInActivity(activityPin, sessionId);
@@ -50,10 +54,11 @@ export default function Chatbox({
     const endChatConfirmed = confirm('Are you sure you want to end this chat?');
     if (!endChatConfirmed) return;
 
-    socket.emit('student:ended-paired-chat');
+    if (chat.mode === PAIRED) socket.emit('student:ended-paired-chat');
+    else socket.emit('student:ended-solo-chat');
 
-    // Update local state immediately
     setChatEndedMsg('You ended the chat');
+    setStage(STAGE.chatEnded);
   }
 
   useEffect(() => {
@@ -96,7 +101,7 @@ export default function Chatbox({
           { label: "You're:", value: chat.characters.you },
           { label: 'With:', value: chat.characters.peer },
         ]}
-        shouldShowEndChatButton={chat.mode === PAIRED}
+        shouldShowEndChatButton={shouldShowEndChatButton}
         onEndChat={handleEndChat}
       />
       <Conversation
