@@ -88,6 +88,7 @@ export default function StudentsPage(): JSX.Element {
         chat={chat}
         setChat={setChat}
         chatEndedMsg={chatEndedMsg}
+        setChatEndedMsg={setChatEndedMsg}
         studentName={studentName}
         activityPin={pin}
         addStudentToActivity={addStudentToActivity}

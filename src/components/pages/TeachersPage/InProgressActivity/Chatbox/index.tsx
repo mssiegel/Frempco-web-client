@@ -106,7 +106,10 @@ function Chatbox({ chat, setStudentChats }: ChatboxProps) {
         overflow: 'hidden',
       }}
     >
-      <ChatboxHeader headerRows={headerRows} />
+      <ChatboxHeader
+        headerRows={headerRows}
+        shouldShowEndChatButton={false}
+      />
 
       <Conversation
         containerRef={chatboxConversationContainer}

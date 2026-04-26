@@ -5,6 +5,8 @@ interface FeatureFlag {
   description?: string;
 }
 
-const featureFlags: Record<string, FeatureFlag> = {};
+interface FeatureFlags {}
+
+const featureFlags: FeatureFlags = {};
 
 export default featureFlags;
