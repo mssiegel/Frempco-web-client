@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
@@ -43,6 +43,8 @@ export default function InProgressActivity({
   const [studentChats, setStudentChats] = useState<(StudentChat | SoloChat)[]>(
     [],
   );
+  const [lastPairedPartnerBySessionId, setLastPairedPartnerBySessionId] =
+    useState<Record<string, string>>({});
 
   const { activeChats, completedChats } = useMemo(() => {
     const activeChats = [];
@@ -54,13 +56,62 @@ export default function InProgressActivity({
     return { activeChats, completedChats };
   }, [studentChats]);
 
-  function markChatAsCompleted({ chatId }: { chatId: string }) {
-    setStudentChats((chats) =>
-      chats.map((chat) =>
-        chat.chatId === chatId ? { ...chat, isCompleted: true } : chat,
-      ),
-    );
-  }
+  const updateLastPairedPartners = useCallback(
+    (studentPair: StudentChat['studentPair']) => {
+      const [student1, student2] = studentPair;
+      setLastPairedPartnerBySessionId((lastPairedPartners) => ({
+        ...lastPairedPartners,
+        [student1.sessionId]: student2.sessionId,
+        [student2.sessionId]: student1.sessionId,
+      }));
+    },
+    [],
+  );
+
+  const markAllChatsAsCompleted = useCallback(
+    () => {
+      activeChats.forEach((chat) => {
+        if (chat.mode === PAIRED) updateLastPairedPartners(chat.studentPair);
+      });
+      const completedChatIds = new Set(
+        activeChats.map((chat) => chat.chatId),
+      );
+      setStudentChats((chats) =>
+        chats.map((chat) =>
+          completedChatIds.has(chat.chatId)
+            ? { ...chat, isCompleted: true }
+            : chat,
+        ),
+      );
+    },
+    [activeChats, updateLastPairedPartners],
+  );
+
+  const markChatAsCompleted = useCallback(
+    (completedChat: StudentChat | SoloChat) => {
+      if (completedChat.mode === PAIRED)
+        updateLastPairedPartners(completedChat.studentPair);
+
+      setStudentChats((chats) =>
+        chats.map((chat) =>
+          chat.chatId === completedChat.chatId
+            ? { ...chat, isCompleted: true }
+            : chat,
+        ),
+      );
+    },
+    [updateLastPairedPartners],
+  );
+
+  const markChatAsCompletedById = useCallback(
+    ({ chatId }: { chatId: string }) => {
+      const completedChat = studentChats.find((chat) => chat.chatId === chatId);
+      if (!completedChat) return;
+
+      markChatAsCompleted(completedChat);
+    },
+    [markChatAsCompleted, studentChats],
+  );
 
   useEffect(() => {
     // Check if the teacher is still connected to the activity every 10 seconds.
@@ -101,11 +152,7 @@ export default function InProgressActivity({
     }
 
     socket.on('solo mode: student disconnected', ({ chatId }) => {
-      setStudentChats((chats) =>
-        chats.map((chat) =>
-          chat.chatId === chatId ? { ...chat, isCompleted: true } : chat,
-        ),
-      );
+      markChatAsCompletedById({ chatId });
     });
 
     return () => {
@@ -114,12 +161,12 @@ export default function InProgressActivity({
         socket.off('solo mode: student disconnected');
       }
     };
-  }, [socket]);
+  }, [markChatAsCompletedById, socket]);
 
   useEffect(() => {
     if (socket) {
-      socket.on('chat ended - two students', markChatAsCompleted);
-      socket.on('teacher:student-ended-chat', markChatAsCompleted);
+      socket.on('chat ended - two students', markChatAsCompletedById);
+      socket.on('teacher:student-ended-chat', markChatAsCompletedById);
 
       socket.on(
         'teacher listens to student message',
@@ -164,13 +211,13 @@ export default function InProgressActivity({
     router.events.on('routeChangeStart', handleRouteChange);
 
     return () => {
-      socket.off('chat ended - two students', markChatAsCompleted);
-      socket.off('teacher:student-ended-chat', markChatAsCompleted);
+      socket.off('chat ended - two students', markChatAsCompletedById);
+      socket.off('teacher:student-ended-chat', markChatAsCompletedById);
       socket.off('teacher listens to student message');
       socket.off('solo mode: teacher listens to new message');
       router.events.off('routeChangeStart', handleRouteChange);
     };
-  }, [router.events, socket]);
+  }, [markChatAsCompletedById, router.events, socket]);
 
   if (!isConnected) {
     return (
@@ -231,10 +278,13 @@ export default function InProgressActivity({
           setUnpairedStudents={setUnpairedStudents}
           setStudentChats={setStudentChats}
           characters={characters}
+          lastPairedPartnerBySessionId={lastPairedPartnerBySessionId}
         />
         <ChatsInProgressAccordion
           activeStudentChats={activeChats}
           setStudentChats={setStudentChats}
+          markChatAsCompleted={markChatAsCompleted}
+          markAllChatsAsCompleted={markAllChatsAsCompleted}
         />
         <CompletedChatsAccordion completedStudentChats={completedChats} />
       </Box>

@@ -7,18 +7,24 @@ import Chatbox from '../Chatbox';
 interface DisplayOfChatsProps {
   studentChats: (StudentChat | SoloChat)[];
   setStudentChats?: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
+  onChatCompleted?: (chat: StudentChat | SoloChat) => void;
 }
 
 export default function DisplayOfChats({
   studentChats,
   setStudentChats,
+  onChatCompleted,
 }: DisplayOfChatsProps) {
   return (
     <Grid container spacing={2} mt={2} pb={2}>
       {studentChats.map((chat) => {
         return (
           <Grid key={chat.chatId} item xs={12} md={6} lg={4}>
-            <Chatbox chat={chat} setStudentChats={setStudentChats} />
+            <Chatbox
+              chat={chat}
+              setStudentChats={setStudentChats}
+              onChatCompleted={onChatCompleted}
+            />
           </Grid>
         );
       })}
