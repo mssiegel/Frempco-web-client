@@ -14,6 +14,7 @@ interface UnpairedStudentsListProps {
   setUnpairedStudents: Dispatch<SetStateAction<Student[]>>;
   setStudentChats: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
   characters: string[];
+  lastPairedPartnerBySessionId: Record<string, string>;
 }
 
 export default function UnpairedStudentsList({
@@ -22,7 +23,13 @@ export default function UnpairedStudentsList({
   setUnpairedStudents,
   setStudentChats,
   characters,
+  lastPairedPartnerBySessionId,
 }: UnpairedStudentsListProps) {
+  const unpairedStudentRows = chunk(unpairedStudents, 2);
+  const hasLastPairWarning = unpairedStudentRows.some(([student1, student2]) =>
+    wereStudentsLastPairedTogether(student1, student2),
+  );
+
   useEffect(() => {
     if (socket) {
       socket.on('new student joined', (student) => {
@@ -87,6 +94,16 @@ export default function UnpairedStudentsList({
     }
   }
 
+  function wereStudentsLastPairedTogether(student1: Student, student2?: Student) {
+    if (!student2) return false;
+
+    return (
+      lastPairedPartnerBySessionId[student1.sessionId] ===
+        student2.sessionId ||
+      lastPairedPartnerBySessionId[student2.sessionId] === student1.sessionId
+    );
+  }
+
   return (
     <>
       <Box
@@ -98,65 +115,114 @@ export default function UnpairedStudentsList({
           pb: '15px',
         }}
       >
-        <Typography variant='body1'>
-          Total unpaired students: <strong>{unpairedStudents.length}</strong>
-        </Typography>
-        {chunk(unpairedStudents, 2).map(([student1, student2], i) => (
-          <Grid
-            container
-            key={i}
-            sx={{
-              backgroundColor: `${i % 2 === 0 ? 'secondary.400' : ''}`,
-              borderLeft: '1px dotted silver',
-              borderRight: '1px dotted silver',
-            }}
-          >
-            <Grid item xs={9}>
-              <UnpairedStudentItem
-                i={i * 2}
-                student={student1}
-                socket={socket}
-                setUnpairedStudents={setUnpairedStudents}
-                characters={characters}
-                setStudentChats={setStudentChats}
-                totalUnpairedStudents={unpairedStudents.length}
+        <Box
+          sx={{
+            alignItems: 'center',
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: 2,
+          }}
+        >
+          <Typography variant='body1'>
+            Total unpaired students: <strong>{unpairedStudents.length}</strong>
+          </Typography>
+          {hasLastPairWarning && (
+            <Typography
+              variant='body2'
+              sx={{
+                alignItems: 'center',
+                color: '#663c00',
+                display: 'inline-flex',
+                fontWeight: 600,
+                gap: 0.75,
+              }}
+            >
+              <Box
+                component='span'
+                sx={{
+                  bgcolor: '#fff4e5',
+                  border: '1px solid',
+                  borderColor: 'warning.main',
+                  display: 'inline-block',
+                  height: '14px',
+                  width: '14px',
+                }}
               />
-              {student2 && (
+              Repeat of last chat
+            </Typography>
+          )}
+        </Box>
+        {unpairedStudentRows.map(([student1, student2], i) => {
+          const wereLastPairedTogether = wereStudentsLastPairedTogether(
+            student1,
+            student2,
+          );
+
+          return (
+            <Grid
+              container
+              key={i}
+              sx={{
+                alignItems: 'center',
+                backgroundColor: wereLastPairedTogether
+                  ? '#fff4e5'
+                  : i % 2 === 0
+                    ? 'secondary.400'
+                    : '',
+                borderLeft: '1px dotted silver',
+                borderRight: '1px dotted silver',
+                borderTop: wereLastPairedTogether ? '1px solid' : '',
+                borderBottom: wereLastPairedTogether ? '1px solid' : '',
+                borderColor: wereLastPairedTogether ? 'warning.main' : '',
+              }}
+            >
+              <Grid item xs={9}>
                 <UnpairedStudentItem
-                  i={i * 2 + 1}
-                  student={student2}
+                  i={i * 2}
+                  student={student1}
                   socket={socket}
                   setUnpairedStudents={setUnpairedStudents}
                   characters={characters}
                   setStudentChats={setStudentChats}
                   totalUnpairedStudents={unpairedStudents.length}
                 />
+                {student2 && (
+                  <UnpairedStudentItem
+                    i={i * 2 + 1}
+                    student={student2}
+                    socket={socket}
+                    setUnpairedStudents={setUnpairedStudents}
+                    characters={characters}
+                    setStudentChats={setStudentChats}
+                    totalUnpairedStudents={unpairedStudents.length}
+                  />
+                )}
+              </Grid>
+
+              {student2 && (
+                <Grid
+                  item
+                  xs={3}
+                  sx={{ textAlign: 'center', alignSelf: 'center' }}
+                >
+                  <Button
+                    variant='contained'
+                    color='primary'
+                    onClick={() => pairStudents(i * 2)}
+                    sx={{
+                      boxShadow: 'none',
+                      marginRight: '8px',
+                      '&:hover': { boxShadow: 'none' },
+                    }}
+                  >
+                    Pair up &nbsp;
+                    <GroupIcon />
+                  </Button>
+                </Grid>
               )}
             </Grid>
-
-            {student2 && (
-              <Grid
-                item
-                xs={3}
-                sx={{ textAlign: 'center', alignSelf: 'center' }}
-              >
-                <Button
-                  variant='contained'
-                  color='primary'
-                  onClick={() => pairStudents(i * 2)}
-                  sx={{
-                    boxShadow: 'none',
-                    marginRight: '8px',
-                    '&:hover': { boxShadow: 'none' },
-                  }}
-                >
-                  Pair up &nbsp;
-                  <GroupIcon />
-                </Button>
-              </Grid>
-            )}
-          </Grid>
-        ))}
+          );
+        })}
         <Box sx={{ display: 'flex', justifyContent: 'center' }}>
           <Button
             variant='contained'

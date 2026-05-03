@@ -15,11 +15,15 @@ import DisplayOfChats from '../shared/DisplayOfChats';
 interface ChatsInProgressAccordionProps {
   activeStudentChats: (StudentChat | SoloChat)[];
   setStudentChats: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
+  markChatAsCompleted: (chat: StudentChat | SoloChat) => void;
+  markAllChatsAsCompleted: () => void;
 }
 
 const ChatsInProgressAccordion = ({
   activeStudentChats,
   setStudentChats,
+  markChatAsCompleted,
+  markAllChatsAsCompleted,
 }: ChatsInProgressAccordionProps) => {
   const { socket } = useSocketConnection();
 
@@ -53,15 +57,7 @@ const ChatsInProgressAccordion = ({
         });
       }
     }
-    setStudentChats((studentChats) =>
-      studentChats.map((chat) =>
-        activeStudentChats.some(
-          (activeChat) => activeChat.chatId === chat.chatId,
-        )
-          ? { ...chat, isCompleted: true }
-          : chat,
-      ),
-    );
+    markAllChatsAsCompleted();
   }
 
   return (
@@ -98,6 +94,7 @@ const ChatsInProgressAccordion = ({
         <DisplayOfChats
           studentChats={activeStudentChats}
           setStudentChats={setStudentChats}
+          onChatCompleted={markChatAsCompleted}
         />
       </AccordionDetails>
     </Accordion>

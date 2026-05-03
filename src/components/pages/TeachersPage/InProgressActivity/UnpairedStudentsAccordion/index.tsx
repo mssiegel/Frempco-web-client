@@ -20,6 +20,7 @@ interface UnpairedStudentsAccordionProps {
   setUnpairedStudents: Dispatch<SetStateAction<Student[]>>;
   setStudentChats: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
   characters: string[];
+  lastPairedPartnerBySessionId: Record<string, string>;
 }
 
 const UnpairedStudentsAccordion = ({
@@ -28,6 +29,7 @@ const UnpairedStudentsAccordion = ({
   setUnpairedStudents,
   setStudentChats,
   characters,
+  lastPairedPartnerBySessionId,
 }: UnpairedStudentsAccordionProps) => (
   <Accordion disableGutters sx={{ boxShadow: 'none', mb: 3 }}>
     <AccordionSummary
@@ -66,6 +68,7 @@ const UnpairedStudentsAccordion = ({
         setUnpairedStudents={setUnpairedStudents}
         setStudentChats={setStudentChats}
         characters={characters}
+        lastPairedPartnerBySessionId={lastPairedPartnerBySessionId}
       />
     </AccordionDetails>
   </Accordion>
