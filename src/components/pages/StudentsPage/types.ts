@@ -10,6 +10,8 @@ export interface StudentPairedChat {
     you: string;
     peer: string;
   };
+  peerRealName?: string;
+  shouldRevealPeerRealName?: boolean;
   conversation: ChatMessage[];
 }
 
