@@ -1,10 +1,13 @@
-import { Dispatch, SetStateAction } from 'react';
+import { Dispatch, SetStateAction, useState } from 'react';
 import {
   Accordion,
   AccordionSummary,
   AccordionDetails,
   Typography,
   Button,
+  Box,
+  FormControlLabel,
+  Switch,
 } from '@mui/material';
 import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import { StudentChat, SoloChat } from '../../types';
@@ -26,6 +29,8 @@ const ChatsInProgressAccordion = ({
   markAllChatsAsCompleted,
 }: ChatsInProgressAccordionProps) => {
   const { socket } = useSocketConnection();
+  const [shouldRevealStudentRealNames, setShouldRevealStudentRealNames] =
+    useState(false);
 
   const totalStudents = activeStudentChats.length;
   const pairCount = activeStudentChats.filter(
@@ -60,6 +65,13 @@ const ChatsInProgressAccordion = ({
     markAllChatsAsCompleted();
   }
 
+  function setRealNameReveal(shouldRevealStudentRealNames: boolean) {
+    setShouldRevealStudentRealNames(shouldRevealStudentRealNames);
+    socket.emit('teacher:set-real-name-reveal', {
+      shouldRevealStudentRealNames,
+    });
+  }
+
   return (
     <Accordion disableGutters sx={{ boxShadow: 'none', mb: 3 }}>
       <AccordionSummary
@@ -82,15 +94,40 @@ const ChatsInProgressAccordion = ({
           </strong>
           .
         </Typography>
-        <Button
-          sx={{ my: 2 }}
-          variant='contained'
-          size='medium'
-          color='error'
-          onClick={() => endAllChats()}
+        <Box
+          sx={{
+            mt: 2,
+            display: 'grid',
+            gridTemplateColumns: { xs: '1fr', md: '1fr auto 1fr' },
+            alignItems: 'center',
+            gap: { xs: 3, md: 4 },
+          }}
         >
-          End all chats
-        </Button>
+          <Box>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={shouldRevealStudentRealNames}
+                  onChange={(event) => setRealNameReveal(event.target.checked)}
+                />
+              }
+              label='Reveal real names'
+            />
+            <Typography variant='body2' color='text.secondary'>
+              {shouldRevealStudentRealNames
+                ? 'Students can see who they are chatting with.'
+                : 'Students only see character names.'}
+            </Typography>
+          </Box>
+          <Button
+            variant='contained'
+            size='medium'
+            color='error'
+            onClick={() => endAllChats()}
+          >
+            End all chats
+          </Button>
+        </Box>
         <DisplayOfChats
           studentChats={activeStudentChats}
           setStudentChats={setStudentChats}
