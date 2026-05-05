@@ -83,7 +83,6 @@ function RowForHeader({
         sx={{
           color: 'neutrals.white',
           overflow: 'hidden',
-          textOverflow: 'ellipsis',
           whiteSpace: 'nowrap',
           minWidth: 0,
         }}
