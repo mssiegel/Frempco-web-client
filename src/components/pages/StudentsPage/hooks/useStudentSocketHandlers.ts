@@ -13,7 +13,9 @@ import {
 interface UseStudentSocketHandlersProps {
   socket: Socket;
   router: NextRouter;
-  setChat: Dispatch<SetStateAction<StudentPairedChat | StudentSoloChat>>;
+  setChat: Dispatch<
+    SetStateAction<StudentPairedChat | StudentSoloChat | undefined>
+  >;
   setStage: Dispatch<SetStateAction<Stage>>;
   setChatEndedMsg: (message: string | null) => void;
 }
@@ -42,17 +44,39 @@ export function useStudentSocketHandlers({
   useEffect(() => {
     if (!socket) return;
 
-    function handleChatStart({ yourCharacter, peersCharacter }) {
+    function handleChatStart({
+      yourCharacter,
+      peersCharacter,
+      peerRealName,
+      shouldRevealPeerRealName,
+    }) {
       setChat({
         mode: PAIRED,
         characters: {
           you: yourCharacter,
           peer: peersCharacter,
         },
+        peerRealName,
+        shouldRevealPeerRealName,
         conversation: [],
       });
       setStage(STAGE.chatting);
       setChatEndedMsg(null);
+    }
+
+    function handleSetPeerRealNameReveal({
+      peerRealName,
+      shouldRevealPeerRealName,
+    }) {
+      setChat((chat) => {
+        if (!chat || chat.mode !== PAIRED) return chat;
+
+        return {
+          ...chat,
+          peerRealName,
+          shouldRevealPeerRealName,
+        };
+      });
     }
 
     function handleSoloChatStarted({ character, messages }) {
@@ -93,6 +117,10 @@ export function useStudentSocketHandlers({
     }
 
     socket.on('chat start', handleChatStart);
+    socket.on(
+      'teacher:set-peer-real-name-reveal',
+      handleSetPeerRealNameReveal,
+    );
     socket.on('solo mode: chat started', handleSoloChatStarted);
     socket.on('student:removed-from-activity', handleRemoveStudentFromActivity);
     socket.on('peer left chat', handlePeerLeftChat);
@@ -102,6 +130,10 @@ export function useStudentSocketHandlers({
 
     return () => {
       socket.off('chat start', handleChatStart);
+      socket.off(
+        'teacher:set-peer-real-name-reveal',
+        handleSetPeerRealNameReveal,
+      );
       socket.off('solo mode: chat started', handleSoloChatStarted);
       socket.off(
         'student:removed-from-activity',

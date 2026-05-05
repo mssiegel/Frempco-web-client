@@ -22,9 +22,10 @@ import Conversation from './Conversation';
 interface ChatboxProps {
   chat: StudentChat | SoloChat;
   setStudentChats?: Dispatch<SetStateAction<(StudentChat | SoloChat)[]>>;
+  onChatCompleted?: (chat: StudentChat | SoloChat) => void;
 }
 
-function Chatbox({ chat, setStudentChats }: ChatboxProps) {
+function Chatbox({ chat, setStudentChats, onChatCompleted }: ChatboxProps) {
   const { socket } = useSocketConnection();
   const [isExpanded, setIsExpanded] = useState(false);
 
@@ -66,19 +67,10 @@ function Chatbox({ chat, setStudentChats }: ChatboxProps) {
     if (!endChatConfirmed) return;
     if (chatMode === SOLO) {
       socket.emit('solo mode: end chat', { chatId });
-      setStudentChats((chats) =>
-        chats.map((chat) =>
-          chat.chatId === chatId ? { ...chat, isCompleted: true } : chat,
-        ),
-      );
     } else {
       socket.emit('unpair student chat', { chatId, student1, student2 });
-      setStudentChats((chats) =>
-        chats.map((chat) =>
-          chat.chatId === chatId ? { ...chat, isCompleted: true } : chat,
-        ),
-      );
     }
+    onChatCompleted?.(chat);
   }
 
   const student1 = chat.mode === SOLO ? chat.student : chat.studentPair[0];
@@ -152,6 +144,8 @@ function Chatbox({ chat, setStudentChats }: ChatboxProps) {
 
 export default memo(Chatbox, (prev, next) => {
   return (
-    prev.chat === next.chat && prev.setStudentChats === next.setStudentChats
+    prev.chat === next.chat &&
+    prev.setStudentChats === next.setStudentChats &&
+    prev.onChatCompleted === next.onChatCompleted
   );
 });

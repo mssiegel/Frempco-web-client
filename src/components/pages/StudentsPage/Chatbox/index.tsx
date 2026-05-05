@@ -44,6 +44,10 @@ export default function Chatbox({
   const [isEndChatModalOpen, setIsEndChatModalOpen] = useState(false);
   const isConnected = useStudentInActivity(activityPin, sessionId);
   const hasChatEnded = !isConnected || Boolean(chatEndedMsg);
+  const peerRealName =
+    chat.mode === PAIRED && chat.shouldRevealPeerRealName
+      ? chat.peerRealName?.trim()
+      : undefined;
 
   function addChatMessage(sender, message: string) {
     setChat((chat) => ({
@@ -100,7 +104,11 @@ export default function Chatbox({
       <ChatboxHeader
         headerRows={[
           { label: "You're:", value: chat.characters.you },
-          { label: 'With:', value: chat.characters.peer },
+          {
+            label: 'With:',
+            value: chat.characters.peer,
+            secondaryValue: peerRealName,
+          },
         ]}
         shouldShowEndChatButton={shouldShowEndChatButton}
         onEndChat={() => setIsEndChatModalOpen(true)}
