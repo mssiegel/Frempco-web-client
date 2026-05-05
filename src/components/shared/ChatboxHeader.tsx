@@ -3,6 +3,7 @@ import { Box, Button, Typography } from '@mui/material';
 interface HeaderRow {
   label: string;
   value: string;
+  secondaryValue?: string;
 }
 
 interface ChatboxHeaderProps {
@@ -26,9 +27,14 @@ export default function ChatboxHeader({
       }}
     >
       <Box sx={{ display: 'flex', justifyContent: 'space-between', gap: 1 }}>
-        <Box>
-          {headerRows.map(({ label, value }) => (
-            <RowForHeader key={label} label={label} value={value} />
+        <Box sx={{ flex: 1, minWidth: 0 }}>
+          {headerRows.map(({ label, value, secondaryValue }) => (
+            <RowForHeader
+              key={label}
+              label={label}
+              value={value}
+              secondaryValue={secondaryValue}
+            />
           ))}
         </Box>
         {shouldShowEndChatButton && (
@@ -39,6 +45,7 @@ export default function ChatboxHeader({
             sx={{
               alignSelf: 'center',
               minWidth: 'auto',
+              flexShrink: 0,
               px: 1.75,
               py: 0.75,
               backgroundColor: 'rgba(255, 255, 255, 0.24)',
@@ -56,14 +63,42 @@ export default function ChatboxHeader({
   );
 }
 
-function RowForHeader({ label, value }: HeaderRow): JSX.Element {
+function RowForHeader({
+  label,
+  value,
+  secondaryValue,
+}: HeaderRow): JSX.Element {
   return (
-    <Box sx={{ display: 'flex', gap: 0.5 }}>
-      <Typography variant='body2' sx={{ color: 'neutrals.200' }}>
+    <Box sx={{ display: 'flex', gap: 0.5, minWidth: 0 }}>
+      <Typography
+        component='span'
+        variant='body2'
+        sx={{ color: 'neutrals.200', flexShrink: 0 }}
+      >
         {label}
       </Typography>
-      <Typography variant='body2' sx={{ color: 'neutrals.white' }}>
+      <Typography
+        component='span'
+        variant='body2'
+        sx={{
+          color: 'neutrals.white',
+          overflow: 'hidden',
+          textOverflow: 'ellipsis',
+          whiteSpace: 'nowrap',
+          minWidth: 0,
+        }}
+      >
         {value}
+        {secondaryValue && (
+          <Typography
+            component='span'
+            variant='body2'
+            sx={{ color: 'neutrals.200' }}
+          >
+            {' '}
+            ({secondaryValue})
+          </Typography>
+        )}
       </Typography>
     </Box>
   );
