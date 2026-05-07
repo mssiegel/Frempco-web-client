@@ -12,6 +12,7 @@ export interface StudentPairedChat {
   };
   peerRealName?: string;
   shouldRevealPeerRealName?: boolean;
+  peerGraceExpiresAt?: number;
   conversation: ChatMessage[];
 }
 

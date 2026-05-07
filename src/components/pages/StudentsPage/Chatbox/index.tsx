@@ -10,6 +10,7 @@ import SendMessageSection from './SendMessageSection';
 import { STAGE, Stage, StudentPairedChat, StudentSoloChat } from '../types';
 import ChatEndedSection from './ChatEndedSection';
 import EndChatConfirmationModal from './EndChatConfirmationModal';
+import PeerReconnectBanner from './PeerReconnectBanner';
 
 interface ChatboxProps {
   socket: Socket;
@@ -44,6 +45,9 @@ export default function Chatbox({
   const [isEndChatModalOpen, setIsEndChatModalOpen] = useState(false);
   const isConnected = useStudentInActivity(activityPin, sessionId);
   const hasChatEnded = !isConnected || Boolean(chatEndedMsg);
+  const peerGraceExpiresAt =
+    chat.mode === PAIRED && !hasChatEnded ? chat.peerGraceExpiresAt : undefined;
+  //
   const peerRealName =
     chat.mode === PAIRED && chat.shouldRevealPeerRealName
       ? chat.peerRealName?.trim()
@@ -126,6 +130,9 @@ export default function Chatbox({
         containerRef={chatboxConversationContainer}
         isMobile={isMobile}
       />
+      {peerGraceExpiresAt && (
+        <PeerReconnectBanner graceExpiresAt={peerGraceExpiresAt} />
+      )}
       {!hasChatEnded ? (
         <SendMessageSection
           socket={socket}
