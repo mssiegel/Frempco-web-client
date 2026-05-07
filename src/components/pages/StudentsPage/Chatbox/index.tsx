@@ -47,7 +47,6 @@ export default function Chatbox({
   const hasChatEnded = !isConnected || Boolean(chatEndedMsg);
   const peerGraceExpiresAt =
     chat.mode === PAIRED && !hasChatEnded ? chat.peerGraceExpiresAt : undefined;
-  //
   const peerRealName =
     chat.mode === PAIRED && chat.shouldRevealPeerRealName
       ? chat.peerRealName?.trim()
