@@ -1,10 +1,8 @@
 import { Box, Button, Icon, Typography } from '@mui/material';
 import Image from 'next/image';
-import { useState } from 'react';
 
 import Link from '@components/shared/Link';
-import { useStudentInActivity } from './hooks/useStudentInActivity';
-import { STUDENT_CONNECTION_CHECK_INTERVAL } from '@utils/activities';
+import { useStudentLobbyAutoRejoin } from './hooks/useStudentLobbyAutoRejoin';
 
 interface WelcomeMessageProps {
   activityPin: string;
@@ -23,15 +21,13 @@ export default function WelcomeMessage({
   isMobile,
   addStudentToActivity,
 }: WelcomeMessageProps) {
-  const [hasClickedRejoin, setHasClickedRejoin] = useState(false);
-  const isStudentInActivity = useStudentInActivity(activityPin, sessionId);
-  const shouldShowDisconnectedState = !isStudentInActivity && !hasClickedRejoin;
+  const status = useStudentLobbyAutoRejoin(activityPin, sessionId, {
+    disabled: removedFromClass,
+    rejoinStudent: () => addStudentToActivity(studentName, activityPin),
+  });
+  const shouldShowReconnectingState = status === 'rejoining';
+  const shouldShowDisconnectedState = status === 'rejoinFailed';
 
-  function handleRejoinActivityButtonClicked() {
-    setHasClickedRejoin(true);
-    addStudentToActivity(studentName, activityPin);
-    setTimeout(() => setHasClickedRejoin(false), STUDENT_CONNECTION_CHECK_INTERVAL);
-  }
   return (
     <Box textAlign='center'>
       <Image
@@ -59,6 +55,13 @@ export default function WelcomeMessage({
             again.
           </Typography>
         </>
+      ) : shouldShowReconnectingState ? (
+        <Typography
+          variant={isMobile ? 'h5' : 'h4'}
+          sx={{ mb: 4, fontWeight: 'normal' }}
+        >
+          Reconnecting to the activity...
+        </Typography>
       ) : shouldShowDisconnectedState ? (
         <>
           <Typography
@@ -66,13 +69,13 @@ export default function WelcomeMessage({
             sx={{ mb: 4, fontWeight: 'normal' }}
             color='error.light'
           >
-            You were disconnected when your device went dark.
+            We couldn&apos;t reconnect automatically.
           </Typography>
           <Button
             variant='contained'
             color='primary'
             startIcon={<Icon sx={{ fontSize: 24 }}>play_arrow</Icon>}
-            onClick={handleRejoinActivityButtonClicked}
+            onClick={() => addStudentToActivity(studentName, activityPin)}
           >
             Rejoin activity
           </Button>
@@ -84,8 +87,8 @@ export default function WelcomeMessage({
           </Typography>
           {isMobile && (
             <Typography variant='body2' sx={{ mt: 2, mx: 1 }}>
-              Note: You will be logged out of Frempco if your smartphone screen
-              goes dark.
+              Note: You will be logged out of your chat if your smartphone
+              screen goes dark.
             </Typography>
           )}
         </>
