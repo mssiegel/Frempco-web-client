@@ -22,15 +22,16 @@ export function useStudentLobbyAutoRejoin(
   const [status, setStatus] = useState<
     'connected' | 'rejoining' | 'rejoinFailed'
   >('connected');
-  const isRejoining = useRef(false);
+  // Tracks the current "generation" of visibility-change calls. Each new visibility
+  // change increments the counter so that stale async operations from earlier calls
+  // can detect they've been superseded and bail out before updating state.
+  const callGeneration = useRef(0);
 
   useEffect(() => {
     if (disabled) return;
 
-    async function attemptAutoRejoin() {
-      if (isRejoining.current) return;
-
-      isRejoining.current = true;
+    async function attemptAutoRejoin(generation: number) {
+      if (callGeneration.current !== generation) return;
 
       try {
         setStatus('rejoining');
@@ -38,40 +39,45 @@ export function useStudentLobbyAutoRejoin(
         rejoinStudent();
         await wait(REJOIN_CONFIRMATION_DELAY_MS);
 
+        if (callGeneration.current !== generation) return;
+
         const isStudentInsideActivity = await checkStudentIsInsideActivity(
           activityPin,
           sessionId,
         );
+
+        if (callGeneration.current !== generation) return;
         setStatus(isStudentInsideActivity ? 'connected' : 'rejoinFailed');
       } catch {
-        setStatus('rejoinFailed');
-      } finally {
-        isRejoining.current = false;
+        if (callGeneration.current === generation) setStatus('rejoinFailed');
       }
     }
 
-    async function checkMembership() {
-      if (isRejoining.current) return;
-
+    async function checkMembership(generation: number) {
       try {
         const isStudentInsideActivity = await checkStudentIsInsideActivity(
           activityPin,
           sessionId,
         );
 
+        if (callGeneration.current !== generation) return;
+
         if (isStudentInsideActivity) {
           setStatus('connected');
           return;
         }
 
-        attemptAutoRejoin();
+        attemptAutoRejoin(generation);
       } catch {
-        setStatus('rejoinFailed');
+        if (callGeneration.current === generation) setStatus('rejoinFailed');
       }
     }
 
     function handleVisibilityChange() {
-      if (document.visibilityState === 'visible') checkMembership();
+      if (document.visibilityState === 'visible') {
+        callGeneration.current += 1;
+        checkMembership(callGeneration.current);
+      }
     }
 
     document.addEventListener('visibilitychange', handleVisibilityChange);
