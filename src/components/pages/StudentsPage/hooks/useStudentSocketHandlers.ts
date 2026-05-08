@@ -13,6 +13,8 @@ import {
 interface UseStudentSocketHandlersProps {
   socket: Socket;
   router: NextRouter;
+  chat: StudentPairedChat | StudentSoloChat | undefined;
+  stage: Stage;
   setChat: Dispatch<
     SetStateAction<StudentPairedChat | StudentSoloChat | undefined>
   >;
@@ -24,9 +26,15 @@ interface PeerDisconnectedPayload {
   graceExpiresAt?: number;
 }
 
+interface PairedChatReconnectSnapshot {
+  conversation: StudentPairedChat['conversation'];
+}
+
 export function useStudentSocketHandlers({
   socket,
   router,
+  chat,
+  stage,
   setChat,
   setStage,
   setChatEndedMsg,
@@ -44,6 +52,42 @@ export function useStudentSocketHandlers({
       router.events.off('routeChangeStart', handleRouteChange);
     };
   }, [router.events, socket]);
+
+  useEffect(() => {
+    if (!socket || chat?.mode !== PAIRED || stage !== STAGE.chatting) return;
+
+    function handleConnect() {
+      socket.emit(
+        'student:rejoin-paired-chat',
+        (snapshot: PairedChatReconnectSnapshot | null) => {
+          if (!snapshot) {
+            setStage(STAGE.chatEnded);
+            setChatEndedMsg('Your peer left the chat');
+            return;
+          }
+
+          setChat((chat) => {
+            if (!chat || chat.mode !== PAIRED) return chat;
+
+            const { peerGraceExpiresAt, ...chatWithoutGracePeriod } = chat;
+
+            return {
+              ...chatWithoutGracePeriod,
+              conversation: snapshot.conversation,
+            };
+          });
+          setStage(STAGE.chatting);
+          setChatEndedMsg(null);
+        },
+      );
+    }
+
+    socket.on('connect', handleConnect);
+
+    return () => {
+      socket.off('connect', handleConnect);
+    };
+  }, [chat?.mode, setChat, setChatEndedMsg, setStage, socket, stage]);
 
   useEffect(() => {
     if (!socket) return;
@@ -98,11 +142,6 @@ export function useStudentSocketHandlers({
 
     function handleRemoveStudentFromActivity() {
       setStage(STAGE.removedByTeacher);
-    }
-
-    function handlePeerLeftChat() {
-      setStage(STAGE.chatEnded);
-      setChatEndedMsg('Your peer left the chat');
     }
 
     function handleTeacherEndedChat() {
@@ -161,7 +200,6 @@ export function useStudentSocketHandlers({
     socket.on('teacher:set-peer-real-name-reveal', handleSetPeerRealNameReveal);
     socket.on('solo mode: chat started', handleSoloChatStarted);
     socket.on('student:removed-from-activity', handleRemoveStudentFromActivity);
-    socket.on('peer left chat', handlePeerLeftChat);
     socket.on('teacher ended chat', handleTeacherEndedChat);
     socket.on('solo mode: teacher ended chat', handleSoloModeTeacherEndedChat);
     socket.on('student:student-peer-ended-chat', handleStudentPeerEndedChat);
@@ -183,7 +221,6 @@ export function useStudentSocketHandlers({
         'student:removed-from-activity',
         handleRemoveStudentFromActivity,
       );
-      socket.off('peer left chat', handlePeerLeftChat);
       socket.off('teacher ended chat', handleTeacherEndedChat);
       socket.off(
         'solo mode: teacher ended chat',

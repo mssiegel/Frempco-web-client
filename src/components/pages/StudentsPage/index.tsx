@@ -68,6 +68,8 @@ export default function StudentsPage(): JSX.Element {
   useStudentSocketHandlers({
     socket,
     router,
+    chat,
+    stage,
     setChat,
     setStage,
     setChatEndedMsg,
