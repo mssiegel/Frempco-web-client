@@ -95,7 +95,6 @@ export default function StudentsPage(): JSX.Element {
         studentName={studentName}
         activityPin={pin}
         addStudentToActivity={addStudentToActivity}
-        sessionId={sessionId}
         isMobile={isMobile}
         shouldShowEndChatButton={stage === STAGE.chatting}
       />

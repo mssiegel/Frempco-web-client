@@ -1,11 +1,22 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { checkStudentIsInsideActivity } from './useStudentInActivity';
-
 const REJOIN_CONFIRMATION_DELAY_MS = 1000;
 
 function wait(ms: number): Promise<void> {
   return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
+async function checkStudentIsInsideActivity(
+  activityPin: string,
+  sessionId: string,
+): Promise<boolean> {
+  const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
+  const getResponse = await fetch(
+    `${apiUrl}/activities/${activityPin}/students/${sessionId}`,
+    { method: 'GET' },
+  );
+  const { isStudentInsideActivity } = await getResponse.json();
+  return Boolean(isStudentInsideActivity);
 }
 
 export function useStudentLobbyAutoRejoin(

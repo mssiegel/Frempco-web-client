@@ -4,7 +4,6 @@ import { Socket } from 'socket.io-client';
 
 import ChatboxHeader from '@components/shared/ChatboxHeader';
 import { scrollToBottomOfElement, PAIRED } from '@utils/activities';
-import { useStudentInActivity } from '../hooks/useStudentInActivity';
 import Conversation from './Conversation';
 import SendMessageSection from './SendMessageSection';
 import { STAGE, Stage, StudentPairedChat, StudentSoloChat } from '../types';
@@ -22,7 +21,6 @@ interface ChatboxProps {
   studentName: string;
   activityPin: string;
   addStudentToActivity: (studentName: string, pin: string) => void;
-  sessionId: string;
   isMobile: boolean;
   shouldShowEndChatButton: boolean;
 }
@@ -37,21 +35,16 @@ export default function Chatbox({
   studentName,
   activityPin,
   addStudentToActivity,
-  sessionId,
   isMobile,
   shouldShowEndChatButton,
 }: ChatboxProps) {
   const [peerIsTyping, setPeerIsTyping] = useState(false);
   const [isEndChatModalOpen, setIsEndChatModalOpen] = useState(false);
-  const isConnected = useStudentInActivity(activityPin, sessionId);
-  // Paired chats have a reconnect grace period, so a temporary failed
-  // activity-membership poll should not end the UI. Paired chats end only
-  // from explicit socket events that set chatEndedMsg. Solo chats still use
-  // the older polling-based disconnect behavior.
-  const hasChatEnded =
-    chat.mode === PAIRED
-      ? Boolean(chatEndedMsg)
-      : !isConnected || Boolean(chatEndedMsg);
+  // Paired and solo chats have reconnect grace, so temporary failed
+  // activity-membership polling should not end the UI. Chat screens end from
+  // explicit socket events that set chatEndedMsg; refresh/navigation uses the
+  // hard-leave server path instead.
+  const hasChatEnded = Boolean(chatEndedMsg);
   const peerGraceExpiresAt =
     chat.mode === PAIRED && !hasChatEnded ? chat.peerGraceExpiresAt : undefined;
   const peerRealName =

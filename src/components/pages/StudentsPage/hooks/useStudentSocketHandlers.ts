@@ -30,6 +30,10 @@ interface PairedChatReconnectSnapshot {
   conversation: StudentPairedChat['conversation'];
 }
 
+interface SoloChatReconnectSnapshot {
+  conversation: StudentSoloChat['conversation'];
+}
+
 export function useStudentSocketHandlers({
   socket,
   router,
@@ -85,6 +89,40 @@ export function useStudentSocketHandlers({
 
             return {
               ...chatWithoutGracePeriod,
+              conversation: snapshot.conversation,
+            };
+          });
+          setStage(STAGE.chatting);
+          setChatEndedMsg(null);
+        },
+      );
+    }
+
+    socket.on('connect', handleConnect);
+
+    return () => {
+      socket.off('connect', handleConnect);
+    };
+  }, [chat?.mode, setChat, setChatEndedMsg, setStage, socket, stage]);
+
+  useEffect(() => {
+    if (!socket || chat?.mode !== SOLO || stage !== STAGE.chatting) return;
+
+    function handleConnect() {
+      socket.emit(
+        'student:rejoin-solo-chat',
+        (snapshot: SoloChatReconnectSnapshot | null) => {
+          if (!snapshot) {
+            setStage(STAGE.chatEnded);
+            setChatEndedMsg('You were disconnected too long and the chat ended');
+            return;
+          }
+
+          setChat((chat) => {
+            if (!chat || chat.mode !== SOLO) return chat;
+
+            return {
+              ...chat,
               conversation: snapshot.conversation,
             };
           });
