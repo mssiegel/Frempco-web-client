@@ -44,7 +44,14 @@ export default function Chatbox({
   const [peerIsTyping, setPeerIsTyping] = useState(false);
   const [isEndChatModalOpen, setIsEndChatModalOpen] = useState(false);
   const isConnected = useStudentInActivity(activityPin, sessionId);
-  const hasChatEnded = !isConnected || Boolean(chatEndedMsg);
+  // Paired chats have a reconnect grace period, so a temporary failed
+  // activity-membership poll should not end the UI. Paired chats end only
+  // from explicit socket events that set chatEndedMsg. Solo chats still use
+  // the older polling-based disconnect behavior.
+  const hasChatEnded =
+    chat.mode === PAIRED
+      ? Boolean(chatEndedMsg)
+      : !isConnected || Boolean(chatEndedMsg);
   const peerGraceExpiresAt =
     chat.mode === PAIRED && !hasChatEnded ? chat.peerGraceExpiresAt : undefined;
   const peerRealName =
