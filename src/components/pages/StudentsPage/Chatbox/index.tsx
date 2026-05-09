@@ -70,7 +70,13 @@ export default function Chatbox({
   }
 
   useEffect(() => {
+    function clearTypingIndicator() {
+      setPeerIsTyping(false);
+    }
+
     if (socket) {
+      socket.on('connect', clearTypingIndicator);
+
       socket.on('student sent message', ({ message }) => {
         setPeerIsTyping(false);
         addChatMessage('peer', message);
@@ -79,6 +85,7 @@ export default function Chatbox({
 
     return () => {
       if (socket) {
+        socket.off('connect', clearTypingIndicator);
         socket.off('student sent message');
       }
     };
