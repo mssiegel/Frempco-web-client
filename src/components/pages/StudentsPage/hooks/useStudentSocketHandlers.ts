@@ -42,14 +42,16 @@ export function useStudentSocketHandlers({
   useEffect(() => {
     if (!socket) return;
 
-    function handleRouteChange() {
-      socket.emit('user disconnected');
+    function handlePageLeave() {
+      socket.emit('student:left-page');
     }
 
-    router.events.on('routeChangeStart', handleRouteChange);
+    router.events.on('routeChangeStart', handlePageLeave);
+    window.addEventListener('pagehide', handlePageLeave);
 
     return () => {
-      router.events.off('routeChangeStart', handleRouteChange);
+      router.events.off('routeChangeStart', handlePageLeave);
+      window.removeEventListener('pagehide', handlePageLeave);
     };
   }, [router.events, socket]);
 
