@@ -74,7 +74,7 @@ export function useStudentSocketHandlers({
         (snapshot: PairedChatReconnectSnapshot | null) => {
           if (!snapshot) {
             setStage(STAGE.chatEnded);
-            setChatEndedMsg('Your peer left the chat');
+            setChatEndedMsg('You were disconnected too long and the chat ended');
             return;
           }
 
