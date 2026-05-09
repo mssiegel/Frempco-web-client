@@ -42,16 +42,26 @@ export function useStudentSocketHandlers({
   useEffect(() => {
     if (!socket) return;
 
+    const navigationEntry = performance.getEntriesByType(
+      'navigation',
+    )[0] as PerformanceNavigationTiming | undefined;
+
+    if (navigationEntry?.type === 'reload') {
+      socket.emit('student:refreshed-page');
+    }
+  }, [socket]);
+
+  useEffect(() => {
+    if (!socket) return;
+
     function handlePageLeave() {
       socket.emit('student:left-page');
     }
 
     router.events.on('routeChangeStart', handlePageLeave);
-    window.addEventListener('pagehide', handlePageLeave);
 
     return () => {
       router.events.off('routeChangeStart', handlePageLeave);
-      window.removeEventListener('pagehide', handlePageLeave);
     };
   }, [router.events, socket]);
 
