@@ -2,6 +2,8 @@ import { Dispatch, SetStateAction, useEffect } from 'react';
 import type { NextRouter } from 'next/router';
 import type { Socket } from 'socket.io-client';
 
+import { CLIENT_EMIT_EVENTS } from '@socket/emitEvents.const';
+import { CLIENT_LISTEN_EVENTS } from '@socket/listenEvents.const';
 import { PAIRED, SOLO } from '@utils/activities';
 import {
   STAGE,
@@ -51,7 +53,7 @@ export function useStudentSocketHandlers({
     )[0] as PerformanceNavigationTiming | undefined;
 
     if (navigationEntry?.type === 'reload') {
-      socket.emit('student:refreshed-page');
+      socket.emit(CLIENT_EMIT_EVENTS.STUDENT_REFRESHED_PAGE);
     }
   }, [socket]);
 
@@ -59,7 +61,7 @@ export function useStudentSocketHandlers({
     if (!socket) return;
 
     function handlePageLeave() {
-      socket.emit('student:left-page');
+      socket.emit(CLIENT_EMIT_EVENTS.STUDENT_LEFT_PAGE);
     }
 
     router.events.on('routeChangeStart', handlePageLeave);
@@ -74,7 +76,7 @@ export function useStudentSocketHandlers({
 
     function handleConnect() {
       socket.emit(
-        'student:rejoin-paired-chat',
+        CLIENT_EMIT_EVENTS.STUDENT_REJOIN_PAIRED_CHAT,
         (snapshot: PairedChatReconnectSnapshot | null) => {
           if (!snapshot) {
             setStage(STAGE.chatEnded);
@@ -110,7 +112,7 @@ export function useStudentSocketHandlers({
 
     function handleConnect() {
       socket.emit(
-        'student:rejoin-solo-chat',
+        CLIENT_EMIT_EVENTS.STUDENT_REJOIN_SOLO_CHAT,
         (snapshot: SoloChatReconnectSnapshot | null) => {
           if (!snapshot) {
             setStage(STAGE.chatEnded);
@@ -246,41 +248,80 @@ export function useStudentSocketHandlers({
       setChatEndedMsg('Your peer left the chat');
     }
 
-    socket.on('chat start', handleChatStart);
-    socket.on('teacher:set-peer-real-name-reveal', handleSetPeerRealNameReveal);
-    socket.on('solo mode: chat started', handleSoloChatStarted);
-    socket.on('student:removed-from-activity', handleRemoveStudentFromActivity);
-    socket.on('teacher ended chat', handleTeacherEndedChat);
-    socket.on('solo mode: teacher ended chat', handleSoloModeTeacherEndedChat);
-    socket.on('student:student-peer-ended-chat', handleStudentPeerEndedChat);
-    socket.on('paired-chat:peer-disconnected', handlePeerDisconnected);
-    socket.on('paired-chat:peer-reconnected', handlePeerReconnected);
+    socket.on(CLIENT_LISTEN_EVENTS.PAIRED_CHAT_STARTED, handleChatStart);
     socket.on(
-      'paired-chat:ended-after-disconnect',
+      CLIENT_LISTEN_EVENTS.TEACHER_SET_PEER_REAL_NAME_REVEAL,
+      handleSetPeerRealNameReveal,
+    );
+    socket.on(
+      CLIENT_LISTEN_EVENTS.TEACHER_STARTED_SOLO_CHAT,
+      handleSoloChatStarted,
+    );
+    socket.on(
+      CLIENT_LISTEN_EVENTS.STUDENT_REMOVED_FROM_ACTIVITY,
+      handleRemoveStudentFromActivity,
+    );
+    socket.on(
+      CLIENT_LISTEN_EVENTS.TEACHER_ENDED_PAIRED_CHAT,
+      handleTeacherEndedChat,
+    );
+    socket.on(
+      CLIENT_LISTEN_EVENTS.TEACHER_ENDED_SOLO_CHAT,
+      handleSoloModeTeacherEndedChat,
+    );
+    socket.on(
+      CLIENT_LISTEN_EVENTS.STUDENT_PEER_ENDED_CHAT,
+      handleStudentPeerEndedChat,
+    );
+    socket.on(
+      CLIENT_LISTEN_EVENTS.PAIRED_CHAT_PEER_DISCONNECTED,
+      handlePeerDisconnected,
+    );
+    socket.on(
+      CLIENT_LISTEN_EVENTS.PAIRED_CHAT_PEER_RECONNECTED,
+      handlePeerReconnected,
+    );
+    socket.on(
+      CLIENT_LISTEN_EVENTS.PAIRED_CHAT_ENDED_AFTER_DISCONNECT,
       handleChatEndedAfterDisconnect,
     );
 
     return () => {
-      socket.off('chat start', handleChatStart);
+      socket.off(CLIENT_LISTEN_EVENTS.PAIRED_CHAT_STARTED, handleChatStart);
       socket.off(
-        'teacher:set-peer-real-name-reveal',
+        CLIENT_LISTEN_EVENTS.TEACHER_SET_PEER_REAL_NAME_REVEAL,
         handleSetPeerRealNameReveal,
       );
-      socket.off('solo mode: chat started', handleSoloChatStarted);
       socket.off(
-        'student:removed-from-activity',
+        CLIENT_LISTEN_EVENTS.TEACHER_STARTED_SOLO_CHAT,
+        handleSoloChatStarted,
+      );
+      socket.off(
+        CLIENT_LISTEN_EVENTS.STUDENT_REMOVED_FROM_ACTIVITY,
         handleRemoveStudentFromActivity,
       );
-      socket.off('teacher ended chat', handleTeacherEndedChat);
       socket.off(
-        'solo mode: teacher ended chat',
+        CLIENT_LISTEN_EVENTS.TEACHER_ENDED_PAIRED_CHAT,
+        handleTeacherEndedChat,
+      );
+      socket.off(
+        CLIENT_LISTEN_EVENTS.TEACHER_ENDED_SOLO_CHAT,
         handleSoloModeTeacherEndedChat,
       );
-      socket.off('student:student-peer-ended-chat', handleStudentPeerEndedChat);
-      socket.off('paired-chat:peer-disconnected', handlePeerDisconnected);
-      socket.off('paired-chat:peer-reconnected', handlePeerReconnected);
       socket.off(
-        'paired-chat:ended-after-disconnect',
+        CLIENT_LISTEN_EVENTS.STUDENT_PEER_ENDED_CHAT,
+        handleStudentPeerEndedChat,
+      );
+      socket.off(
+        CLIENT_LISTEN_EVENTS.PAIRED_CHAT_PEER_DISCONNECTED,
+        handlePeerDisconnected,
+      );
+      socket.off(
+        CLIENT_LISTEN_EVENTS.PAIRED_CHAT_PEER_RECONNECTED,
+        handlePeerReconnected,
+      );
+      socket.off(
+        CLIENT_LISTEN_EVENTS.PAIRED_CHAT_ENDED_AFTER_DISCONNECT,
         handleChatEndedAfterDisconnect,
       );
     };

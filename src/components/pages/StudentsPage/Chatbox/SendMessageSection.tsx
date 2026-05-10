@@ -10,6 +10,7 @@ import {
 } from 'react';
 import { Socket } from 'socket.io-client';
 
+import { CLIENT_EMIT_EVENTS } from '@socket/emitEvents.const';
 import { PAIRED } from '@utils/activities';
 import { StudentPairedChat, StudentSoloChat } from '../types';
 
@@ -46,11 +47,13 @@ export default function SendMessageSection({
       if (!socket) return;
 
       if (chat.mode === PAIRED) {
-        socket.emit('student sent message', { message });
+        socket.emit(CLIENT_EMIT_EVENTS.STUDENT_SEND_PAIRED_MESSAGE, {
+          message,
+        });
       } else {
         setPeerIsTyping(true);
         socket.emit(
-          'solo mode: student sent message',
+          CLIENT_EMIT_EVENTS.STUDENT_SEND_SOLO_MESSAGE,
           {
             message,
           },
@@ -79,7 +82,7 @@ export default function SendMessageSection({
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) {
     setMessage(e.target.value);
-    socket.emit('student typing');
+    socket.emit(CLIENT_EMIT_EVENTS.STUDENT_SEND_TYPING);
   }
 
   function sendWithEnterOnDesktop(

@@ -7,6 +7,8 @@ import {
 } from '@mui/icons-material';
 import { Button, Box, IconButton, Typography } from '@mui/material';
 import { Socket } from 'socket.io-client';
+
+import { CLIENT_EMIT_EVENTS } from '@socket/emitEvents.const';
 import { getRandom, swap, SOLO } from '@utils/activities';
 import { SoloChat, Student, StudentChat } from '../../types';
 
@@ -46,9 +48,12 @@ export default function UnpairedStudentItem({
       `Are you sure you want to remove ${student.realName}?`,
     );
     if (confirmation) {
-      socket.emit('teacher:removed-unpaired-student-from-activity', {
-        sessionId: student.sessionId,
-      });
+      socket.emit(
+        CLIENT_EMIT_EVENTS.TEACHER_REMOVE_UNPAIRED_STUDENT_FROM_ACTIVITY,
+        {
+          sessionId: student.sessionId,
+        },
+      );
     }
     setUnpairedStudents((students) =>
       students.filter((s) => s.sessionId !== student.sessionId),
@@ -58,7 +63,7 @@ export default function UnpairedStudentItem({
   function startSoloChat() {
     student.character = getRandom(characters);
     socket.emit(
-      'solo mode: start chat',
+      CLIENT_EMIT_EVENTS.TEACHER_START_SOLO_CHAT,
       {
         studentSessionId: student.sessionId,
         characterName: student.character,

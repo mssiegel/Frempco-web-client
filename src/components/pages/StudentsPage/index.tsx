@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 
 import { useSocketConnection } from '@contexts/SocketContext';
+import { CLIENT_EMIT_EVENTS } from '@socket/emitEvents.const';
 import PageHeader from '@components/shared/PageHeader';
 import FrempcoBranding from '@components/shared/PageHeader/FrempcoBranding';
 import { useStudentSocketHandlers } from './hooks/useStudentSocketHandlers';
@@ -58,7 +59,7 @@ export default function StudentsPage(): JSX.Element {
   const shouldAnchorContentToBottom = isMobile && isChatboxStage;
 
   function addStudentToActivity(studentName: string, pin: string) {
-    socket.emit('new student entered', {
+    socket.emit(CLIENT_EMIT_EVENTS.STUDENT_JOIN_ACTIVITY, {
       student: studentName,
       activityPin: pin,
     });

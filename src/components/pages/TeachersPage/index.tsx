@@ -3,6 +3,7 @@ import { useTheme } from '@mui/material/styles';
 import { useState } from 'react';
 
 import { useSocketConnection } from '@contexts/SocketContext';
+import { CLIENT_EMIT_EVENTS } from '@socket/emitEvents.const';
 import { EMPTY_EMAIL } from '@utils/activities';
 import CreateActivity from './CreateActivity';
 import InProgressActivity from './InProgressActivity/index';
@@ -21,7 +22,7 @@ export default function TeachersPage(): JSX.Element {
 
   const handleCreateActivity = (newActivityPin: string): void => {
     setActivityPin(newActivityPin);
-    socket.emit('create activity', {
+    socket.emit(CLIENT_EMIT_EVENTS.TEACHER_CREATE_ACTIVITY, {
       activityPin: newActivityPin,
       email,
     });

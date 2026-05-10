@@ -19,6 +19,7 @@
       "@utils/*": ["./src/utils/*"],
       "@theme/*": ["./src/theme/*"],
       "@config/*": ["./src/config/*"],
+      "@socket/*": ["./src/socket/*"],
       "@contexts/*": ["./src/contexts/*"],
       "@TeachersPage/shared/*": ["./src/components/pages/TeachersPage/shared/*"]
     }

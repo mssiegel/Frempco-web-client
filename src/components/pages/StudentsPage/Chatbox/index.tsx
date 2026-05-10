@@ -3,6 +3,8 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
 import ChatboxHeader from '@components/shared/ChatboxHeader';
+import { CLIENT_EMIT_EVENTS } from '@socket/emitEvents.const';
+import { CLIENT_LISTEN_EVENTS } from '@socket/listenEvents.const';
 import { scrollToBottomOfElement, PAIRED } from '@utils/activities';
 import Conversation from './Conversation';
 import SendMessageSection from './SendMessageSection';
@@ -62,8 +64,9 @@ export default function Chatbox({
   function confirmEndChat() {
     setIsEndChatModalOpen(false);
 
-    if (chat.mode === PAIRED) socket.emit('student:ended-paired-chat');
-    else socket.emit('student:ended-solo-chat');
+    if (chat.mode === PAIRED)
+      socket.emit(CLIENT_EMIT_EVENTS.STUDENT_END_PAIRED_CHAT);
+    else socket.emit(CLIENT_EMIT_EVENTS.STUDENT_END_SOLO_CHAT);
 
     setChatEndedMsg('You ended the chat');
     setStage(STAGE.chatEnded);
@@ -77,7 +80,7 @@ export default function Chatbox({
     if (socket) {
       socket.on('connect', clearTypingIndicator);
 
-      socket.on('student sent message', ({ message }) => {
+      socket.on(CLIENT_LISTEN_EVENTS.STUDENT_SENT_PAIRED_MESSAGE, ({ message }) => {
         setPeerIsTyping(false);
         addChatMessage('peer', message);
       });
@@ -86,7 +89,7 @@ export default function Chatbox({
     return () => {
       if (socket) {
         socket.off('connect', clearTypingIndicator);
-        socket.off('student sent message');
+        socket.off(CLIENT_LISTEN_EVENTS.STUDENT_SENT_PAIRED_MESSAGE);
       }
     };
   }, [setChat, socket]);
