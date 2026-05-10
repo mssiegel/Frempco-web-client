@@ -85,12 +85,6 @@ export default function WelcomeMessage({
           <Typography variant='body1' sx={{ mx: 1 }}>
             Welcome to the activity! Your teacher will pair you soon...
           </Typography>
-          {isMobile && (
-            <Typography variant='body2' sx={{ mt: 2, mx: 1 }}>
-              Note: You will be logged out of your chat if your smartphone
-              screen goes dark.
-            </Typography>
-          )}
         </>
       )}
     </Box>

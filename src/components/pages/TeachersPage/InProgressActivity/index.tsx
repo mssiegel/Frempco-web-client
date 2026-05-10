@@ -259,10 +259,6 @@ export default function InProgressActivity({
           <Typography variant='body1' mb={1}>
             {'2)'} Enter Activity PIN: <strong>{activityPin}</strong>
           </Typography>
-          <Typography variant='body2' sx={{ mt: 2 }}>
-            Note: Your students on smartphones will be logged out of Frempco if
-            their smartphone screen goes dark.
-          </Typography>
         </Box>
         <SetupActivityAccordion
           activityPin={activityPin}
