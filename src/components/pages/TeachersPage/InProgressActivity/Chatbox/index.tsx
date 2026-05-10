@@ -147,6 +147,9 @@ function Chatbox({ chat, setStudentChats, onChatCompleted }: ChatboxProps) {
   );
 }
 
+// Teacher activities can accumulate an unbounded number of chatboxes. Compare
+// props by reference so an incoming message only rerenders the chatbox whose
+// chat object changed, instead of every chatbox on the page.
 export default memo(Chatbox, (prev, next) => {
   return (
     prev.chat === next.chat &&
