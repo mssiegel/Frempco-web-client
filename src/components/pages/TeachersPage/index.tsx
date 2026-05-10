@@ -11,7 +11,7 @@ import InProgressActivity from './InProgressActivity/index';
 const CHARACTERS = ['Batman', 'Wonder Woman', 'Spiderman'];
 
 export default function TeachersPage(): JSX.Element {
-  const { socket } = useSocketConnection();
+  const { socket, connectSocket } = useSocketConnection();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [activityPin, setActivityPin] = useState('');
@@ -22,6 +22,7 @@ export default function TeachersPage(): JSX.Element {
 
   const handleCreateActivity = (newActivityPin: string): void => {
     setActivityPin(newActivityPin);
+    connectSocket();
     socket.emit(CLIENT_EMIT_EVENTS.TEACHER_CREATE_ACTIVITY, {
       activityPin: newActivityPin,
       email,

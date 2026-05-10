@@ -14,6 +14,7 @@ import {
 
 interface UseStudentSocketHandlersProps {
   socket: Socket;
+  connectSocket: () => void;
   router: NextRouter;
   chat: StudentPairedChat | StudentSoloChat | undefined;
   stage: Stage;
@@ -38,6 +39,7 @@ interface SoloChatReconnectSnapshot {
 
 export function useStudentSocketHandlers({
   socket,
+  connectSocket,
   router,
   chat,
   stage,
@@ -53,9 +55,10 @@ export function useStudentSocketHandlers({
     )[0] as PerformanceNavigationTiming | undefined;
 
     if (navigationEntry?.type === 'reload') {
+      connectSocket();
       socket.emit(CLIENT_EMIT_EVENTS.STUDENT_REFRESHED_PAGE);
     }
-  }, [socket]);
+  }, [connectSocket, socket]);
 
   useEffect(() => {
     if (!socket) return;

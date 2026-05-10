@@ -14,7 +14,7 @@ import LoginFlow from './LoginFlow';
 import { STAGE, Stage, StudentPairedChat, StudentSoloChat } from './types';
 
 export default function StudentsPage(): JSX.Element {
-  const { socket, sessionId } = useSocketConnection();
+  const { socket, sessionId, connectSocket } = useSocketConnection();
   console.log('Student sessionId:', sessionId);
   console.log('Student transport socket id:', socket.id ?? 'No socket found');
 
@@ -59,6 +59,7 @@ export default function StudentsPage(): JSX.Element {
   const shouldAnchorContentToBottom = isMobile && isChatboxStage;
 
   function addStudentToActivity(studentName: string, pin: string) {
+    connectSocket();
     socket.emit(CLIENT_EMIT_EVENTS.STUDENT_JOIN_ACTIVITY, {
       student: studentName,
       activityPin: pin,
@@ -68,6 +69,7 @@ export default function StudentsPage(): JSX.Element {
 
   useStudentSocketHandlers({
     socket,
+    connectSocket,
     router,
     chat,
     stage,
