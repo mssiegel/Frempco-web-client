@@ -15,7 +15,6 @@ interface CreateActivityProps {
   handleCreateActivity: (activityPin: string) => void;
   isMobile: boolean;
   isCharactersSaved: boolean;
-  isEmailSaved: boolean;
   onCharactersSaved: () => void;
 }
 
@@ -27,22 +26,14 @@ export default function CreateActivity({
   handleCreateActivity,
   isMobile,
   isCharactersSaved,
-  isEmailSaved,
   onCharactersSaved,
 }: CreateActivityProps): JSX.Element {
   const isDevelopment = process.env.NEXT_PUBLIC_NODE_ENV === 'development';
 
-  const isHostDisabled = !isCharactersSaved || !isEmailSaved;
-
   const hostTooltip = (() => {
-    if (!isCharactersSaved && !isEmailSaved)
-      return 'Save your characters and set an email first';
-    else if (!isCharactersSaved) return 'Save your characters first';
-    else if (!isEmailSaved) return 'Set an email first';
-    else
-      console.error(
-        'No tooltip reason found for host activity button disable state',
-      );
+    if (!isCharactersSaved)
+      return 'Updating the default characters is necessary to host an activity.';
+    else return '';
   })();
 
   const create4DigitPin = (): string =>
@@ -139,7 +130,7 @@ export default function CreateActivity({
                     variant='outlined'
                     color='primary'
                     type='submit'
-                    disabled={isHostDisabled}
+                    disabled={!isCharactersSaved}
                     onClick={() => handleCreateActivity(create4DigitPin())}
                     sx={{
                       minHeight: 64,
