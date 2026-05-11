@@ -11,6 +11,7 @@ interface SocketContextValue {
   socket: Socket;
   sessionId: string;
   isReady: boolean;
+  connectSocket: () => void;
 }
 
 const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
@@ -36,6 +37,7 @@ function SocketProvider({ children }: ProviderProps) {
     const resolvedSessionId = getOrCreateSessionId();
     const socketInstance = io(SERVER_URL, {
       auth: { sessionId: resolvedSessionId },
+      autoConnect: false,
     });
 
     setSessionId(resolvedSessionId);
@@ -50,10 +52,15 @@ function SocketProvider({ children }: ProviderProps) {
     return null;
   }
 
+  const connectSocket = (): void => {
+    if (!socket.connected) socket.connect();
+  };
+
   const contextValue = {
     socket,
     sessionId,
     isReady: true,
+    connectSocket,
   };
 
   return (

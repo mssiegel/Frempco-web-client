@@ -3,6 +3,8 @@
 import { Box, Typography } from '@mui/material';
 import { useEffect, useRef, Dispatch, SetStateAction } from 'react';
 import { Socket } from 'socket.io-client';
+
+import { CLIENT_LISTEN_EVENTS } from '@socket/listenEvents.const';
 import { PAIRED } from '@utils/activities';
 import { StudentPairedChat, StudentSoloChat } from '../types';
 
@@ -28,7 +30,7 @@ export default function PeerIsTyping({
 
   useEffect(() => {
     if (socket) {
-      socket.on('peer is typing', () => {
+      socket.on(CLIENT_LISTEN_EVENTS.PEER_TYPING, () => {
         clearTimeout(typingTimeoutId.current);
         typingTimeoutId.current = setTimeout(
           () => setPeerIsTyping(false),
@@ -40,7 +42,7 @@ export default function PeerIsTyping({
 
     return () => {
       if (socket) {
-        socket.off('peer is typing');
+        socket.off(CLIENT_LISTEN_EVENTS.PEER_TYPING);
       }
     };
   }, [socket, setPeerIsTyping]);
@@ -51,8 +53,8 @@ export default function PeerIsTyping({
         variant='body2'
         sx={{ color: 'neutrals.400', fontStyle: 'italic' }}
       >
-        {/* The "&nbsp;" space ensures a consistent layout, preventing the chat
-             messages from shifting when the 'peer is typing' indicator appears. */}
+        {/* The "&nbsp;" space keeps chat messages from shifting when the
+             typing indicator appears. */}
         {peerIsTyping && peerIsTypingMessage} &nbsp;
       </Typography>
     </Box>

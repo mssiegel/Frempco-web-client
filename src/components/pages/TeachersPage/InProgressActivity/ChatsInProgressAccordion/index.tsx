@@ -13,6 +13,7 @@ import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import { StudentChat, SoloChat } from '../../types';
 import { PAIRED, SOLO } from '@utils/activities';
 import { useSocketConnection } from '@contexts/SocketContext';
+import { CLIENT_EMIT_EVENTS } from '@socket/emitEvents.const';
 import DisplayOfChats from '../shared/DisplayOfChats';
 
 interface ChatsInProgressAccordionProps {
@@ -52,10 +53,12 @@ const ChatsInProgressAccordion = ({
 
     for (const chat of activeStudentChats) {
       if (chat.mode === SOLO) {
-        socket.emit('solo mode: end chat', { chatId: chat.chatId });
+        socket.emit(CLIENT_EMIT_EVENTS.TEACHER_END_SOLO_CHAT, {
+          chatId: chat.chatId,
+        });
       } else {
         const [student1, student2] = chat.studentPair;
-        socket.emit('unpair student chat', {
+        socket.emit(CLIENT_EMIT_EVENTS.TEACHER_END_PAIRED_CHAT, {
           chatId: chat.chatId,
           student1,
           student2,
@@ -67,7 +70,7 @@ const ChatsInProgressAccordion = ({
 
   function setRealNameReveal(shouldRevealStudentRealNames: boolean) {
     setShouldRevealStudentRealNames(shouldRevealStudentRealNames);
-    socket.emit('teacher:set-real-name-reveal', {
+    socket.emit(CLIENT_EMIT_EVENTS.TEACHER_SET_REAL_NAME_REVEAL, {
       shouldRevealStudentRealNames,
     });
   }

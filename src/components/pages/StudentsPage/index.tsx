@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useRouter } from 'next/router';
 
 import { useSocketConnection } from '@contexts/SocketContext';
+import { CLIENT_EMIT_EVENTS } from '@socket/emitEvents.const';
 import PageHeader from '@components/shared/PageHeader';
 import FrempcoBranding from '@components/shared/PageHeader/FrempcoBranding';
 import { useStudentSocketHandlers } from './hooks/useStudentSocketHandlers';
@@ -13,7 +14,7 @@ import LoginFlow from './LoginFlow';
 import { STAGE, Stage, StudentPairedChat, StudentSoloChat } from './types';
 
 export default function StudentsPage(): JSX.Element {
-  const { socket, sessionId } = useSocketConnection();
+  const { socket, sessionId, connectSocket } = useSocketConnection();
   console.log('Student sessionId:', sessionId);
   console.log('Student transport socket id:', socket.id ?? 'No socket found');
 
@@ -58,7 +59,8 @@ export default function StudentsPage(): JSX.Element {
   const shouldAnchorContentToBottom = isMobile && isChatboxStage;
 
   function addStudentToActivity(studentName: string, pin: string) {
-    socket.emit('new student entered', {
+    connectSocket();
+    socket.emit(CLIENT_EMIT_EVENTS.STUDENT_JOIN_ACTIVITY, {
       student: studentName,
       activityPin: pin,
     });
@@ -67,7 +69,10 @@ export default function StudentsPage(): JSX.Element {
 
   useStudentSocketHandlers({
     socket,
+    connectSocket,
     router,
+    chat,
+    stage,
     setChat,
     setStage,
     setChatEndedMsg,
@@ -93,7 +98,6 @@ export default function StudentsPage(): JSX.Element {
         studentName={studentName}
         activityPin={pin}
         addStudentToActivity={addStudentToActivity}
-        sessionId={sessionId}
         isMobile={isMobile}
         shouldShowEndChatButton={stage === STAGE.chatting}
       />

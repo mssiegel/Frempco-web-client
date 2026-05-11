@@ -3,13 +3,15 @@ import { Dispatch, SetStateAction, useEffect, useRef, useState } from 'react';
 import { Socket } from 'socket.io-client';
 
 import ChatboxHeader from '@components/shared/ChatboxHeader';
+import { CLIENT_EMIT_EVENTS } from '@socket/emitEvents.const';
+import { CLIENT_LISTEN_EVENTS } from '@socket/listenEvents.const';
 import { scrollToBottomOfElement, PAIRED } from '@utils/activities';
-import { useStudentInActivity } from '../hooks/useStudentInActivity';
 import Conversation from './Conversation';
 import SendMessageSection from './SendMessageSection';
 import { STAGE, Stage, StudentPairedChat, StudentSoloChat } from '../types';
 import ChatEndedSection from './ChatEndedSection';
 import EndChatConfirmationModal from './EndChatConfirmationModal';
+import PeerReconnectBanner from './PeerReconnectBanner';
 
 interface ChatboxProps {
   socket: Socket;
@@ -21,7 +23,6 @@ interface ChatboxProps {
   studentName: string;
   activityPin: string;
   addStudentToActivity: (studentName: string, pin: string) => void;
-  sessionId: string;
   isMobile: boolean;
   shouldShowEndChatButton: boolean;
 }
@@ -36,14 +37,18 @@ export default function Chatbox({
   studentName,
   activityPin,
   addStudentToActivity,
-  sessionId,
   isMobile,
   shouldShowEndChatButton,
 }: ChatboxProps) {
   const [peerIsTyping, setPeerIsTyping] = useState(false);
   const [isEndChatModalOpen, setIsEndChatModalOpen] = useState(false);
-  const isConnected = useStudentInActivity(activityPin, sessionId);
-  const hasChatEnded = !isConnected || Boolean(chatEndedMsg);
+  // Paired and solo chats have reconnect grace, so temporary failed
+  // activity-membership polling should not end the UI. Chat screens end from
+  // explicit socket events that set chatEndedMsg; refresh/navigation uses the
+  // hard-leave server path instead.
+  const hasChatEnded = Boolean(chatEndedMsg);
+  const peerGraceExpiresAt =
+    chat.mode === PAIRED && !hasChatEnded ? chat.peerGraceExpiresAt : undefined;
   const peerRealName =
     chat.mode === PAIRED && chat.shouldRevealPeerRealName
       ? chat.peerRealName?.trim()
@@ -59,16 +64,23 @@ export default function Chatbox({
   function confirmEndChat() {
     setIsEndChatModalOpen(false);
 
-    if (chat.mode === PAIRED) socket.emit('student:ended-paired-chat');
-    else socket.emit('student:ended-solo-chat');
+    if (chat.mode === PAIRED)
+      socket.emit(CLIENT_EMIT_EVENTS.STUDENT_END_PAIRED_CHAT);
+    else socket.emit(CLIENT_EMIT_EVENTS.STUDENT_END_SOLO_CHAT);
 
     setChatEndedMsg('You ended the chat');
     setStage(STAGE.chatEnded);
   }
 
   useEffect(() => {
+    function clearTypingIndicator() {
+      setPeerIsTyping(false);
+    }
+
     if (socket) {
-      socket.on('student sent message', ({ message }) => {
+      socket.on('connect', clearTypingIndicator);
+
+      socket.on(CLIENT_LISTEN_EVENTS.STUDENT_SENT_PAIRED_MESSAGE, ({ message }) => {
         setPeerIsTyping(false);
         addChatMessage('peer', message);
       });
@@ -76,7 +88,8 @@ export default function Chatbox({
 
     return () => {
       if (socket) {
-        socket.off('student sent message');
+        socket.off('connect', clearTypingIndicator);
+        socket.off(CLIENT_LISTEN_EVENTS.STUDENT_SENT_PAIRED_MESSAGE);
       }
     };
   }, [setChat, socket]);
@@ -126,6 +139,9 @@ export default function Chatbox({
         containerRef={chatboxConversationContainer}
         isMobile={isMobile}
       />
+      {peerGraceExpiresAt && (
+        <PeerReconnectBanner graceExpiresAt={peerGraceExpiresAt} />
+      )}
       {!hasChatEnded ? (
         <SendMessageSection
           socket={socket}

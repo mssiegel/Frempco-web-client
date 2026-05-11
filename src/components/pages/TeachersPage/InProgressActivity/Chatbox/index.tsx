@@ -14,6 +14,7 @@ import {
 } from '@mui/icons-material';
 
 import ChatboxHeader from '@components/shared/ChatboxHeader';
+import { CLIENT_EMIT_EVENTS } from '@socket/emitEvents.const';
 import { scrollToBottomOfElement, SOLO } from '@utils/activities';
 import { Student, StudentChat, SoloChat } from '../../types';
 import { useSocketConnection } from '@contexts/SocketContext';
@@ -66,9 +67,13 @@ function Chatbox({ chat, setStudentChats, onChatCompleted }: ChatboxProps) {
     );
     if (!endChatConfirmed) return;
     if (chatMode === SOLO) {
-      socket.emit('solo mode: end chat', { chatId });
+      socket.emit(CLIENT_EMIT_EVENTS.TEACHER_END_SOLO_CHAT, { chatId });
     } else {
-      socket.emit('unpair student chat', { chatId, student1, student2 });
+      socket.emit(CLIENT_EMIT_EVENTS.TEACHER_END_PAIRED_CHAT, {
+        chatId,
+        student1,
+        student2,
+      });
     }
     onChatCompleted?.(chat);
   }
@@ -142,6 +147,9 @@ function Chatbox({ chat, setStudentChats, onChatCompleted }: ChatboxProps) {
   );
 }
 
+// Teacher activities can accumulate an unbounded number of chatboxes. Compare
+// props by reference so an incoming message only rerenders the chatbox whose
+// chat object changed, instead of every chatbox on the page.
 export default memo(Chatbox, (prev, next) => {
   return (
     prev.chat === next.chat &&

@@ -4,6 +4,8 @@ import { Chat as ChatIcon, Group as GroupIcon } from '@mui/icons-material';
 import { chunk } from 'lodash-es';
 import { Socket } from 'socket.io-client';
 
+import { CLIENT_EMIT_EVENTS } from '@socket/emitEvents.const';
+import { CLIENT_LISTEN_EVENTS } from '@socket/listenEvents.const';
 import { getRandom } from '@utils/activities';
 import { SoloChat, Student, StudentChat } from '../../types';
 import UnpairedStudentItem from './UnpairedStudentItem';
@@ -32,14 +34,14 @@ export default function UnpairedStudentsList({
 
   useEffect(() => {
     if (socket) {
-      socket.on('new student joined', (student) => {
+      socket.on(CLIENT_LISTEN_EVENTS.STUDENT_JOINED_ACTIVITY, (student) => {
         console.log(student);
         // Note: this component's useEffect cannot listen to socket events when unmounted.
         // For development coding the students must be active on a different browser tab than the teacher.
         setUnpairedStudents((unpaired) => [...unpaired, student]);
       });
 
-      socket.on('unpaired student left', ({ sessionId }) => {
+      socket.on(CLIENT_LISTEN_EVENTS.STUDENT_LEFT_ACTIVITY, ({ sessionId }) => {
         setUnpairedStudents((students) =>
           students.filter((student) => student.sessionId !== sessionId),
         );
@@ -48,8 +50,8 @@ export default function UnpairedStudentsList({
 
     return () => {
       if (socket) {
-        socket.off('new student joined');
-        socket.off('unpaired student left');
+        socket.off(CLIENT_LISTEN_EVENTS.STUDENT_JOINED_ACTIVITY);
+        socket.off(CLIENT_LISTEN_EVENTS.STUDENT_LEFT_ACTIVITY);
       }
     };
   }, [setUnpairedStudents, socket]);
@@ -79,7 +81,7 @@ export default function UnpairedStudentsList({
         characters.length > 1
       );
     }
-    socket.emit('pair students', { studentPairs });
+    socket.emit(CLIENT_EMIT_EVENTS.TEACHER_PAIR_STUDENTS, { studentPairs });
 
     if (studentIndex !== undefined) {
       // remove the two newly paired students from unpaired list

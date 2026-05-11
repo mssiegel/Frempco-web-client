@@ -3,6 +3,8 @@ import { Box, Typography } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 
 import { PAIRED } from '@utils/activities';
+import { CLIENT_EMIT_EVENTS } from '@socket/emitEvents.const';
+import { CLIENT_LISTEN_EVENTS } from '@socket/listenEvents.const';
 import { ChatMessage, SoloChat, Student, StudentChat } from '../types';
 import { useSocketConnection } from '@contexts/SocketContext';
 import { useRouter } from 'next/router';
@@ -137,39 +139,42 @@ export default function InProgressActivity({
 
   useEffect(() => {
     if (socket) {
-      socket.on('chat started - two students', ({ chatId, studentPair }) => {
-        setStudentChats((chats) => [
-          ...chats,
-          {
-            mode: PAIRED,
-            chatId,
-            studentPair,
-            conversation: [],
-            isCompleted: false,
-          },
-        ]);
-      });
+      socket.on(
+        CLIENT_LISTEN_EVENTS.PAIRED_CHAT_STARTED,
+        ({ chatId, studentPair }) => {
+          setStudentChats((chats) => [
+            ...chats,
+            {
+              mode: PAIRED,
+              chatId,
+              studentPair,
+              conversation: [],
+              isCompleted: false,
+            },
+          ]);
+        },
+      );
     }
 
-    socket.on('solo mode: student disconnected', ({ chatId }) => {
+    socket.on(CLIENT_LISTEN_EVENTS.STUDENT_DISCONNECTED_FROM_SOLO_CHAT, ({ chatId }) => {
       markChatAsCompletedById({ chatId });
     });
 
     return () => {
       if (socket) {
-        socket.off('chat started - two students');
-        socket.off('solo mode: student disconnected');
+        socket.off(CLIENT_LISTEN_EVENTS.PAIRED_CHAT_STARTED);
+        socket.off(CLIENT_LISTEN_EVENTS.STUDENT_DISCONNECTED_FROM_SOLO_CHAT);
       }
     };
   }, [markChatAsCompletedById, socket]);
 
   useEffect(() => {
     if (socket) {
-      socket.on('chat ended - two students', markChatAsCompletedById);
-      socket.on('teacher:student-ended-chat', markChatAsCompletedById);
+      socket.on(CLIENT_LISTEN_EVENTS.PAIRED_CHAT_ENDED, markChatAsCompletedById);
+      socket.on(CLIENT_LISTEN_EVENTS.STUDENT_ENDED_CHAT, markChatAsCompletedById);
 
       socket.on(
-        'teacher listens to student message',
+        CLIENT_LISTEN_EVENTS.STUDENT_SENT_PAIRED_MESSAGE_TO_TEACHER,
         ({ message, sessionId, chatId }) => {
           setStudentChats((studentChats) => {
             return studentChats.map((chat) => {
@@ -189,7 +194,7 @@ export default function InProgressActivity({
       );
 
       socket.on(
-        'solo mode: teacher listens to new message',
+        CLIENT_LISTEN_EVENTS.SOLO_CHAT_MESSAGES_ADDED,
         ({ messages, chatId }) => {
           setStudentChats((studentChats) => {
             return studentChats.map((chat) => {
@@ -206,15 +211,15 @@ export default function InProgressActivity({
     }
 
     const handleRouteChange = () => {
-      socket.emit('user disconnected');
+      socket.emit(CLIENT_EMIT_EVENTS.TEACHER_LEAVE_ACTIVITY);
     };
     router.events.on('routeChangeStart', handleRouteChange);
 
     return () => {
-      socket.off('chat ended - two students', markChatAsCompletedById);
-      socket.off('teacher:student-ended-chat', markChatAsCompletedById);
-      socket.off('teacher listens to student message');
-      socket.off('solo mode: teacher listens to new message');
+      socket.off(CLIENT_LISTEN_EVENTS.PAIRED_CHAT_ENDED, markChatAsCompletedById);
+      socket.off(CLIENT_LISTEN_EVENTS.STUDENT_ENDED_CHAT, markChatAsCompletedById);
+      socket.off(CLIENT_LISTEN_EVENTS.STUDENT_SENT_PAIRED_MESSAGE_TO_TEACHER);
+      socket.off(CLIENT_LISTEN_EVENTS.SOLO_CHAT_MESSAGES_ADDED);
       router.events.off('routeChangeStart', handleRouteChange);
     };
   }, [markChatAsCompletedById, router.events, socket]);
@@ -258,10 +263,6 @@ export default function InProgressActivity({
           </Typography>
           <Typography variant='body1' mb={1}>
             {'2)'} Enter Activity PIN: <strong>{activityPin}</strong>
-          </Typography>
-          <Typography variant='body2' sx={{ mt: 2 }}>
-            Note: Your students on smartphones will be logged out of Frempco if
-            their smartphone screen goes dark.
           </Typography>
         </Box>
         <SetupActivityAccordion
