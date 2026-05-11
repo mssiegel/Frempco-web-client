@@ -1,4 +1,4 @@
-import { Box, Button, Typography } from '@mui/material';
+import { Box, Button, Tooltip, Typography } from '@mui/material';
 import { Dispatch, SetStateAction } from 'react';
 import PageHeader from '@components/shared/PageHeader';
 import FrempcoBranding from '@components/shared/PageHeader/FrempcoBranding';
@@ -14,6 +14,9 @@ interface CreateActivityProps {
   setEmail: Dispatch<SetStateAction<string>>;
   handleCreateActivity: (activityPin: string) => void;
   isMobile: boolean;
+  isCharactersSaved: boolean;
+  isEmailSaved: boolean;
+  onCharactersSaved: () => void;
 }
 
 export default function CreateActivity({
@@ -23,8 +26,24 @@ export default function CreateActivity({
   setEmail,
   handleCreateActivity,
   isMobile,
+  isCharactersSaved,
+  isEmailSaved,
+  onCharactersSaved,
 }: CreateActivityProps): JSX.Element {
   const isDevelopment = process.env.NEXT_PUBLIC_NODE_ENV === 'development';
+
+  const isHostDisabled = !isCharactersSaved || !isEmailSaved;
+
+  const hostTooltip = (() => {
+    if (!isCharactersSaved && !isEmailSaved)
+      return 'Save your characters and set an email first';
+    else if (!isCharactersSaved) return 'Save your characters first';
+    else if (!isEmailSaved) return 'Set an email first';
+    else
+      console.error(
+        'No tooltip reason found for host activity button disable state',
+      );
+  })();
 
   const create4DigitPin = (): string =>
     Math.floor(Math.random() * 10000)
@@ -87,6 +106,7 @@ export default function CreateActivity({
             <SaveCharactersAccordion
               characters={characters}
               setCharacters={setCharacters}
+              onSave={onCharactersSaved}
             />
 
             <SetEmailAccordion email={email} setEmail={setEmail} />
@@ -113,21 +133,26 @@ export default function CreateActivity({
             </Box>
 
             <Box display='flex' justifyContent='center'>
-              <Button
-                variant='outlined'
-                color='primary'
-                type='submit'
-                onClick={() => handleCreateActivity(create4DigitPin())}
-                sx={{
-                  minHeight: 64,
-                  minWidth: isMobile ? '100%' : 320,
-                  px: 5,
-                  fontSize: '22px',
-                  fontWeight: 400,
-                }}
-              >
-                Host Activity
-              </Button>
+              <Tooltip title={hostTooltip} arrow>
+                <span>
+                  <Button
+                    variant='outlined'
+                    color='primary'
+                    type='submit'
+                    disabled={isHostDisabled}
+                    onClick={() => handleCreateActivity(create4DigitPin())}
+                    sx={{
+                      minHeight: 64,
+                      minWidth: isMobile ? '100%' : 320,
+                      px: 5,
+                      fontSize: '22px',
+                      fontWeight: 400,
+                    }}
+                  >
+                    Host Activity
+                  </Button>
+                </span>
+              </Tooltip>
             </Box>
           </Box>
         </Box>

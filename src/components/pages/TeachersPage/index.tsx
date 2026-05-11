@@ -17,6 +17,7 @@ export default function TeachersPage(): JSX.Element {
   const [activityPin, setActivityPin] = useState('');
   const [characters, setCharacters] = useState(CHARACTERS);
   const [email, setEmail] = useState(EMPTY_EMAIL);
+  const [isCharactersSaved, setIsCharactersSaved] = useState(false);
   const wasCharactersUpdated =
     JSON.stringify(characters) !== JSON.stringify(CHARACTERS);
 
@@ -28,6 +29,8 @@ export default function TeachersPage(): JSX.Element {
       email,
     });
   };
+
+  const isEmailSaved = email !== EMPTY_EMAIL;
 
   return activityPin ? (
     <InProgressActivity
@@ -46,6 +49,9 @@ export default function TeachersPage(): JSX.Element {
       setEmail={setEmail}
       handleCreateActivity={handleCreateActivity}
       isMobile={isMobile}
+      isCharactersSaved={isCharactersSaved}
+      isEmailSaved={isEmailSaved}
+      onCharactersSaved={() => setIsCharactersSaved(true)}
     />
   );
 }
