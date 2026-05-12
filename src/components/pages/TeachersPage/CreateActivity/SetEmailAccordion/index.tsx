@@ -20,6 +20,7 @@ export default function SetEmailAccordion({
   setEmail,
 }: SetEmailAccordionProps): JSX.Element {
   const [isEmailAccordionOpen, setIsEmailAccordionOpen] = useState(false);
+  const [isSaved, setIsSaved] = useState(false);
 
   const handleEmailAccordionChange = (
     _event: SyntheticEvent,
@@ -47,7 +48,7 @@ export default function SetEmailAccordion({
           px: 3,
           minHeight: 64,
           borderRadius: isEmailAccordionOpen ? '18px 18px 0 0' : '18px',
-          backgroundColor: 'primary.500',
+          backgroundColor: isSaved ? 'success.main' : 'primary.500',
           color: 'neutrals.white',
           '& .MuiAccordionSummary-expandIconWrapper': {
             color: 'neutrals.white',
@@ -69,10 +70,13 @@ export default function SetEmailAccordion({
       >
         <EmailEditor
           email={email}
+          required
           onSave={(emailAddress) => {
             if (emailAddress !== email) setEmail(emailAddress);
             setIsEmailAccordionOpen(false);
+            setIsSaved(true);
           }}
+          onChange={() => setIsSaved(false)}
         />
       </AccordionDetails>
     </Accordion>

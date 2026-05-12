@@ -5,12 +5,16 @@ interface SharedEmailEditorProps {
   email: string;
   onSave: (emailAddress: string) => void | Promise<void>;
   autoFocus?: boolean;
+  onChange?: () => void;
+  required?: boolean;
 }
 
 export default function SharedEmailEditor({
   email,
   onSave,
   autoFocus = false,
+  onChange,
+  required = false,
 }: SharedEmailEditorProps): JSX.Element {
   async function updateTeacherEmail(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -34,6 +38,8 @@ export default function SharedEmailEditor({
         autoFocus={autoFocus}
         inputProps={{ maxLength: 50 }}
         defaultValue={email}
+        onChange={onChange}
+        required={required}
         fullWidth
         sx={{
           '& .MuiOutlinedInput-root': {

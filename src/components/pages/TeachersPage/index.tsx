@@ -17,8 +17,7 @@ export default function TeachersPage(): JSX.Element {
   const [activityPin, setActivityPin] = useState('');
   const [characters, setCharacters] = useState(CHARACTERS);
   const [email, setEmail] = useState(EMPTY_EMAIL);
-  const wasCharactersUpdated =
-    JSON.stringify(characters) !== JSON.stringify(CHARACTERS);
+  const [isCharactersSaved, setIsCharactersSaved] = useState(false);
 
   const handleCreateActivity = (newActivityPin: string): void => {
     setActivityPin(newActivityPin);
@@ -36,7 +35,7 @@ export default function TeachersPage(): JSX.Element {
       setCharacters={setCharacters}
       email={email}
       setEmail={setEmail}
-      wasCharactersUpdated={wasCharactersUpdated}
+      wasCharactersUpdated={isCharactersSaved}
     />
   ) : (
     <CreateActivity
@@ -46,6 +45,8 @@ export default function TeachersPage(): JSX.Element {
       setEmail={setEmail}
       handleCreateActivity={handleCreateActivity}
       isMobile={isMobile}
+      isCharactersSaved={isCharactersSaved}
+      onCharactersSaved={() => setIsCharactersSaved(true)}
     />
   );
 }
