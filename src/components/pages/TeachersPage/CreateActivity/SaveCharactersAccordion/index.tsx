@@ -11,14 +11,17 @@ import SharedCharactersEditor from '@TeachersPage/shared/CharactersEditor';
 interface SaveCharactersAccordionProps {
   characters: string[];
   setCharacters: Dispatch<SetStateAction<string[]>>;
+  onSave: () => void;
 }
 
 const SaveCharactersAccordion = ({
   characters,
   setCharacters,
+  onSave,
 }: SaveCharactersAccordionProps): JSX.Element => {
   const [isCharactersAccordionOpen, setIsCharactersAccordionOpen] =
     useState(true);
+  const [isSaved, setIsSaved] = useState(false);
 
   const handleCharactersAccordionChange = (
     _event: SyntheticEvent,
@@ -46,7 +49,7 @@ const SaveCharactersAccordion = ({
           px: 3,
           minHeight: 64,
           borderRadius: isCharactersAccordionOpen ? '18px 18px 0 0' : '18px',
-          backgroundColor: 'primary.500',
+          backgroundColor: isSaved ? 'success.main' : 'primary.500',
           color: 'neutrals.white',
           '& .MuiAccordionSummary-expandIconWrapper': {
             color: 'neutrals.white',
@@ -66,7 +69,12 @@ const SaveCharactersAccordion = ({
         <SharedCharactersEditor
           characters={characters}
           setCharacters={setCharacters}
-          onSave={() => setIsCharactersAccordionOpen(false)}
+          onSave={() => {
+            setIsCharactersAccordionOpen(false);
+            setIsSaved(true);
+            onSave();
+          }}
+          onChange={() => setIsSaved(false)}
         />
       </AccordionDetails>
     </Accordion>

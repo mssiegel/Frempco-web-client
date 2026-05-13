@@ -5,12 +5,14 @@ interface SharedCharactersEditorProps {
   characters: string[];
   setCharacters: Dispatch<SetStateAction<string[]>>;
   onSave: () => void;
+  onChange?: () => void;
 }
 
 export default function SharedCharactersEditor({
   characters,
   setCharacters,
   onSave,
+  onChange,
 }: SharedCharactersEditorProps): JSX.Element {
   const [error, setError] = useState<string | null>(null);
   const characterListTextArea = useRef<HTMLTextAreaElement | null>(null);
@@ -42,6 +44,7 @@ export default function SharedCharactersEditor({
         inputProps={{ 'aria-label': 'Edit characters' }}
         defaultValue={characters.join('\n')}
         inputRef={characterListTextArea}
+        onChange={onChange}
         sx={{
           '& .MuiOutlinedInput-root': {
             alignItems: 'flex-start',

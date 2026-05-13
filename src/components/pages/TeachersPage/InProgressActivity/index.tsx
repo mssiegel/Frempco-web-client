@@ -21,7 +21,6 @@ interface InProgressActivityProps {
   setCharacters: Dispatch<SetStateAction<string[]>>;
   email: string;
   setEmail: Dispatch<SetStateAction<string>>;
-  wasCharactersUpdated: boolean;
 }
 
 export default function InProgressActivity({
@@ -30,7 +29,6 @@ export default function InProgressActivity({
   setCharacters,
   email,
   setEmail,
-  wasCharactersUpdated,
 }: InProgressActivityProps): JSX.Element {
   const apiUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/api/v1`;
   const TEN_SECONDS = 10000;
@@ -269,7 +267,6 @@ export default function InProgressActivity({
           activityPin={activityPin}
           characters={characters}
           setCharacters={setCharacters}
-          wasCharactersUpdated={wasCharactersUpdated}
           email={email}
           setEmail={setEmail}
         />
