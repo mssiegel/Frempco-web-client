@@ -19,7 +19,6 @@ interface SetupActivityAccordionProps {
   activityPin: string;
   characters: string[];
   setCharacters: Dispatch<SetStateAction<string[]>>;
-  wasCharactersUpdated: boolean;
   email: string;
   setEmail: Dispatch<SetStateAction<string>>;
 }
@@ -28,21 +27,16 @@ const SetupActivityAccordion = ({
   activityPin,
   characters,
   setCharacters,
-  wasCharactersUpdated,
   email,
   setEmail,
 }: SetupActivityAccordionProps) => {
   const wasEmailUpdated = email !== EMPTY_EMAIL;
-  const hasRemainingSetupOptions = !wasEmailUpdated || !wasCharactersUpdated;
+  const hasRemainingSetupOptions = !wasEmailUpdated;
 
   const remainingSetupOptionsText =
-    wasEmailUpdated && wasCharactersUpdated
+    wasEmailUpdated
       ? 'All set up!'
-      : !wasEmailUpdated && !wasCharactersUpdated
-      ? 'Email and characters have not been set'
-      : !wasEmailUpdated
-      ? 'Email has not been set'
-      : 'Characters have not been set';
+      : 'Email has not been set';
 
   return (
     <Accordion disableGutters sx={{ boxShadow: 'none', mb: 3 }}>

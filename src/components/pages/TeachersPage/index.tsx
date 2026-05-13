@@ -35,7 +35,6 @@ export default function TeachersPage(): JSX.Element {
       setCharacters={setCharacters}
       email={email}
       setEmail={setEmail}
-      wasCharactersUpdated={isCharactersSaved}
     />
   ) : (
     <CreateActivity
